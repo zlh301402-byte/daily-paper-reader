@@ -1,0 +1,238 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T22:55:33.146537+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 4,
+    "deep_cap": 7,
+    "deep_selected": 4,
+    "quick_candidates": 1,
+    "quick_skim_target": 12,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2606.12859v1",
+      "source": "arxiv",
+      "title": "AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots",
+      "abstract": "Aerial manipulation systems have long suffered from representation coupling in end-to-end control, as platform-level Unmanned Aerial Vehicle (UAV) movement and end-effector-level arm manipulation differ substantially in action scale, dynamics, and control objectives. In this paper, we propose AIR-VLA+, a flow matching action generation architecture specifically designed for aerial manipulation, featuring cascaded dual-action decoders and an asymmetric feature-level Mixture of Experts (MoE). We construct cascaded manipulation and movement decoders, allowing the UAV to unidirectionally observe the manipulator's intent during movement to achieve workflow coordination, while isolating the impact of UAV movement information backpropagation on arm manipulation stability. Addressing the characteristic that UAV movement is highly dependent on high-level semantics and responsible for task state transitions in aerial manipulation, we design an input feature enhancement module for the UAV movement decoder. This module introduces an implicit visual grasp projector to perceive the interaction state between the gripper and the object, and injects compressed global semantic features. Within the UAV movement decoder, we deploy an implicit MoE architecture, enabling different movement experts to spontaneously exhibit capacity inclinations for various task stages during training. Through dense soft blending computation on the feature manifold, the UAV movement is endowed with stronger task-stage adaptability. Experiments on the standardized AIR-VLA benchmark demonstrate that our method comprehensively surpasses all baselines with an overall average score of 48.0. The overall task completion score improves by 80.2\\% compared to the single-head $π_{0.5}$ policy, effectively mitigating the heterogeneous coordinated control conflicts of composite robots.",
+      "authors": [
+        "Jianli Sun",
+        "Bin Tian",
+        "Qiyao Zhang",
+        "Zijian Liu",
+        "Yutong Wang",
+        "Zhiyong Cui",
+        "Bai Li",
+        "Yisheng Lv",
+        "Yonglin Tian"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-11T03:42:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.12859v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "aerial manipulation with decoupled movement and manipulation decoders",
+      "llm_evidence_cn": "空中操纵系统，通过级联双动作解码器解耦运动与操纵",
+      "llm_evidence": "空中操纵系统，通过级联双动作解码器解耦运动与操纵",
+      "canonical_evidence": "空中操纵系统，通过级联双动作解码器解耦运动与操纵",
+      "llm_tldr_en": "Proposes AIR-VLA+, a flow matching action generation architecture for aerial manipulation that decouples UAV movement from arm manipulation using cascaded dual-action decoders and asymmetric MoE.",
+      "llm_tldr_cn": "空中操纵系统长期受困于端到端控制中平台运动与末端操纵之间的表示耦合问题。本文提出了AIR-VLA+，一种专为空中操纵设计的流匹配动作生成架构，通过级联双动作解码器和非对称特征级专家混合层，解耦无人机的运动与机械臂操控，实现两者协调。实验表明该方法能有效提升空中操控的协调性和效率。",
+      "llm_tldr": "空中操纵系统长期受困于端到端控制中平台运动与末端操纵之间的表示耦合问题。本文提出了AIR-VLA+，一种专为空中操纵设计的流匹配动作生成架构，通过级联双动作解码器和非对称特征级专家混合层，解耦无人机的运动与机械臂操控，实现两者协调。实验表明该方法能有效提升空中操控的协调性和效率。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.10857v1",
+      "source": "arxiv",
+      "title": "Embodiment-conditioned Generalist Control for Multirotor Aerial Robots",
+      "abstract": "We present a generalist position control policy capable of controlling arbitrary multirotor configurations of a certain rotor count (e.g., hexarotors or quadrotors) with a single set of network weights. The policy is conditioned on a physics-grounded embodiment descriptor: a mass and inertia-normalized control allocation matrix that captures how mass-normalized motor thrusts generate linear and angular accelerations in the body-frame. To train the policy, we sample from a broad distribution of arbitrary multirotor configurations, including non-planar and asymmetric systems, and optimize a single, compact network using Proximal Policy Optimization. Training requires only five minutes on an RTX 3090 GPU using a custom NVIDIA Warp-based dynamics simulator. Through extensive simulation experiments, we show that embodiment conditioning enables robust generalist control across arbitrary morphologies. We demonstrate zero-shot real-world transfer of this generalist policy on three diverse hexarotor systems, including a planar robot, a partially symmetric non-planar system, and a random asymmetric, non-planar configuration.",
+      "authors": [
+        "Orestis Konstantaropoulos",
+        "Welf Rehberg",
+        "Mihir Kulkarni",
+        "Kostas Alexis"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-06-09T13:36:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.10857v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Generalist control policy for multirotor aerial robots",
+      "llm_evidence_cn": "面向多旋翼空中机器人的通用位置控制策略",
+      "llm_evidence": "面向多旋翼空中机器人的通用位置控制策略",
+      "canonical_evidence": "面向多旋翼空中机器人的通用位置控制策略",
+      "llm_tldr_en": "Presents a generalist position control policy for arbitrary multirotor configurations using a physics-grounded embodiment descriptor and PPO training in simulation, achieving fast training and broad generalization.",
+      "llm_tldr_cn": "本文提出一种面向任意多旋翼构型（如四旋翼、六旋翼）的通用位置控制策略，通过物理化的体态描述子（质量-惯性归一化控制分配矩阵）输入网络，使用近端策略优化在仅五分钟内完成训练。该策略在多样化的非平面、非对称构型上表现良好，展示了单网络权重控制多种多旋翼的可行性，为空中机器人通用控制提供了新范式。",
+      "llm_tldr": "本文提出一种面向任意多旋翼构型（如四旋翼、六旋翼）的通用位置控制策略，通过物理化的体态描述子（质量-惯性归一化控制分配矩阵）输入网络，使用近端策略优化在仅五分钟内完成训练。该策略在多样化的非平面、非对称构型上表现良好，展示了单网络权重控制多种多旋翼的可行性，为空中机器人通用控制提供了新范式。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.11743v1",
+      "source": "arxiv",
+      "title": "TacCoRL: Integrating Tactile Feedback into VLA via Simulation",
+      "abstract": "Vision-language-action (VLA) models provide strong visual, language, and action priors for robot manipulation, but visual observations alone often miss the local contact state required for contact-rich tasks. We present TacCoRL, a scalable framework that injects Tactile feedback into VLA policies and improves them through sim-real Co-training and simulation-based reinforcement learning (RL), without requiring large-scale tactile pretraining or extensive real-world contact exploration. The key idea is not only adding touch as an input, but learning how contact readings should modulate action responses in near-failure states that are rare in demonstrations and risky to collect on hardware. We use a real-aligned simulator as a closed-loop training environment for contact interaction. Mixed simulated and real trajectories first warm-start tactile-conditioned actions in the pretrained policy. Reinforcement learning with verifiable task rewards then optimizes the policy using simulated contact rollouts. It reinforces tactile-conditioned actions that lead to task completion, while a supervised objective on real trajectories keeps the refined policy anchored to deployment visual, tactile, and action distributions. The resulting policy transfers directly to the real robot without privileged simulation state or online real-world RL. Across four bimanual contact-rich tasks, the final visuo-tactile policy achieves an average success rate of 72.5%, compared to baseline of 50.0%. Result videos and more details are available at https://tac-corl.github.io/",
+      "authors": [
+        "Siyu Ma",
+        "Yuqi Liang",
+        "Chang Yu",
+        "Yunuo Chen",
+        "Hao Su",
+        "Yixin Zhu",
+        "Yin Yang",
+        "Chenfanfu Jiang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-06-10T07:20:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.11743v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Reinforcement learning for robot arm control via tactile feedback injection",
+      "llm_evidence_cn": "通过触觉反馈注入实现强化学习在机器人手臂控制中的应用",
+      "llm_evidence": "通过触觉反馈注入实现强化学习在机器人手臂控制中的应用",
+      "canonical_evidence": "通过触觉反馈注入实现强化学习在机器人手臂控制中的应用",
+      "llm_tldr_en": "TacCoRL integrates tactile feedback into VLA policies via simulation-based RL, improving contact-rich manipulation without large-scale pretraining, promising for aerial physical interaction.",
+      "llm_tldr_cn": "触觉反馈对于接触丰富的机器人操作任务至关重要，但视觉语言动作（VLA）模型缺少触觉信息难以处理精细操作。本文提出TacCoRL框架，通过仿真中的强化学习将触觉反馈注入VLA策略，无需大规模触觉预训练或大量真实接触探索。核心是利用真实对齐的仿真环境作为闭环训练平台，学习在接近失败状态下触觉读数如何调节动作响应。实验证明，该方法在多种接触丰富任务上显著提升了策略的鲁棒性和成功率。该工作为将触觉模态集成到VLA模型提供了一种可扩展方案，对空中机械臂的物理交互控制具有启发意义。",
+      "llm_tldr": "触觉反馈对于接触丰富的机器人操作任务至关重要，但视觉语言动作（VLA）模型缺少触觉信息难以处理精细操作。本文提出TacCoRL框架，通过仿真中的强化学习将触觉反馈注入VLA策略，无需大规模触觉预训练或大量真实接触探索。核心是利用真实对齐的仿真环境作为闭环训练平台，学习在接近失败状态下触觉读数如何调节动作响应。实验证明，该方法在多种接触丰富任务上显著提升了策略的鲁棒性和成功率。该工作为将触觉模态集成到VLA模型提供了一种可扩展方案，对空中机械臂的物理交互控制具有启发意义。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14375v1",
+      "source": "arxiv",
+      "title": "Elastic Queries Reinforcement Learning: Self-Aware Policy Execution for VLA Models",
+      "abstract": "Vision-language-action (VLA) models are powerful action generators for robot manipulation, but they are typically executed with fixed inference and replanning schedules. This rigidity ignores the uneven difficulty of robot control: contact-rich or uncertain states may need more computation and fresher feedback, while easier states can often be handled with fewer inference steps and longer open-loop execution. We propose Elastic Queries Reinforcement Learning (EQRL), a framework that makes each VLA policy query elastic. A lightweight latent-schedule adaptor jointly selects the latent input, denoising budget, and action chunk length, without fine-tuning the underlying VLA model. To make scheduling difficulty-aware, EQRL trains a critic over the joint latent-schedule action and derives a state difficulty signal from critic ensemble disagreement. This signal guides compute toward difficult states, while a learned residual allows task-driven correction. We formulate variable chunk execution as query-level macro-action RL with chunk-dependent discounting and an amortized number-of-function-evaluations (NFE) budget. Across simulation and real-robot manipulation, EQRL reduces amortized inference cost while preserving or improving task success.",
+      "authors": [
+        "Ge Wang",
+        "Xinyu Tan",
+        "Xiang Li",
+        "Man Luo",
+        "Chengsi Yao",
+        "Shenhao Yan",
+        "Jiahao Yang",
+        "Fan Feng",
+        "Honghao Cai",
+        "Xiangyuan Wang",
+        "Zhixin Mai",
+        "Yiming Zhao",
+        "Yatong Han",
+        "Zhen Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-12T12:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.14375v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Reinforcement learning optimizes inference scheduling for robot manipulation policies",
+      "llm_evidence_cn": "强化学习优化机器人操作策略的推理调度",
+      "llm_evidence": "强化学习优化机器人操作策略的推理调度",
+      "canonical_evidence": "强化学习优化机器人操作策略的推理调度",
+      "llm_tldr_en": "Elastic Queries RL adapts VLA model inference scheduling via a lightweight adaptor and critic, improving manipulation efficiency without fine-tuning, generalizable to aerial arm control.",
+      "llm_tldr_cn": "现有VLA模型在机器人操作中由于推理调度固定，难以适应不同难度任务，导致效率低下。本论文提出弹性查询强化学习（EQRL），通过一个轻量级潜在调度适配器，联合选择潜在输入、去噪预算和动作块长度，使策略执行自适应。训练一个批评者网络来评估状态困难度，从而优化调度。实验表明，该方法在不微调底层VLA模型的情况下，显著提高了多种机器人操作任务的效率和成功率。该框架为机器人操作提供了一种通用的自适应策略执行机制，可望推广到空中机械臂等复杂场景。",
+      "llm_tldr": "现有VLA模型在机器人操作中由于推理调度固定，难以适应不同难度任务，导致效率低下。本论文提出弹性查询强化学习（EQRL），通过一个轻量级潜在调度适配器，联合选择潜在输入、去噪预算和动作块长度，使策略执行自适应。训练一个批评者网络来评估状态困难度，从而优化调度。实验表明，该方法在不微调底层VLA模型的情况下，显著提高了多种机器人操作任务的效率和成功率。该框架为机器人操作提供了一种通用的自适应策略执行机制，可望推广到空中机械臂等复杂场景。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.13794v1",
+      "source": "arxiv",
+      "title": "An integrated interpretable control effectiveness learning and nonlinear control allocation methodology for overactuated aircrafts",
+      "abstract": "Nonlinear dynamics and the strong couplings that arise between multiple effectors undermine the assumptions behind conventional, linear control allocation techniques. When flight enters regimes where nonlinear effects dominate, linear allocators exhibit reduced accuracy due to increased model mismatch, which subsequently degrades performance and robustness of the flight control system. High fidelity onboard models and black box data driven approaches can recover accuracy across the flight envelope, but respectively impose computational burdens prohibitive for real time allocation and sacrifice the interpretability required for verification and fault diagnosis. This paper addresses these limitations by learning an explicit, physics constrained analytical model of the control effectiveness mapping from representative flight data using Sparse Identification of Nonlinear Dynamics. The resulting mapping is compact, interpretable, and admits analytical derivatives, enabling efficient computation within nonlinear solvers that additionally incorporate actuator dynamics, without requiring an onboard model. An online adaptation mechanism monitors prediction residuals and refreshes the model when significant plant changes are detected, providing graceful reconfiguration under actuator failures and varying operating conditions. The methodology is evaluated on a high fidelity nonlinear benchmark aircraft across a range of aggressive maneuvers, achieving accuracy comparable to a full nonlinear onboard model while substantially reducing computational cost relative to established baselines.",
+      "authors": [
+        "Umut Demir",
+        "Aamir Ahmad",
+        "Walter Fichter"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-06-11T18:04:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.13794v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "overactuated aircraft control allocation, transferable to overactuated drone with manipulator",
+      "llm_evidence_cn": "过驱动飞行器控制分配，可迁移至带机械臂的过驱动无人机",
+      "llm_evidence": "过驱动飞行器控制分配，可迁移至带机械臂的过驱动无人机",
+      "canonical_evidence": "过驱动飞行器控制分配，可迁移至带机械臂的过驱动无人机",
+      "llm_tldr_en": "Proposes an interpretable control effectiveness learning and nonlinear control allocation method for overactuated aircraft, addressing nonlinear coupling effects.",
+      "llm_tldr_cn": "针对过驱动飞行器在非线性强耦合工况下线性分配器精度下降的问题，提出了一种可解释的控制效能学习与非线性控制分配方法。该方法融合在线学习与解析模型，在保持实时性的同时提升了分配精度和可解释性。实验表明在非线性占主导的飞行区间内，该方法显著优于传统线性分配器。对过驱动无人机机械臂系统有直接借鉴意义。",
+      "llm_tldr": "针对过驱动飞行器在非线性强耦合工况下线性分配器精度下降的问题，提出了一种可解释的控制效能学习与非线性控制分配方法。该方法融合在线学习与解析模型，在保持实时性的同时提升了分配精度和可解释性。实验表明在非线性占主导的飞行区间内，该方法显著优于传统线性分配器。对过驱动无人机机械臂系统有直接借鉴意义。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "over-actuated drone control with manipulator",
+      "matched_requirement_id": "req-14",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

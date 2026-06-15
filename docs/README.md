@@ -6,67 +6,37 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-17 ~ 2026-06-15
-- 运行时间：2026-06-15 11:48:39 UTC
+- 最新运行日期：2026-06-15
+- 运行时间：2026-06-15 22:58:37 UTC
 - 运行状态：成功
-- 本次总论文数：15
-- 精读区：6
-- 速读区：9
+- 本次总论文数：5
+- 精读区：4
+- 速读区：1
 
 ### 今日简报（AI）
-1) 今日精选5篇机器人论文，聚焦碰撞容错飞行器与强化学习操作，2篇精读均获9分。  
-2) 推荐精读《HoLoArm》的可变形避碰手臂设计与《Autonomous Aerial Manipulation》的元强化学习方法。  
-3) 下步可关注对比学习和人机交互强化学习在实操中的验证，延伸阅读速读列表中的3篇8分工作。
-- 详情：[/20260517-20260615/README](/20260517-20260615/README)
+1) 今日精读4篇、速读1篇，聚焦空中机器人动作控制与解耦方法。  
+2) 最值得看的是AIR-VLA+（9.0分）提出级联双动作解码器解耦运动与操作，以及Embodiment-conditioned通用控制（8.0分）。  
+3) 建议优先阅读这两篇高分论文，了解如何分离无人机运动与操作、提升泛化能力。
+- 详情：[/202606/15/README](/202606/15/README)
 
 ### 精读区论文标签
-1. [HoLoArm: Deformable Arms for Collision-Tolerant Quadrotor Flight](/20260517-20260615/2605.25790v1-holoarm-deformable-arms-for-collision-tolerant-quadrotor-flight)  
-   标签：评分：9.0/10、query:drone-arm
-   evidence：四旋翼可变形臂的强化学习控制策略
-2. [Autonomous Aerial Manipulation via Contextual Contrastive Meta Reinforcement Learning](/20260517-20260615/2606.08533v1-autonomous-aerial-manipulation-via-contextual-contrastive-meta-reinforcement-learning)  
-   标签：评分：9.0/10、query:drone-arm
-   evidence：使用深度强化学习的空中操作
-3. [AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots](/20260517-20260615/2606.12859v1-air-vla-decoupling-movement-and-manipulation-via-cascaded-dual-action-decoders-with-asymmetric-moe-for-aerial-robots)  
+1. [AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots](/202606/15/2606.12859v1-air-vla-decoupling-movement-and-manipulation-via-cascaded-dual-action-decoders-with-asymmetric-moe-for-aerial-robots)  
    标签：评分：9.0/10、query:aerial-arm
-   evidence：空中机器人运动与操作解耦的控制架构
-4. [Self-assembling Modular Aerial Robot for Versatile Aerial Tasks](/20260517-20260615/2605.19431v1-self-assembling-modular-aerial-robot-for-versatile-aerial-tasks)  
+   evidence：空中操纵系统，通过级联双动作解码器解耦运动与操纵
+2. [Embodiment-conditioned Generalist Control for Multirotor Aerial Robots](/202606/15/2606.10857v1-embodiment-conditioned-generalist-control-for-multirotor-aerial-robots)  
    标签：评分：8.0/10、query:aerial-arm
-   evidence：可自组装的模块化空中机器人，具备操纵能力
-5. [Beyond Action Residuals: Real-World Robot Policy Steering via Bottleneck Latent Reinforcement Learning](/20260517-20260615/2605.19919v1-beyond-action-residuals-real-world-robot-policy-steering-via-bottleneck-latent-reinforcement-learning)  
+   evidence：面向多旋翼空中机器人的通用位置控制策略
+3. [TacCoRL: Integrating Tactile Feedback into VLA via Simulation](/202606/15/2606.11743v1-taccorl-integrating-tactile-feedback-into-vla-via-simulation)  
    标签：评分：8.0/10、query:drone-arm
-   evidence：用于机械臂策略改进的强化学习
-6. [Learning a Kinodynamic Trajectory Manifold for Impact-Aware Compliant Catching of Fast-Moving Objects](/20260517-20260615/2605.28462v1-learning-a-kinodynamic-trajectory-manifold-for-impact-aware-compliant-catching-of-fast-moving-objects)  
+   evidence：通过触觉反馈注入实现强化学习在机器人手臂控制中的应用
+4. [Elastic Queries Reinforcement Learning: Self-Aware Policy Execution for VLA Models](/202606/15/2606.14375v1-elastic-queries-reinforcement-learning-self-aware-policy-execution-for-vla-models)  
    标签：评分：8.0/10、query:drone-arm
-   evidence：使用强化学习学习机器人抓取轨迹，涉及机械臂控制
+   evidence：强化学习优化机器人操作策略的推理调度
 
 ### 速读区论文标签
-1. [VE2VF: Vision-Enabled to Vision-Free Distillation via Real-world Reinforcement Learning for Robust Contact-Rich Manipulation](/20260517-20260615/2605.29564v1-ve2vf-vision-enabled-to-vision-free-distillation-via-real-world-reinforcement-learning-for-robust-contact-rich-manipulation)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：真实世界强化学习用于接触式操作，涉及机械臂控制
-2. [Preference-Calibrated Human-in-the-Loop Reinforcement Learning for Robotic Manipulation](/20260517-20260615/2606.03949v1-preference-calibrated-human-in-the-loop-reinforcement-learning-for-robotic-manipulation)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：基于偏好校准的人机交互强化学习方法用于机器人操纵
-3. [Learning Object Manipulation from Scratch via Contrastive Interaction](/20260517-20260615/2606.11525v1-learning-object-manipulation-from-scratch-via-contrastive-interaction)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：用于物体操作的对比强化学习，适用于机械臂控制
-4. [AERMANI-PLACE: Language Guided Object Placement with Aerial Manipulators](/20260517-20260615/2606.14531v1-aermani-place-language-guided-object-placement-with-aerial-manipulators)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：基于语言引导的空中机械臂物体放置
-5. [Coherent Off-Policy Improvement of Large Behavior Models with Learned Rewards](/20260517-20260615/2606.02194v1-coherent-off-policy-improvement-of-large-behavior-models-with-learned-rewards)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：使用逆强化学习和离策略方法改进机器人操作策略
-6. [GPU-Parallel Multi-Task Reinforcement Learning with Demonstration Guided Policy Optimization](/20260517-20260615/2606.03335v1-gpu-parallel-multi-task-reinforcement-learning-with-demonstration-guided-policy-optimization)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：多任务强化学习框架，可应用于机器人手臂控制
-7. [Prior Policy Guided Dual-Agent Coordinated Manipulation Planning of Spacecraft-Manipulator System](/20260517-20260615/2605.25362v1-prior-policy-guided-dual-agent-coordinated-manipulation-planning-of-spacecraft-manipulator-system)  
+1. [An integrated interpretable control effectiveness learning and nonlinear control allocation methodology for overactuated aircrafts](/202606/15/2606.13794v1-an-integrated-interpretable-control-effectiveness-learning-and-nonlinear-control-allocation-methodology-for-overactuated-aircrafts)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：深度强化学习用于航天器-机械臂耦合控制
-8. [Efficient On-policy Visual-RL via Stochastic Decoupled Policy Gradient](/20260517-20260615/2605.26478v1-efficient-on-policy-visual-rl-via-stochastic-decoupled-policy-gradient)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：轻量级视觉强化学习用于机器人控制
-9. [RDGen: Demonstration Generation for High-Quality Robot Learning via Reinforcement Learning](/20260517-20260615/2605.30957v1-rdgen-demonstration-generation-for-high-quality-robot-learning-via-reinforcement-learning)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：基于强化学习的机器人操作演示生成
+   evidence：过驱动飞行器控制分配，可迁移至带机械臂的过驱动无人机
 
 
 <div class="dpr-home-promo-card">

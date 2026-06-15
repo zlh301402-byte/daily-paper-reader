@@ -1,0 +1,705 @@
+Title: An integrated interpretable control effectiveness learning and nonlinear control allocation methodology for overactuated aircrafts
+
+URL Source: https://arxiv.org/pdf/2606.13794v1
+
+Published Time: Mon, 15 Jun 2026 00:08:40 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# An integrated interpretable control effectiveness learning and nonlinear control allocation methodology for overactuated aircrafts 
+
+Umut Demir 1, Aamir Ahmad 1 and Walter Fichter 1
+
+Abstract — Nonlinear dynamics and the strong couplings that arise between multiple effectors undermine the assumptions behind conventional, linear control allocation techniques. When flight enters regimes where nonlinear effects dominate, linear allocators exhibit reduced accuracy due to increased model mis-match, which subsequently degrades performance and robust-ness of the flight control system. High fidelity onboard models and black box data driven approaches can recover accuracy across the flight envelope, but respectively impose computa-tional burdens prohibitive for real time allocation and sacrifice the interpretability required for verification and fault diagnosis. This paper addresses these limitations by learning an explicit, physics constrained analytical model of the control effective-ness mapping from representative flight data using Sparse Identification of Nonlinear Dynamics. The resulting mapping is compact, interpretable, and admits analytical derivatives, enabling efficient computation within nonlinear solvers that additionally incorporate actuator dynamics, without requiring an onboard model. An online adaptation mechanism monitors prediction residuals and refreshes the model when significant plant changes are detected, providing graceful reconfiguration under actuator failures and varying operating conditions. The methodology is evaluated on a high fidelity nonlinear bench-mark aircraft across a range of aggressive maneuvers, achieving accuracy comparable to a full nonlinear onboard model while substantially reducing computational cost relative to established baselines. 
+
+I. INTRODUCTION Modern engineered systems, from autonomous robots with several effectors to satellites equipped with clusters of re-action wheels, are increasingly overactuated [1] [2]. They possess more effectors than independent forces or moments that must be produced. Control allocation is the layer that converts a high level command, such as a desired torque, thrust vector, or generalized virtual input, into a specific set of actuator commands while respecting physical limits. Be-yond satisfying this primary tracking objective, the inherent redundancy in the actuator set provides additional degrees of freedom that can be exploited to satisfy secondary objectives such as minimizing power usage, limiting surface deflection rates, reducing noise, or preserving a low radar infrared signature for stealth [3]. This redundancy is purposeful by design: a larger actuator set improves fault tolerance and reconfiguration capability, and is often preferred for reasons of safety, accuracy, bandwidth, and maintainability. In com-plex platforms, effector groups may serve multiple control objectives simultaneously; for example, in aircraft, engines                
+
+> 1University of Stuttgart, Faculty of Aerospace Engineering and Geodesy, Institute of Flight Mechanics and Control (iFR), Germany.
+
+firstname.lastname@ifr.uni-stuttgart.de 
+
+are primarily designed for thrust yet can be commanded to generate a yawing moment when conventional aerodynamic surfaces are insufficient or unavailable [4] [5].   
+
+> Fig. 1. Control system architecture with control allocation. The high level motion controller commands a virtual effort vector τc; the allocation layer distributes this demand across individual effectors
+
+As illustrated in Fig. 1, the control allocation layer distributes the virtual control commanded by the flight controller to actuator commands. In general, the mapping from actuator commands to the resulting virtual control is a nonlinear function of the vehicle state and the actuator commands, 
+
+τc = f (x, u), (1) which captures nonlinear dynamics and state dependent vari-ations in control effectiveness. In the standard formulation of control allocation, this mapping is approximated by a linear model [6], 
+
+τc = B u , (2) where B ∈ Rn×m is the control effectiveness matrix, τc ∈
+
+Rn is the virtual control vector, and u ∈ Rm is the actuator command vector. Each entry Bij = ∂τ i/∂u j represents the sensitivity of the ith virtual control to the jth effector. In control allocation problems, effector redundancy implies 
+
+m > n , so B is rectangular [6]. The literature on solution methods for linear control allo-cation is extensive. A number of well established approaches are widely cited in the literature. Explicit ganging methods precombine multiple effectors so that multiple devices act as a single, composite control input determined a priori [6]. The pseudoinverse approach is an optimization based method that relies on computing the pseudoinverse of the typically nonsquare effectiveness matrix [4]. Because solutions are non unique, null space methods augment any particular solution with components in the null space of the effectiveness matrix to satisfy secondary objectives without altering the achieved generalized forces and moments, or simple satura-tions, heuristic schemes such as redistributed pseudoinverse and daisy chaining iteratively freeze saturated actuators and reallocate the remaining demand over the unsaturated set, 
+
+> arXiv:2606.13794v1 [eess.SY] 11 Jun 2026
+
+repeating this reduced problem until feasibility or no further improvement is obtained [7]. Linear control allocation has intrinsic drawbacks since it freezes a time varying, state dependent mapping into a static and linear effectiveness matrix. In practice, the true effectiveness of the control often changes with operating conditions and the effector state. For aircrafts, aerodynamic surfaces vary with airspeed and angle of attack and exhibit geometric nonlinearities; flow conditions depend on both vehicle and effector states; and interactions arise among effectors and between effectors and the body [6]. As an example, in a turboprop with tractor propellers ahead of the wing, the propeller slipstream raises the local dynamic pressure over ailerons and flaps, therefore the effectiveness of aerodynamic surfaces changes with propeller activity as demonstrated in [8]. A time frozen linear control effective-ness matrix can not represent these dependencies, so purely linear allocation risks mismatched effectiveness, degraded optimality, and even infeasibility as conditions shift. Instead of treating the control effectiveness matrix as fixed, it can be updated at each control cycle using an onboard model of the system [4]. This approach is typical for incre-mental control allocation: at every cycle the onboard model is sampled at small perturbations around the current operating point, finite difference slopes are computed, and these partial derivatives are assembled into an updated control effective-ness matrix. Since each column of control effectiveness matrix represents the partial derivative of the generalized forces and moments with respect to a single effector, the onboard model must be perturbed and evaluated separately for each of the m effectors at every control update. This per-column finite difference procedure scales directly with the number of effectors and introduces a significant compu-tational burden, particularly in highly overactuated platforms where m is large. Furthermore, the onboard model often relies on vehicle state dependent aerodynamic tables and computationally heavy subcomponent models are difficult to interpret, and are highly sensitive to parameter variations in the numerical differentiation, potentially compromising transparency and robustness in the allocation loop. Data driven control allocation methods, especially neural networks, are increasingly used to replace or augment clas-sical linear allocators. Kang et al. train a neural allocator for a tailless aircraft to approximate a dynamic allocation scheme, preserving near optimal performance while avoiding heavy online optimization [9]. Similarly, Madruga et al. train a network offline to substitute the fixed allocation matrix on a small quadrotor, compensating aerodynamic effects without explicit inflow models [10]. In a complementary direction, Chen et al. integrate an adaptive neural attitude controller with a constrained allocation layer, providing robustness to uncertainties and time varying disturbances [11]. Building on these data driven allocators, reinforcement learning (RL) methods learn control allocation policies directly from inter-action. For example, on the highly over actuated aircraft, RL has been used to distribute required input across 13 effectors for longitudinal control without a preidentified effectiveness matrix, while simultaneously reducing effector activity [12]. Although neural network and reinforcement learning allocators can perform well, they are fundamentally function approximators that behave black box. The mapping from state to command is not transparent, which compli-cates verification, certification, and safety case construction. Behavior under distribution shift or rare corner cases are difficult to predict or bound, secondary objectives and con-straints are enforced indirectly through loss function shaping, and failure diagnosis or accountability after incidents is hindered by limited interpretability. In safety critical settings, this explainability often outweighs the gains in empirical performance. Motivated by the drawbacks of black box approaches, we turn to a transparent, physics revealing alternative. Brunton et al. [13] introduced the idea that governing equations can be recovered directly from data by expressing the unknown dynamics as a sparse linear combination drawn from alarge library of candidate nonlinear functions of the states and inputs, a framework they termed Sparse Identification of Nonlinear Dynamics (SINDy). The result is a compact, interpretable set of governing equations whose structure can incorporate physics based constraints. A detailed mathemat-ical formulation is provided in Section III. In recent years, SINDy has attracted substantial attention across disciplines, with applications ranging from discovering equations in fluid flows [14] to identifying nonlinear aircraft dynamics [15], modeling multirotor drones [16] [17], and capturing coupled disturbance and actuation dynamics on a rolling delta wing aircraft [18]. This breadth of successful applications suggests that SINDy is a natural candidate for learning the nonlinear control effectiveness mapping directly from limited data. Taken together, the literature highlights a persistent trade-off: high fidelity nonlinear models and advanced nonlinear allocators improve tracking under strong couplings, but they are often too computationally demanding for real time use, while linearized or fixed effectiveness formulations are effi-cient but lose accuracy as the effectiveness varies across the envelope. Data driven models can improve prediction, yet their limited transparency complicates validation and offers little insight into the underlying physics. These drawbacks motivate a middle ground in which data are used to learn an explicit, interpretable model that can be evaluated and differentiated efficiently and can be updated when the plant changes. Accordingly, this work pursues three tightly cou-pled objectives:  
+
+> •
+
+Modeling fidelity : the control effectiveness mapping must capture the nonlinear, state dependent aerody-namic effects and effector interactions that arise during aggressive maneuvering, so that the commanded virtual control is tracked accurately across a wide range of flight conditions.  
+
+> •
+
+Real time compatibility : the mapping must be compact enough to be evaluated and differentiated efficiently at each control update, without requiring finite difference perturbations or repeated evaluation of a full onboard aerodynamic model, so that the allocation solver re-mains feasible within the available computational bud-get. Fig. 2. Conceptual diagram of the proposed control allocation framework. The conventional linear onboard model relies on a constant effectiveness matrix that loses validity under strong nonlinear couplings, while the high fidelity nonlinear onboard model incurs a computational burden that limits real time use. Both are replaced by a sparse analytical model identified from flight data, which enables fast nonlinear optimization for control allocation with online parameter adaptation.  
+
+> •
+
+Model robustness : the control effectiveness mapping must adapt gracefully when the plant deviates from the conditions under which it was identified, including mass and inertia variations caused by fuel consumption or refueling, configuration changes, and partial or total loss of an effector, so that allocation accuracy and tracking performance are preserved without requiring a full reidentification. To satisfy the combined objectives of robustness, trans-ferability, and real time adaptability, this paper offers three specific contributions:  
+
+> •
+
+Using a constrained Sparse Identification of Nonlinear Dynamics (SINDy) approach, the control effectiveness mapping is learned offline from representative flight data, yielding a transparent, physics consistent model of control effectiveness mapping without relying on computationally heavy onboard models, linear approxi-mations, or black box neural networks.  
+
+> •
+
+These identified equations are subsequently embedded in nonlinear optimization frameworks, which exploits their accuracy to generate actuator commands that pre-cisely realize the virtual control demands received from the flight controller.  
+
+> •
+
+The same identification routine also runs online, con-tinuously monitoring any mismatch between predicted and measured dynamics and refreshing its parameters whenever deviations emerge, thereby preserving model accuracy throughout changing flight conditions. Closest work in the literature is the spline based nonlinear dynamic inversion controller of Tol et al. [19], which re-places polynomial onboard models with multivariate simplex splines defined in local barycentric coordinates. Both ap-proaches embed an explicit, differentiable, data driven model into the allocation loop to capture nonlinear control effective-ness. The key differences are that the spline representation is a general purpose piecewise approximator without direct physical meaning, constructed from a large dataset from known wind tunnel tables, whereas our identified model recovers a sparse, interpretable governing structure from time series trajectory data that can be obtained directly from flight experiments, making it more readily transferable across platforms and applications. Additionally, our frame-work supports online coefficient adaptation and extends the allocation to dynamic allocation formulation with explicit actuator dynamics propagation, neither of which is addressed in the spline formulation. The remainder of this paper is organized as follows. Section II formulates the control allocation problem, defines the actuator constraints, and introduces the baseline onboard and linear allocation models used for comparison. Section III presents the constrained SINDy identification framework, including the physics informed library construction and the offline training procedure. Section IV describes how the identified dynamics are embedded into nonlinear control allocation and introduces the adaptation mechanism for maintaining accuracy under changing conditions and failures. Section V reports simulation results on agile maneuvers, including Monte Carlo validation, computational timing, and failure case evaluations. Finally, Section VI concludes the paper and outlines directions for future work. II. P ROBLEM STATEMENT 
+
+In this section, we formulate the nonlinear control allo-cation problem for an overactuated system and describe the proposed workflow, which consists of learning an explicit control effectiveness mapping from offline data and using this mapping online to compute feasible actuator commands that realize the requested virtual control from the flight controller. The overall methodology is illustrated in Fig. 2. In the offline phase, representative maneuver data are collected from a high fidelity nonlinear aircraft model spanning a range of flight conditions, actuator deflections, and excitation levels to ensure sufficient richness in the state, input, and rate channels. Using these data, a structured candidate model set is constructed from measured states x, control inputs 
+
+u, state variables (e.g., V , α, β), and selected nonlinear interaction terms. A sparse regression procedure is then used to identify a parsimonious continuous time input to state model that is consistent with the observed dynamics. In the online phase, the learned explicit dynamics are used as the prediction mapping inside a nonlinear allocation problem. At each control update, the allocator receives the current state and scheduling variables and evaluates the model to predict the body rate response for a candidate actuator vector. The optimizer then iteratively adjusts the actuator commands to reduce the mismatch between the predicted response and the commanded body rate demand, while simultaneously penalizing actuator usage and variations from a reference or previous command to avoid unnecessary control activity. Hard bounds and rate limits are enforced directly through simple projections or constraint handling within the solver, ensuring that the returned command is feasible by construc-tion. A key advantage of using an explicit analytical model is that its sensitivities with respect to actuator inputs are available in analytical form. These analytical Jacobians are supplied to the nonlinear solver to compute reliable search directions, particularly in strong nonlinear regions. To validate the effectiveness of our methodology, we use the ADMIRE (Aero-Data Model in a Research Environment) simulation [20], a standard benchmark in the aircraft control allocation literature and the primary platform in [4]. AD-MIRE is a publicly available, nonlinear MATLAB/Simulink model of a generic small, single seat, single engine delta canard fighter aircraft, providing a high fidelity testbed with multiple redundant aerodynamic effectors and pronounced nonlinear flight regime behavior. The ADMIRE model com-prises a 12-state, six-degree-of-freedom airframe coupled with aerodynamic data tables, an engine model, and first order actuator and sensor dynamics, including deflection and rate limits as well as a representative computational                          
+
+> Fig. 3. ADMIRE aircraft model. The aerodynamic control surfaces are highlighted in color to indicate the effectors used in this study, including their symmetric pairs. TABLE I CONFIGURATION PARAMETERS OF THE ADMIRE AIRCRAFT .
+> Parameter Value Unit
+> Wing area, S45.00 m2
+> Wing span, b10.00 m
+> Mean wing chord, ¯c5.20 m
+> Mass, m9100 kg
+> Ix21000 kg m 2
+> Iy81000 kg m 2
+> Iz101000 kg m 2
+> Ixz 2500 kg m 2
+
+delay. The operating envelope extends to Mach 1.2 and 6 km altitude, with extended aerodynamic data enabling simulation in high angle of attack regimes. The aircraft is overactuated with seven independent aerodynamic effectors: right canard deflection (δrc ), left canard deflection (δlc ),right outboard elevon deflection (δroe ), right inboard elevon deflection (δrie ), left inboard elevon deflection (δlie ), left outboard elevon deflection (δloe ), and rudder deflection (δr ).This control redundancy is exploited by the allocator to satisfy actuator position and rate limits, accommodate sec-ondary objectives, and retain control authority under effector degradations or failures. An illustration of the ADMIRE aircraft body frame and the selected control surfaces is shown in Fig. 3, and the corresponding nominal configuration parameters used in this study are summarized in Table I. III. C ONTROL EFFECTIVENESS IDENTIFICATION 
+
+Reliable nonlinear control allocation requires an explicit model that captures how the controlled variables respond to actuator inputs across changing operating conditions. While high fidelity onboard models can provide this mapping, they are often too costly for real time optimization, and local linearization may not remain valid in strongly nonlinear regimes. This motivates a data driven identification step that learns a compact, interpretable set of equations directly from representative flight data and can be evaluated efficiently during online allocation. In this work, we adopt a sparse regression approach to infer continuous time dynamics from measured trajectories, yielding an explicit model structure that supports systematic incorporation of domain knowledge. Sparse Identification of Nonlinear Dynamics (SINDy) is a system identification framework that constructs an ex-plicit continuous time model directly from time resolved trajectories [13]. Given measurements of the state x(t)
+
+and input u(t), SINDy assumes that the state derivatives can be written as a sparse linear combination of candidate nonlinear features, and seeks a compact coefficient matrix Ξ
+
+whose nonzero entries identify the few terms that govern the observed evolution. To this end, SINDy evaluates a user defined library Θ(·) built from nonlinear basis func-tions of the measured signals (e.g., polynomial interactions, trigonometric terms, and other selected functions), and ap-plies sparse regression to fit these features to the measured time derivatives ˙x(t) (or calculated derivatives ˙x(tk) via numerical differentiation), retaining only the active terms required for accurate prediction. This produces a parsimo-nious, interpretable model that is straightforward to evaluate and differentiate, making it well suited for control allocation problem. We begin from the standard continuous time state space form, We consider a continuous time nonlinear system driven by measured control inputs, 
+
+˙x(t) = f x(t), u(t), x ∈ Rn, u ∈ Rm, (3) where x(t) is the n-dimensional state vector and u(t) is the m-dimensional actuator command. Given a set of time samples {tk}Nk=1 , we collect the measured trajectories into data matrices 
+
+X =
+
+
+
+x(t1)⊤
+
+...
+
+x(tN )⊤
+
+ ∈ RN ×n, (4) 
+
+U =
+
+
+
+u(t1)⊤
+
+...
+
+u(tN )⊤
+
+ ∈ RN ×m, (5) 
+
+˙X =
+
+
+
+˙x(t1)⊤
+
+...
+
+˙x(tN )⊤
+
+ ∈ RN ×n. (6) where ˙x(t) is obtained from measurements or numerical differentiation of x(t).SINDy represents the unknown nonlinear mapping using a library of candidate basis functions evaluated on the mea-sured data. Specifically, define a row vector of p candidate functions 
+
+θ x, u = θ1(x, u) θ2(x, u) · · · θp(x, u) ∈ R1×p,
+
+where each θi(·) is a chosen nonlinear feature. Evaluating this row at every time sample and stacking the results yields the library matrix 
+
+Θ(X, U) = 
+
+
+
+θ(x(t1), u(t1)) 
+
+...
+
+θ(x(tN ), u(tN )) 
+
+ ∈ RN ×p.
+
+The dynamics are then approximated as a linear combination of these candidate functions, 
+
+˙X ≈ Θ(X, U) Ξ,
+
+where Ξ ∈ Rp×n is the coefficient matrix. Each column of Ξ
+
+contains the coefficients for one state derivative, so sparsity in Ξ directly corresponds to selecting only a small subset of active library terms for each component of ˙x.Given the data matrices ˙X and Θ, identifying the gov-erning equations reduces to estimating the coefficient matrix 
+
+Ξ such that the library output ΘΞ matches the measured derivatives while retaining only a small number of active terms. This is achieved by solving a regularized regression problem that balances prediction accuracy against model complexity through a sparsity promoting penalty: 
+
+min 
+
+> Ξ∈Rp×n
+
+˙X − ΘΞ 2
+
++ λ ∥Ξ∥1, (7) where ˙X ∈ RN ×n contains the sampled state derivatives 
+
+˙x(tk), Θ ∈ RN ×p is the evaluated library matrix, and 
+
+λ ≥ 0 controls the tradeoff between data-fit and sparsity by penalizing the L1 norm of Ξ.A variety of sparse regression strategies have been pro-posed in the literature to solve this identification problem, including L1-based methods and thresholded least squares variants. While the L1-regularized formulation above pro-vides a direct sparsity mechanism, in practice we found that standard solvers such as LASSO (Least Absolute Shrinkage and Selection Operator) or STLSQ (Sequentially Thresh-olded Least Squares) are sensitive to the sparsity penalty: with small penalties they retain many small but nonzero coefficients, and with larger penalties they often discard dynamically important terms and degrade fit. For the high fidelity nonlinear aircraft model considered here, this tradeoff produced models that were either insufficiently sparse or in-sufficiently accurate, motivating a more robust identification procedure. To address this, we adopt sparse relaxed regularized re-gression (SR3) [21], which improves robustness by decou-pling the data fitting coefficients from the sparsity enforced coefficients through an auxiliary variable. In addition, SR3 admits explicit constraints on the coefficient matrix, allowing domain knowledge to be enforced directly during regres-sion (e.g., removing nonphysical cross terms or enforcing expected damping signs), rather than relying on sparsity alone to recover the correct structure. This results in models that are simultaneously parsimonious, better conditioned, and more consistent with known physics, which is critical when the identified dynamics are later embedded into nonlinear solvers. Specifically, SR3 solves 
+
+min 
+
+> Ξ, W
+
+12 ˙X − Θ Ξ 2 
+
+> F
+
++ κ
+
+2 Ξ − W 2 
+
+> F
+
++ λ ∥W ∥1, (8) where W ∈ Rp×n is a relaxed sparsity-promoting copy of Ξ,
+
+κ > 0 sets the strength of the relaxation, and λ > 0 controls sparsity [21]. All identification experiments in this work are imple-mented using the open source PySINDy toolbox [22], which provides a unified interface for constructing candidate libraries, estimating time derivatives, and solving sparse regression problems with multiple optimizers, including SR3 and constrained variants. We use PySINDy to (i) assemble the physics informed library, (ii) fit the coefficient matrix using the selected sparse regression solver and constraints, and (iii) export the identified continuous time model for integration into the control allocation routines. 
+
+A. Incorporating Domain Knowledge into the Library 
+
+When assembling the candidate function library for SINDy, domain knowledge is indispensable. A naive poly-nomial expansion grows rapidly with state and input dimen-sion, leading to large, poorly conditioned dictionaries that admit many spurious correlations and often yield non robust identified models. In our setting, the identified model is intended for control allocation, where the central object is the control effectiveness mapping that relates actuator deflections to generated forces and moments, and equivalently to the resulting angular accelerations. After extensive trials with generic polynomial candidate terms that failed to recover consistent and transferable models, we found that embedding the known structure of aircraft rotational dynamics into the library significantly improves recovery of the governing equations. A similar observation is reported in [23], where in-tegrating prior flight mechanics knowledge into the candidate library improves identification accuracy and generalization under limited data conditions. In particular, the compact formulation of Stevens and Lewis expresses the angular accelerations as an explicit combination of rigid body rate coupling terms and the total aerodynamic moments [24]: 
+
+˙p = ( C1r + C2p) q + C3L + C4N
+
+˙q = C5pr − C6(p2 − r2) + C7M (9) 
+
+˙r = ( C8p − C2r) q + C4L + C9N. 
+
+Here, L, M , and N denote the total body axis moments about the roll, pitch, and yaw axes, respectively, and in-clude both aerodynamic and propulsive contributions. The coefficients Ci depend only on the inertia terms and can be computed from (Ixx , I yy , I zz , I xz ) via 
+
+Γ = Ixx Izz − I2
+
+> xz
+
+C1 = (Iyy − Izz )Izz − I2
+
+> xz
+
+Γ C4 = Ixz 
+
+Γ
+
+C2 = (Ixx − Iyy + Izz )Ixz 
+
+Γ C5 = Izz − Ixx 
+
+Iyy 
+
+C3 = Izz 
+
+Γ C6 = Ixz 
+
+Iyy 
+
+(10) 
+
+C8 = Ixx (Ixx − Iyy ) + I2
+
+> xz
+
+Γ C7 = 1
+
+Iyy 
+
+C9 = Ixx 
+
+Γ
+
+These inertia based coefficients are used to normalize the candidate library terms (e.g., moment contributions to 
+
+˙p, ˙q, ˙r), such that the resulting features have comparable magnitudes. This normalization improves numerical condi-tioning of the sparse regression and optimization, making the identification problem easier to solve and reducing sen-sitivity to ill-scaled terms. The decomposition provides a principled template for the SINDy library: the quadratic coupling products (pq, pr, qr, p 2, r 2) are known to appear from rigid body dynamics, while the moments (L, M, N )
+
+aggregate aerodynamic and propulsive contributions. Conse-quently, instead of allowing arbitrary nonlinear combinations of (p, q, r ) and control deflections, we explicitly include the physically motivated candidate functions. Specifically, aerodynamic moments are modeled using dynamic pressure scaling, reference geometry, and control deflections: 
+
+L ≈ ¯qSb C ℓ(α, β, δ),M ≈ ¯qSc C m(α, β, δ), (11) 
+
+N ≈ ¯qSb C n(α, β, δ),
+
+¯q = 12 ρV 2.
+
+where δ collects the effector deflections. This motivates a cascaded, domain informed dictionary that separates known rigid body structure from unknown aerodynamic mappings. The candidate library is constructed as 
+
+Θ( x, δ) =  θ1(x, δ), θ 2(x, δ), . . . , θ p(x, δ)  ∈ R1×p,
+
+(12) where each θi is a physically motivated candidate function drawn from the following groups: Body rates pk, q k, r k (k = 1 , . . . , K )
+
+Rigid-body products C2 pq, C 1 pr, C 2 qr, . . . 
+
+Rate damping b 
+
+> 2V
+
+p, ¯c 
+
+> 2V
+
+q, . . . 
+
+Control effectiveness ¯qSb Ix δ1, ¯qS ¯cIy δ2, ¯qSb Iz δ3, . . . 
+
+Control couplings δ1δ2, δ 1δ3, δ 2δ3, . . . 
+
+Aerodynamic angles α, β, sin α, cos β, . . . 
+
+Dynamic pressure ¯q = 12 ρV 2
+
+In this way, SINDy is guided toward interpretable models that respect established physics: inertia driven coupling is embedded a priori through (C1, . . . , C 9) and the rigid body product terms in Θ, while the control effectiveness and aero-dynamic angle terms primarily capture the state dependent aerodynamic contributions contained in Cℓ, C m, C n. This structure reduces the search space, improves identifiability, and yields a coefficient matrix Ξ whose nonzero entries have direct physical meaning. 
+
+B. Data Collection 
+
+We instrumented the agile aircraft to execute a curated set of high excitation maneuvers designed to excite nonlinear effects. Simulations were run with dt = 0 .01 s and synchro-nized logging of the state vector 
+
+x(t) = p(t) q(t) r(t)⊤ , (13) together with the full input vector 
+
+u(t) = δrc δlc δroe δrie δlie δloe δr
+
+⊤ , (14) where both the commanded deflections ucmd (t) and the real-ized actuator deflections uact (t) are recorded to capture the effect of actuator dynamics, and variables (V (t), α (t), β (t)) 
+
+representing airspeed, angle of attack, and sideslip angle respectively. The maneuver set was repeated across multiple flight conditions spanning several altitudes and Mach num-bers to capture variations in dynamic pressure and control effectiveness. In total, 200 trajectories of 10 s duration were generated. Half of the dataset was used for system identi-fication (training), and the remaining half was held out for evaluation, both in open loop prediction tests and in closed loop control tasks to assess performance.  
+
+> Fig. 4. A representative trajectory from the dataset
+
+Additionally, the maneuvers are designed to both excite individual control surface deflections and combined surface deflections, enabling identification of each surface’s indi-vidual contribution as well as nonlinear effects. Example trajectory from these maneuvers are shown in Fig 4. 
+
+C. Identification Results 
+
+This section reports the system identification results for the aircraft’s rotational dynamics using the test dataset. The identified model is learned offline from the training trajecto-ries using constrained SR3, with physics informed equality and inequality constraints and an L1 thresholding rule. To improve robustness of term selection and reduce sensitivity to individual maneuvers, we employ an ensemble strategy with 50 independently identified models obtained. The final coeffi-cient matrix is obtained by aggregating the ensemble, using the mean coefficient values. In our experiments, disabling library ensembling led to unstable sparsity patterns and inconsistent coefficients across maneuvers, which translated to noticeably poorer generalization on the test set. To evaluate whether the learned dynamics faithfully re-produce the plant behavior, we perform an open loop valida-tion over the 100 test trajectories with randomized initial conditions and distinct control input sequences. For each trial, the identified continuous time model is initialized at the measured initial state and integrated forward using the recorded test inputs with a fourth order Runge Kutta method, producing predicted body rate trajectories. The predicted roll, pitch, and yaw rates are then compared directly against the corresponding test trajectories to quantify generalization across operating conditions, including variations in altitude, airspeed, and aerodynamic angles.  
+
+> Fig. 5. Body rate prediction on test trajectories. Solid lines show the measured/test data for roll, pitch, and yaw rates, while dashed lines show the rates predicted by the SINDy identified dynamics integrated forward from the same initial condition.
+
+Figure 5 shows representative examples from the Monte Carlo test set. Even under highly nonlinear, high excitation agile maneuvers, the learned dynamics reproduce the mea-sured body rate trajectories with close agreement in open loop. This is particularly relevant for onboard use: despite its compact form and low computational cost, the identified model captures the dominant nonlinear effects of the true plant dynamics, making it suitable as a real time prediction and allocation model. Table II quantifies the open loop prediction accuracy over the 100 Monte Carlo test maneuvers for low, medium, and high sparsity settings, reporting the RMSE for each axes 
+
+(p, q, r ) together with the mean RMSE across axes, the num-ber of active terms, and the corresponding evaluation time. As expected, reducing sparsity (i.e., allowing more active terms) initially improves predictive accuracy by enabling the model to represent additional nonlinear terms present in the model. However, beyond a certain complexity, the identified models become less consistent across maneuvers and more sensitive to errors, which manifests as unstable coefficient estimates and reduced reliability despite the in-creased term count. Consequently, selecting the final model requires balancing accuracy against sparsity and numerical robustness. Based on this tradeoff, we proceed with the medium sparsity model for the remainder of the paper, as it provides sufficiently accurate open loop prediction while retaining a compact structure that is favorable for nonlinear allocation. TABLE II OPEN LOOP MODEL PREDICTION ERROR OVER 100 M ONTE CARLO TEST MANEUVERS FOR DIFFERENT SPARSITY LEVELS .                               
+
+> Sparsity Level # Terms Comp. Time (s) p-RMSE q-RMSE r-RMSE RMSE
+> High (λ= 0 .1) 20 35 .58 0.0560 0.0148 0.0026 0.0077
+> Medium (λ= 10 −3)38 75 .27 0.0017 0.0293 0.0309 0.0009
+> Low (λ= 10 −5)42 140 .17 0.0096 0.0149 0.0072 0.1060
+> Fig. 6. Ensemble coefficients over 50 different identified models. For each library term, the dot denotes the ensemble mean coefficient, and the error bars indicate the corresponding standard deviation. The final model used in this work is formed by the ensemble mean coefficients.
+
+1) Interpretability and Physical Consistency of Identified Coefficients: The proposed identification framework yields an explicit, sparse, and physically interpretable model. Be-yond open loop trajectory predictions, interpretability is assessed by directly comparing the inertia driven coefficients implied by the identified dynamics with the known rigid body coefficients computed from the aircraft inertia tensor. Since the compact rotational equations parameterize angular accel-erations through (C1, . . . , C 9), agreement between identified and physical values indicates that SINDy recovers not only an accurate predictor but also the correct governing structure.                             
+
+> TABLE III COMPARISON OF KNOWN AND IDENTIFIED COEFFICIENTS .
+> Eq. Term Known Identified Rel. Err. (%)
+> ˙pqr −0.9582 −0.9486 1.0000
+> pq 0.0485 0.0492 1.4200 ˙qpr 0.9877 0.9778 1.0000
+> p2−0.0309 −0.0306 0.0097
+> r20.0309 0.0306 0.0097 ˙rpq −0.5929 −0.5870 0.0099
+> qr 0.0485 −0.0479 1.9870
+
+Table III reports the known coefficients, the identified coefficients, and their relative errors, demonstrating how closely the learned model aligns with first principles rigid body dynamics. IV. N ONLINEAR CONTROL ALLOCATION WITH 
+
+IDENTIFIED CONTROL EFFECTIVENESS 
+
+An explicit analytical model of the input to output dynam-ics provides substantial leverage for control allocation: the identified mapping can be locally linearized to recover a state dependent effectiveness matrix, used in dynamic inversion to compute actuator commands directly, or embedded in a nonlinear optimization framework to account for constraints and secondary objectives. In the following, we present two complementary allocation strategies that exploit this analyt-ical structure. 
+
+A. Gradient Based Nonlinear Control Allocation 
+
+Since the identified control effectiveness mapping is ex-plicit and analytical, its Jacobians with respect to actuator in-puts are available in closed form and can be supplied directly to an iterative nonlinear solver to accelerate convergence. At each control update, the flight computer provides this commanded angular acceleration vector, representing the desired rotational response that the allocator must realize through the available effectors. 
+
+˙xdes ∈ R3, (15) which defines the desired rotational response for the alloca-tor. For a candidate actuator command u ∈ Rm, the identified analytical control effectiveness mapping predicts 
+
+˙xpred = Θ(x, u) Ξ, (16) Control allocation is posed as minimizing the mismatch between predicted and commanded accelerations with aregularization on actuator usage: 
+
+min  
+
+> u
+
+J(u) = ˙xpred − ˙xdes W + ∥u∥R (17) Minimizing the cost is performed iteratively with gradient descent, where the search direction is computed from the analytical Jacobian of the mapping with respect to the actuator commands. Since the mapping is explicit, the Jaco-bian is obtained analytically by differentiating the candidate functions in Θ with respect to u and multiplying by the identified coefficients Ξ, which enables a very fast evaluation of the required derivative. The resulting gradient is then used to update u.
+
+e(u) = ˙ xpred − ˙xdes (18) 
+
+Ju(x, u) = ∂ ˙xpred 
+
+∂u = ∂Θ(x, u)
+
+∂u Ξ, (19) 
+
+∇uJ(u) = J⊤ 
+
+> u
+
+W e(u) + R u, (20) 
+
+u(k+1) = u(k)η ∇uJ
+
+
+
+u(k)
+
+(21) In these equations, e(u) is the tracking error between the predicted acceleration and the commanded acceleration for the current candidate actuator vector u. The matrix Ju(x, u)
+
+is the Jacobian of the predicted acceleration with respect to the actuators, obtained by differentiating the candidate functions in Θ with respect to u and multiplying by the identified coefficients Ξ. The gradient ∇uJ(u) combines a weighted tracking term J⊤ 
+
+> u
+
+W e and a control effort term R u.Finally, u(k+1) is computed from u(k) by taking a step in the negative gradient direction, where η > 0 is the step size that determines how aggressively the actuators are updated per iteration, and k indexes the inner solver iterations at a single control time step. Algorithm 1 summarizes the per step nonlinear control allocation routine. At each control update, the flight computer provides the commanded acceleration ˙xdes ,t and the allocator starts from a nominal actuator vector unom , chosen as the previous applied command (or a trim value), which serves as a warm start for the iterative solve. After each update, the actuator vector is clipped to remain within physical bounds. The final iterate is returned as the allocated command ut to be applied by the actuators. 
+
+B. Failure Scenarios and Adaptability 
+
+Algorithm 2 describes the online coefficient adaptation procedure that maintains model accuracy when the plant dynamics change during flight. The adaptation operates on a sliding window of length H, continuously comparing the predicted angular accelerations from the identified model against the corresponding sensor measurements. At each time 
+
+Algorithm 1 Nonlinear Control Allocation via Gradient Descent 
+
+Require: Desired ˙xdes ,t ∈ Rn
+
+Require: Tracking weight W ⪰ 0, effort weight R ≻ 0
+
+Require: Actuator bounds umin , umax ∈ Rm 
+
+> 1:
+
+Initialization k ← 0; u(0) ← uact ▷ Warm start  
+
+> 2:
+
+˙x(0) pred ← Θ xt, u(0)  Ξ ▷ Evaluate with identified dynamics  
+
+> 3:
+
+e(0) ← ˙x(0) pred − ˙xdes ,t ▷ Error  
+
+> 4:
+
+while e(k) 
+
+> 2
+
+> ε do ▷ Iterate until error is within tolerance  
+
+> 5:
+
+J(k) ← ∂ Θ xt, u(k)
+
+∂ u Ξ ∈ Rn×m ▷ Jacobian  
+
+> 6:
+
+g(k) ←  J(k)⊤ W e(k) + R u(k) ▷ Regularization  
+
+> 7:
+
+˜u(k+1) ← u(k) − η g(k) ▷ Gradient descent step  
+
+> 8:
+
+u(k+1) ← clip  ˜u(k+1) , umin , umax 
+
+ ▷ Project onto actuator bounds  
+
+> 9:
+
+˙x(k+1) pred ← Θ xt, u(k+1)  Ξ 
+
+> 10:
+
+e(k+1) ← ˙x(k+1) pred − ˙xdes ,t  
+
+> 11:
+
+k ← k + 1  
+
+> 12:
+
+end while return ucmd ,t ← u(k), ˙xpred ,t ← ˙x(k)pred ▷ Actu-ator command and predicted model output for residual monitoring step, the predicted and measured derivatives are appended to their respective buffers, and the oldest entries are discarded. The prediction error matrix E is then formed over the window, and a scalar mismatch metric eH is computed as the norm of E.The adaptation is activation gated: the coefficient matrix is updated only when the mismatch metric exceeds a predefined threshold εact . This design avoids unnecessary parameter drift during nominal operation, where the offline identi-fied model already provides sufficient accuracy. When the threshold is exceeded, indicating a meaningful discrepancy between the model and the true plant, a gradient step is computed to correct the coefficients. Because the identified model ˙X = Θ(x, u) Ξ is linear in the coefficient matrix Ξ,the gradient of the prediction error with respect to Ξ reduces to a direct product of the error matrix and the library eval-uations, G = 1 
+
+> H
+
+E Θ ⊤ 
+
+> H
+
+, without requiring iterative solver. The coefficient matrix is then corrected in the direction that reduces the observed mismatch. 
+
+C. Dynamic control allocation via MPC with identified dy-namics 
+
+Conventional allocators do not account for actuator dy-namics, decoupling the allocation decision from the physical response of the actuators [25]. In highly agile aircraft, this separation can be limiting: actuator bandwidth and rate limits directly shape the achievable response, and the allocator may generate commands that are feasible in a static sense Algorithm 2 Online Coefficient Adaptation 
+
+Require: Nominal coefficient matrix Ξ0 
+
+> 1:
+
+Initialization Ξ ← Ξ0; ˙Xpred  
+
+> H
+
+∈ Rn×H ; ˙Xmeas  
+
+> H
+
+∈
+
+Rn×H ▷ Offline identified coefficients and buffers  
+
+> 2:
+
+for each control cycle k do  
+
+> 3:
+
+˙xpred ,k ▷ predicted model output from allocation  
+
+> 4:
+
+˙xmeas  
+
+> k
+
+▷ from sensors  
+
+> 5:
+
+Append ˙xpred ,k to ˙Xpred  
+
+> H
+
+, drop oldest column  
+
+> 6:
+
+Append ˙xmeas  
+
+> k
+
+to ˙Xmeas  
+
+> H
+
+, drop oldest column  
+
+> 7:
+
+E ← ˙Xpred  
+
+> H
+
+− ˙Xmeas  
+
+> H
+
+▷ Prediction error over the window  
+
+> 8:
+
+eH ← 1
+
+H ∥E∥ ▷ Mean mismatch metric  
+
+> 9:
+
+if eH > ε threshold then ▷ trigger parameter update  
+
+> 10:
+
+G ← 1
+
+H E Θ ⊤ ▷ Gradient  
+
+> 11:
+
+Ξ ← Ξ − η G ▷ Update coefficients  
+
+> 12:
+
+end if  
+
+> 13:
+
+end for  
+
+> 14:
+
+return Ξ ▷ adapted coefficient to Algorithm 1 but produce delayed or oscillatory realized deflections once actuator dynamics are applied. Dynamic control allocation addresses these issues by solving for actuator commands over a short horizon while explicitly propagating actuator states and constraints. This formulation tends to produce smoother, more stable control inputs because it penalizes aggressive command sequences, anticipates actuator lag, and distributes the control effort in a way that remains feasible not only instantaneously but throughout the predicted transient. A closely related dynamic control allocation formulation that explicitly incorporates actuator dynamics can be found in [26], where MPC is used to optimize actuator commands over a prediction horizon while accounting for nonnegligible actuator dynamics and hard constraints. In this work, the predictive model used within the dynamic allocation problem is obtained from the identified analytical control effectiveness mapping. The mapping is evaluated online to predict the body rate accelerations for candidate actuator trajectories, and its analytical Jacobians are supplied to the nonlinear solver to accelerate convergence and improve numerical robustness. Actuator deflections are treated as dynamic states, and the allocator optimizes a sequence of commands to minimize the mismatch between predicted and commanded accelerations while regularizing control usage. In the dynamic allocation formulation, the MPC computes a sequence of commanded deflections ucmd ,k ∈ R7 while explicitly propagating the realized deflections uact ,k ∈ R7
+
+through a first order actuator model. This distinction is central to the formulation: the identified analytical control effectiveness mapping is evaluated using the realized deflec-tions, not the commanded ones, so that the predicted body rate response reflects the physical surface positions that the actuators can actually achieve within their bandwidth and rate limits. At each sampling instant, the flight computer provides the desired angular acceleration ˙xdes ∈ R3, and MPC optimizes the finite horizon command sequence ucmd =
+
+{ucmd ,k }N −1 
+
+> k=0
+
+to track this commanded acceleration while si-multaneously regulating control effort and penalizing abrupt command changes that would stress actuator bandwidth: 
+
+min 
+
+> ucmd
+
+J = 
+
+> N−1
+
+X
+
+> k=0
+
+h
+
+( ˙ xpred ,k − ˙xdes ,k )⊤Q ( ˙ xpred ,k − ˙xdes ,k )+ ( ucmd ,k − unom cmd ,k )⊤R (ucmd ,k − unom cmd ,k )+ (∆ ucmd ,k )⊤S (∆ ucmd ,k )
+
+i
+
+(22) s.t. ˙xpred ,k = Θ(xk, uact ,k ) Ξ, (23) 
+
+˙uact = 1
+
+τ
+
+ ucmd − uact 
+
+, (24) 
+
+umin ≤ ucmd ,k ≤ umax , (25) 
+
+∆umin ≤ ∆ucmd ,k ≤ ∆umax . (26) where ˙xpred ,k = Θ(xk, uact ,k ) Ξ is the body rate accel-eration predicted by the identified mapping evaluated at the realized deflections, ˙xdes ,k is the commanded acceleration from the flight computer held constant over the horizon, Q ⪰
+
+0 weights the acceleration tracking error, R ≻ 0 penalizes deviation of the commanded deflections from a nominal reference unom cmd , and S ⪰ 0 penalizes the slew ∆ucmd ,k =
+
+ucmd ,k −ucmd ,k −1 between successive commands. Together, the three weighting matrices allow the designer to shape how the allocator distributes effort across effectors and over time. The constraints propagate the augmented dynamics using the identified analytical mapping together with the first order actuator model. Equation (24) propagates the realized deflections through first order actuator dynamics, modeled as where τ denotes the actuator time constant of each physical control surface. Together, constraints (25) and (26) enforce hard position and slew bounds on the commanded deflections, ensuring that the returned command sequence respects the physical actuator limits by construction. V. R ESULTS 
+
+The results section is structured to evaluate the proposed allocator in the way it will be used in practice: as a closed loop module that must generate feasible actuator commands over extended, highly dynamic maneuvers. Rather than re-porting only instantaneous, one step allocation errors, we assess full trajectory behavior because small modeling or allocation mismatches in nonlinear systems can accumulate over time and alter the subsequent state evolution. This is particularly important for data driven models, whose performance is inherently tied to the distribution of the training data. A learned control effectiveness mapping is optimized to match measured derivatives on the training set and is typically validated on a test set drawn from a similar distribution; however, in closed loop flight, the allocator actively shapes the trajectory, and small errors in the mapping can steer the system toward previously unseen regions of the state and input space. Once the trajectory drifts away from the known distributions, prediction errors can increase sharply and compound through integration, which may lead to different behavior than indicated by pointwise error metrics. Consequently, the primary goal of this section is to demonstrate that the proposed method maintains accu-rate tracking and stable behavior over complete aggressive maneuvers, thereby validating both the generalization of the identified dynamics beyond the training distribution and the effectiveness of the nonlinear allocation routine under closed loop operation. To place the proposed approach in the context of control allocation, we compare against both linear and nonlinear onboard models, which are widely used baselines in the literature and span different fidelity complexity tradeoffs. Linear onboard models remain the dominant baseline in aerospace applications due to their simplicity and speed, but their validity is tied to a local operating point and degrades under strong nonlinearities. High fidelity nonlinear onboard models capture these effects more accurately, yet they substantially increase computational cost. These two baselines therefore bracket the central tradeoff targeted by the proposed method: achieving near nonlinear model tracking performance with reduced model complexity and evaluation cost. 
+
+A. Baseline Control Allocation Methodologies 
+
+To benchmark our methodology against established prac-tice, we follow the reference described by Durham [4]. In this setup, the allocator receives the commanded angular ac-celeration and computes actuator commands that realize the demanded response. Two baseline variants are considered, differing in the fidelity of the onboard model used. 
+
+1) Linear onboard model version.: The model is lin-earized about a nominal flight condition and trim effectors 
+
+unom , yielding the matrices A and B from the ADMIRE linearization tool [20]. The commanded actuator vector is computed as 
+
+ucmd = unom + B−1( ˙ xdes − ˙xnom ) (27) 
+
+˙xnom = Ax + Bu nom (28) 
+
+2) Nonlinear onboard model version.: The nonlinear on-board model replaces the linearized prediction ˙xnom with nonlinear dynamics including aerodynamic data. The com-mand law retains the same structure, 
+
+ucmd = unom + B−1( ˙ xdes − ˙xnom ) (29) 
+
+˙xnom = fadmire (x, u nom ) (30) where fadmire (·) denotes the nonlinear ADMIRE dynamics. When the nominal point is chosen as the current effector deflections, the nominal acceleration is simply the measured acceleration, 
+
+˙xnom = ˙ x = f (x, u ) (31) For the nonlinear onboard model, the effectiveness matrix 
+
+B is obtained by finite differences method, perturbing one effector about its nominal value and recording the change in the acceleration outputs to form the corresponding col-umn [4]. 
+
+B. Control allocation with gradient descent 
+
+All compared allocation schemes exhibit similar behavior in near trim, level flight conditions, where local linear effectiveness assumptions remain adequate and each method produces feasible actuator commands that follow the com-manded response. In contrast, under highly agile maneuvers nonlinear effects become dominant and the linear onboard model allocator is no longer able to realize the flight com-puter inputs. To highlight this, the maneuver in Fig. 7 applies simultaneous roll, pitch, and yaw demands that drive large, coordinated deflections across the effectors. Under these conditions, the linear baseline shows pronounced tracking degradation and ultimately fails to follow the commanded response, while both the nonlinear onboard model baseline and the proposed method track the commands smoothly throughout the maneuver. Consistent with the tracking degra-dation in Fig. 7, the corresponding actuator commands in Fig. 8 show that the linear onboard model baseline drives the effectors into large, oscillatory, and nonsmooth deflections as it attempts to compensate for the modeling mismatch. In contrast, both the nonlinear onboard model baseline and the proposed methodology produce smooth, coordinated deflec-tion histories over the maneuver, indicating a more consistent realization of the commanded accelerations. The proposed method achieves comparable closed loop behavior with nonlinear onboard model. This is confirmed quantitatively in Table IV, which reports the tracking RMSE over 100 Monte Carlo trials: the proposed method consis-tently outperforms the linear baseline across all axes and approaches the nonlinear onboard model accuracy, indicating that the identified model captures the control effectiveness variations needed for allocation. 
+
+C. Actuator failure adaptability 
+
+To evaluate adaptability under off nominal conditions, we consider a representative failure scenario in which one aero-dynamic effector becomes stuck at a fixed positive deflection. Specifically, the rudder is stuck at a constant offset while the remaining surfaces stay operational, introducing a persistent unmodeled change in control authority that requires the allocator to redistribute the demanded moments across the healthy effectors. As shown in Fig. 9, the actuator failure is introduced at 
+
+t = 1 .5 s . Following the failure, the predicted accelerations from the identified mapping gradually diverge from the measured response, and once the prediction residual exceeds the adaptation threshold the method switches to its adaptation mode and updates the model parameters online. After a short transient, the tracking performance recovers, indicating that the updated mapping enables the allocator to re-distribute the control demand across the remaining effectors. This re-configuration is also evident in the corresponding deflection histories in Fig. 10, where the allocator increases the usage Fig. 7. Tracking performance for a representative agile maneuver. Blue: linear onboard model baseline with weighted pseudo inverse allocation. Red: nonlinear onboard model baseline with weighted pseudo inverse allocation. Green: proposed methodology using the identified analytical control effectiveness mapping with gradient descent allocation. 
+
+Fig. 8. Control surface deflections during the representative maneuver in Fig. 7. The linear onboard-model baseline generates large, oscillatory, and nonsmooth deflections as tracking degrades, whereas the nonlinear onboard model and the proposed methodology produce smooth and coordinated deflection histories. TABLE IV TRACKING ERROR COMPARISON OVER N = 100 MONTE CARLO TRIALS 
+
+Axis Linear OBM + WPI Nonlinear OBM + WPI Our Methodology 
+
+RMSE ± σ [rad /s] RMSE ± σ [rad /s] RMSE ± σ [rad /s] 
+
+p 0.1338 ± 0.1293 0.0403 ± 0.0384 0.0824 ± 0.0782 
+
+q 0.1091 ± 0.1025 0.0057 ± 0.0028 0.0135 ± 0.0077 
+
+r 0.1220 ± 0.1220 0.0187 ± 0.0186 0.0356 ± 0.0354 
+
+of the healthy surfaces to compensate for the stuck rudder and maintain the commanded response. 
+
+D. Actuator Aware Dynamic Control Allocation 
+
+The previous subsection demonstrated that the identified analytical mapping achieves tracking accuracy comparable to the nonlinear onboard model when used inside a static, single step allocator. However, that formulation treats actuator com-mands as instantaneous decisions and does not account for the physical bandwidth and rate limits of the control surfaces. In practice, actuators are governed by actuator dynamics that introduce lag between the commanded and realized Fig. 9. Tracking performance for a representative failure scenario. Blue: linear onboard model baseline with weighted pseudo inverse allocation. Red: nonlinear onboard model baseline with weighted pseudo inverse allocation. Green: proposed methodology using the identified analytical control effectiveness mapping with online adaptation. The green shaded region indicates the interval during which Algorithm 2 is actively updating the coefficient matrix in response to the detected mismatch. The results show that the proposed methodology recovers accurate reference tracking after a short transient, achieving performance comparable to the nonlinear onboard model, while the linear baseline exhibits degraded tracking as maneuver aggressiveness increases. 
+
+Fig. 10. Control surface deflections in the actuator failure scenario. The failure is at t = 1 .5 s by fixing the rudder at a constant positive deflection. After the prediction residual triggers the online adaptability mode, the proposed methodology redistributes the required control action across the remaining healthy effectors, which is reflected by increased and reshaped deflection commands and coincides with the tracking recovery in Fig. 9. 
+
+deflections; ignoring these effects can produce commands that are feasible in a static sense but result in delayed or oscillatory surface motion once actuator dynamics are applied. This subsection embeds the same identified mapping into a model predictive control formulation that explicitly propagates actuator states over a finite prediction horizon. To motivate this formulation, we note that conventional static allocation methods perform well when actuators are sufficiently fast relative to the control update rate. In the nominal ADMIRE configuration, all seven effectors share the same time constant τ nom , so the realized deflections closely follow the commanded values within a single control cycle and the static assumption is justified. To expose the effect of nonnegligible actuator dynamics on allocation performance, we introduce a degraded configuration τ slow in which the four surfaces time constants are increased to 0.50 s while the canards and rudder retain their nominal bandwidth as in Table V. 
+
+TABLE V ACTUATOR TIME CONSTANTS FOR THE NOMINAL AND DEGRADED CONFIGURATIONS .Configuration δrc δlc δroe δrie δlie δloe δr
+
+τ nom (s) 0.05 0.05 0.05 0.05 0.05 0.05 0.05 
+
+τ slow (s) 0.05 0.05 0.50 0.50 0.50 0.50 0.05 
+
+In terms of tracking accuracy, the proposed methodology achieves performance comparable to the full nonlinear on-board model baseline, as shown in Fig. 11, confirming that the identified analytical mapping retains sufficient fidelity TABLE VI DYNAMIC ALLOCATION COMPARISON : N ONLINEAR OBM WITH WEIGHTED PSEUDO INVERSE AND OUR METHODOLOGY .Tracking error Nonlinear OBM + WPI Our Methodology (Dynamic) RMSE ˙p (rad /s2) 0.1366 0.1396 
+
+RMSE ˙q (rad /s2) 0.1737 0.1757 
+
+RMSE ˙r (rad /s2) 0.0401 0.0402 
+
+RMSE mean 0.1168 0.1185 
+
+Nonlinear OBM + WPI Our Methodology (Dynamic) Effector Defl. ( rad ) Slew ( rad /s) Ucmd − Usensor (rad ) Defl. ( rad ) Slew ( rad /s) Ucmd − Usensor (rad )
+
+δrc 0.017 0.142 0.006 0.090 0.318 0.012 
+
+δlc 0.018 0.163 0.006 0.037 0.063 0.002 
+
+δroe 0.027 0.185 0.014 0.016 0.039 0.003 
+
+δrie 0.033 0.238 0.016 0.020 0.334 0.007 
+
+δlie 0.029 0.155 0.015 0.020 0.115 0.004 
+
+δloe 0.025 0.187 0.014 0.023 0.323 0.007 
+
+δr 0.007 0.026 0.001 0.011 0.048 0.002 
+
+Fig. 11. Tracking performance for a representative maneuver using dynamic allocation. Red: nonlinear onboard model baseline with weighted pseudo-inverse allocation. Green: proposed methodology using the identified analytical control effectiveness mapping embedded in the dynamic formulation. 
+
+Fig. 12. Control surface deflection histories for the representative maneuver in Fig. 11. Despite achieving comparable tracking to the baseline, the dynamic formulation produces smoother and more coordinated deflection commands across all effectors. This improvement results from the explicit actuator dynamics model. to support dynamic allocation over the prediction horizon. The deflection histories in Fig. 12 confirm that the static allocation baseline produces visibly oscillatory deflection commands on the slow elevon channels ( δroe , δrie , δlie ,
+
+δloe ), as the allocator repeatedly demands deflections cannot be realized. This is reflected quantitatively in Table VI: while both methods achieve comparable tracking RMSE across all body rate axes, the dynamic formulation reduces the commanded to realized deflection gap ( Ucmd to Uact )compared to the static baseline, confirming that the optimizer distributes control effort in a way that respects the physical actuators. 
+
+E. Execution Time Comparison 
+
+Table VII summarizes the computational cost of the pro-posed methodology and the baseline implementations. For all onboard model based methods, the total computation time is decomposed into the model evaluation time and the allocation solver time, since both contributions are executed sequentially at each control update. The nonlinear onboard model evaluation cost is common across all nonlinear allo-cation methods and is therefore reported once. The results in Table VII show that the proposed method-ology achieves the lowest total execution time across all compared methods, including the linear onboard model baseline. This is primarily because the identified dynamics and their analytical Jacobians are evaluated directly within the allocation solver, eliminating the separate model evalu-ation step and the need for finite difference perturbations. Among the nonlinear onboard model based methods, execu-tion times vary considerably depending on the solver, with computationally demanding approaches such as linear pro-gramming incurring substantially higher costs than simpler pseudo inverse variants. These measurements confirm that the proposed approach delivers near nonlinear onboard model tracking accuracy while achieving the low computational cost across all evaluated methods. VI. C ONCLUSION 
+
+This paper presented an integrated methodology for non-linear control allocation in overactuated aerospace systems, combining physics informed sparse identification of the con-trol effectiveness mapping with nonlinear allocation solvers that exploit the resulting analytical Jacobians for fast, real time computation and an online adaptation mechanism for graceful reconfiguration under changing flight conditions. The identification step employed constrained SINDy with SR3 regression, embedding the known rigid body rotational structure directly into the candidate library to narrow the search space relative to generic polynomial expansions. This domain informed formulation, combined with an ensem-ble strategy over independently identified models, yielded a parsimonious, physically consistent analytical model of the control effectiveness mapping for an agile aircraft. The identified model was then embedded into two complementary allocation solvers: a gradient based formulation that exploits the closed form Jacobian of the mapping for fast projected gradient updates, and a nonlinear MPC formulation that ad-ditionally propagates actuator dynamics over a finite horizon to anticipate bandwidth limitations and penalize command slew. Monte Carlo evaluation confirmed tracking accuracy com-parable to the nonlinear onboard model baseline at a frac-tion of the computational cost, while the online adaptation mechanism recovered tracking after an actuator failure by redistributing effort across healthy effectors. The MPC vari-ant eliminated the oscillatory deflections observed with static allocation under reduced actuator bandwidths. Several directions warrant further investigation. The present study evaluated a single canonical failure mode, namely a surface stuck at a fixed deflection, and future work should assess the adaptation mechanism under a broader set of failures including partial effectiveness loss. Stability guarantees for the closed loop system under the online co-efficient updates have not been established. For the gradient based allocation formulation, a rigorous closed-loop stability analysi remains an open problem. For the dynamic allocation formulation, the tuning of the parameters presents a signifi-cant practical challenge. Although, embedding the identified explicit analytical model within the MPC prediction step reduces computational cost, the overall solver time remains substantially higher than the baselines. The robustness of the identification and allocation framework under realistic measurement noise levels also warrants dedicated investi-gation, as sensor noise can corrupt the derivative estimates used both in the offline identification step and in the online adaptation mechanism, potentially degrading model accuracy and adaptation reliability in practical deployments. Finally, most existing control allocation methods focus exclusively on solving the allocation problem, distributing a given demand across redundant effectors. Because the proposed method-ology provides an explicit, differentiable nonlinear model of the full control effectiveness landscape, it opens the possibility of not only solving the allocation but actively exploiting the nonlinear dynamics, for example by steering actuator combinations toward regions of the input space where effector couplings amplify the achievable moment, an opportunity that is inherently invisible to linear allocation formulations. APPENDIX Appendixes should appear before the acknowledgment. ACKNOWLEDGMENT This work was funded by the Deutsche Forschungsge-meinschaft (DFG, German Research Foundation) - Project ID 498601949 - TRR 364 SynTrac REFERENCES [1] S. Yin, B. Xiao, S. X. Ding, and D. Zhou, “A review on recent development of spacecraft attitude fault tolerant control system,” IEEE Transactions on Industrial Electronics , vol. 63, no. 5, pp. 3311–3320, 2016. [2] T. I. Fossen and T. A. Johansen, “A survey of control allocation meth-ods for ships and underwater vehicles,” in 2006 14th Mediterranean Conference on Control and Automation , 2006, pp. 1–6. TABLE VII EXECUTION TIME COMPARISON OF CONTROL ALLOCATION APPROACHES .
+
+Method Model Eval. (s) Solver (s) Total (s) 
+
+Our Methodology (with gradient descent) – – 0.161 
+
+Nonlinear OBM + Control Allocation 
+
+Ganged into 3 pseudo effectors 0.525 0.058 0.583 
+
+Weighted Pseudo Inverse 0.525 0.069 0.594 
+
+Direct Allocation 0.525 1.781 2.306 
+
+Cascading Generalized Inverse 0.525 0.125 0.650 
+
+Linear Programming (dual branch, 1-norm) 0.525 5.780 6.305 
+
+Linear OBM + Control Allocation 
+
+Weighted Pseudo 1Inverse 0.150 0.045 0.195 
+
+[3] Y. Yang and Z. Gao, “A new method for control allocation of aircraft flight control system,” IEEE Transactions on Automatic Control ,vol. 65, no. 4, pp. 1413–1428, 2019. [4] W. Durham, K. A. Bordignon, and R. Beck, Aircraft control allocation .John Wiley & Sons, 2017. [5] T. A. Johansen and T. I. Fossen, “Control allocation—a survey,” 
+
+Automatica , vol. 49, no. 5, pp. 1087–1103, 2013. [6] M. W. Oppenheimer, D. B. Doman, and M. A. Bolender, “Control allocation for over-actuated systems,” in 2006 14th Mediterranean Conference on Control and Automation . IEEE, 2006, pp. 1–6. [7] J. M. Buffington and D. F. Enns, “Lyapunov stability analysis of daisy chain control allocation,” Journal of Guidance, Control, and Dynamics , vol. 19, no. 6, pp. 1226–1230, 1996. [8] J. S. Soikkeli, D. Matko, and T. Koopman, “Cascaded nonlinear dy-namic inversion applied to a fixed-wing distributed electric propulsion aircraft,” in AIAA AVIATION 2023 Forum , 2023, p. 4048. [9] J. Kang and K. Choi, “Development of an artificial neural network control allocation algorithm for small tailless aircraft based on dy-namic allocation method,” International Journal of Aeronautical and Space Sciences , vol. 23, no. 2, pp. 363–378, 2022. [10] S. P. Madruga, A. H. Tavares, S. O. Luiz, T. P. do Nascimento, and A. M. N. Lima, “Aerodynamic effects compensation on multi-rotor uavs based on a neural network control allocation approach,” 
+
+IEEE/CAA Journal of Automatica Sinica , vol. 9, no. 2, pp. 295–312, 2021. [11] M. Chen, “Constrained control allocation for overactuated aircraft using a neurodynamic model,” IEEE Transactions on Systems, Man, and Cybernetics: Systems , vol. 46, no. 12, pp. 1630–1641, 2015. [12] P. S. de Vries and E.-J. Van Kampen, “Reinforcement learning-based control allocation for the innovative control effectors aircraft,” in AIAA Scitech 2019 Forum , 2019, p. 0144. [13] S. L. Brunton, J. L. Proctor, and J. N. Kutz, “Discovering governing equations from data by sparse identification of nonlinear dynamical systems,” Proceedings of the national academy of sciences , vol. 113, no. 15, pp. 3932–3937, 2016. [14] K. Fukami, T. Murata, K. Zhang, and K. Fukagata, “Sparse identifica-tion of nonlinear dynamics with low-dimensionalized flow represen-tations,” Journal of Fluid Mechanics , vol. 926, p. A10, 2021. [15] Y. Liu, H. Hong, P. Piprek, P. Chud` y, and S. Hu, “Data-based modeling and control of the nonlinear aircraft system using extended implicit sparse identification,” IEEE Transactions on Aerospace and Electronic Systems , 2025. [16] Z. M. Manaa, M. R. Elbalshy, and A. M. Abdallah, “Data-driven discovery of the quadrotor equations of motion via sparse identification of nonlinear dynamics,” in AIAA SCITECH 2024 Forum , 2024, p. 1308. [17] H. K. Chu and M. Hayashibe, “Discovering interpretable dynamics by sparsity promotion on energy and the lagrangian,” IEEE Robotics and Automation Letters , vol. 5, no. 2, pp. 2154–2160, 2020. [18] M. Le Provost, D. R. Williams, and S. Brunton, “Sindy analysis of disturbance and plant model superposition on a rolling delta wing,” in 
+
+2018 Flow control conference , 2018, p. 3068. [19] H. Tol, C. C. de Visser, E. Van Kampen, and Q. Chu, “Nonlinear multivariate spline-based control allocation for high-performance air-craft,” Journal of Guidance, Control, and Dynamics , vol. 37, no. 6, pp. 1840–1862, 2014. [20] L. Forssell and U. Nilsson, “ADMIRE: The aero-data model in a research environment version 4.0, model description,” FOI - Swedish Defence Research Agency, Tech. Rep., December 2005. [21] K. Champion, P. Zheng, A. Y. Aravkin, S. L. Brunton, and J. N. Kutz, “A unified sparse optimization framework to learn parsimo-nious physics-informed models from data,” IEEE Access , vol. 8, pp. 169 259–169 271, 2020. [22] B. de Silva, K. Champion, M. Quade, J.-C. Loiseau, J. Kutz, and S. Brunton, “Pysindy: A python package for the sparse identification of nonlinear dynamical systems from data,” Journal of Open Source Software , vol. 5, no. 49, p. 2104, 2020. [Online]. Available: https://doi.org/10.21105/joss.02104 [23] Y. Liu, H. Hong, P. Piprek, P. Chud´ y, and S. Hu, “Data-based modeling and control of the nonlinear aircraft system using extended implicit sparse identification,” IEEE Transactions on Aerospace and Electronic Systems , vol. 61, no. 3, pp. 6928–6940, 2025. [24] B. L. Stevens, F. L. Lewis, and E. N. Johnson, Aircraft control and simulation: dynamics, controls design, and autonomous systems . John Wiley & Sons, 2015. [25] O. H¨ arkeg˚ ard, “Dynamic control allocation using constrained quadratic programming,” Journal of Guidance, Control, and Dynamics , vol. 27, no. 6, pp. 1028–1034, 2004. [26] Y. Luo, A. Serrani, S. Yurkovich, D. B. Doman, and M. W. Oppen-heimer, “Model predictive dynamic control allocation with actuator dynamics,” in Proceedings of the 2004 American control conference ,vol. 2. IEEE, 2004, pp. 1695–1700.
