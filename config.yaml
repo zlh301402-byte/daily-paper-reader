@@ -25,3 +25,57 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: aerial-arm
+      description: 无人机与机械臂结合控制（空中机器人）论文检索
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: aerial manipulation
+          keyword_cn: 空中操作
+          query: aerial manipulation control strategies
+        - keyword: drone manipulator
+          keyword_cn: 无人机机械臂
+          query: drone with robotic arm control system
+        - keyword: aerial vehicle manipulator
+          keyword_cn: 飞行器机械臂
+          query: control of aerial vehicle with robotic manipulator
+        - keyword: rotorcraft manipulator
+          keyword_cn: 旋翼机机械臂
+          query: rotorcraft manipulator modeling and trajectory tracking
+        - keyword: aerial robot interaction
+          keyword_cn: 空中机器人交互
+          query: physical interaction control of aerial robots
+      intent_queries:
+        - query: motion planning and impedance control for unmanned aerial manipulator
+          query_cn: 无人飞行机械臂的运动规划和阻抗控制
+          enabled: true
+          source: manual
+          note: ''
+        - query: grasping and manipulation with aerial robot manipulators
+          query_cn: 空中机器人机械臂的抓取和操作
+          enabled: true
+          source: manual
+          note: ''
+        - query: modeling and control of multirotor with onboard manipulator
+          query_cn: 多旋翼搭载机械臂的建模与控制
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-06-15T10:35:31.111Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
