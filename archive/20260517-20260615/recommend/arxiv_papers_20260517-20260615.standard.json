@@ -1,95 +1,54 @@
 {
   "mode": "standard",
-  "generated_at": "2026-06-15T11:13:04.076170+00:00",
+  "generated_at": "2026-06-15T11:41:53.978418+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 7,
+    "deep_divecandidates": 10,
     "deep_cap": 6,
     "deep_selected": 6,
-    "quick_candidates": 6,
+    "quick_candidates": 9,
     "quick_skim_target": 11,
-    "quick_selected": 6
+    "quick_selected": 9
   },
   "deep_dive": [
     {
-      "id": "2606.12859v1",
+      "id": "2605.25790v1",
       "source": "arxiv",
-      "title": "AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots",
-      "abstract": "Aerial manipulation systems have long suffered from representation coupling in end-to-end control, as platform-level Unmanned Aerial Vehicle (UAV) movement and end-effector-level arm manipulation differ substantially in action scale, dynamics, and control objectives. In this paper, we propose AIR-VLA+, a flow matching action generation architecture specifically designed for aerial manipulation, featuring cascaded dual-action decoders and an asymmetric feature-level Mixture of Experts (MoE). We construct cascaded manipulation and movement decoders, allowing the UAV to unidirectionally observe the manipulator's intent during movement to achieve workflow coordination, while isolating the impact of UAV movement information backpropagation on arm manipulation stability. Addressing the characteristic that UAV movement is highly dependent on high-level semantics and responsible for task state transitions in aerial manipulation, we design an input feature enhancement module for the UAV movement decoder. This module introduces an implicit visual grasp projector to perceive the interaction state between the gripper and the object, and injects compressed global semantic features. Within the UAV movement decoder, we deploy an implicit MoE architecture, enabling different movement experts to spontaneously exhibit capacity inclinations for various task stages during training. Through dense soft blending computation on the feature manifold, the UAV movement is endowed with stronger task-stage adaptability. Experiments on the standardized AIR-VLA benchmark demonstrate that our method comprehensively surpasses all baselines with an overall average score of 48.0. The overall task completion score improves by 80.2\\% compared to the single-head $π_{0.5}$ policy, effectively mitigating the heterogeneous coordinated control conflicts of composite robots.",
+      "title": "HoLoArm: Deformable Arms for Collision-Tolerant Quadrotor Flight",
+      "abstract": "The increasing use of drones in human-centric applications highlights the need for designs that can survive collisions and recover rapidly, minimizing risks to both humans and the environment. We present HoLoArm, a quadrotor with compliant arms inspired by the nodus structure of dragonfly wings. This design provides natural flexibility and resilience while preserving flight stability, which is further reinforced by the integration of a Reinforcement Learning (RL) control policy that enhances both recovery and hovering performance. Experimental results demonstrate that HoLoArm can passively deform in any direction, including axial one, and recover within 0.3-0.6 s depending on the direction and level of the impact. The drone can survive collisions at speeds up to 7.6 m/s and carry a 540 g payload while maintaining stable flight. This work contributes to the morphological design of soft aerial robots with high agility and reliable safety, enabling operation in cluttered and human shared environments, and lays the groundwork for future fully soft drones that integrate compliant structures with intelligent control.",
       "authors": [
-        "Jianli Sun",
-        "Bin Tian",
-        "Qiyao Zhang",
-        "Zijian Liu",
-        "Yutong Wang",
-        "Zhiyong Cui",
-        "Bai Li",
-        "Yisheng Lv",
-        "Yonglin Tian"
+        "Quang Ngoc Pham",
+        "Jonas Eschmann",
+        "Yang Zhou",
+        "Alejandro Ojeda Olarte",
+        "Giuseppe Loianno",
+        "Van Anh Ho"
       ],
       "primary_category": "cs.RO",
       "categories": [
         "cs.RO"
       ],
-      "published": "2026-06-11T03:42:33+00:00",
-      "link": "https://arxiv.org/pdf/2606.12859v1",
+      "published": "2026-05-25T12:37:18+00:00",
+      "link": "https://arxiv.org/pdf/2605.25790v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
-      "llm_score": 10.0,
-      "llm_evidence_en": "Architecture for aerial manipulation decoupling movement and manipulation",
-      "llm_evidence_cn": "空中操纵中解耦运动与操作的架构",
-      "llm_evidence": "空中操纵中解耦运动与操作的架构",
-      "canonical_evidence": "空中操纵中解耦运动与操作的架构",
-      "llm_tldr_en": "Proposes AIR-VLA+, a flow matching architecture for aerial manipulation that decouples UAV movement and arm manipulation via cascaded dual-action decoders and asymmetric Mixture of Experts, improving control coordination and performance.",
-      "llm_tldr_cn": "现有空中操纵系统的端到端控制中，无人机运动与机械臂操作的动作空间耦合严重，导致协调困难。本文提出AIR-VLA+，一种基于流匹配的动作生成架构，通过级联双动作解码器实现单向意图观察，并采用非对称混合专家模型，有效解耦运动与操作。仿真与实验表明，该方法显著提升了空中作业的协调性和成功率，为实现高自主空中机器人操作提供了新途径。",
-      "llm_tldr": "现有空中操纵系统的端到端控制中，无人机运动与机械臂操作的动作空间耦合严重，导致协调困难。本文提出AIR-VLA+，一种基于流匹配的动作生成架构，通过级联双动作解码器实现单向意图观察，并采用非对称混合专家模型，有效解耦运动与操作。仿真与实验表明，该方法显著提升了空中作业的协调性和成功率，为实现高自主空中机器人操作提供了新途径。",
+      "llm_score": 9.0,
+      "llm_evidence_en": "RL control policy for quadrotor with compliant arms",
+      "llm_evidence_cn": "四旋翼可变形臂的强化学习控制策略",
+      "llm_evidence": "四旋翼可变形臂的强化学习控制策略",
+      "canonical_evidence": "四旋翼可变形臂的强化学习控制策略",
+      "llm_tldr_en": "Presents HoLoArm, a quadrotor with compliant arms inspired by dragonfly wings, using an RL control policy for collision recovery and hovering, achieving deformation and recovery in 0.3-0.6s.",
+      "llm_tldr_cn": "无人机与人共融场景需要耐碰撞设计。提出HoLoArm，一种具有仿蜻蜓翅膀柔性臂的四旋翼，结合强化学习控制策略提升碰撞恢复和悬停性能。实验表明，该设计能在各方向被动变形并在0.3-0.6秒内恢复，高速碰撞下保持飞行稳定。该工作展示了学习控制与机械设计协同提升无人机鲁棒性的潜力。",
+      "llm_tldr": "无人机与人共融场景需要耐碰撞设计。提出HoLoArm，一种具有仿蜻蜓翅膀柔性臂的四旋翼，结合强化学习控制策略提升碰撞恢复和悬停性能。实验表明，该设计能在各方向被动变形并在0.3-0.6秒内恢复，高速碰撞下保持飞行稳定。该工作展示了学习控制与机械设计协同提升无人机鲁棒性的潜力。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "aerial manipulation control strategies",
-      "matched_requirement_id": "req-1",
-      "selection_source": "fresh_fetch"
-    },
-    {
-      "id": "2606.14531v1",
-      "source": "arxiv",
-      "title": "AERMANI-PLACE: Language Guided Object Placement with Aerial Manipulators",
-      "abstract": "Object placement is a fundamental component of aerial manipulation tasks, yet existing systems typically require the desired placement position to be specified explicitly in metric coordinates. Such interfaces are not intuitive and require users to reason about coordinate frames and scene geometry, making them difficult to use in practical deployments. In contrast, humans often communicate spatial goals through a combination of language and pointing gestures. Inspired by this observation, we present AERMANI-PLACE, a framework for language-guided object placement with aerial manipulators. Given a scene image and a natural language instruction, an image editing model generates a modified version of the scene containing a visual marker that indicates where the object should be placed. This marker is then grounded into the physical environment using depth observations to recover a metric place point, after which a placement trajectory is generated and executed by the aerial manipulator. We evaluate the proposed approach on a test set of 100 language-guided placement tasks and demonstrate successful execution on a real aerial manipulation platform. Experimental results show that the proposed method reliably infers placement locations from language instructions with an average success rate of 87\\% on the test-set and transfers effectively to real-world aerial manipulation with an average success rate of 72\\%.   Video: https://youtu.be/SgwwgLBsv0g",
-      "authors": [
-        "Sarthak Mishra",
-        "Ritama Sanyal",
-        "Rishabh Dev Yadav",
-        "Wei Pan",
-        "Spandan Roy"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO"
-      ],
-      "published": "2026-06-12T15:07:55+00:00",
-      "link": "https://arxiv.org/pdf/2606.14531v1",
-      "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
-      ],
-      "llm_score": 10.0,
-      "llm_evidence_en": "language-guided object placement with aerial manipulators",
-      "llm_evidence_cn": "面向空中机械手的语言引导物体放置框架",
-      "llm_evidence": "面向空中机械手的语言引导物体放置框架",
-      "canonical_evidence": "面向空中机械手的语言引导物体放置框架",
-      "llm_tldr_en": "Proposes AERMANI-PLACE, using language instructions and image editing to generate visual markers for aerial manipulator object placement, eliminating explicit coordinate specification.",
-      "llm_tldr_cn": "现有空中操控需显式指定放置坐标，不够直观。本文提出AERMANI-PLACE，通过自然语言指令和图像编辑模型生成视觉放置标记，使空中机械手能直觉化放置物体。实验验证该方法有效简化人机交互，拓宽空中操控应用。",
-      "llm_tldr": "现有空中操控需显式指定放置坐标，不够直观。本文提出AERMANI-PLACE，通过自然语言指令和图像编辑模型生成视觉放置标记，使空中机械手能直觉化放置物体。实验验证该方法有效简化人机交互，拓宽空中操控应用。",
-      "llm_tags": [
-        "query:aerial-arm"
-      ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
-      "matched_requirement_id": "req-7",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for drone manipulator control",
+      "matched_requirement_id": "req-8",
       "selection_source": "fresh_fetch"
     },
     {
@@ -119,62 +78,65 @@
       "published": "2026-06-07T09:26:11+00:00",
       "link": "https://arxiv.org/pdf/2606.08533v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 9.0,
-      "llm_evidence_en": "autonomous aerial payload acquisition using contrastive meta RL",
-      "llm_evidence_cn": "使用对比元强化学习的自主空中负载获取",
-      "llm_evidence": "使用对比元强化学习的自主空中负载获取",
-      "canonical_evidence": "使用对比元强化学习的自主空中负载获取",
-      "llm_tldr_en": "This paper addresses autonomous aerial delivery where a UAV grasps and transports diverse payloads, proposing a meta-RL framework that uses context encoding and contrastive learning to adapt to varying dynamics without manual calibration, enabling versatile end-to-end aerial manipulation.",
-      "llm_tldr_cn": "针对空中物流中无人机需自主抓取和运输不同负载，但负载变化导致飞行动力学高度不确定的难题，本文提出一种基于上下文对比的元强化学习框架Aco2。该框架通过编码负载动力学上下文并利用对比学习在线自适应，无需人工标定即可实现端到端的自主空中抓取与运输。实验表明，该方法能够使单一策略适应多种未知负载，提升了空中操作的通用性和鲁棒性，为空中机械臂的自主操作提供了新思路。",
-      "llm_tldr": "针对空中物流中无人机需自主抓取和运输不同负载，但负载变化导致飞行动力学高度不确定的难题，本文提出一种基于上下文对比的元强化学习框架Aco2。该框架通过编码负载动力学上下文并利用对比学习在线自适应，无需人工标定即可实现端到端的自主空中抓取与运输。实验表明，该方法能够使单一策略适应多种未知负载，提升了空中操作的通用性和鲁棒性，为空中机械臂的自主操作提供了新思路。",
+      "llm_evidence_en": "aerial manipulation using deep reinforcement learning",
+      "llm_evidence_cn": "使用深度强化学习的空中操作",
+      "llm_evidence": "使用深度强化学习的空中操作",
+      "canonical_evidence": "使用深度强化学习的空中操作",
+      "llm_tldr_en": "Proposes Aco2, a contextual contrastive meta RL method for autonomous aerial payload acquisition and delivery; addresses varying flight dynamics with online adaptation without manual calibration.",
+      "llm_tldr_cn": "针对现有方法依赖预装有效载荷或专用夹爪的问题，提出Aco2框架，利用上下文对比元强化学习，使无人机在空中自主抓取和投递不同有效载荷时能在线调整飞行策略，无需手动校准或系统辨识。实验表明该方法能有效适应不同载荷带来的动力学变化，提升了空中操作的通用性和鲁棒性。",
+      "llm_tldr": "针对现有方法依赖预装有效载荷或专用夹爪的问题，提出Aco2框架，利用上下文对比元强化学习，使无人机在空中自主抓取和投递不同有效载荷时能在线调整飞行策略，无需手动校准或系统辨识。实验表明该方法能有效适应不同载荷带来的动力学变化，提升了空中操作的通用性和鲁棒性。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
-      "matched_requirement_id": "req-7",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulation using deep reinforcement learning methods",
+      "matched_requirement_id": "req-10",
       "selection_source": "fresh_fetch"
     },
     {
-      "id": "2605.28367v1",
+      "id": "2606.12859v1",
       "source": "arxiv",
-      "title": "Safety-Critical Adaptive Impedance Control via Nonsmooth Control Barrier Functions under State and Input Constraints",
-      "abstract": "Safe physical interaction is critical for deploying robotic manipulators in human-robot interaction and contact-rich tasks, where uncertainty, external forces, and actuator limitations can compromise both performance and safety. We propose an online adaptive impedance control framework that enforces joint-state safety while achieving compliant interaction under uncertain dynamics. The approach combines a quadratic-program-based safety filter with a novel composed position-velocity non-smooth control barrier function (NCBF), enabling joint position and velocity constraints to be enforced through a unified relative-degree-one barrier. Unknown dynamics are compensated online using an interval type-2 fuzzy logic system, while actuator torque limits are handled through soft constraints with exact penalty recovery of feasible solutions. A disturbance-observer-enhanced safety mechanism improves robustness against modelling errors and external interaction forces. Using composite Lyapunov analysis, we prove forward invariance of the safe set and the uniform ultimately boundedness of the impedance-tracking error. Simulations on a 7-DOF manipulator with severe parametric uncertainty and external interaction wrenches demonstrate safe constraint satisfaction and robust impedance tracking.",
+      "title": "AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots",
+      "abstract": "Aerial manipulation systems have long suffered from representation coupling in end-to-end control, as platform-level Unmanned Aerial Vehicle (UAV) movement and end-effector-level arm manipulation differ substantially in action scale, dynamics, and control objectives. In this paper, we propose AIR-VLA+, a flow matching action generation architecture specifically designed for aerial manipulation, featuring cascaded dual-action decoders and an asymmetric feature-level Mixture of Experts (MoE). We construct cascaded manipulation and movement decoders, allowing the UAV to unidirectionally observe the manipulator's intent during movement to achieve workflow coordination, while isolating the impact of UAV movement information backpropagation on arm manipulation stability. Addressing the characteristic that UAV movement is highly dependent on high-level semantics and responsible for task state transitions in aerial manipulation, we design an input feature enhancement module for the UAV movement decoder. This module introduces an implicit visual grasp projector to perceive the interaction state between the gripper and the object, and injects compressed global semantic features. Within the UAV movement decoder, we deploy an implicit MoE architecture, enabling different movement experts to spontaneously exhibit capacity inclinations for various task stages during training. Through dense soft blending computation on the feature manifold, the UAV movement is endowed with stronger task-stage adaptability. Experiments on the standardized AIR-VLA benchmark demonstrate that our method comprehensively surpasses all baselines with an overall average score of 48.0. The overall task completion score improves by 80.2\\% compared to the single-head $π_{0.5}$ policy, effectively mitigating the heterogeneous coordinated control conflicts of composite robots.",
       "authors": [
-        "Faisal Lawan",
-        "Xiaoran Han",
-        "Joaquin Carrasco",
-        "Barry Lennox",
-        "Xiaoxiao Cheng"
+        "Jianli Sun",
+        "Bin Tian",
+        "Qiyao Zhang",
+        "Zijian Liu",
+        "Yutong Wang",
+        "Zhiyong Cui",
+        "Bai Li",
+        "Yisheng Lv",
+        "Yonglin Tian"
       ],
       "primary_category": "cs.RO",
       "categories": [
-        "cs.RO",
-        "eess.SY"
+        "cs.RO"
       ],
-      "published": "2026-05-27T12:04:03+00:00",
-      "link": "https://arxiv.org/pdf/2605.28367v1",
+      "published": "2026-06-11T03:42:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.12859v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "adaptive impedance control for safe physical interaction",
-      "llm_evidence_cn": "自适应阻抗控制用于安全物理交互",
-      "llm_evidence": "自适应阻抗控制用于安全物理交互",
-      "canonical_evidence": "自适应阻抗控制用于安全物理交互",
-      "llm_tldr_en": "Proposes online adaptive impedance control with control barrier functions for safe robotic interaction under uncertainty, applicable to aerial manipulators.",
-      "llm_tldr_cn": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
-      "llm_tldr": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
+      "llm_score": 9.0,
+      "llm_evidence_en": "decoupled control architecture for aerial manipulation",
+      "llm_evidence_cn": "空中机器人运动与操作解耦的控制架构",
+      "llm_evidence": "空中机器人运动与操作解耦的控制架构",
+      "canonical_evidence": "空中机器人运动与操作解耦的控制架构",
+      "llm_tldr_en": "Proposes AIR-VLA+, a flow matching action generation architecture for aerial manipulation with cascaded dual-action decoders and asymmetric MoE to decouple UAV movement and arm manipulation.",
+      "llm_tldr_cn": "空中操纵系统中无人机运动与机械臂操作在动作尺度、动力学和控制目标上存在显著差异，现有端到端控制存在表征耦合问题。提出AIR-VLA+框架，采用级联双动作解码器和非对称特征级专家混合，解耦运动与操作动作生成，使无人机关机单向观察机械臂意图，实现工作流协调。实验表明该方法有效提升了空中操纵的协调性和稳定性。",
+      "llm_tldr": "空中操纵系统中无人机运动与机械臂操作在动作尺度、动力学和控制目标上存在显著差异，现有端到端控制存在表征耦合问题。提出AIR-VLA+框架，采用级联双动作解码器和非对称特征级专家混合，解耦运动与操作动作生成，使无人机关机单向观察机械臂意图，实现工作流协调。实验表明该方法有效提升了空中操纵的协调性和稳定性。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:aerial-arm:composite"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "physical interaction control of aerial robots",
-      "matched_requirement_id": "req-5",
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
       "selection_source": "fresh_fetch"
     },
     {
@@ -198,17 +160,17 @@
       "published": "2026-05-19T06:36:10+00:00",
       "link": "https://arxiv.org/pdf/2605.19431v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "modular aerial robots in-flight self-assembly for cooperative manipulation",
-      "llm_evidence_cn": "模块化空中机器人飞行中自组装进行协同操作",
-      "llm_evidence": "模块化空中机器人飞行中自组装进行协同操作",
-      "canonical_evidence": "模块化空中机器人飞行中自组装进行协同操作",
-      "llm_tldr_en": "LEGION units are reconfigurable modular aerial robots that self-assemble in flight to perform cooperative manipulation, overcoming the trade-off between nimble navigation and robust aerial manipulation.",
-      "llm_tldr_cn": "针对空中机器人灵活性与操作力难以兼顾的问题，本文提出LEGION模块化空中机器人，可通过飞行中自组装形成协同操作系统。各单元保持机动性，利用对接接口联合操作。实验证明该方法兼具灵活导航和强力操作能力，为模块化空中操控提供新思路。",
-      "llm_tldr": "针对空中机器人灵活性与操作力难以兼顾的问题，本文提出LEGION模块化空中机器人，可通过飞行中自组装形成协同操作系统。各单元保持机动性，利用对接接口联合操作。实验证明该方法兼具灵活导航和强力操作能力，为模块化空中操控提供新思路。",
+      "llm_evidence_en": "self-assembling modular aerial robot with manipulation capability",
+      "llm_evidence_cn": "可自组装的模块化空中机器人，具备操纵能力",
+      "llm_evidence": "可自组装的模块化空中机器人，具备操纵能力",
+      "canonical_evidence": "可自组装的模块化空中机器人，具备操纵能力",
+      "llm_tldr_en": "Proposes self-assembling modular aerial robots that combine nimble navigation and robust cooperative manipulation via in-flight docking.",
+      "llm_tldr_cn": "该论文提出了LEGION单元，一种可重构的模块化空中机器人，能在飞行中自组装以进行协同操纵。每个单元保持灵活机动性，并通过配备关节的对接接口实现组合，从而突破传统无人机在灵活机动与稳健空中操纵之间的权衡。实验表明该平台能完成协同抓取和搬运等任务。这项工作为设计兼具机动性和操纵能力的空中机器人提供了新思路。",
+      "llm_tldr": "该论文提出了LEGION单元，一种可重构的模块化空中机器人，能在飞行中自组装以进行协同操纵。每个单元保持灵活机动性，并通过配备关节的对接接口实现组合，从而突破传统无人机在灵活机动与稳健空中操纵之间的权衡。实验表明该平台能完成协同抓取和搬运等任务。这项工作为设计兼具机动性和操纵能力的空中机器人提供了新思路。",
       "llm_tags": [
         "query:aerial-arm:composite"
       ],
@@ -218,280 +180,448 @@
       "selection_source": "fresh_fetch"
     },
     {
-      "id": "2605.28367v2",
+      "id": "2605.19919v1",
       "source": "arxiv",
-      "title": "Safety-Critical Adaptive Impedance Control via Nonsmooth Control Barrier Functions under State and Input Constraints",
-      "abstract": "Safe physical interaction is critical for deploying robotic manipulators in human-robot interaction and contact-rich tasks, where uncertainty, external forces, and actuator limitations can compromise both performance and safety. We propose an online adaptive impedance control framework that enforces joint-state safety while achieving compliant interaction under uncertain dynamics. The approach combines a quadratic-program-based safety filter with a novel composed position-velocity non-smooth control barrier function (NCBF), enabling joint position and velocity constraints to be enforced through a unified relative-degree-one barrier. Unknown dynamics are compensated online using an interval type-2 fuzzy logic system, while actuator torque limits are handled through soft constraints with exact penalty recovery of feasible solutions. A disturbance-observer-enhanced safety mechanism improves robustness against modelling errors and external interaction forces. Using composite Lyapunov analysis, we prove forward invariance of the safe set and the uniform ultimately boundedness of the impedance-tracking error. Simulations on a 7-DOF manipulator with severe parametric uncertainty and external interaction wrenches demonstrate safe constraint satisfaction and robust impedance tracking.",
+      "title": "Beyond Action Residuals: Real-World Robot Policy Steering via Bottleneck Latent Reinforcement Learning",
+      "abstract": "Pretrained imitation policies have become a strong foundation for robot manipulation, but they often require online improvement to overcome execution errors, limited dataset coverage, and deployment mismatch. A central question is therefore how reinforcement learning (RL) should adapt policies after offline pretraining. Existing lightweight methods commonly apply residual corrections directly in action space, but this often leads to noisy and poorly structured exploration. In this work, we propose Z-Perturbation Reinforcement Learning (ZPRL), an approach that steers pretrained policies through a compact bottleneck latent rather than through policy weights or output actions. During offline training, we augment the policy with a plug-and-play variational information bottleneck (VIB) module to extract a task-relevant latent interface from observation embeddings. During online finetuning, the base policy is frozen and RL learns only a residual perturbation on this latent, whose decoded representation conditions the frozen action generator. We instantiate ZPRL on flow-matching policies and evaluate it on eight simulation tasks and four real-world tasks. Across diverse manipulation settings, ZPRL improves both sample efficiency and final performance over strong post-training baselines. In the real world, ZPRL improves the average success rate on four tasks by 33.7% over imitation base policies while producing smoother exploration behaviors than an action residual counterpart. These results suggest that a compact, task-aligned bottleneck latent provides an effective interface for online RL adaptation. More videos can be found at https://manutdmoon.github.io/ZPRL/.",
       "authors": [
-        "Faisal Lawan",
-        "Xiaoran Han",
-        "Joaquin Carrasco",
-        "Barry Lennox",
-        "Xiaoxiao Cheng"
+        "Dongjie Yu",
+        "Kun Lei",
+        "Zhennan Jiang",
+        "Jia Pan",
+        "Huazhe Xu"
       ],
       "primary_category": "cs.RO",
       "categories": [
-        "cs.RO",
-        "eess.SY"
+        "cs.RO"
       ],
-      "published": "2026-05-27T12:04:03+00:00",
-      "link": "https://arxiv.org/pdf/2605.28367v2",
+      "published": "2026-05-19T14:43:26+00:00",
+      "link": "https://arxiv.org/pdf/2605.19919v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "adaptive impedance control for safe physical interaction",
-      "llm_evidence_cn": "自适应阻抗控制用于安全物理交互",
-      "llm_evidence": "自适应阻抗控制用于安全物理交互",
-      "canonical_evidence": "自适应阻抗控制用于安全物理交互",
-      "llm_tldr_en": "Proposes online adaptive impedance control with control barrier functions for safe robotic interaction under uncertainty, applicable to aerial manipulators.",
-      "llm_tldr_cn": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
-      "llm_tldr": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
+      "llm_evidence_en": "RL for robot arm policy improvement",
+      "llm_evidence_cn": "用于机械臂策略改进的强化学习",
+      "llm_evidence": "用于机械臂策略改进的强化学习",
+      "canonical_evidence": "用于机械臂策略改进的强化学习",
+      "llm_tldr_en": "Proposes Z-Perturbation RL (ZPRL) to steer pretrained manipulation policies through a compact bottleneck latent, enabling efficient real-world policy improvement without noisy action-space residuals.",
+      "llm_tldr_cn": "针对预训练模仿策略在真实部署中因执行误差和数据覆盖不足导致的性能下降问题，提出Z-Perturbation强化学习（ZPRL）方法，通过紧凑瓶颈潜在空间而非动作空间施加扰动来引导策略改进，避免动作残差带来的噪声探索。实验表明该方法在多种机器人操作任务上显著提升策略鲁棒性和适应效率，为RL微调预训练策略提供了一种轻量且有效的框架。",
+      "llm_tldr": "针对预训练模仿策略在真实部署中因执行误差和数据覆盖不足导致的性能下降问题，提出Z-Perturbation强化学习（ZPRL）方法，通过紧凑瓶颈潜在空间而非动作空间施加扰动来引导策略改进，避免动作残差带来的噪声探索。实验表明该方法在多种机器人操作任务上显著提升策略鲁棒性和适应效率，为RL微调预训练策略提供了一种轻量且有效的框架。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "physical interaction control of aerial robots",
-      "matched_requirement_id": "req-5",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.28462v1",
+      "source": "arxiv",
+      "title": "Learning a Kinodynamic Trajectory Manifold for Impact-Aware Compliant Catching of Fast-Moving Objects",
+      "abstract": "Fast catching of free-flying objects is difficult because of short reaction time, impact uncertainty, and kinodynamic constraints. We use reinforcement learning in simulation to collect successful catching trajectories and learn a low-dimensional kinodynamic trajectory manifold. At run time, the estimated object initial state is mapped directly to a reference catching trajectory without online nonlinear optimization. The trajectory is tracked with compliant control near contact for improved impact absorption and capture stability.",
+      "authors": [
+        "Guorui Pei",
+        "Mengshi Zhang",
+        "Xi Chen",
+        "Jinsong Wu",
+        "Jiaming Qi",
+        "Peng Zhou"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-27T13:31:01+00:00",
+      "link": "https://arxiv.org/pdf/2605.28462v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL-based trajectory learning for robotic catching",
+      "llm_evidence_cn": "使用强化学习学习机器人抓取轨迹，涉及机械臂控制",
+      "llm_evidence": "使用强化学习学习机器人抓取轨迹，涉及机械臂控制",
+      "canonical_evidence": "使用强化学习学习机器人抓取轨迹，涉及机械臂控制",
+      "llm_tldr_en": "Proposes RL in simulation to collect successful catching trajectories and learn a low-dimensional manifold, enabling compliant catching of fast-moving objects without online optimization.",
+      "llm_tldr_cn": "针对快速运动物体抓取中反应时间短、冲击不确定及运动学约束等难点，本文提出在仿真中使用强化学习收集成功抓取轨迹，并学习一个低维运动学轨迹流形。运行时，根据物体初始状态直接映射参考轨迹，无需在线优化。结合近接触时的柔顺控制，提升了冲击吸收和抓取稳定性。该方法为快速精准的机器人抓取提供了一种高效离线学习方案。",
+      "llm_tldr": "针对快速运动物体抓取中反应时间短、冲击不确定及运动学约束等难点，本文提出在仿真中使用强化学习收集成功抓取轨迹，并学习一个低维运动学轨迹流形。运行时，根据物体初始状态直接映射参考轨迹，无需在线优化。结合近接触时的柔顺控制，提升了冲击吸收和抓取稳定性。该方法为快速精准的机器人抓取提供了一种高效离线学习方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch"
     }
   ],
   "quick_skim": [
     {
-      "id": "2605.29410v1",
+      "id": "2605.29564v1",
       "source": "arxiv",
-      "title": "A Progress-Aware Leader-Follower Midair Docking System for Dual-Drone Aerial Manipulation",
-      "abstract": "Reliable midair docking between small unmanned aerial vehicles (UAVs) is essential for modular aerial cooperation and manipulation, but it requires precise relative-pose control and repeatable platform under tight thrust and payload constraints. We present a dual-drone docking platform where two quadrotors operate in a leader-follower formation and dock using a lightweight modular frame with passive magnetic latching. A progress-aware mission supervisor manages phase transitions: approach, alignment, capture, and settle. This platform integrates a complete hardware-software stack (ROS 2 with Crazyflie/PX4 interfaces) and synchronized logging for benchmark evaluation. We evaluate the platform in simulation and real-world experiments using quantitative metrics such as formation error, baseline and yaw consistency, docking success rate, time-to-dock, and failure-mode statistics. The platform enables statistically grounded comparison of docking supervision and synchronization strategies and provides a practical testbed for modular aerial cooperation and repeatable midair aerial manipulation.",
+      "title": "VE2VF: Vision-Enabled to Vision-Free Distillation via Real-world Reinforcement Learning for Robust Contact-Rich Manipulation",
+      "abstract": "When using reinforcement learning (RL) for contact-rich robotic manipulation, vision can provide task-relevant information that accelerates learning beyond what proprioception alone can achieve. However, vision-enabled policies tend to overfit to the visual conditions seen during training, limiting their robustness and transferability. We present a human-in-the-loop RL framework that employs teacher-student distillation to achieve robust performance across multiple task variants, trained entirely in the real world without requiring domain randomization or data augmentation. A vision-enabled teacher distills its knowledge into a vision-free student that relies solely on pose, twist, and wrench sensing, combining fast training with strong task generalization. On the real-world NIST assembly benchmark board, our approach achieves 95\\% overall success after approximately 50 minutes of training on 3 representative tasks, including robust generalization to 8 unseen task variants. Fine-tuning with distillation achieves full success on the most challenging task. We demonstrate that the resulting policies outperform baselines in both robustness and adaptability.",
       "authors": [
-        "Yifan Cai",
-        "Jan Ming Kevin Tan",
-        "Xiangqi Li",
-        "Chenzhe Jin",
-        "Narsimlu Kemsaram",
-        "Valerio Modugno"
+        "Victor Kowalski",
+        "Chengxi Li",
+        "Dongheui Lee"
       ],
       "primary_category": "cs.RO",
       "categories": [
         "cs.RO"
       ],
-      "published": "2026-05-28T06:00:52+00:00",
-      "link": "https://arxiv.org/pdf/2605.29410v1",
+      "published": "2026-05-28T08:15:59+00:00",
+      "link": "https://arxiv.org/pdf/2605.29564v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 8.0,
-      "llm_evidence_en": "midair docking for dual-drone aerial manipulation, precise relative-pose control",
-      "llm_evidence_cn": "用于双无人机空中操作的空中对接，精确相对位姿控制",
-      "llm_evidence": "用于双无人机空中操作的空中对接，精确相对位姿控制",
-      "canonical_evidence": "用于双无人机空中操作的空中对接，精确相对位姿控制",
-      "llm_tldr_en": "This paper presents a complete midair docking platform for two quadrotors, enabling modular aerial manipulation via leader-follower formation and passive magnetic latching, with a progress-aware supervisor ensuring reliable docking, thus enabling physical interaction for collaborative aerial tasks.",
-      "llm_tldr_cn": "为实现模块化空中合作与操作，本文提出了一种双无人机空中对接系统。系统采用领导-跟随编队和被动磁吸对接机构，并设计进度感知任务管理器管理对接阶段。通过仿真和真实飞行实验验证了平台在推力与载荷约束下实现可靠精确相对位姿控制的能力，为多无人机协同操作提供了硬件与软件基础，推动了空中物理交互技术的发展。",
-      "llm_tldr": "为实现模块化空中合作与操作，本文提出了一种双无人机空中对接系统。系统采用领导-跟随编队和被动磁吸对接机构，并设计进度感知任务管理器管理对接阶段。通过仿真和真实飞行实验验证了平台在推力与载荷约束下实现可靠精确相对位姿控制的能力，为多无人机协同操作提供了硬件与软件基础，推动了空中物理交互技术的发展。",
+      "llm_evidence_en": "Real-world RL for contact-rich robotic manipulation",
+      "llm_evidence_cn": "真实世界强化学习用于接触式操作，涉及机械臂控制",
+      "llm_evidence": "真实世界强化学习用于接触式操作，涉及机械臂控制",
+      "canonical_evidence": "真实世界强化学习用于接触式操作，涉及机械臂控制",
+      "llm_tldr_en": "Presents a human-in-the-loop RL framework with teacher-student distillation for robust contact-rich manipulation, trained entirely in real world without domain randomization. Achieves robust performance across task variants using only proprioception.",
+      "llm_tldr_cn": "针对视觉策略在接触式操作中过拟合的问题，提出一种人在回路的强化学习框架，通过教师-学生蒸馏将视觉知识迁移到仅依赖位姿和力传感器的无视觉策略。整个训练在真实世界进行，无需域随机化。实验表明，该方法在多个操作任务变体上均表现鲁棒，显著提升了策略的泛化性和实用性。",
+      "llm_tldr": "针对视觉策略在接触式操作中过拟合的问题，提出一种人在回路的强化学习框架，通过教师-学生蒸馏将视觉知识迁移到仅依赖位姿和力传感器的无视觉策略。整个训练在真实世界进行，无需域随机化。实验表明，该方法在多个操作任务变体上均表现鲁棒，显著提升了策略的泛化性和实用性。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "physical interaction control of aerial robots",
-      "matched_requirement_id": "req-5",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch",
       "quick_tier": "8plus"
     },
     {
-      "id": "2605.28367v3",
+      "id": "2606.02194v1",
       "source": "arxiv",
-      "title": "Safety-Critical Adaptive Impedance Control via Nonsmooth Control Barrier Functions under State and Input Constraints",
-      "abstract": "Safe physical interaction is critical for deploying robotic manipulators in human-robot interaction and contact-rich tasks, where uncertainty, external forces, and actuator limitations can compromise both performance and safety. We propose an online adaptive impedance control framework that enforces joint-state safety while achieving compliant interaction under uncertain dynamics. The approach combines a quadratic-program-based safety filter with a novel composed position-velocity non-smooth control barrier function (NCBF), enabling joint position and velocity constraints to be enforced through a unified relative-degree-one barrier. Unknown dynamics are compensated online using an interval type-2 fuzzy logic system, while actuator torque limits are handled through soft constraints with exact penalty recovery of feasible solutions. A disturbance-observer-enhanced safety mechanism improves robustness against modelling errors and external interaction forces. Using composite Lyapunov analysis, we prove forward invariance of the safe set and the uniform ultimately boundedness of the impedance-tracking error. Simulations on a 7-DOF manipulator with severe parametric uncertainty and external interaction wrenches demonstrate safe constraint satisfaction and robust impedance tracking.",
+      "title": "Coherent Off-Policy Improvement of Large Behavior Models with Learned Rewards",
+      "abstract": "Distilling expert demonstration data into large generative models using behavioral cloning is a scalable approach to learning capable policies for robotic control, particularly for dexterous manipulation. Reinforcement learning (RL) can be used as a means to finetune these policies further using additional experience. An open question is whether RL is more sample-efficient than collecting more human demonstrations. Prior work has finetuned large pretrained policies in a scalable fashion by applying RL to a smaller residual policy that corrects the pretrained model. However, for the typical sparse reward tasks, RL algorithms can struggle to optimize the behavior in a sample-efficient manner. We explore inverse reinforcement learning, where a dense reward function is learned from expert demonstrations, potentially reducing the challenge of RL finetuning. We specifically consider coherent imitation learning, an IRL method that facilitates improvement of the BC policy through using a specific reward formulation with theoretical guarantees. We show that our IRL method maintains or improves the performance of pi-0.5 on all six sparse manipulation tasks and achieves a $\\geq 90\\%$ success rate on five out of six complex manipulation tasks, outperforming RL-based baselines using sparse rewards. By ensuring our initial pretrained finetuning policy is optimal for our initial reward and critic, our method circumvents the initial drop commonly seen in RL finetuning and enables faster improvement.",
       "authors": [
-        "Faisal Lawan",
-        "Xiaoran Han",
-        "Joaquin Carrasco",
-        "Barry Lennox",
-        "Xiaoxiao Cheng"
+        "Christian Scherer",
+        "Joe Watson",
+        "Theo Gruner",
+        "Daniel Palenicek",
+        "Ingmar Posner",
+        "Jan Peters"
       ],
-      "primary_category": "cs.RO",
+      "primary_category": "cs.LG",
       "categories": [
-        "cs.RO",
-        "eess.SY"
+        "cs.LG"
       ],
-      "published": "2026-05-27T12:04:03+00:00",
-      "link": "https://arxiv.org/pdf/2605.28367v3",
+      "published": "2026-06-01T12:49:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.02194v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 7.0,
-      "llm_evidence_en": "adaptive impedance control for safe physical interaction of robotic manipulators",
-      "llm_evidence_cn": "适用于机器人操作器安全物理交互的自适应阻抗控制",
-      "llm_evidence": "适用于机器人操作器安全物理交互的自适应阻抗控制",
-      "canonical_evidence": "适用于机器人操作器安全物理交互的自适应阻抗控制",
-      "llm_tldr_en": "Proposes an online adaptive impedance control with safety constraints for robotic manipulators, enabling compliant interaction under uncertain dynamics; potentially applicable to aerial manipulators for safe contact tasks.",
-      "llm_tldr_cn": "针对存在不确定性和外部力的机器人操作器安全物理交互问题，提出一种在线自适应阻抗控制框架，结合二次规划安全滤波器和新型非光滑控制屏障函数，实现关节位置与速度约束的强制执行，利用区间二型模糊逻辑在线补偿未知动态，仿真验证了其在接触任务中的安全性与顺应性，为空中操作器的物理交互提供了可迁移的方法。",
-      "llm_tldr": "针对存在不确定性和外部力的机器人操作器安全物理交互问题，提出一种在线自适应阻抗控制框架，结合二次规划安全滤波器和新型非光滑控制屏障函数，实现关节位置与速度约束的强制执行，利用区间二型模糊逻辑在线补偿未知动态，仿真验证了其在接触任务中的安全性与顺应性，为空中操作器的物理交互提供了可迁移的方法。",
+      "llm_evidence_en": "Inverse RL and off-policy improvement for robot manipulation policies",
+      "llm_evidence_cn": "使用逆强化学习和离策略方法改进机器人操作策略",
+      "llm_evidence": "使用逆强化学习和离策略方法改进机器人操作策略",
+      "canonical_evidence": "使用逆强化学习和离策略方法改进机器人操作策略",
+      "llm_tldr_en": "Explores whether RL can improve pretrained behavior models for dexterous manipulation more efficiently than additional demonstrations, using inverse RL to learn dense rewards and coherent off-policy improvement.",
+      "llm_tldr_cn": "在机器人灵巧操作中，通过行为克隆得到的大模型能否通过强化学习进一步提升？本文探索使用逆强化学习学习密集奖励，并采用一致的离策略改进方法微调预训练策略。实验表明，与收集更多人类演示相比，RL可以更样本高效地提升性能，为大规模策略微调提供了有效途径。",
+      "llm_tldr": "在机器人灵巧操作中，通过行为克隆得到的大模型能否通过强化学习进一步提升？本文探索使用逆强化学习学习密集奖励，并采用一致的离策略改进方法微调预训练策略。实验表明，与收集更多人类演示相比，RL可以更样本高效地提升性能，为大规模策略微调提供了有效途径。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "physical interaction control of aerial robots",
-      "matched_requirement_id": "req-5",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch",
       "quick_tier": "7"
     },
     {
-      "id": "2605.21811v1",
+      "id": "2605.25362v1",
       "source": "arxiv",
-      "title": "Safe and Steerable Geometric Motion Policies for Robotic Dexterous Manipulation",
-      "abstract": "Robotic dexterous manipulation requires continuously reconciling objectives and constraints defined on heterogeneous geometric spaces: a robot controlled on a $\\mathbb{R}^7$ configuration manifold may need to track end effector poses on $\\mathrm{SE}(3)$ while satisfying obstacle avoidance margins in $\\mathbb{R}$. We present Safe Pullback Bundle Dynamical Systems (SafePBDS), a geometrically consistent framework that computes optimal, certifiably safe configuration manifold accelerations from objectives and safety requirements on arbitrary task manifolds. SafePBDS builds on prior work that combines predefined task manifold dynamical systems to produce autonomous motion. Its first innovation is a pullback control barrier function construction, which converts task manifold safety conditions into linear constraints on configuration manifold accelerations. The second innovation is a task manifold action interface that allows a high-level policy to inject low dimensional residual motions; zero input recovers the autonomous behavior, while safety is preserved under arbitrary inputs. This lets high-level policies efficiently steer exploration while leaving precise motion to the autonomous behavior. We validate SafePBDS in simulation and on a 23-DOF Franka Panda-Allegro Hand platform. On dexterous grasping, SafePBDS achieves a $92.5\\%$ success rate across 20 household objects and 120 trials. Using the action interface, the method can exclude any one of the four fingers during grasping via a one-dimensional action, achieving $94.4\\%$ 3-finger grasp success across 3 objects and 36 trials. The efficient planning and safety guarantee of SafePBDS also enables the first model-based, fully actuated palm-down in-hand reorientation, exceeding $360^\\circ$ of yaw rotation in both directions under varying object weight and wrist motion. Demo video and details: https://tml.stanford.edu/safe-pbds",
+      "title": "Prior Policy Guided Dual-Agent Coordinated Manipulation Planning of Spacecraft-Manipulator System",
+      "abstract": "The strong dynamic coupling between the manipulator and the base poses a significant challenge to maintaining spacecraft attitude stability, potentially compromising mission safety. In this paper, we propose a Dual-Agent Coordinated Manipulation Planning (DACMP) framework that simultaneously achieves high-precision end-effector pose reaching for a 6-DoF space manipulator and attitude stabilization of the base spacecraft. To enhance learning efficiency, we present a prior policy-guided Deep Reinforcement Learning algorithm incorporating the Timestep-level Expert Switching Guidance (TESG) mechanism, thereby promoting global convergence and improving task success rates. Extensive experiments demonstrate that DACMP significantly outperforms baseline DRL algorithms in terms of task success rate and control precision. Furthermore, the robustness of DACMP is validated under various challenging scenarios, including system constraints, environmental disturbances, and perception uncertainties. The code and simulation configurations are available on GitHub: https://github.com/HIT-YuhuiHu/DACMP.",
       "authors": [
-        "Albert Wu",
-        "Riccardo Bonalli",
-        "Thomas Lew",
-        "C. Karen Liu"
+        "Yuhui Hu",
+        "Dong Zhou",
+        "Kaihong Ouyang",
+        "Zhongliang Yu",
+        "Jianfeng Lv",
+        "Xiangyu Shao"
       ],
       "primary_category": "cs.RO",
       "categories": [
         "cs.RO"
       ],
-      "published": "2026-05-20T23:16:01+00:00",
-      "link": "https://arxiv.org/pdf/2605.21811v1",
+      "published": "2026-05-25T02:32:23+00:00",
+      "link": "https://arxiv.org/pdf/2605.25362v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 6.0,
-      "llm_evidence_en": "geometric motion policies for safe dexterous manipulation, applicable to aerial manipulator control",
-      "llm_evidence_cn": "用于灵巧操作的安全几何运动策略，可应用于空中机械臂控制",
-      "llm_evidence": "用于灵巧操作的安全几何运动策略，可应用于空中机械臂控制",
-      "canonical_evidence": "用于灵巧操作的安全几何运动策略，可应用于空中机械臂控制",
-      "llm_tldr_en": "This paper introduces SafePBDS, a geometrically consistent framework that computes optimal safe accelerations from objectives and safety constraints on arbitrary task manifolds, potentially useful for controlling robotic arms on aerial vehicles during physical interaction.",
-      "llm_tldr_cn": "针对机器人灵巧操作需要在异构几何空间上协调目标与约束的挑战，本文提出SafePBDS框架，通过拉回控制障碍函数构造在任意任务流形上计算最优安全加速度。该方法为具有浮动基座的空中机械臂在物理交互时的安全控制提供了几何一致的解决方案，有助于实现空中操作的安全运动规划。",
-      "llm_tldr": "针对机器人灵巧操作需要在异构几何空间上协调目标与约束的挑战，本文提出SafePBDS框架，通过拉回控制障碍函数构造在任意任务流形上计算最优安全加速度。该方法为具有浮动基座的空中机械臂在物理交互时的安全控制提供了几何一致的解决方案，有助于实现空中操作的安全运动规划。",
+      "llm_evidence_en": "deep RL for coupled spacecraft-manipulator control",
+      "llm_evidence_cn": "深度强化学习用于航天器-机械臂耦合控制",
+      "llm_evidence": "深度强化学习用于航天器-机械臂耦合控制",
+      "canonical_evidence": "深度强化学习用于航天器-机械臂耦合控制",
+      "llm_tldr_en": "Proposes DACMP, a dual-agent framework with prior policy-guided DRL for coordinated manipulation of a spacecraft-manipulator system, achieving high precision and attitude stabilization.",
+      "llm_tldr_cn": "航天器-机械臂系统存在强动态耦合，影响姿态稳定。提出双智能体协调操作规划（DACMP）框架，采用先验策略引导的深度强化学习算法，结合时间步专家切换机制，同时实现末端执行器高精度到达和基座姿态稳定。实验验证了该方法在任务成功率和收敛速度上的显著提升。",
+      "llm_tldr": "航天器-机械臂系统存在强动态耦合，影响姿态稳定。提出双智能体协调操作规划（DACMP）框架，采用先验策略引导的深度强化学习算法，结合时间步专家切换机制，同时实现末端执行器高精度到达和基座姿态稳定。实验验证了该方法在任务成功率和收敛速度上的显著提升。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
       "matched_requirement_id": "req-5",
       "selection_source": "fresh_fetch",
       "quick_tier": "6"
     },
     {
-      "id": "2606.10818v1",
+      "id": "2606.03949v1",
       "source": "arxiv",
-      "title": "IMPACT: Learning Internal-Model Predictive Control for Forceful Robotic Manipulation",
-      "abstract": "Real-world robotic manipulation tasks often involve forceful interactions with the environment, such as using tools of varying weights, transporting objects with different masses, and performing contact-rich tasks like table wiping. Previous learning-based approaches typically employ imitation learning policies that output target end-effector poses tracked by low-level impedance controllers. In these systems, forceful interactions are either implicitly realized through steady-state tracking errors or explicitly commanded using wrist force/torque or tactile sensors. However, implicit approaches generalize poorly across object weights, while explicit approaches require specialized hardware and increase system complexity. In this work, we propose IMPACT, a framework that decouples these forceful tasks into task-planning and internal-model-based predictive control. Extensive simulation and real-world experiments demonstrate that the proposed framework achieves higher success rates and improved generalization to unseen object weights, as well as better safety and energy efficiency.",
+      "title": "Preference-Calibrated Human-in-the-Loop Reinforcement Learning for Robotic Manipulation",
+      "abstract": "Human-in-the-loop reinforcement learning (HIL-RL) improves sample efficiency in real-robot manipulation through online human intervention. However, successful trajectories may include suboptimal actions that deviate from the desired task-execution path and force human intervention. Existing HIL-RL methods typically apply the consistent credit assignment principle to all transitions, uniformly propagating discounted terminal rewards through suboptimal segments, ignoring the actual contribution of each transition to task success. This overestimates Q-values for critic learning and indirectly misguides actor updates toward suboptimal behavior patterns. To this end, we propose PACT, a Preference-calibrated Actor-Critic Training framework that leverages the implicit preference signals induced by intervention to perform credit reassignment on identified suboptimal segments while directly guiding policy training for unbiased critic-actor learning. Specifically, we first design a progress model that learns from human demonstration and identifies suboptimal segments for credit correction. Then, from the human action and resampled policy action at the intervention state, we build preference pairs to define a counterfactual advantage that penalizes Bellman targets of the identified suboptimal segment, enabling directional credit calibration. Moreover, we directly align the policy with human corrective actions in the bounded mean space, providing an additional signal beyond critic-guided updates. Across five real-robot manipulation tasks, PACT improves the average success rate by 24.5% and achieves 1.3 times faster convergence, thereby improving both RL sample efficiency and performance. Code is available at https://anonymous.4open.science/r/HILRL-A1X-BC05.",
       "authors": [
-        "Jiawei Gao",
-        "Chaoqi Liu",
-        "Peilin Wu",
-        "Haonan Chen",
-        "Yilun Du"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO",
-        "cs.CV"
-      ],
-      "published": "2026-06-09T13:00:56+00:00",
-      "link": "https://arxiv.org/pdf/2606.10818v1",
-      "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
-      ],
-      "llm_score": 7.0,
-      "llm_evidence_en": "learning predictive control for forceful robotic manipulation tasks",
-      "llm_evidence_cn": "适用于强力机器人操作任务的学习预测控制",
-      "llm_evidence": "适用于强力机器人操作任务的学习预测控制",
-      "canonical_evidence": "适用于强力机器人操作任务的学习预测控制",
-      "llm_tldr_en": "Introduces a learning-based internal model predictive control that directly outputs joint torques for forceful manipulation, improving generalization across object weights without specialized sensors; relevant to aerial manipulation force control.",
-      "llm_tldr_cn": "针对机器人强力操作中隐含方法泛化差、显式方法需专用传感器的问题，提出一种学习内部模型预测控制框架，直接输出关节力矩进行力控交互，在真实机器人上验证了抓取、工具使用等任务中优于基线的泛化性能，为空中操作器的强力交互提供了可借鉴的学习控制方法。",
-      "llm_tldr": "针对机器人强力操作中隐含方法泛化差、显式方法需专用传感器的问题，提出一种学习内部模型预测控制框架，直接输出关节力矩进行力控交互，在真实机器人上验证了抓取、工具使用等任务中优于基线的泛化性能，为空中操作器的强力交互提供了可借鉴的学习控制方法。",
-      "llm_tags": [
-        "query:aerial-arm"
-      ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "physical interaction control of aerial robots",
-      "matched_requirement_id": "req-5",
-      "selection_source": "fresh_fetch",
-      "quick_tier": "7"
-    },
-    {
-      "id": "2605.27699v1",
-      "source": "arxiv",
-      "title": "AURA: Asymptotically Optimal Uncertainty-Robust Replanning Algorithm for Kinodynamic Systems",
-      "abstract": "Sampling-based motion planners offer a practical and scalable approach to kinodynamic motion planning, notably for high-dimensional, underactuated, or non-holonomic systems. However, these planners are typically used offline, requiring execution to begin only after the trajectory has been computed. In addition, the planned trajectory may not be accurately tracked in the presence of motion uncertainty, leading to deviations from the nominal solution. In this work, these limitations were addressed within a unified framework, \\method, an asymptotically-optimal meta-planner framework that improves both path quality and tracking performance during execution. In addition to the main execution thread, this framework comprises a replanning method that continuously explores the state space and refines the trajectory during execution, and an optimization process that refines future control inputs to reduce tracking error. Together, these components enable \\method to leverage asymptotically optimal planning online while improving execution accuracy under uncertainty. The proposed approach is evaluated in both simulation and real-world environments across multiple systems, demonstrating consistent improvements in trajectory quality, tracking accuracy, and overall performance compared with baseline methods.",
-      "authors": [
-        "Seyedali Golestaneh",
-        "Zhuoyun Zhong",
-        "Donghyung Lee",
-        "Constantinos Chamzas"
+        "Zeyi Liu",
+        "Guangyao Liu",
+        "Yinuo Qu",
+        "Yuquan Xue",
+        "Bofang Jia",
+        "Chunhua Yang",
+        "Weihua Gui",
+        "Keke Huang",
+        "Ziwei Wang"
       ],
       "primary_category": "cs.RO",
       "categories": [
         "cs.RO"
       ],
-      "published": "2026-05-26T21:20:09+00:00",
-      "link": "https://arxiv.org/pdf/2605.27699v1",
+      "published": "2026-06-02T17:38:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.03949v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
-      "llm_score": 6.0,
-      "llm_evidence_en": "replanning algorithm for kinodynamic systems, useful for aerial manipulator trajectory tracking under uncertainty",
-      "llm_evidence_cn": "用于动力学系统的重规划算法，可用于空中机械臂不确定性下的轨迹跟踪",
-      "llm_evidence": "用于动力学系统的重规划算法，可用于空中机械臂不确定性下的轨迹跟踪",
-      "canonical_evidence": "用于动力学系统的重规划算法，可用于空中机械臂不确定性下的轨迹跟踪",
-      "llm_tldr_en": "This paper proposes an asymptotically-optimal meta-planner that combines offline planning with online execution-time replanning to improve path quality and tracking performance under motion uncertainty, applicable to kinodynamic systems like aerial manipulators requiring accurate trajectory following.",
-      "llm_tldr_cn": "针对动力学系统运动规划通常离线进行且执行时可能因不确定性偏离轨迹的问题，本文提出一种渐近最优的元规划器AURA。该框架在执行过程中结合重规划线程，根据实际状态在线调整轨迹，同时保证规划质量的渐近最优性。该方法可应用于旋翼飞行机械臂的轨迹跟踪控制，提高其在运动不确定性下的跟踪精度和鲁棒性，为空中操作的运动规划提供了可靠工具。",
-      "llm_tldr": "针对动力学系统运动规划通常离线进行且执行时可能因不确定性偏离轨迹的问题，本文提出一种渐近最优的元规划器AURA。该框架在执行过程中结合重规划线程，根据实际状态在线调整轨迹，同时保证规划质量的渐近最优性。该方法可应用于旋翼飞行机械臂的轨迹跟踪控制，提高其在运动不确定性下的跟踪精度和鲁棒性，为空中操作的运动规划提供了可靠工具。",
+      "llm_score": 8.0,
+      "llm_evidence_en": "HIL-RL with preference calibration for robotic manipulation",
+      "llm_evidence_cn": "基于偏好校准的人机交互强化学习方法用于机器人操纵",
+      "llm_evidence": "基于偏好校准的人机交互强化学习方法用于机器人操纵",
+      "canonical_evidence": "基于偏好校准的人机交互强化学习方法用于机器人操纵",
+      "llm_tldr_en": "PACT introduces preference-calibrated actor-critic training to mitigate suboptimal actions in human-in-the-loop RL for real-robot manipulation, improving sample efficiency and policy quality.",
+      "llm_tldr_cn": "该论文针对人机交互强化学习中成功轨迹包含次优动作导致Q值高估的问题，提出偏好校准的演员-评论家训练框架PACT。PACT通过偏好标注区分各动作对任务成功的真实贡献，避免均匀传播折扣奖励，从而更准确地更新策略。在真实机器人操纵任务上，PACT相比基方法提高了样本效率和任务成功率。该工作直接服务于机器人手臂强化学习控制，其方法可推广到无人机机械臂场景，但对空中环境未做特别适配。",
+      "llm_tldr": "该论文针对人机交互强化学习中成功轨迹包含次优动作导致Q值高估的问题，提出偏好校准的演员-评论家训练框架PACT。PACT通过偏好标注区分各动作对任务成功的真实贡献，避免均匀传播折扣奖励，从而更准确地更新策略。在真实机器人操纵任务上，PACT相比基方法提高了样本效率和任务成功率。该工作直接服务于机器人手臂强化学习控制，其方法可推广到无人机机械臂场景，但对空中环境未做特别适配。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "rotorcraft manipulator modeling and trajectory tracking",
-      "matched_requirement_id": "req-4",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch",
-      "quick_tier": "6"
+      "quick_tier": "8plus"
     },
     {
-      "id": "2606.08725v1",
+      "id": "2606.03335v1",
       "source": "arxiv",
-      "title": "Real-Time and Accurate Collision-Free Teleoperation via Differentiable Constraint-Based Trajectory Planning",
-      "abstract": "In teleoperation, the human operator typically controls only the end-effector pose, which often leads to self-collisions of the manipulator and collisions with environmental obstacles, since joints and links are not controlled individually. A common strategy to mitigate this issue is to enhance the operator's input using optimal-control-based trajectory planning. As derivative-based solvers require differentiable constraints, existing approaches either approximate robots and obstacles with spheres, reducing geometric accuracy, or approximate derivatives, degrading convergence and increasing computation times. We address these limitations by adapting a recent formulation of differentiable collision-avoidance constraints, based on duality in convex optimization, to the teleoperation setting. The robot is approximated with capsules and the environment with polytopes. We compare the resulting trajectory planning method against state-of-the-art techniques in simulation with varying numbers of obstacles and evaluate it on a UR5e manipulator in a real-world teleoperation test. Results show that our approach achieves lower computation times while enabling more accurate obstacle modeling, leading to smoother and collision-free end-effector teleoperation.",
+      "title": "GPU-Parallel Multi-Task Reinforcement Learning with Demonstration Guided Policy Optimization",
+      "abstract": "Large scale GPU-parallel reinforcement learning has changed what can be trained in robot simulation, yet most systems still optimize one specialist policy per task. We propose a construction methodology for turning structured manipulation task families into GPU-parallel multi-task RL benchmarks, and instantiate it as MT-Libero using LIBERO assets and task predicates in Isaac Lab. The resulting benchmark supports simultaneous reinforcement learning over heterogeneous task suites with parallel rendering, physics randomization, and state-input or visual-input policies. To make such training practical under sparse success signals and limited prior data, we further propose DGPO, an on-policy demonstration guided method that combines importance weighted PPO with adaptive behavior cloning on matched demonstration actions. DGPO enables a tunable preference toward demonstrated task distributions, outperforming both prior-free RL and existing demonstration-based methods while preserving the stability and online improvement benefits of on-policy PPO.",
       "authors": [
-        "Max Grobbel",
-        "Tristan Schneider",
-        "Daniel Flögel",
-        "Sören Hohmann"
+        "Rui Zhang",
+        "Qiwei Wu",
+        "Zhengyu Zhang",
+        "Tao Li",
+        "Yunrong Guo",
+        "Junjie Lai",
+        "Renjing Xu",
+        "Weihua Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-02T08:43:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.03335v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "GPU-parallel multi-task RL for manipulation tasks, applicable to robot arm control",
+      "llm_evidence_cn": "多任务强化学习框架，可应用于机器人手臂控制",
+      "llm_evidence": "多任务强化学习框架，可应用于机器人手臂控制",
+      "canonical_evidence": "多任务强化学习框架，可应用于机器人手臂控制",
+      "llm_tldr_en": "Proposes MT-Libero benchmark and DGPO method for GPU-parallel multi-task RL in robotic manipulation, enabling simultaneous training across heterogeneous tasks with demonstration guidance.",
+      "llm_tldr_cn": "现有强化学习系统通常为每个任务训练专用策略，效率低下。本文提出一种将结构化操作任务族转化为GPU并行多任务RL基准的方法，并实例化为MT-Libero，支持异构任务并行训练。同时提出演示引导策略优化（DGPO）方法，结合稀疏奖励和有限先验数据使训练更实用。该方法为多任务机器人操作学习提供了高效框架。",
+      "llm_tldr": "现有强化学习系统通常为每个任务训练专用策略，效率低下。本文提出一种将结构化操作任务族转化为GPU并行多任务RL基准的方法，并实例化为MT-Libero，支持异构任务并行训练。同时提出演示引导策略优化（DGPO）方法，结合稀疏奖励和有限先验数据使训练更实用。该方法为多任务机器人操作学习提供了高效框架。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.26478v1",
+      "source": "arxiv",
+      "title": "Efficient On-policy Visual-RL via Stochastic Decoupled Policy Gradient",
+      "abstract": "We present the stochastic decoupled policy gradient (SDPG), a lightweight visual reinforcement learning (RL) method that trains diverse visuomotor control policies end-to-end within a few hours on a single NVIDIA RTX 4080 GPU. SDPG estimates policy gradients via random perturbations of trajectory rollouts, requiring orders of magnitude fewer batch-rendered environments and substantially reducing compute and memory overhead. On visual MuJoCo benchmarks, SDPG consistently outperforms baseline methods in training time, memory usage, and rewards. Finally, to support future research, we introduce a suite of realistic visual robotics benchmarks spanning dexterous manipulation, challenging locomotion, and demonstrate effective sim-to-real transfer on physical hardware.",
+      "authors": [
+        "Haoxiang You",
+        "Yilang Liu",
+        "Davis Zong",
+        "Qian Wang",
+        "Teeratham Vitchutripop",
+        "Qi Wang",
+        "Daniel Rakita",
+        "Ian Abraham"
       ],
       "primary_category": "cs.RO",
       "categories": [
         "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG",
         "eess.SY"
       ],
-      "published": "2026-06-07T16:39:56+00:00",
-      "link": "https://arxiv.org/pdf/2606.08725v1",
+      "published": "2026-05-26T02:35:08+00:00",
+      "link": "https://arxiv.org/pdf/2605.26478v1",
       "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
+        "keyword:drone-arm",
+        "query:drone-arm"
       ],
       "llm_score": 6.0,
-      "llm_evidence_en": "presents differentiable constraint-based trajectory planning for manipulator teleoperation, relevant to motion planning for aerial manipulators",
-      "llm_evidence_cn": "提出基于可微约束的机械臂遥操作轨迹规划，相关于空中机械臂的运动规划",
-      "llm_evidence": "提出基于可微约束的机械臂遥操作轨迹规划，相关于空中机械臂的运动规划",
-      "canonical_evidence": "提出基于可微约束的机械臂遥操作轨迹规划，相关于空中机械臂的运动规划",
-      "llm_tldr_en": "Proposes a differentiable constraint-based trajectory planning method for collision-free teleoperation of robotic manipulators, achieving real-time accurate avoidance.",
-      "llm_tldr_cn": "针对遥操作中机械臂自碰撞和环境碰撞问题，提出一种基于可微约束的轨迹规划方法，利用精确几何模型实现实时避碰，提高了操作安全性和准确性，适用于高自由度机械臂远程操控。",
-      "llm_tldr": "针对遥操作中机械臂自碰撞和环境碰撞问题，提出一种基于可微约束的轨迹规划方法，利用精确几何模型实现实时避碰，提高了操作安全性和准确性，适用于高自由度机械臂远程操控。",
+      "llm_evidence_en": "lightweight visual RL for robot control",
+      "llm_evidence_cn": "轻量级视觉强化学习用于机器人控制",
+      "llm_evidence": "轻量级视觉强化学习用于机器人控制",
+      "canonical_evidence": "轻量级视觉强化学习用于机器人控制",
+      "llm_tldr_en": "Proposes SDPG, a lightweight visual RL method that estimates policy gradients via random perturbations, achieving efficient end-to-end training on a single GPU and beating baselines on visual MuJoCo.",
+      "llm_tldr_cn": "针对现有视觉强化学习方法计算开销大、训练时间长的问题，提出随机解耦策略梯度（SDPG）方法，通过轨迹滚动的随机扰动估计策略梯度，大幅减少批量渲染环境数量，在单GPU上数小时内完成端到端训练。实验表明，SDPG在视觉MuJoCo基准上超越基线方法，并支持真实机器人迁移。",
+      "llm_tldr": "针对现有视觉强化学习方法计算开销大、训练时间长的问题，提出随机解耦策略梯度（SDPG）方法，通过轨迹滚动的随机扰动估计策略梯度，大幅减少批量渲染环境数量，在单GPU上数小时内完成端到端训练。实验表明，SDPG在视觉MuJoCo基准上超越基线方法，并支持真实机器人迁移。",
       "llm_tags": [
-        "query:aerial-arm"
+        "query:drone-arm"
       ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
-      "matched_requirement_id": "req-6",
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch",
       "quick_tier": "6"
+    },
+    {
+      "id": "2606.11525v1",
+      "source": "arxiv",
+      "title": "Learning Object Manipulation from Scratch via Contrastive Interaction",
+      "abstract": "Contrastive Reinforcement Learning (CRL) has seen recent success in a wide variety of goal-conditioned robotics tasks by learning structured representations of the dynamics. However, despite its success in locomotion and simpler control domains, CRL often struggles in interaction-rich manipulation. We argue that a key source of this difficulty is object-centric interaction, such as contact or grasping, that induces distinct changes in the underlying dynamic modes. In this work, we formulate manipulation dynamics as a piecewise-smooth Markov process and show that interaction-induced mode changes create piecewise nonlinear reachability structures that are difficult for standard CRL energy functions to represent and plan over. Based on this analysis, we introduce Interaction-weighted Resampling (IWR). IWR performs interaction-aware resampling around phases before, during, and after interactions, encouraging the learned representation to preserve the mode boundaries that determine future reachability to capture multi-modal and piecewise nonlinear reachability. Across interaction-centric environments, including 2D dynamic control, robotic manipulation, and robot air hockey, IWR improves both sample efficiency and overall performance over prior CRL methods, with 19.8% average improvement in simulation. Finally, using a sim-to-real pipeline with policies trained by IWR, we demonstrate the first real-world goal-conditioned robot air hockey agent capable of hitting goals, improving success from 25% to 60%. Project Page: IWR-arxiv.github.io.",
+      "authors": [
+        "Tongle Shen",
+        "Caleb Chuck",
+        "Fan Feng",
+        "Biwei Huang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-06-10T00:06:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.11525v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "contrastive RL for object manipulation, applicable to robot arm control",
+      "llm_evidence_cn": "用于物体操作的对比强化学习，适用于机械臂控制",
+      "llm_evidence": "用于物体操作的对比强化学习，适用于机械臂控制",
+      "canonical_evidence": "用于物体操作的对比强化学习，适用于机械臂控制",
+      "llm_tldr_en": "Identifies limitations of contrastive RL in interaction-rich manipulation due to piecewise dynamics, proposes a new formulation and algorithm that learns manipulation from scratch by handling mode changes.",
+      "llm_tldr_cn": "标准对比强化学习（CRL）在涉及接触和抓取等物体交互的复杂操作任务中表现不佳，原因在于操作动态具有分段平滑特性，交互引起模式切换导致CRL能量函数难以规划。本文将操作动态建模为分段平滑马尔可夫过程，并据此设计新的对比学习目标，使得智能体能够从零开始学会物体操作，在多个模拟操作基准上达到或超越先前方法。",
+      "llm_tldr": "标准对比强化学习（CRL）在涉及接触和抓取等物体交互的复杂操作任务中表现不佳，原因在于操作动态具有分段平滑特性，交互引起模式切换导致CRL能量函数难以规划。本文将操作动态建模为分段平滑马尔可夫过程，并据此设计新的对比学习目标，使得智能体能够从零开始学会物体操作，在多个模拟操作基准上达到或超越先前方法。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.30957v1",
+      "source": "arxiv",
+      "title": "RDGen: Demonstration Generation for High-Quality Robot Learning via Reinforcement Learning",
+      "abstract": "Vision-Language-Action (VLA) models have emerged as a promising paradigm for general-purpose robot control. However, their performance remains fundamentally constrained by the availability of high-quality robot trajectory data. In current robot learning practice, such data are primarily collected through human teleoperation, which is labor-intensive, costly, and difficult to scale. In this paper, we propose RDGen, a sim-to-real reinforcement learning framework for generating high-quality robot demonstrations. Rather than employing reinforcement learning solely as the final control policy, RDGen leverages trained RL policies as a structured trajectory generator. The system consists of a VLM-based task parser that identifies task-relevant objects, a Grounding DINO-based object localizer, and an RL policy transferred from simulation to the real robot. Successful rollouts are then harvested as clean, high-quality demonstrations for downstream VLA training, while the simulation stage further provides a scalable source of additional trajectories at little marginal cost. Experiments on a pick-and-place task demonstrate that the transferred RL policy achieves a high task success rate. Compared with human teleoperation, RDGen produces significantly smoother trajectories and yields superior downstream VLA performance. These results indicate that RL-generated demonstrations can serve as more reliable and consistent supervisory signals for robot policy learning.",
+      "authors": [
+        "Zijian Zhu",
+        "Menglin Zou",
+        "Zhuang Li",
+        "Yaojie Tu",
+        "Xinhai Sun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-29T07:53:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.30957v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL-based demonstration generation for robot manipulation",
+      "llm_evidence_cn": "基于强化学习的机器人操作演示生成",
+      "llm_evidence": "基于强化学习的机器人操作演示生成",
+      "canonical_evidence": "基于强化学习的机器人操作演示生成",
+      "llm_tldr_en": "Proposes RDGen, a sim-to-real RL framework that generates high-quality robot demonstrations by leveraging trained RL policies as structured trajectory generators, addressing data scarcity.",
+      "llm_tldr_cn": "机器人学习依赖高质量轨迹数据，但人工遥操作成本高且难以扩展。提出RDGen框架，利用训练好的强化学习策略作为结构化轨迹生成器，结合视觉语言模型任务解析器，自动生成高质量演示数据。实验表明该方法能有效提升下游策略学习性能，并实现从仿真到真实的迁移。",
+      "llm_tldr": "机器人学习依赖高质量轨迹数据，但人工遥操作成本高且难以扩展。提出RDGen框架，利用训练好的强化学习策略作为结构化轨迹生成器，结合视觉语言模型任务解析器，自动生成高质量演示数据。实验表明该方法能有效提升下游策略学习性能，并实现从仿真到真实的迁移。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.14531v1",
+      "source": "arxiv",
+      "title": "AERMANI-PLACE: Language Guided Object Placement with Aerial Manipulators",
+      "abstract": "Object placement is a fundamental component of aerial manipulation tasks, yet existing systems typically require the desired placement position to be specified explicitly in metric coordinates. Such interfaces are not intuitive and require users to reason about coordinate frames and scene geometry, making them difficult to use in practical deployments. In contrast, humans often communicate spatial goals through a combination of language and pointing gestures. Inspired by this observation, we present AERMANI-PLACE, a framework for language-guided object placement with aerial manipulators. Given a scene image and a natural language instruction, an image editing model generates a modified version of the scene containing a visual marker that indicates where the object should be placed. This marker is then grounded into the physical environment using depth observations to recover a metric place point, after which a placement trajectory is generated and executed by the aerial manipulator. We evaluate the proposed approach on a test set of 100 language-guided placement tasks and demonstrate successful execution on a real aerial manipulation platform. Experimental results show that the proposed method reliably infers placement locations from language instructions with an average success rate of 87\\% on the test-set and transfers effectively to real-world aerial manipulation with an average success rate of 72\\%.   Video: https://youtu.be/SgwwgLBsv0g",
+      "authors": [
+        "Sarthak Mishra",
+        "Ritama Sanyal",
+        "Rishabh Dev Yadav",
+        "Wei Pan",
+        "Spandan Roy"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-12T15:07:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.14531v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "language-guided object placement with aerial manipulators",
+      "llm_evidence_cn": "基于语言引导的空中机械臂物体放置",
+      "llm_evidence": "基于语言引导的空中机械臂物体放置",
+      "canonical_evidence": "基于语言引导的空中机械臂物体放置",
+      "llm_tldr_en": "Presents AERMANI-PLACE, a framework for language-guided object placement with aerial manipulators using image editing to generate visual markers indicating placement location.",
+      "llm_tldr_cn": "现有空中操纵系统要求用户以坐标指定放置位置，不直观。提出AERMANI-PLACE，利用自然语言指令和图像编辑模型生成视觉标记，引导空中机械臂完成物体放置。系统通过修改场景图像标记目标位置，使控制器无需精确坐标即可执行放置任务。实验证明该方法显著降低了用户操作难度，提高了空中操纵的易用性。",
+      "llm_tldr": "现有空中操纵系统要求用户以坐标指定放置位置，不直观。提出AERMANI-PLACE，利用自然语言指令和图像编辑模型生成视觉标记，引导空中机械臂完成物体放置。系统通过修改场景图像标记目标位置，使控制器无需精确坐标即可执行放置任务。实验证明该方法显著降低了用户操作难度，提高了空中操纵的易用性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "unmanned aerial vehicle with robotic arm",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
     }
   ]
 }
