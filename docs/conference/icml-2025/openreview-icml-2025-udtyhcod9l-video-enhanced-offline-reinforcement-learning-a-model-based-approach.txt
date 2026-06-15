@@ -1,0 +1,896 @@
+Title: Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach
+
+URL Source: https://openreview.net/pdf?id=uDTyhcOd9l
+
+Number of Pages: 17
+
+Markdown Content:
+Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+Minting Pan 1 Yitao Zheng 1 Jiajian Li 1 Yunbo Wang 1 Xiaokang Yang 1
+
+Abstract 
+
+Offline reinforcement learning (RL) enables pol-icy optimization using static datasets, avoiding the risks and costs of extensive real-world explo-ration. However, it struggles with suboptimal offline behaviors and inaccurate value estimation due to the lack of environmental interaction. We present Video-Enhanced Offline RL (VeoRL) , a model-based method that constructs an interactive world model from diverse, unlabeled video data readily available online. Leveraging model-based behavior guidance, our approach transfers com-monsense knowledge of control policy and physi-cal dynamics from natural videos to the RL agent within the target domain. VeoRL achieves sub-stantial performance gains (over 100% in some cases) across visual control tasks in robotic ma-nipulation, autonomous driving, and open-world video games. Project page: https://panmt. github.io/VeoRL.github.io .
+
+1. Introduction 
+
+When humans tackle long-term control tasks they are unfa-miliar with, they typically start by watching instructional videos on platforms like YouTube to develop an abstract understanding of the task, before transitioning to hands-on practice in a real environment to refine their skills. Can machines replicate this learning process? In this work, we introduce video-enhanced offline reinforcement learning (VeoRL) to explore this problem. Offline reinforcement learning refers to the scenario where an RL system is restricted to learning from a limited, static dataset. This approach offers several benefits, as it allows agents to learn from existing data, reducing the need for costly and potentially unsafe real-world engagement (Fuji-moto et al., 2019; Kumar et al., 2019; 2020; Levine et al.,     
+
+> 1MoE Key Lab of Artificial Intelligence, AI Institute, Shanghai Jiao Tong University. Correspondence to: Yunbo Wang <yun-bow@sjtu.edu.cn >.
+> Proceedings of the 42 nd International Conference on Machine Learning , Vancouver, Canada. PMLR 267, 2025. Copyright 2025 by the author(s).
+
+2020; Kostrikov et al., 2022). However, a key challenge in offline RL lies in the inherent incompleteness of fixed datasets, which can result in distributional shifts from the target environment. This issue, compounded by the well-documented overestimation bias in value approximations, creates significant difficulties for current offline RL meth-ods (Yu et al., 2022; Zang et al., 2023; Lu et al., 2023). The core insight of VeoRL is to leverage unlabeled Inter-net videos to broaden the agent’s understanding of human behaviors and the real physical world, going beyond the limited scope of fixed, predefined datasets. Notably, the vast volume of online video data possesses several key ad-vantages: (i) It can be acquired at a significantly lower cost compared to data collected through real interactions with the target environments. (ii) It implicitly contains demon-stration policies that, while potentially suboptimal, can still be beneficial for current visual control tasks. Nonetheless, the online videos typically lack action labels or reward function annotations and may present remark-able data distributional shifts compared to the target RL domain. These properties introduce unique challenges when using the auxiliary videos for policy optimization. Existing RL pretraining methods generally operate within the raw action space ( e.g., through behavior cloning) or perform action-free model warmup ( e.g., R3M (Nair et al., 2022) and APV (Seo et al., 2022)), making them ill-suited for transferring underlying behaviors from unlabeled videos. To address these challenges, we begin by constructing a discrete latent action space to recover the underlying, unob-servable control policies from raw video data (see Figure 1a). Specifically, we model the temporal events in the video as a Markov decision process with a continuous state space and a discrete action space. To optimize a finite set of “ behavior abstractions ”, we apply vector quantization techniques and use the learned behavior vectors to drive the training of a video prediction model. Empirical results demonstrate that the latent behaviors learned through this approach exhibit strong semantic alignment with the actual actions observed in the target environment. VeoRL is essentially a model-based RL algorithm, where the agent interacts with a world model that generates state transitions and reward feedback. We train a world model comprising two state transition branches: One branch pre-1Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach Push  
+
+> Press
+> Place
+> Grip Rotate
+> Move
+
+…
+
+Generate 
+
+Real-world Videos Behavior Abstrac;on 
+
+Offline Datasets Agent 
+
+Train   
+
+> Pick
+> Pull
+> Guided toward the underlying
+> control behaviors behind
+> the videos
+> Pick → Place
+> DreamerV2
+> LOMPO
+> VeoRL
+> Figure 1. Overview of the training setup of VeoRL that leads to improved offline RL performance. a , We extract latent behavior abstractions from task-agnostic, unannotated natural video data to enrich the world model’s commonsense understanding of the physical world. By interacting with this world model, the agent performs policy optimization guided explicitly by the latent policies learned from the natural videos. b, Overall performance of VeoRL. It demonstrates significant improvements over existing offline RL methods across different visual control benchmarks, including Meta-World robotic manipulation, CARLA autonomous driving, and Minecraft open-world video games. We present the average performance on all tasks on each benchmark.
+
+dicts future state evolution based on the agent’s real actions (trunk net ), while the other branch predicts longer-term envi-ronmental feedback derived from latent behaviors ( plan net ). We further introduce an intrinsic reward that encourages the state-action rollouts along the trunk net to progressively align with the long-term future state predicted by the plan net. This approach connects the target policy with the be-havior abstractions learned from auxiliary videos, while mitigating the overestimation bias that arises from solely relying on environmental rewards to train the value network. We evaluate VeoRL on a diverse set of visual control benchmarks. For the Meta-World robotic manipulation tasks, we use the BridgeData-V2 dataset (Walke et al., 2023) as the source of auxiliary real-world videos. For the CARLA autonomous driving tasks, we employ the NuScenes dataset (Caesar et al., 2019), a collection of 1,000 
+
+diverse real-world driving scenes, as the auxiliary source domain. For the MineDojo open-world gaming environ-ment, where the agent must navigate a vast state space, we use online Minecraft videos created by human players to provide unlabeled video demonstrations. As summarized in Figure 1b, VeoRL achieves substantial performance im-provements over existing RL approaches. 
+
+2. Related Work 
+
+Model-based visual RL. For visual control tasks, agents learn control policies from high-dimensional visual inputs. By explicitly modeling state transitions and predicting be-havioral outcomes, model-based RL approaches (Ha & Schmidhuber, 2018; Hafner et al., 2019; 2020) typically of-fer better sample efficiency than model-free methods (Yarats et al., 2021b; Kostrikov et al., 2021; Laskin et al., 2020). World Models (Ha & Schmidhuber, 2018) were introduced to first learn compressed latent representations of the en-vironment in a self-supervised manner, and then use these latent states to train the agent. Dreamer (Hafner et al., 2020) and DreamerV2 (Hafner et al., 2021) optimize behavior by predicting and then acting upon expected values over the latent states generated by the Recurrent State-Space Model. Recently, research on goal-conditioned RL using hierarchi-cal world model architectures (Veeriah et al., 2021; Rao et al., 2022; Hafner et al., 2022; Gumbsch et al., 2023; Park et al., 2024) has shown how decomposing tasks into sub-goals can facilitate efficient decision-making in complex environments. However, none of these methods address the challenges of offline RL or facilitate unsupervised policy transfer from enriched out-of-domain video data. 
+
+Offline RL. Offline RL offers a cost-effective alternative by reducing interactions with online environments. Previous research has primarily focused on addressing the challenge of value overestimation, falling into two broad categories: model-free methods (Cen et al., 2024; Wu et al., 2019; Ku-mar et al., 2020; Osa & Harada, 2024; Li et al., 2023; Fu-jimoto & Gu, 2021; Hong et al., 2024) and model-based approaches (Chen et al., 2023; Yu et al., 2021; Hatch et al., 2023; Mazoure et al., 2023; Hatch et al., 2022; Sun et al., 2023; Rigter et al., 2022; Yang et al., 2024b). For example, 2Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+CQL (Kumar et al., 2020) introduces a model-free offline RL method that mitigates the value overestimation bias by learning a conservative state-action value function. This method can be seamlessly integrated with existing visual RL approaches. In the context of offline visual RL, an ad-ditional challenge is effectively handling high-dimensional visual inputs while preventing overfitting during the repre-sentation learning of latent states (Shah et al., 2022; Tian et al., 2020; Yadav et al., 2023; Nair et al., 2022; Wang et al., 2024). Specifically, LOMPO (Rafailov et al., 2021) presents a model-based offline visual RL approach that ex-plicitly manages the dynamics uncertainty by incorporating a reward penalty during world model training. In this work, we compare our approach with the model-based LOMPO method and the model-free CQL method integrated into the visual RL backbone of DrQ-V2 (Yarats et al., 2021a). 
+
+Video-enhanced RL. In recent years, there has been grow-ing interest in harnessing auxiliary video data to enhance RL, as such data is more accessible and affordable in real-world settings. We can broadly categorize these approaches into two groups. The first group focuses on using videos to improve agent performance through representation learn-ing (Seo et al., 2022; Ma et al., 2023; Wu et al., 2023). For instance, APV (Seo et al., 2022) pre-trains an action-free video prediction model using videos and then finetunes the agent with these pretrained representations. VIP (Ma et al., 2023) enhances generalization to downstream offline tasks by leveraging self-supervised visual representations. The second group focuses on learning transferable behavior policies from the source video domain (Torabi et al., 2018; Chang et al., 2022; Baker et al., 2022; Schmeckpeper et al., 2021; Ye et al., 2022). For example, the VPT model (Baker et al., 2022) trains an inverse dynamics model with a small set of labeled auxiliary videos and then assigns pseudo-actions to unlabeled video data. This method requires strong consistency across the source to target domains. Another line of work focuses on learning interactive world mod-els from the unlabeled target-domain videos to generate playable virtual environments (Valevski et al., 2024; Yang et al., 2024a). While promising, these methods highlight the potential of interactive video generation, without explicitly using them for downstream control tasks. Besides, these approaches have yet to be formally published. In summary, unlike VeoRL, previous video-enhanced approaches typi-cally require the source video set to be either annotated with action/reward labels or derived from the same domain as the target environment for policy deployment, or not directly designed for sequential decision-making tasks. 
+
+3. Method 
+
+We aim to enhance the performance of offline visual RL trained on an offline target dataset Btar by leveraging task-agnostic video data from a source domain Bsrc . Two key challenges arise in this context: (i) The auxiliary videos generally lack action labels and reward function annotations; (ii) There exist inherent distributional shifts between Bsrc 
+
+and Btar . To address these challenges, VeoRL employs a three-stage approach (as detailed in Algorithm 1): 1. We introduce a behavior abstraction network designed to extract underlying control behaviors directly from the raw observations of unlabeled videos. 2. We design a hierarchical world model to capture state transitions in two ways: through real actions using a 
+
+trunk net and through latent behaviors using a plan net .3. We propose a model-based RL method that optimizes the target policy over the trunk net transitions while being guided by latent behavior rollouts from the plan net. 
+
+3.1. Latent Behavior Abstraction 
+
+To address the challenge of video data lacking action la-bels, previous methods (Baker et al., 2022; Zhang et al., 2022) typically focus on using target domain observations with real action labels ( i.e., the offline RL dataset) to train an inverse dynamics model, which is then used to assign pseudo-action labels to the source domain auxiliary videos. However, this approach assumes that the source and target domains share the same action space, leading to two poten-tial issues: First, action predictions for source video data may suffer from domain distribution discrepancies. Second, the learned actions are limited in their ability to provide high-level behavior guidance for subsequent policy learn-ing. Instead, we propose a fully unsupervised approach for behavior inference, leveraging a compact categorical latent action space significantly smaller than the raw con-tinuous action space. This approach avoids the challenge of real action prediction, generating higher-level behavior representations that are distinct from the original actions for low-level visual control. To obtain a discretized latent action space, we design a 
+
+behavior abstraction network (BAN) based on vector quan-tization (Gray, 1984). As shown in Figure 2a, this module is trained within a one-step video prediction framework, where its output is used to drive a recurrent state-space model (RSSM) (Hafner et al., 2019) for forward dynamics modeling. The learning process begins by taking two obser-vations (otar 
+
+> t−1
+
+, o tar  
+
+> t
+
+) from the target dataset. We extract image encodings from these observations using a CNN model ( Eθ )and concatenate them into a latent vector, [etar 
+
+> t−1
+
+, e tar  
+
+> t
+
+] ∈ RD ,which captures the temporal difference between consecu-tive video frames. We maintain a learnable latent codebook 
+
+RK×D consisting of K continuous vectors ck=1 ,...,K ∈ RD ,each representing a distinct behavior abstraction. Given 
+
+[etar 
+
+> t−1
+
+, e tar  
+
+> t
+
+], BAN identifies the nearest neighbor ci from the set {ck}Kk=1 and outputs this vector as the chosen latent 3Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach BAN 
+
+<latexit sha1_base64="JJixDk4PxXUEZCJNJK13By2Fzgs=">AAAC2HicjVHLSsNAFD2Nr1pftV26CS2Cq5KIr2XBLlxWsA9sS0nSaRuaJiGZiKUU3Ilbf8Cd6Ef4B+7FP9C/8M40glpEJyQ5c+49Z+bea/qOHXJNe00oc/MLi0vJ5dTK6tr6RnozUw29KLBYxfIcL6ibRsgc22UVbnOH1f2AGUPTYTVzcCzitQsWhLbnnvGRz1pDo+faXdsyOFHtdHbc5OySj0uTSZtgn3Fj0k7ntYImlzoL9Bjki8nnp0zpPlf20i9oogMPFiIMweCCE3ZgIKSnAR0afOJaGBMXELJlnGGCFGkjymKUYRA7oG+Pdo2YdWkvPEOptugUh96AlCq2SeNRXkBYnKbKeCSdBfub91h6iruN6G/GXkNiOfrE/qX7zPyvTtTC0cWRrMGmmnzJiOqs2CWSXRE3V79UxcnBJ07gDsUDwpZUfvZZlZpQ1i56a8j4m8wUrNhbcW6Ed3FLGrD+c5yzoLpb0A8K+6c06T1MVxJbyGGH5nmIIk5QRoW8R7jDAx6Vc+VKuVZupqlKItZk8W0ptx+RhZrv</latexit> 
+
+D✓
+
+<latexit sha1_base64="hLOTeY5JEJnAr1lS7yROMJ6BX7o=">AAAC2HicjVHLSsNAFD2Nr1pftV26CS2Cq5KIr2VBBZcV7ANbKUk6bUPTJCQTsZSCO3HrD7gT/Qj/wL34B/oX3pmmoBbRCUnOnHvPmbn3mr5jh1zT3hLKzOzc/EJyMbW0vLK6ll7PVEIvCixWtjzHC2qmETLHdlmZ29xhNT9gRt90WNXsHYp49ZIFoe25Z3zgs4u+0XHttm0ZnKhmOjtscHbFh8ejUZNgl3Fj1EzntYImlzoN9Bjki8mX58zRQ67kpV/RQAseLETog8EFJ+zAQEhPHTo0+MRdYEhcQMiWcYYRUqSNKItRhkFsj74d2tVj1qW98Ayl2qJTHHoDUqrYJI1HeQFhcZoq45F0Fuxv3kPpKe42oL8Ze/WJ5egS+5dukvlfnaiFo40DWYNNNfmSEdVZsUskuyJurn6pipODT5zALYoHhC2pnPRZlZpQ1i56a8j4u8wUrNhbcW6ED3FLGrD+c5zToLJd0PcKu6c06R2MVxIbyGGL5rmPIk5QQpm8B7jHI56Uc+VauVFux6lKItZk8W0pd5+T8Jrw</latexit> 
+
+E✓
+
+<latexit sha1_base64="JJixDk4PxXUEZCJNJK13By2Fzgs=">AAAC2HicjVHLSsNAFD2Nr1pftV26CS2Cq5KIr2XBLlxWsA9sS0nSaRuaJiGZiKUU3Ilbf8Cd6Ef4B+7FP9C/8M40glpEJyQ5c+49Z+bea/qOHXJNe00oc/MLi0vJ5dTK6tr6RnozUw29KLBYxfIcL6ibRsgc22UVbnOH1f2AGUPTYTVzcCzitQsWhLbnnvGRz1pDo+faXdsyOFHtdHbc5OySj0uTSZtgn3Fj0k7ntYImlzoL9Bjki8nnp0zpPlf20i9oogMPFiIMweCCE3ZgIKSnAR0afOJaGBMXELJlnGGCFGkjymKUYRA7oG+Pdo2YdWkvPEOptugUh96AlCq2SeNRXkBYnKbKeCSdBfub91h6iruN6G/GXkNiOfrE/qX7zPyvTtTC0cWRrMGmmnzJiOqs2CWSXRE3V79UxcnBJ07gDsUDwpZUfvZZlZpQ1i56a8j4m8wUrNhbcW6Ed3FLGrD+c5yzoLpb0A8K+6c06T1MVxJbyGGH5nmIIk5QRoW8R7jDAx6Vc+VKuVZupqlKItZk8W0ptx+RhZrv</latexit> 
+
+D✓
+
+<latexit sha1_base64="hLOTeY5JEJnAr1lS7yROMJ6BX7o=">AAAC2HicjVHLSsNAFD2Nr1pftV26CS2Cq5KIr2VBBZcV7ANbKUk6bUPTJCQTsZSCO3HrD7gT/Qj/wL34B/oX3pmmoBbRCUnOnHvPmbn3mr5jh1zT3hLKzOzc/EJyMbW0vLK6ll7PVEIvCixWtjzHC2qmETLHdlmZ29xhNT9gRt90WNXsHYp49ZIFoe25Z3zgs4u+0XHttm0ZnKhmOjtscHbFh8ejUZNgl3Fj1EzntYImlzoN9Bjki8mX58zRQ67kpV/RQAseLETog8EFJ+zAQEhPHTo0+MRdYEhcQMiWcYYRUqSNKItRhkFsj74d2tVj1qW98Ayl2qJTHHoDUqrYJI1HeQFhcZoq45F0Fuxv3kPpKe42oL8Ze/WJ5egS+5dukvlfnaiFo40DWYNNNfmSEdVZsUskuyJurn6pipODT5zALYoHhC2pnPRZlZpQ1i56a8j4u8wUrNhbcW6ED3FLGrD+c5zToLJd0PcKu6c06R2MVxIbyGGL5rmPIk5QQpm8B7jHI56Uc+VauVFux6lKItZk8W0pd5+T8Jrw</latexit> 
+
+E✓
+
+BAN 
+
+<latexit sha1_base64="hLOTeY5JEJnAr1lS7yROMJ6BX7o=">AAAC2HicjVHLSsNAFD2Nr1pftV26CS2Cq5KIr2VBBZcV7ANbKUk6bUPTJCQTsZSCO3HrD7gT/Qj/wL34B/oX3pmmoBbRCUnOnHvPmbn3mr5jh1zT3hLKzOzc/EJyMbW0vLK6ll7PVEIvCixWtjzHC2qmETLHdlmZ29xhNT9gRt90WNXsHYp49ZIFoe25Z3zgs4u+0XHttm0ZnKhmOjtscHbFh8ejUZNgl3Fj1EzntYImlzoN9Bjki8mX58zRQ67kpV/RQAseLETog8EFJ+zAQEhPHTo0+MRdYEhcQMiWcYYRUqSNKItRhkFsj74d2tVj1qW98Ayl2qJTHHoDUqrYJI1HeQFhcZoq45F0Fuxv3kPpKe42oL8Ze/WJ5egS+5dukvlfnaiFo40DWYNNNfmSEdVZsUskuyJurn6pipODT5zALYoHhC2pnPRZlZpQ1i56a8j4u8wUrNhbcW6ED3FLGrD+c5zToLJd0PcKu6c06R2MVxIbyGGL5rmPIk5QQpm8B7jHI56Uc+VauVFux6lKItZk8W0pd5+T8Jrw</latexit> 
+
+E✓
+
+<latexit sha1_base64="hLOTeY5JEJnAr1lS7yROMJ6BX7o=">AAAC2HicjVHLSsNAFD2Nr1pftV26CS2Cq5KIr2VBBZcV7ANbKUk6bUPTJCQTsZSCO3HrD7gT/Qj/wL34B/oX3pmmoBbRCUnOnHvPmbn3mr5jh1zT3hLKzOzc/EJyMbW0vLK6ll7PVEIvCixWtjzHC2qmETLHdlmZ29xhNT9gRt90WNXsHYp49ZIFoe25Z3zgs4u+0XHttm0ZnKhmOjtscHbFh8ejUZNgl3Fj1EzntYImlzoN9Bjki8mX58zRQ67kpV/RQAseLETog8EFJ+zAQEhPHTo0+MRdYEhcQMiWcYYRUqSNKItRhkFsj74d2tVj1qW98Ayl2qJTHHoDUqrYJI1HeQFhcZoq45F0Fuxv3kPpKe42oL8Ze/WJ5egS+5dukvlfnaiFo40DWYNNNfmSEdVZsUskuyJurn6pipODT5zALYoHhC2pnPRZlZpQ1i56a8j4u8wUrNhbcW6ED3FLGrD+c5zToLJd0PcKu6c06R2MVxIbyGGL5rmPIk5QQpm8B7jHI56Uc+VauVFux6lKItZk8W0pd5+T8Jrw</latexit> 
+
+E✓
+
+21 
+
+7
+
+4
+
+2
+
+Latent codebook 
+
+Quan1zer 
+
+<latexit sha1_base64="Qa0yXzUcOZy0M2WMaWCd2c8wfpM=">AAAC2HicjVHLSsNAFD3Gd31Fu3QTLIIbSyL1sRTcuKxgtdjWMomjDebFZCKUUHAnbv0Bt/pF4h/oX3hnTEEtohOSnDn3njNz73WTwE+lbb+OGeMTk1PTM7OlufmFxSVzeeUkjTPh8YYXB7FouizlgR/xhvRlwJuJ4Cx0A37qXh+o+OkNF6kfR8eyn/BOyK4i/9L3mCSqa5bbPSbzeNDN5aYzOM8lE4OuWbGrtl7WKHAKUEGx6rH5gjYuEMNDhhAcESThAAwpPS04sJEQ10FOnCDk6zjHACXSZpTFKYMRe03fK9q1CjaivfJMtdqjUwJ6BSktrJMmpjxBWJ1m6XimnRX7m3euPdXd+vR3C6+QWIkesX/phpn/1alaJC6xp2vwqaZEM6o6r3DJdFfUza0vVUlySIhT+ILigrCnlcM+W1qT6tpVb5mOv+lMxaq9V+RmeFe3pAE7P8c5Ck62qs5OdfuoVtmvFaOewSrWsEHz3MU+DlFHg7z7eMQTno0z49a4M+4/U42xQlPGt2U8fABFk5es</latexit> 
+
+ˆotar 
+
+t 1
+
+<latexit sha1_base64="3NsG1MYJm4lWStxAGMm2dNpJS+c=">AAAC0HicjVHLSsNAFD2Nr1pfVZdugkVwY0mkPpYFNy6r2AfUWpLptAbTJE4mYilF3PoDbvWrxD/Qv/DOmIJaRCckOXPuPWfm3utGvhdLy3rNGFPTM7Nz2fncwuLS8kp+da0Wh4lgvMpCPxQN14m57wW8Kj3p80YkuNN3fV53r45UvH7DReyFwZkcRLzVd3qB1/WYI4lqhe2h3LFHF8NYsFE7X7CKll7mJLBTUEC6KmH+BefoIARDgj44AkjCPhzE9DRhw0JEXAtD4gQhT8c5RsiRNqEsThkOsVf07dGumbIB7ZVnrNWMTvHpFaQ0sUWakPIEYXWaqeOJdlbsb95D7anuNqC/m3r1iZW4JPYv3TjzvzpVi0QXh7oGj2qKNKOqY6lLoruibm5+qUqSQ0Scwh2KC8JMK8d9NrUm1rWr3jo6/qYzFav2LM1N8K5uSQO2f45zEtR2i/Z+ce+kVCiX0lFnsYFNbNM8D1DGMSqokvc1HvGEZ+PUuDXujPvPVCOTatbxbRkPH5HnlK8=</latexit> 
+
+osrc 
+
+t 1
+
+<latexit sha1_base64="ouk7s4RY/BNL2YJEQh1lGYnBySE=">AAAC1nicjVHLSsNAFD2N7/pqdekmWARXIY21rbuCLtwIClYLbSlJOmroNAnJRC2h7sStP+BWP0n8A/0L74wp6EJ0QpI7555zZu69Tsi9WJjmW06bmp6ZnZtfyC8uLa+sFoprZ3GQRC5rugEPopZjx4x7PmsKT3DWCiNmDx3Ozp3BvsyfX7Mo9gL/VIxC1h3al7534bm2IKhXKHYY5720I9itSI+ODsbjXqFkGrW9nXq1ppuGqZYMLMuqWHo5Q0rI1nFQeEUHfQRwkWAIBh+CYg4bMT1tlGEiJKyLlLCIIk/lGcbIkzYhFiOGTeiAvpe0a2eoT3vpGSu1S6dweiNS6tgiTUC8iGJ5mq7yiXKW6G/eqfKUdxvR38m8hoQKXBH6l27C/K9O1iJwgbqqwaOaQoXI6tzMJVFdkTfXv1UlyCEkTMZ9ykcUu0o56bOuNLGqXfbWVvl3xZSo3LsZN8GHvCUNeDJF/ffgzDLKVWP3pFJqVLJRz2MDm9imedbQwCGO0STvGzzhGS9aS7vT7rWHL6qWyzTr+LG0x09SeZbt</latexit> 
+
+`MMD 
+
+<latexit sha1_base64="aRiu5zf+gNAyVP6HlaFclUcKC40=">AAAC13icjVHLSsNAFD2Nr1pfsS7dBIvgxpJIfSwLblxWsA9pS0nSaQ3Ni2QillDciVt/wK3+kfgH+hfeGVNQi+iEJGfOvefM3Hut0HViruuvOWVufmFxKb9cWFldW99QN4uNOEgim9XtwA2ilmXGzHV8VucOd1krjJjpWS5rWqNTEW9esyh2Av+Cj0PW9cyh7wwc2+RE9dRiJ6CwUKfmpJfyfWPSU0t6WZdLmwVGBkrIVi1QX9BBHwFsJPDA4IMTdmEipqcNAzpC4rpIiYsIOTLOMEGBtAllMcowiR3Rd0i7dsb6tBeesVTbdIpLb0RKDbukCSgvIixO02Q8kc6C/c07lZ7ibmP6W5mXRyzHFbF/6aaZ/9WJWjgGOJE1OFRTKBlRnZ25JLIr4ubal6o4OYTECdyneETYlsppnzWpiWXtoremjL/JTMGKvZ3lJngXt6QBGz/HOQsaB2XjqHx4XilVK9mo89jGDvZonseo4gw11Mn7Bo94wrNyqdwqd8r9Z6qSyzRb+LaUhw/gVpce</latexit> 
+
+at 1
+
+<latexit sha1_base64="aRiu5zf+gNAyVP6HlaFclUcKC40=">AAAC13icjVHLSsNAFD2Nr1pfsS7dBIvgxpJIfSwLblxWsA9pS0nSaQ3Ni2QillDciVt/wK3+kfgH+hfeGVNQi+iEJGfOvefM3Hut0HViruuvOWVufmFxKb9cWFldW99QN4uNOEgim9XtwA2ilmXGzHV8VucOd1krjJjpWS5rWqNTEW9esyh2Av+Cj0PW9cyh7wwc2+RE9dRiJ6CwUKfmpJfyfWPSU0t6WZdLmwVGBkrIVi1QX9BBHwFsJPDA4IMTdmEipqcNAzpC4rpIiYsIOTLOMEGBtAllMcowiR3Rd0i7dsb6tBeesVTbdIpLb0RKDbukCSgvIixO02Q8kc6C/c07lZ7ibmP6W5mXRyzHFbF/6aaZ/9WJWjgGOJE1OFRTKBlRnZ25JLIr4ubal6o4OYTECdyneETYlsppnzWpiWXtoremjL/JTMGKvZ3lJngXt6QBGz/HOQsaB2XjqHx4XilVK9mo89jGDvZonseo4gw11Mn7Bo94wrNyqdwqd8r9Z6qSyzRb+LaUhw/gVpce</latexit> 
+
+at 1
+
+<latexit sha1_base64="QCCfq5aPSChWzGkISt/lSin8T3c=">AAACzHicjVHLSsNAFD2Nr1pfVZdugkVwY0mkPpYFN66kgn1ILSVJpzWYF5OJUEK3/oBb/S7xD/QvvDNOQS2iE5KcOfeeM3PvdZPAT4VlvRaMufmFxaXicmlldW19o7y51UrjjHus6cVBzDuuk7LAj1hT+CJgnYQzJ3QD1nbvzmS8fc946sfRlRgnrBc6o8gf+p4jiLrO00k/Fwf2pF+uWFVLLXMW2BpUoFcjLr/gBgPE8JAhBEMEQTiAg5SeLmxYSIjrISeOE/JVnGGCEmkzymKU4RB7R98R7bqajWgvPVOl9uiUgF5OShN7pIkpjxOWp5kqnilnyf7mnStPebcx/V3tFRIrcEvsX7pp5n91shaBIU5VDT7VlChGVudpl0x1Rd7c/FKVIIeEOIkHFOeEPaWc9tlUmlTVLnvrqPibypSs3Hs6N8O7vCUN2P45zlnQOqzax9Wjy1qlXtOjLmIHu9ineZ6gjnM00CTvEI94wrNxYQgjNyafqUZBa7bxbRkPHwr+kuU=</latexit> 
+
+st 1
+
+<latexit sha1_base64="yOiEILPH1uiYWb0V5P8yaGFEq08=">AAACznicjVHLSsNAFD2Nr1pfVZdugkVwVRKpj2XBjcsKthVqLcl0WkPTJEwmhRKCW3/ArX6W+Af6F94ZU1CL6IQkZ849587ce93I92JpWa8FY2FxaXmluFpaW9/Y3Cpv77TiMBGMN1noh+LadWLuewFvSk/6/DoS3Bm7Pm+7o3MVb0+4iL0wuJLTiHfHzjDwBh5zJFGdsJfK7DaNBct65YpVtfQy54Gdgwry1QjLL7hBHyEYEozBEUAS9uEgpqcDGxYi4rpIiROEPB3nyFAib0IqTgqH2BF9h7Tr5GxAe5Uz1m5Gp/j0CnKaOCBPSDpBWJ1m6niiMyv2t9ypzqnuNqW/m+caEytxR+xfvpnyvz5Vi8QAZ7oGj2qKNKOqY3mWRHdF3dz8UpWkDBFxCvcpLggz7Zz12dSeWNeueuvo+JtWKlbtWa5N8K5uSQO2f45zHrSOqvZJ9fiyVqnX8lEXsYd9HNI8T1HHBRpo6o4/4gnPRsOYGJlx/yk1CrlnF9+W8fABYLWUPQ==</latexit> 
+
+osrc 
+
+t
+
+<latexit sha1_base64="du84rtQ+4unICfD9DVKiKTQMuH8=">AAACznicjVHLSsNAFD2Nr1pfVZdugkVwVRKpj2XBjcsKthVqLUk6raFpEiaTQgnBrT/gVj9L/AP9C++MU1CL6IQkZ849587ce9048BNhWa8FY2FxaXmluFpaW9/Y3Cpv77SSKOUea3pREPFr10lY4IesKXwRsOuYM2fsBqztjs5lvD1hPPGj8EpMY9YdO8PQH/ieI4jqRL1M5LeZcHjeK1esqqWWOQ9sDSrQqxGVX3CDPiJ4SDEGQwhBOICDhJ4ObFiIiesiI44T8lWcIUeJvCmpGCkcYkf0HdKuo9mQ9jJnotwenRLQy8lp4oA8Eek4YXmaqeKpyizZ33JnKqe825T+rs41Jlbgjti/fDPlf32yFoEBzlQNPtUUK0ZW5+ksqeqKvLn5pSpBGWLiJO5TnBP2lHPWZ1N5ElW77K2j4m9KKVm597Q2xbu8JQ3Y/jnOedA6qton1ePLWqVe06MuYg/7OKR5nqKOCzTQVB1/xBOejYYxMXLj/lNqFLRnF9+W8fABXkWUPA==</latexit> 
+
+otar 
+
+t
+
+<latexit sha1_base64="t1W7Ctuu4ir1u/EkN3QLBkVaYgQ=">AAAC0HicjVHLSsNAFD2Nr1pfVZdugkVwY0mkPpYFNy6r2AfUWpJ0WoN5OZmIJRRx6w+41a8S/0D/wjtjCmoRnZDkzLn3nJl7rx15biwM4zWnTU3PzM7l5wsLi0vLK8XVtUYcJtxhdSf0Qt6yrZh5bsDqwhUea0WcWb7tsaZ9dSTjzRvGYzcMzsQwYh3fGgRu33UsQVQn7KZixxxdpMLio26xZJQNtfRJYGaghGzVwuILztFDCAcJfDAEEIQ9WIjpacOEgYi4DlLiOCFXxRlGKJA2oSxGGRaxV/Qd0K6dsQHtpWes1A6d4tHLSaljizQh5XHC8jRdxRPlLNnfvFPlKe82pL+defnEClwS+5dunPlfnaxFoI9DVYNLNUWKkdU5mUuiuiJvrn+pSpBDRJzEPYpzwo5SjvusK02sape9tVT8TWVKVu6dLDfBu7wlDdj8Oc5J0Ngtm/vlvZNKqVrJRp3HBjaxTfM8QBXHqKFO3td4xBOetVPtVrvT7j9TtVymWce3pT18AI93lK4=</latexit> 
+
+otar 
+
+t 1
+
+<latexit sha1_base64="2IRfUzkHOb7fv4++evG68n2O0mw=">AAAC1nicjVHLSsQwFD3W97vq0k1xEFwNrfhaCm5cKjgPcHRIO1GDnaakqSKl7sStP+BWP0n8A/0Lb2IFH4imtD05956T3HvDNBaZ9v3nAWdwaHhkdGx8YnJqembWnZtvZjJXEW9EMpaqHbKMxyLhDS10zNup4qwfxrwVnu+YeOuCq0zI5EBfpfyoz04TcSIiponqunOdM6YLWXYLXR4Xmqmy69b8um+X9xMEFaihWnvSfUIHPUhEyNEHRwJNOAZDRs8hAvhIiTtCQZwiJGyco8QEaXPK4pTBiD2n7yntDis2ob3xzKw6olNiehUpPSyTRlKeImxO82w8t86G/c27sJ7mblf0DyuvPrEaZ8T+pfvI/K/O1KJxgi1bg6CaUsuY6qLKJbddMTf3PlWlySElzuAexRXhyCo/+uxZTWZrN71lNv5iMw1r9lGVm+PV3JIGHHwf50/QXK0HG/X1/bXa9lo16jEsYgkrNM9NbGMXe2iQ9yXu8YBHp+1cOzfO7XuqM1BpFvBlOXdvDumXOg==</latexit> 
+
+ˆotar 
+
+t
+
+<latexit sha1_base64="RvLMr8eXV2Pf8qfvKdg6TMhpiss=">AAACynicjVHLSsNAFD2Nr/quunQTLIKrkkh9LAtuXLioYB9QS0mm0xqaJmEyEUrozh9wqx8m/oH+hXfGKahFdEKSM+eec2fuvX4SBql0nNeCtbC4tLxSXF1b39jc2i7t7DbTOBOMN1gcxqLteykPg4g3ZCBD3k4E98Z+yFv+6ELFW/dcpEEc3chJwrtjbxgFg4B5kqhWnk57uZz2SmWn4uhlzwPXgDLMqselF9yijxgMGcbgiCAJh/CQ0tOBCwcJcV3kxAlCgY5zTLFG3oxUnBQesSP6DmnXMWxEe5Uz1W5Gp4T0CnLaOCRPTDpBWJ1m63imMyv2t9y5zqnuNqG/b3KNiZW4I/Yv30z5X5+qRWKAc11DQDUlmlHVMZMl011RN7e/VCUpQ0Kcwn2KC8JMO2d9trUn1bWr3no6/qaVilV7ZrQZ3tUtacDuz3HOg+ZxxT2tnFxXy7WqGXUR+zjAEc3zDDVcoo6GrvIRT3i2rixhTaz8U2oVjGcP35b18AHaCZJz</latexit> 
+
+st
+
+<latexit sha1_base64="RmLn8m+9jDMHpLXyZkoA5U/EjVE=">AAAC1HicjVHLSsNAFD3Gd320Km50ExRBEEsiWl0Kblwq2AdoLcl01NA0CZOJUGJX4tYfcONCv0n9A/0L70xTUIvohCRnzj3nztx73cj3YmlZb0PG8Mjo2PjEZG5qemY2X5ibr8RhIhgvs9APRc11Yu57AS9LT/q8FgnutF2fV93WgYpXr7mIvTA4kZ2I19vOZeBdeMyRRDUK+ZR3G6nctLvnaSxYt1FYtYqWXuYgsDOwur/0uviY7mwchYUXnKGJEAwJ2uAIIAn7cBDTcwobFiLi6kiJE4Q8HefoIkfehFScFA6xLfpe0u40YwPaq5yxdjM6xadXkNPEGnlC0gnC6jRTxxOdWbG/5U51TnW3Dv3dLFebWIkrYv/y9ZX/9alaJC6wp2vwqKZIM6o6lmVJdFfUzc0vVUnKEBGncJPigjDTzn6fTe2Jde2qt46Ov2ulYtWeZdoEH+qWNGD75zgHQWWraJeKpWOa9DZ6awLLWME6zXMX+zjEEcp65g94wrNRMW6MW+OuJzWGMs8Cvi3j/hPGY5ih</latexit> 
+
+esrc 
+
+t→1
+
+<latexit sha1_base64="Vvk48Dc5my7wGAOjm8YkJrD8V70=">AAAC0HicjVHLSsNAFD2Nj9Z3fezcBEVwY0lFqkvBjcsq1oq1lmSc1tA0iZOJD0IQt/6AO9GvEv9A/8I7YwpqEZ2Q5My595yZe68Tem4kLes1ZwwNj4zmC2PjE5NT0zPF2bnDKIgF4zUWeIE4cuyIe67Pa9KVHj8KBbd7jsfrTndHxeuXXERu4B/Im5A3e3bHd9susyVRzYSnrUSmp0kkWNoqLlslSy9zEJQzsLy9sNa5yj8eV4PiC05whgAMMXrg8CEJe7AR0dNAGRZC4ppIiBOEXB3nSDFO2piyOGXYxHbp26FdI2N92ivPSKsZneLRK0hpYoU0AeUJwuo0U8dj7azY37wT7anudkN/J/PqEStxTuxfun7mf3WqFok2tnQNLtUUakZVxzKXWHdF3dz8UpUkh5A4hc8oLggzrez32dSaSNeuemvr+JvOVKzasyw3xru6JQ24/HOcg+BwvVSulCp7NOkNfK4CFrGEVZrnJraxiypq5H2BBzzh2dg3ro1b4+4z1chlmnl8W8b9ByKUl5o=</latexit> 
+
+esrc 
+
+t <latexit sha1_base64="ChaVTZdzAAfsUDEIb+zqzBdvbi4=">AAAC13icjVHLSsNAFD2Nr1offS3dBIvgxpKIVJcFNy5bsA9pS0nSaQ2mSUgmYinFnbh168KtLvwf8Q/0J8Q70xTUIjohyZlz7zkz917Td+yQa9prQllYXFpeSa6m1tY3NtOZbK4eelFgsZrlOV7QNI2QObbLatzmDmv6ATOGpsMa5sWxiDcuWRDannvKRz7rDI2Ba/dty+BEdTO5tkdhoR4bk+6Y7+mTbqagFTW51Hmgx6BQzmfT1ef7j4qXeUEbPXiwEGEIBhecsAMDIT0t6NDgE9fBmLiAkC3jDBOkSBtRFqMMg9gL+g5o14pZl/bCM5Rqi05x6A1IqWKHNB7lBYTFaaqMR9JZsL95j6WnuNuI/mbsNSSW45zYv3SzzP/qRC0cfRzJGmyqyZeMqM6KXSLZFXFz9UtVnBx84gTuUTwgbEnlrM+q1ISydtFbQ8bfZKZgxd6KcyO8i1vSgPWf45wH9f2iXiqWqjTpA0xXElvYxi7N8xBlnKCCGnlf4QGPeFLOlGvlRrmdpiqJWJPHt6XcfQKKAZoj</latexit> 
+
+at→1
+
+<latexit sha1_base64="q9mZDLjZ2HP/e/L1gGG54ftqwVs=">AAAC2HicjVHLSsNAFD3Gd33Vx85NUARXJRFRN4LgRnCjYB9oa0mmUx2aJmEyEUoouBO3/oBb/SLxD/QvvDONoBbRGzI5c+49J3Pn+nEgEuU4ryPW6Nj4xOTUdGFmdm5+obi4VEmiVDJeZlEQyZrvJTwQIS8roQJeiyX3un7Aq37nUOerN1wmIgrPVC/mja53FYq2YJ4iqllcrmcZ6zezTr+u1323f3ncLK47JceEPQzcHKwfrLRNnETFF9TRQgSGFF1whFCEA3hI6LmACwcxcQ1kxElCwuQ5+iiQNqUqThUesR1ar2h3kbMh7bVnYtSM/hLQK0lpY4M0EdVJwvpvtsmnxlmzv3lnxlOfrUdfP/fqEqtwTexfus/K/+p0Lwpt7JkeBPUUG0Z3x3KX1NyKPrn9pStFDjFxGrcoLwkzo/y8Z9toEtO7vlvP5N9MpWb1nuW1Kd71KWnA7s9xDoPKVsndKe2c0qS3MYgprGINmzTPXRzgCCcok3cPj3jCs3Vu3Vp31v2g1BrJNcv4FtbDB/mMmkE=</latexit> 
+
+{ck}K
+
+k=1 
+
+Plan Net Trunk Net 
+
+Intrinsic 
+
+reward 
+
+Value 
+
+network <latexit sha1_base64="7WgZytK4+HpNWXhj2EKrxfKwiUc=">AAACzXicjVHLSsNAFD2Nr1pfVZdugkVwVRLR6rLgxp0V7APbUpJ0WofmRTIplFi3/oBb/S3xD/QvvDOmoBbRCUnOnHvPmbn32qHLY2EYrzltYXFpeSW/Wlhb39jcKm7vNOIgiRxWdwI3iFq2FTOX+6wuuHBZK4yY5dkua9qjcxlvjlkU88C/FpOQdT1r6PMBdyxB1E06nvbSThjzaa9YMsqGWvo8MDNQQrZqQfEFHfQRwEECDww+BGEXFmJ62jBhICSui5S4iBBXcYYpCqRNKItRhkXsiL5D2rUz1qe99IyV2qFTXHojUuo4IE1AeRFheZqu4olyluxv3qnylHeb0N/OvDxiBW6J/Us3y/yvTtYiMMCZqoFTTaFiZHVO5pKorsib61+qEuQQEidxn+IRYUcpZ33WlSZWtcveWir+pjIlK/dOlpvgXd6SBmz+HOc8aByVzUr55Oq4VK1ko85jD/s4pHmeoooL1FAnbx+PeMKzdqkl2p12/5mq5TLNLr4t7eEDOWuTyg==</latexit> 
+
+v
+
+<latexit sha1_base64="LQ8zEw0JtPu38T8GIRbEm1hId6w=">AAAC0HicjVHLTsJAFD3UF+ILcemmgZi4IsX4WhIxxiUaeSRASFsGbChtbacGQohx6w+41Y1/4R+4N/6B/oV3hpKoxOg0bc+ce8+Zufcanm0FXNPeYsrM7Nz8QnwxsbS8srqWXE+VAzf0TVYyXdv1q4YeMNtyWIlb3GZVz2d6z7BZxegWRLxyzfzAcp0LPvBYo6d3HKttmTonqnHSHNY56/PhUWE0aiYzWlaTS50GuQhk8vGX59TxU7roJl9RRwsuTITogcEBJ2xDR0BPDTlo8IhrYEicT8iScYYREqQNKYtRhk5sl74d2tUi1qG98Ayk2qRTbHp9UqrYIo1LeT5hcZoq46F0Fuxv3kPpKe42oL8RefWI5bgk9i/dJPO/OlELRxuHsgaLavIkI6ozI5dQdkXcXP1SFScHjziBWxT3CZtSOemzKjWBrF30Vpfxd5kpWLE3o9wQH+KWNODcz3FOg/JONref3TujSe9ivOLYRBrbNM8D5HGKIkrkfYV7POBROVf6yo1yO05VYpFmA9+WcvcJFUyXnw==</latexit> 
+
+FBC 
+
+<latexit sha1_base64="UnN7OJfFKFHJMOdMOMR9KhexbwA=">AAACynicjVHLSsNAFD2Nr1pfVZdugkVwVRLR6rLgxoWLCvYBWkqSTuvQNAmTiVBCd/6AW/0w8Q/0L7wzTkEtohOSnDn3nDtz7/WTkKfScV4L1sLi0vJKcbW0tr6xuVXe3mmlcSYC1gziMBYd30tZyCPWlFyGrJMI5o39kLX90bmKt++ZSHkcXctJwrpjbxjxAQ88SVQ7T6e9XE575YpTdfSy54FrQAVmNeLyC27RR4wAGcZgiCAJh/CQ0nMDFw4S4rrIiROEuI4zTFEib0YqRgqP2BF9h7S7MWxEe5Uz1e6ATgnpFeS0cUCemHSCsDrN1vFMZ1bsb7lznVPdbUJ/3+QaEytxR+xfvpnyvz5Vi8QAZ7oGTjUlmlHVBSZLpruibm5/qUpShoQ4hfsUF4QD7Zz12daeVNeueuvp+JtWKlbtA6PN8K5uSQN2f45zHrSOqm6tenJ1XKnXzKiL2MM+Dmmep6jjAg00dZWPeMKzdWkJa2Lln1KrYDy7+Lashw/ao5J1</latexit> 
+
+st
+
+<latexit sha1_base64="/c5BhnhUDRNkonbKjNEPMOcWeFQ=">AAAC13icjVHLSsNAFD2Nr1pfsS7dBIsgCCURrS4LblxWsA9pS0nSaQ3Ni2QillDciVt/wK3+kfgH+hfeGVNQi+iEJGfOvefM3Hut0HViruuvOWVufmFxKb9cWFldW99QN4uNOEgim9XtwA2ilmXGzHV8VucOd1krjJjpWS5rWqNTEW9esyh2Av+Cj0PW9cyh7wwc2+RE9dRiJ6CwUKfxpJfyfWPSU0t6WZdLmwVGBkrIVi1QX9BBHwFsJPDA4IMTdmEipqcNAzpC4rpIiYsIOTLOMEGBtAllMcowiR3Rd0i7dsb6tBeesVTbdIpLb0RKDbukCSgvIixO02Q8kc6C/c07lZ7ibmP6W5mXRyzHFbF/6aaZ/9WJWjgGOJE1OFRTKBlRnZ25JLIr4ubal6o4OYTECdyneETYlsppnzWpiWXtoremjL/JTMGKvZ3lJngXt6QBGz/HOQsaB2WjUj46PyxVK9mo89jGDvZonseo4gw11Mn7Bo94wrNyqdwqd8r9Z6qSyzRb+LaUhw8HeZcw</latexit> 
+
+st+1 
+
+<latexit sha1_base64="VtpVO3ixByAnoqeaDWKY5DVs2Hg=">AAACzHicjVHLSsNAFD2Nr1pfVZdugkUQhJKIVpcFN66kgn1ILSVJp3UwL5KJUEK3/oBb/S7xD/QvvDNOQS2iE5KcOfeeM3PvdWOfp8KyXgvG3PzC4lJxubSyura+Ud7caqVRlnis6UV+lHRcJ2U+D1lTcOGzTpwwJ3B91nbvzmS8fc+SlEfhlRjHrBc4o5APuecIoq7zdNLPxYE96ZcrVtVSy5wFtgYV6NWIyi+4wQARPGQIwBBCEPbhIKWnCxsWYuJ6yIlLCHEVZ5igRNqMshhlOMTe0XdEu65mQ9pLz1SpPTrFpzchpYk90kSUlxCWp5kqnilnyf7mnStPebcx/V3tFRArcEvsX7pp5n91shaBIU5VDZxqihUjq/O0S6a6Im9ufqlKkENMnMQDiieEPaWc9tlUmlTVLnvrqPibypSs3Hs6N8O7vCUN2P45zlnQOqzaterx5VGlXtOjLmIHu9ineZ6gjnM00CTvAI94wrNxYQgjNyafqUZBa7bxbRkPHwbUkuU=</latexit> 
+
+st+1 
+
+<latexit sha1_base64="ICzYQ78BSsmLMkmxg8aNonYfBJg=">AAAC1XicjVHLSsNAFD2Nr1pfUZdugkVwVRKpj2XBjcsK9gFtKUk6raFpEiaTQgnZiVt/wK3+kvgH+hfeGVNQi+iEJGfOvefM3HudyPdiYZqvBW1peWV1rbhe2tjc2t7Rd/eacZhwlzXc0A9527Fj5nsBawhP+KwdcWZPHJ+1nPGljLemjMdeGNyIWcR6E3sUeEPPtQVRfV3vhhSW6tTO+qnI+nrZrJhqGYvAykEZ+aqH+gu6GCCEiwQTMAQQhH3YiOnpwIKJiLgeUuI4IU/FGTKUSJtQFqMMm9gxfUe06+RsQHvpGSu1S6f49HJSGjgiTUh5nLA8zVDxRDlL9jfvVHnKu83o7+ReE2IFbon9SzfP/K9O1iIwxIWqwaOaIsXI6tzcJVFdkTc3vlQlyCEiTuIBxTlhVynnfTaUJla1y97aKv6mMiUr926em+Bd3pIGbP0c5yJonlSss8rpdbVcq+ajLuIAhzimeZ6jhivU0SDvKR7xhGetpWXanXb/maoVcs0+vi3t4QOnspas</latexit> 
+
+at
+
+<latexit sha1_base64="gzJ1i3x2KPE29Jl9kO+keqw78gU=">AAACynicjVHLSsNAFD2Nr/quunQTLIKrkkh9LAtuXLioYB9QS5mk0xqaJmEyEUrozh9wqx8m/oH+hXfGKahFdEKSM+eec2fuvV4SBql0nNeCtbC4tLxSXF1b39jc2i7t7DbTOBM+b/hxGIu2x1IeBhFvyECGvJ0IzsZeyFve6ELFW/dcpEEc3chJwrtjNoyCQeAzSVQrZ9NeLqe9UtmpOHrZ88A1oAyz6nHpBbfoI4aPDGNwRJCEQzCk9HTgwkFCXBc5cYJQoOMcU6yRNyMVJwUjdkTfIe06ho1or3Km2u3TKSG9gpw2DskTk04QVqfZOp7pzIr9LXeuc6q7TejvmVxjYiXuiP3LN1P+16dqkRjgXNcQUE2JZlR1vsmS6a6om9tfqpKUISFO4T7FBWFfO2d9trUn1bWr3jIdf9NKxaq9b7QZ3tUtacDuz3HOg+ZxxT2tnFxXy7WqGXUR+zjAEc3zDDVcoo6GrvIRT3i2rixhTaz8U2oVjGcP35b18AGu75Jh</latexit> 
+
+at
+
+<latexit sha1_base64="4+6J92eYsvEXVMxfYqmK/pZml+w=">AAAC0HicjVHLSsNAFD2Nr1pfVZdugkUQhJJIfSwLblxWsQ9oS0nSaRuaJnEyEUso4tYfcKtfJf6B/oV3xhTUIjohyZlz7zkz91479NxIGMZrRpubX1hcyi7nVlbX1jfym1u1KIi5w6pO4AW8YVsR81yfVYUrPNYIObNGtsfq9vBMxus3jEdu4F+JccjaI6vvuz3XsQRR7dbAEgmfdBJxYE46+YJRNNTSZ4GZggLSVQnyL2ihiwAOYozA4EMQ9mAhoqcJEwZC4tpIiOOEXBVnmCBH2piyGGVYxA7p26ddM2V92kvPSKkdOsWjl5NSxx5pAsrjhOVpuorHylmyv3knylPebUx/O/UaESswIPYv3TTzvzpZi0APp6oGl2oKFSOrc1KXWHVF3lz/UpUgh5A4ibsU54QdpZz2WVeaSNUue2up+JvKlKzcO2lujHd5Sxqw+XOcs6B2WDSPi0cXpUK5lI46ix3sYp/meYIyzlFBlbyv8YgnPGuX2q12p91/pmqZVLONb0t7+AB3YZSj</latexit> 
+
+ˆrt+1 
+
+Policy 
+
+network 
+
+<latexit sha1_base64="+BfcOsP1sUxE0iDzrJDZK2ufiAY=">AAACz3icjVHLSgMxFD0dX7W+qi7dDBbBVZkRrS4Lbly2YB/QisxM0zZ0XmQySikVt/6AW/0r8Q/0L7yJU1CLaIZJTs695yQ31419nkjLes0ZC4tLyyv51cLa+sbmVnF7p5lEqfBYw4v8SLRdJ2E+D1lDcumzdiyYE7g+a7mjcxVv3TCR8Ci8lOOYXQXOIOR97jmSqO6kG/PpNc1DWoolq2zpYc4DOwMlZKMWFV/QRQ8RPKQIwBBCEvbhIKGvAxsWYuKuMCFOEOI6zjBFgbQpZTHKcIgd0TygXSdjQ9orz0SrPTrFp1+Q0sQBaSLKE4TVaaaOp9pZsb95T7SnutuYVjfzCoiVGBL7l26W+V+dqkWijzNdA6eaYs2o6rzMJdWvom5ufqlKkkNMnMI9igvCnlbO3tnUmkTXrt7W0fE3nalYtfey3BTv6pbUYPtnO+dB86hsV8on9eNStZK1Oo897OOQ+nmKKi5QQ4O8YzziCc9G3bg17oz7z1Qjl2l28W0YDx84r5SS</latexit> 
+
+⇡ 
+
+<latexit sha1_base64="5jwEetMOwmpVK2JrEHyRb28YVBA=">AAACynicjVHLSsNAFD2Nr1pfVZdugkVwVRLR6rLgxoWLCvYBtZRkOq2heTGZFErozh9wqx8m/oH+hXfGFNQiOiHJmXPPuTP3Xjf2vURa1mvBWFpeWV0rrpc2Nre2d8q7e60kSgXjTRb5kei4TsJ9L+RN6Umfd2LBncD1edsdX6p4e8JF4kXhrZzGvBc4o9AbesyRRLWzyayfyVm/XLGqll7mIrBzUEG+GlH5BXcYIAJDigAcISRhHw4SerqwYSEmroeMOEHI03GOGUrkTUnFSeEQO6bviHbdnA1pr3Im2s3oFJ9eQU4TR+SJSCcIq9NMHU91ZsX+ljvTOdXdpvR381wBsRL3xP7lmyv/61O1SAxxoWvwqKZYM6o6lmdJdVfUzc0vVUnKEBOn8IDigjDTznmfTe1JdO2qt46Ov2mlYtWe5doU7+qWNGD75zgXQeukateqZzenlXotH3URBzjEMc3zHHVcoYGmrvIRT3g2rg1hTI3sU2oUcs8+vi3j4QPh0pJ4</latexit> 
+
+vt
+
+<latexit sha1_base64="ULLJUA98H+cqlNDaco9dti+Zyd8=">AAACxnicjVHLSsNAFD2Nr1pfVZdugkVwY0mKVJcFN11WtA+oRZLptA5NkzCZKKUI/oBb/TTxD/QvvDOmoBbRCUnOnHvPmbn3+nEgEuU4rzlrYXFpeSW/Wlhb39jcKm7vtJIolYw3WRREsuN7CQ9EyJtKqIB3Ysm9sR/wtj860/H2LZeJiMJLNYl5b+wNQzEQzFNEXagj97pYcsqOWfY8cDNQQrYaUfEFV+gjAkOKMThCKMIBPCT0dOHCQUxcD1PiJCFh4hz3KJA2pSxOGR6xI/oOadfN2JD22jMxakanBPRKUto4IE1EeZKwPs028dQ4a/Y376nx1Heb0N/PvMbEKtwQ+5dulvlfna5FYYBTU4OgmmLD6OpY5pKaruib21+qUuQQE6dxn+KSMDPKWZ9to0lM7bq3nom/mUzN6j3LclO861vSgN2f45wHrUrZrZar58elWiUbdR572MchzfMENdTRQJO8h3jEE56tuhVaqXX3mWrlMs0uvi3r4QOMRI/m</latexit> 
+
+t → 1
+
+<latexit sha1_base64="p28z46sjV9b4uhuSvdwbsmhma60=">AAACxnicjVHLSsNAFD2Nr1pfVZdugkUQhJIUqS4LbrqsaB9QiyTTaR2aJmEyUUoR/AG3+mniH+hfeGdMQS2iE5KcOfeeM3Pv9eNAJMpxXnPWwuLS8kp+tbC2vrG5VdzeaSVRKhlvsiiIZMf3Eh6IkDeVUAHvxJJ7Yz/gbX90puPtWy4TEYWXahLz3tgbhmIgmKeIulBH7nWx5JQds+x54GaghGw1ouILrtBHBIYUY3CEUIQDeEjo6cKFg5i4HqbESULCxDnuUSBtSlmcMjxiR/Qd0q6bsSHttWdi1IxOCeiVpLRxQJqI8iRhfZpt4qlx1uxv3lPjqe82ob+feY2JVbgh9i/dLPO/Ol2LwgCnpgZBNcWG0dWxzCU1XdE3t79UpcghJk7jPsUlYWaUsz7bRpOY2nVvPRN/M5ma1XuW5aZ417ekAbs/xzkPWpWyWy1Xz49LtUo26jz2sI9DmucJaqijgSZ5D/GIJzxbdSu0UuvuM9XKZZpdfFvWwweHgo/k</latexit> 
+
+t + 1 
+
+<latexit sha1_base64="P2d2B66ccAy4azNg9Jhqii+PFlU=">AAACxHicjVHLSsNAFD2Nr1pfVZdugkVwVZIi1WVBEJct2AfUIsl0WofmxWQilKI/4Fa/TfwD/QvvjCmoRXRCkjPn3nNm7r1+EohUOc5rwVpaXlldK66XNja3tnfKu3udNM4k420WB7Hs+V7KAxHxthIq4L1Eci/0A971J+c63r3jMhVxdKWmCR+E3jgSI8E8RVRL3ZQrTtUxy14Ebg4qyFczLr/gGkPEYMgQgiOCIhzAQ0pPHy4cJMQNMCNOEhImznGPEmkzyuKU4RE7oe+Ydv2cjWivPVOjZnRKQK8kpY0j0sSUJwnr02wTz4yzZn/znhlPfbcp/f3cKyRW4ZbYv3TzzP/qdC0KI5yZGgTVlBhGV8dyl8x0Rd/c/lKVIoeEOI2HFJeEmVHO+2wbTWpq1731TPzNZGpW71mem+Fd35IG7P4c5yLo1KpuvVpvnVQatXzURRzgEMc0z1M0cIkm2sb7EU94ti6swEqt7DPVKuSafXxb1sMHYF6PdA==</latexit> 
+
+t
+
+<latexit sha1_base64="BpuJ/Um2xFtBeYIDLOyZ8Jpnh/U=">AAAC13icjVHLSsNAFD2N7/qKunQTLIIghKRKW3eCG5cKViu2lCSdajDJhMlElFLciVt/wK3+kfgH+hfeGVPQRdEJSe6ce86Zuff6aRRm0nHeS8bE5NT0zOxceX5hcWnZXFk9zXguAtYMeMRFy/cyFoUJa8pQRqyVCubFfsTO/OsDlT+7YSILeXIi71LWib3LJOyHgScJ6pqrbU5ppR6IYXcgt91h16w4tru369brlmPXXKex41DQqFZ33Ibl2o5eFRTriJtvaKMHjgA5YjAkkBRH8JDRcwEXDlLCOhgQJigKdZ5hiDJpc2IxYniEXtP3knYXBZrQXnlmWh3QKRG9gpQWNknDiScoVqdZOp9rZ4WO8x5oT3W3O/r7hVdMqMQVoX/pRsz/6lQtEn00dA0h1ZRqRFUXFC657oq6ufWjKkkOKWEq7lFeUBxo5ajPltZkunbVW0/nPzRToWofFNwcn+qWNODRFK3xwWnVdmt27Xi3sr9XjHoW69jAFs2zjn0c4ghN8r7FM17wapwb98aD8fhNNUqFZg2/lvH0Bao8l3o=</latexit> 
+
+rt+1 
+
+Figure 2. Model architecture. a, We construct a discrete, high-level latent action space by training the BAN, enabling forward dynamics modeling independent of real actions. b, The visualization of model-based actor-critic learning at a single rollout step. We leverage FBC 
+
+to replay the video-informed latent behaviors, serving as the inputs of the actor and critic for producing goal-conditioned policies and value estimations, as well as the plan net for generating a long-term state rollout. 
+
+behavior ¯at−1, corresponding to the transition from otar 
+
+t−1 to 
+
+otar 
+
+t . Similar to VQ-VAE (Van Den Oord et al., 2017), the optimization objective of the vector quantization process can be formulated as 
+
+ℓVQ = sg[ etar 
+
+t−1, e tar 
+
+t ] − ci 2
+
+| {z }
+
+codebook loss 
+
++ [etar 
+
+t−1, e tar 
+
+t ] − sg( ci) 2
+
+| {z }
+
+commitment loss 
+
+, (1) 
+
+where sg( ·) denotes gradient stopping. The codebook loss encourages the selected code to be closer to the input, while the commitment loss facilitates gradient backpropagation into the encoder. This helps stabilize the training process by preventing the image embedding from switching indiscrimi-nately between different codes in the codebook. As illustrated in Figure 2a, the selected latent behavior serves as input to a state transition model referred to as the 
+
+plan net . We backpropagate the video prediction error to the BAN to refine the selection of latent behaviors, ensuring that they better predict subsequent frames. The overall objective function of BAN can be formulated as ℓBAN = ℓVQ + αℓ plan ,where ℓplan denotes the loss function associated with the plan net, which will be detailed subsequently. To leverage the BAN trained on Btar as an estimator of latent behaviors for OOD videos from Bsrc , we adopt the maximum mean discrepancy (MMD) loss (Borgwardt et al., 2006), a method widely used in domain adaptation (Huang et al., 2006; Li et al., 2013; Gong et al., 2013). The MMD loss is defined as ℓMMD = Eosrc 
+
+t esrc 
+
+t − Eotar 
+
+t etar 
+
+t
+
+22 and is applied to the outputs of the image encoder to align visual embeddings across different domains. 
+
+3.2. Two-Stream World Model 
+
+We design a two-stream interactive world model consist-ing of: (i) a Trunk net that captures future state transitions driven by real actions and the associated environmental re-wards, (s1, a 1, r 1, s 2, a 2, r 2, . . . ) ∼ Trunk( o1; πϕ), and (ii) a Plan net that learns to predict future trajectories based on high-level behavior abstractions, (¯ s1, ¯a1, ¯s2, ¯a2, . . . ) ∼
+
+Plan( o1; BAN) . Here, st = [ ht, z t] and ¯st = [ ¯ht, ¯zt],where (ht, ¯ht) and (zt, ¯zt) represent the deterministic and stochastic components of the predicted states, respectively. Specifically, the plan net includes a behavior cloning mod-ule FBC that predicts ¯at based solely on ¯st. The learning target for FBC is the latent behavior inferred by BAN from the state transition pair (¯ st, ¯st+1 ). The world model can be formulated as 
+
+Trunk Net: 
+
+
+
+ht = GRU( st−1, a t−1; θ)
+
+zt ∼ p(ht; θ)
+
+z′
+
+t ∼ q(ht, e t; θ)ˆot ∼ p(st; θ)ˆrt ∼ p(st; θ)
+
+Plan Net: 
+
+
+
+¯ht = GRU(¯ st−1, ¯at−1; ¯θ)¯zt ∼ p(¯ht; ¯θ)¯z′
+
+t ∼ q(¯ht, e t; ¯θ)¯ot ∼ p(¯ st; θ)¯at = FBC (¯ st; ¯θ)
+
+(2) 
+
+where (z′
+
+t, ¯z′
+
+t) indicate the posteriors inferred from the cur-rent image observation and (ˆ ot, ¯ot) are the reconstructed 4Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+images. θ represents the combined parameters of the trunk net, while ¯θ represents the combined parameters of the plan net. The trunk net and plan net share the same model param-eters for the image encoder and decoder, but have separate parameters for the remaining parts of the model. The trunk net is trained exclusively on the offline RL dataset Btar . The objective function is as follows: 
+
+ℓtrunk (θ) = Eτ ∈B tar 
+
+> T
+
+X
+
+> t=1
+
+− ln p(ˆ ot | st)
+
+| {z }
+
+> image reconstruction
+
+− ln p(ˆ rt | st)
+
+| {z }
+
+> reward prediction
+
++ KL[ q(z′ 
+
+> t
+
+| ht, e t) ∥ p(zt | ht)] 
+
+| {z }
+
+> KL divergence
+
+.
+
+(3) 
+
+The plan net is trained using trajectories from the tar-get dataset Btar and unlabeled videos from the source dataset Bsrc . We adopt a specialized training strategy to ensure that the plan net models meaningful long-term state transitions. Instead of focusing on one-step future predictions, we consider the state transition “ shortcuts ”that occur when BAN predicts a different ¯at compared to the previous step ¯at−1. Specifically, starting with an original trajectory (o1, ¯a1, o 2, ¯a2, . . . , o T −1, ¯aT −1, o T )
+
+sampled from the dataset and precomputed by BAN, we retain only those state-action pairs (¯ at, o t+1 ) where a change in latent behavior is detected, i.e., , ¯at̸ = ¯ at−1.This process generates a refined trajectory that captures significant behavioral changes over time, represented as 
+
+(oj1 , ¯aj1 , o j2 , ¯aj2 , . . . , o jn−1 , ¯ajn−1 , o jn ), where oj1 = o1.These refined trajectories are subsequently used to optimize the plan network through the following objective function: 
+
+ℓplan (¯θ) = Eτ ∈B tar ,Bsrc 
+
+> jn
+
+X
+
+> t=j1
+
+− ln p(¯ ot | ¯st)
+
+| {z }
+
+> image reconstruction
+
+− ln p(¯ at | st)
+
+| {z }
+
+> behavior cloning
+
++ KL[ q(¯ z′ 
+
+> t
+
+| ¯ht, e t) ∥ p(¯ zt | ¯ht)] 
+
+| {z }
+
+> KL divergence
+
+.
+
+(4) This approach enables the plan net to capture significant behavior shifts, enhancing its ability to predict impactful long-term transitions. It provides supplementary informa-tion that complements short-term, real action-based state transitions during the subsequent policy optimization stage. 
+
+3.3. Model-Based Policy Learning 
+
+We perform temporal difference learning using a prob-abilistic policy network πϕ(·) and a deterministic value network vψ (·). As shown in Figure 2b, these model components are optimized over two-stream imagined trajectories generated by the trunk net and the plan net, i.e., 
+
+(s1, ¯s1, ˆa1, ¯a1, ˆr1, s 2, ¯s2, ˆa2, ¯a2, ˆr2, . . . , s L, ¯sL, ˆaL, ¯aL, ˆrL),where s1 is derived from an observation o1 randomly sampled from the target set Btar .Unlike previous methods, both the policy network and the value network are additionally conditioned on the es-timated latent behavior to incorporate high-level control guidance, such that πϕ(at | st, ¯at) and vψ (st, ¯at), where 
+
+¯at = FBC (st). This modification allows for more informed decision-making by integrating abstract behavioral patterns from the auxiliary videos into the learning process. The learning approach in Eq. (4) enables the plan net to predict long-term states that can serve as decision-making 
+
+subgoals . Accordingly, we propose a goal-conditioned in-trinsic reward that quantifies the similarity between short-term state transitions induced by real actions and long-term state transitions driven by high-level latent behaviors: 
+
+¯rt = − ∥ st, ¯st∥2 ,st ∼ Trunk( st−1, π ϕ(st−1, ¯at−1)) ,
+
+¯st ∼ Plan( st−1, F BC (st−1)) .
+
+(5) The policy network is trained to output actions that lead to states that maximize the value network’s output, while the value network seeks to accurately estimate the discounted future returns achieved by the policy network starting from each imagined state. Specifically, the value target V λt for the value network incorporates a weighted average of reward information over an n-step future horizon, which is defined recursively as follows: 
+
+V λt ˙= (ˆ rt + ω¯rt)+γ
+
+(
+
+(1 − λ) vψ (st+1 , ¯at+1 ) + λV λt+1 , if t < L, vψ (sL), if t = L. 
+
+(6) 
+
+where λ is set to 0.95 for considering more on long horizon targets. γ is a discount factor set to 0.99 in practice. Given a trajectory of model states and rewards, the value network 
+
+vψ is trained to regress V λt and the policy network πϕ is optimized with entropy regularization: 
+
+ℓ(ψ) = Epθ ,p ϕ
+
+> L−1
+
+X
+
+> t=1
+
+12 (vψ (st, ¯at) − sg( V λt )) 2,ℓ(ϕ) = Epθ ,p ϕ
+
+> L−1
+
+X
+
+> t=1
+
+
+
+−(1 − ρ)V λt
+
+| {z }
+
+> Dynamics BP
+
+−ηH [at|st, ¯at]
+
+| {z }
+
+> Entropy
+
+−ρ ln pϕ(ˆ at | st, ¯at)sg( V λt − vψ (st, ¯at)) 
+
+| {z }
+
+> REINFORCE
+
+
+
+.
+
+(7) For the first term in the actor loss, we employ the straight-through gradients (Bengio et al., 2013) to backpropagate the value targets of the sampled actions and state sequences di-rectly through the learned dynamics. In continuous control tasks like Meta-World and CARLA, we set ρ = 0 . In dis-crete control tasks, we set ρ = 1 and observe that integrating REINFORCE gradients yields improved results. 5Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach CQL DreamerV2 APV VIP LOMPO VeoRL       
+
+> Figure 3. Performance on Meta-World robotic manipulation tasks in episode return. Error bars indicate standard deviation across the 50 evaluation episodes, with 3random training seeds.
+
+4. Experiments 
+
+In this section, we present (i) quantitative comparisons with existing RL methods on a diverse set of visual control bench-marks, (ii) offline-to-online transfer learning results on novel interactive control tasks, (iii) ablation studies for each pro-posed model component in VeoRL, and (iv) hyperparameter analyses along with visualizations of the learned latent be-havior abstractions. The hyperparameters for implementing VeoRL are provided in Appendix Table 2. To demonstrate the capability of VeoRL, we conduct ex-periments on three visual RL environments, including 
+
+Meta-World (Yu et al., 2019), CARLA (Dosovitskiy et al., 2017), and MineDojo (Fan et al., 2022) . Like D4RL (Fu et al., 2020), we collect the offline RL datasets of medium -quality trajectories using a partially-trained DreamerV2 agent (Hafner et al., 2020). Please refer to Appendix Section C for more details of the benchmarks. We compare VeoRL with: (1) DrQ+CQL (Kumar et al., 2020) and LOMPO (Rafailov et al., 2021) are specifically designed for offline RL tasks. (2) DreamerV2 (Hafner et al., 2020) serves as our primary baseline. It follows a similar model-based RL framework but lacks the video-enhancement method. (3) Like our approach, APV (Seo et al., 2022) and VIP (Ma et al., 2023) exploit auxil-iary videos to improve model performance. (4) Finally, CQL DreamerV2 VIP LOMPO VeoRL Source domain Target domain   
+
+> Figure 4. Experiments of autonomous driving. a , Showcases of the source NuScenes and target CARLA datasets. b, Performance comparison on CARLA, measured by averaged episode returns.
+
+VPT (Baker et al., 2022) is particularly designed for Minecraft tasks, so we only use it as the baseline model on the MineDojo environment. Further details of the com-pared models can be found in Appendix Section D. 
+
+4.1. Main Results Meta-World robotic manipulation. For the Meta-World offline RL tasks, we use the BridgeData-V2 dataset (Walke et al., 2023) with real-world videos as the unlabeled source domain. We conduct all tasks with 3 random seeds and report the mean results and standard deviations over 50 
+
+episodes. As shown in Figure 3, our approach achieves state-of-the-art performance in episodic returns over all six tasks in this domain. Specifically, VeoRL outperforms Dream-erV2 by a large margin in Drawer Open (1168 → 1953 ), 
+
+Handle Press (1201 → 2650 ) and Handle Pull (203 →
+
+1365 ). Compared to APV and VIP, which also employ video-enhanced pretraining, VeoRL demonstrates a signifi-cant advantage by effectively exploiting and transferring the underlying control behaviors behind these videos. Further-more, we provide additional model comparisons measured by success rate in Appendix Table 3, where VeoRL consis-tently achieves the best performance. 
+
+CARLA autonomous driving. We employ the large-scale NuScenes dataset (Caesar et al., 2019) with 1,000 diverse real-world driving scenes to improve the autonomous driv-ing performance on the CARLA benchmark. Figure 4 shows the performance of our model compared to different base-lines across three random training seeds. As we can see, our VeoRL achieves notably the best mean results with the small-est standard deviations, outperforming DreamerV2 by as much as 350% . Notably, although the VIP method also in-volves pretraining on the same NuScenes dataset, its policy transfer approach (based on a self-supervised value-function objective) struggles to achieve satisfactory results in this driving task. We exclude the results from APV in Figure 4 to provide a clearer comparison of the other approaches, as it yields an average episode return of approximately −500 .
+
+MineDojo open-world games. MineDojo is an open-world 3D environment with a vast state space for the agent 6Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach Source domain Target domain         
+
+> DreamerV2 VPT LOMPO VeoRL
+> Figure 5. Experiments of the MineDojo 3D navigation and control tasks. a , Showcases of source online videos and target offline datasets. b, Performance comparison in success rate. MineDojo (Cobblestone) CARLA (Night) Meta-World (Soccer)
+> Figure 6. Performance of offline-to-online finetuning on novel tasks. By conducting offline pretraining, VeoRL demonstrates improved training efficiency and final performance when adapting to unseen, more challenging visual control tasks. Notably, we train the DreamerV2 model under the same offline-to-online setup. The results are averaged over 3random training seeds.
+
+to explore, making effective video demonstrations particu-larly essential for the target offline learning scenarios. As shown in Figure 5a, we use online videos of human play-ers as the auxiliary source video set. These videos contain random Minecraft tasks that may differ significantly in gam-ing tactics from those for the target tasks. The results in Figure 5b show that VeoRL outperforms the other baseline models. Specifically, it improves upon DreamerV2 by 250% 
+
+(0.10 → 0.35 ) in Harvest log in plains , by approximately 
+
+130% (0.36 → 0.83 ) in Harvest water with bucket , and by around 100% (0.27 → 0.55 ) in Harvest sand .
+
+Offline-to-online transfer learning. To evaluate the gen-eralizability of our model, we finetune the pretrained offline RL agents in unseen visual control tasks through online interactions with the environment. We select a more chal-lenging Soccer task as our offline-to-online transfer target on the Meta-World benchmark. This task typically involves a two-stage decision-making process where the agent must first fetch a ball and then push it to a goal position. For CARLA, the offline RL agents are pretrained using the 
+
+Day-mode dataset and then finetuned in the Night mode 
+
+driving scenarios. For MineDojo, the agents are pretrained on a fixed dataset for the Harvest sand task and finetuned on the Harvest cobblestone with wooden pickaxe task. As shown in Figure 6, VeoRL demonstrates superior training efficiency compared to DreamerV2, which follows the same offline-to-online domain adaptation setup, highlighting the effectiveness of our offline training approach. 
+
+4.2. Ablation Studies 
+
+As we will discuss in Section 3, VeoRL introduces three key innovations to the model-based actor-critic learning frame-work of DreamerV2 (Hafner et al., 2021): (i) It uses latent behaviors as inputs to the policy network ( i.e., actor); (ii) It 7Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach Ours Ours w/o latent behavior Ours w/o videos Ours w/o intrinsic reward DreamerV2         
+
+> CARLA MineDojo Meta-World
+> Figure 7. Ablation studies of VeoRL. We show the impact of latent behavior guidance ( yellow ) and the intrinsic reward ( green ). We also compare VeoRL with a baseline model that does not use any source video data throughout the training process ( blue ).
+> Table 1. Performance comparison with DreamerV3 on Meta-World robotic manipulation tasks in success rate and episode return.
+> We compute the mean and standard deviation of 50 episodes over 3random training seeds.
+
+Methods DreamerV2 DreamerV3 VeoRL(DV2) VeoRL(DV3) Success Rate Drawer Open 0.18 ± 0.04 0.00 ± 0.00 0.70 ± 0.07 0.55 ± 0.15 Handle Press 0.33 ± 0.11 0.05 ± 0.05 0.60 ± 0.12 0.35 ± 0.15 Episode Return Drawer Open 1168.35 ± 59.55 674.55 ± 79.04 1953.60 ± 121.48 1393.50 ± 122.50 Handle Press 1201.75 ± 422.10 257.85 ± 247.05 2650.90 ± 619.60 1360.15 ± 547.85 employs latent behaviors to compute an intrinsic reward for training the value network ( i.e., critic), and (iii) It trains the 
+
+plan net in the world model using the auxiliary video set and the offline RL dataset jointly. Accordingly, we conduct ablation studies to evaluate the effectiveness of individual techniques. Figure 7 provides corresponding results on Meta-World ( Handle Press ), CARLA and MineDojo ( Har-vest water with bucket ). As illustrated by the yellow and green bars, excluding the latent behavior input in the policy network or removing its influence from the value network’s training objective both result in significant performance drops in VeoRL. These results highlight the crucial role of latent behaviors as effective high-level guidance in policy learning. The blue bar illustrates that training all network components solely on the target offline dataset (without ac-cess to auxiliary videos) leads to a significant performance decline. This highlights that our video-enhanced method effectively extracts valuable prior knowledge of underlying expert behaviors from the unlabeled videos. 
+
+4.3. Comparison with DreamerV3 
+
+The decision to use DreamerV2 as the backbone is driven by two key considerations: (i) Offline setting performance .While DreamerV3 (Hafner et al., 2023) achieves strong per-formance across diverse tasks with fixed hyperparameters, our experiment results in Table 1 demonstrate that it un-derperforms in offline RL settings without hyperparameter tuning compared to DreamerV2. (ii) Backbone consistency .LAMPO, a key baseline in our work, uses DreamerV2 as its backbone. To ensure direct and fair comparisons be-tween our method and LAMPO, we maintain consistency by adopting the same backbone. Notably, we also conduct additional experiments on Meta-World by integrating Ve-oRL with DreamerV3. The results demonstrate that our approach outperforms vanilla DreamerV3, showcasing its ability to seamlessly integrate with different architectures. 
+
+4.4. Analyses of Latent Actions 
+
+To illustrate the correspondence between latent behaviors and real actions, we evaluate the distribution of the learned latent behavior abstractions in Meta-World Coffee Push in Figure 8. In VeoRL, we roll out the trunk net and plan net simultaneously for model-based policy learning. Start-ing from the same input state st, we obtain two future tra-jectories of real actions at:t+H and corresponding latent behaviors ¯at:t+H . To show the correspondence between them, we specifically select trajectories of four consecu-tive real actions at:t+4 with time-invariant latent behaviors 
+
+¯at = ¯ at:t+4 , and then use the t-SNE algorithm (Van der Maaten & Hinton, 2008) to project at:t+4 into a 2D plane. 8Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach ‘reach’ 
+
+‘push’ 
+
+BridgeData 
+
+BridgeData                 
+
+> Meta-World (target domain)
+> Figure 8. Correspondence between latent behaviors and real actions in Meta-World. During model-based state rollouts, starting from the same state stof the target domain, VeoRL simultaneously generates real action trajectories at:t+Hand latent behaviors ¯at:t+H. We consider trajectories of four consecutive real actions at:t+4 , where the latent behaviors are time-invariant, i.e., ¯at= ¯ at:t+4 . We then use t-SNE to project at:t+4 into a 2D plane. To distinguish between different latent behaviors, we assign distinct colors to the points, visualizing 10 latent behaviors for clarity. We present BridgeData examples where VeoRL generates the corresponding latent behaviors.
+
+Different colors assigned to the points indicate distinct la-tent behaviors. From Figure 8, we observe that the latent behaviors align well with distinct clusters of real action se-quences, demonstrating the high representational fidelity of the learned latent action space. These latent behaviors effectively capture semantic information from online videos and can be interpreted as fundamental operational skills, which can then be used as policy guidance for the RL agent. Furthermore, we provide the ablation results of varying the number of discrete latent behavior in Appendix Figure 9. 
+
+4.5. Further Results and Discussion 
+
+Please refer to Appendices F-I for additional experimental results, including the quality analysis of source videos and target domain trajectories, the hyperparameter analysis of latent action space, the generalizability across tasks, and the impact of MMD in domain adaptation. 
+
+5. Conclusions and Limitations 
+
+In this paper, we introduced VeoRL, a novel approach that leverages freely available, unlabeled video data to enhance offline visual RL. VeoRL constructs a world model with two state transition branches: one conditioned on latent behav-iors extracted from video data and the other on the agent’s real actions. This dual-branch structure allows the agent to effectively learn control policies by aligning state rollouts from two branches, thereby transferring knowledge from the diverse, out-of-domain video data to the RL agents. Our results demonstrate that VeoRL significantly outperforms existing offline RL methods across a wide range of chal-lenging visual control tasks, including robotic manipulation, autonomous driving, and open-world video games. The in-tegration of video data not only boosts the agent’s ability to generalize across different domains but also accelerates the learning process by incorporating a broader understanding of the physical world and control policies. The limitation of this work is the computational overhead. The training process of VeoRL involves extracting latent behaviors and optimizing a world model with two state transition branches. Despite the performance gain, the dual-branch setup could increase the computational complex-ity and memory requirements, making the approach more resource-intensive than simpler RL algorithms. 9Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+Acknowledgments 
+
+This work was supported by the National Natural Science Foundation of China (62250062), the Smart Grid National Science and Technology Major Project (2024ZD0801200), the Shanghai Municipal Science and Technology Major Project (2021SHZDZX0102), and the Fundamental Re-search Funds for the Central Universities. 
+
+Impact Statement 
+
+VeoRL represents a significant advancement in offline RL by leveraging unlabeled video data to enhance agent policy learning and generalization. It enables agents to be trained on vast amounts of real-world data without the need for labor-intensive annotations, making it more accessible for researchers, developers, and practitioners. VeoRL brings RL closer to how humans learn by observing and interacting with the world. Additionally, by aligning RL with human learning processes, VeoRL enables the development of more intuitive AI systems. 
+
+References 
+
+Baker, B., Akkaya, I., Zhokov, P., Huizinga, J., Tang, J., Ecoffet, A., Houghton, B., Sampedro, R., and Clune, J. Video pretraining (VPT): Learning to act by watching unlabeled online videos. In NeurIPS , volume 35, pp. 24639–24654, 2022. Bengio, Y., L ´eonard, N., and Courville, A. Estimating or propagating gradients through stochastic neurons for con-ditional computation. arXiv preprint arXiv:1308.3432 ,2013. Borgwardt, K. M., Gretton, A., Rasch, M. J., Kriegel, H.-P., Sch ¨olkopf, B., and Smola, A. J. Integrating structured biological data by kernel maximum mean discrepancy. 
+
+Bioinformatics , 22(14):e49–e57, 2006. Caesar, H., Bankiti, V., Lang, A. H., Vora, S., Liong, V. E., Xu, Q., Krishnan, A., Pan, Y., Baldan, G., and Beijbom, O. nuscenes: A multimodal dataset for autonomous driving. 
+
+arXiv preprint arXiv:1903.11027 , 2019. Cen, Z., Liu, Z., Wang, Z., Yao, Y., Lam, H., and Zhao, D. Learning from sparse offline datasets via conservative density estimation. arXiv preprint arXiv:2401.08819 ,2024. Chang, M., Gupta, A., and Gupta, S. Learning value func-tions from undirected state-only experience. In ICLR ,2022. Chen, C., Zhang, Y., Liu, X., and Coates, M. Bidirectional learning for offline model-based biological sequence de-sign. In ICML , pp. 5351–5366, 2023. Dosovitskiy, A., Ros, G., Codevilla, F., Lopez, A., and Koltun, V. CARLA: An open urban driving simulator. In 
+
+CoRL , pp. 1–16, 2017. Fan, L., Wang, G., Jiang, Y., Mandlekar, A., Yang, Y., Zhu, H., Tang, A., Huang, D.-A., Zhu, Y., and Anandkumar, A. Minedojo: Building open-ended embodied agents with internet-scale knowledge. In NeurIPS , volume 35, pp. 18343–18362, 2022. Fu, J., Kumar, A., Nachum, O., Tucker, G., and Levine, S. D4rl: Datasets for deep data-driven reinforcement learning. arXiv preprint arXiv:2004.07219 , 2020. Fujimoto, S. and Gu, S. S. A minimalist approach to offline reinforcement learning. NeurIPS , 34:20132–20145, 2021. Fujimoto, S., Meger, D., and Precup, D. Off-policy deep reinforcement learning without exploration. In ICML , pp. 2052–2062, 2019. Gong, B., Grauman, K., and Sha, F. Connecting the dots with landmarks: Discriminatively learning domain-invariant features for unsupervised domain adaptation. In 
+
+ICML , pp. 222–230, 2013. Gray, R. Vector quantization. IEEE Assp Magazine , 1(2): 4–29, 1984. Gumbsch, C., Sajid, N., Martius, G., and Butz, M. V. Learn-ing hierarchical world models with adaptive temporal abstractions from discrete latent dynamics. In ICLR ,2023. Ha, D. and Schmidhuber, J. Recurrent world models facili-tate policy evolution. In NeurIPS , 2018. Hafner, D., Lillicrap, T., Fischer, I., Villegas, R., Ha, D., Lee, H., and Davidson, J. Learning latent dynamics for planning from pixels. In ICML , pp. 2555–2565, 2019. Hafner, D., Lillicrap, T., Ba, J., and Norouzi, M. Dream to control: Learning behaviors by latent imagination. In 
+
+ICLR , 2020. Hafner, D., Lillicrap, T., Norouzi, M., and Ba, J. Mastering atari with discrete world models. In ICLR , 2021. Hafner, D., Lee, K.-H., Fischer, I., and Abbeel, P. Deep hierarchical planning from pixels. In NeurIPS , volume 35, pp. 26091–26104, 2022. Hafner, D., Pasukonis, J., Ba, J., and Lillicrap, T. Mastering diverse domains through world models. arXiv preprint arXiv:2301.04104 , 2023. Hatch, K., Yu, T., Rafailov, R., and Finn, C. Example-based offline reinforcement learning without rewards. Proceed-ings of Machine Learning Research vol , 144:1–17, 2022. 10 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+Hatch, K. B., Eysenbach, B., Rafailov, R., Yu, T., Salakhut-dinov, R., Levine, S., and Finn, C. Contrastive example-based control. In L4DC , pp. 155–169, 2023. Hong, J., Dragan, A., and Levine, S. Offline rl with ob-servation histories: Analyzing and improving sample complexity. In ICLR , 2024. Huang, J., Gretton, A., Borgwardt, K., Sch ¨olkopf, B., and Smola, A. Correcting sample selection bias by unlabeled data. In NeurIPS , volume 19, 2006. Kostrikov, I., Yarats, D., and Fergus, R. Image augmentation is all you need: Regularizing deep reinforcement learning from pixels. In ICLR , 2021. Kostrikov, I., Nair, A., and Levine, S. Offline reinforcement learning with implicit Q-learning. In ICLR , 2022. Kumar, A., Fu, J., Soh, M., Tucker, G., and Levine, S. Stabilizing off-policy q-learning via bootstrapping error reduction. In NeurIPS , volume 32, 2019. Kumar, A., Zhou, A., Tucker, G., and Levine, S. Conser-vative q-learning for offline reinforcement learning. In 
+
+NeurIPS , volume 33, pp. 1179–1191, 2020. Langley, P. Crafting papers on machine learning. In Langley, P. (ed.), Proceedings of the 17th International Conference on Machine Learning (ICML 2000) , pp. 1207–1216, Stan-ford, CA, 2000. Morgan Kaufmann. Laskin, M., Lee, K., Stooke, A., Pinto, L., Abbeel, P., and Srinivas, A. Reinforcement learning with augmented data. In NeurIPS , 2020. Levine, S., Kumar, A., Tucker, G., and Fu, J. Offline rein-forcement learning: Tutorial, review, and perspectives on open problems. arXiv preprint arXiv:2005.01643 , 2020. Li, A., Boots, B., and Cheng, C.-A. Mahalo: Unifying offline reinforcement learning and imitation learning from observations. In ICML , pp. 19360–19384, 2023. Li, W., Duan, L., Xu, D., and Tsang, I. W. Learning with augmented features for supervised and semi-supervised heterogeneous domain adaptation. IEEE Transactions on Pattern analysis and machine intelligence , 36(6):1134– 1148, 2013. Lu, C., Ball, P. J., Rudner, T. G., Parker-Holder, J., Osborne, M. A., and Teh, Y. W. Challenges and opportunities in offline reinforcement learning from visual observations. 
+
+Transactions on Machine Learning Research , 2023. Ma, Y. J., Sodhani, S., Jayaraman, D., Bastani, O., Kumar, V., and Zhang, A. Vip: Towards universal visual reward and representation via value-implicit pre-training. In 
+
+ICLR , 2023. Mazoure, B., Eysenbach, B., Nachum, O., and Tompson, J. Contrastive value learning: Implicit models for simple offline RL. In CoRL , pp. 1257–1267, 2023. Nair, S., Rajeswaran, A., Kumar, V., Finn, C., and Gupta, A. R3m: A universal visual representation for robot manipulation. arXiv preprint arXiv:2203.12601 , 2022. Nottingham, K., Ammanabrolu, P., Suhr, A., Choi, Y., Ha-jishirzi, H., Singh, S., and Fox, R. Do embodied agents dream of pixelated sheep: Embodied decision making using language guided world modelling. In ICML , pp. 26311–26325, 2023. Osa, T. and Harada, T. Discovering multiple solutions from a single task in offline reinforcement learning. In ICML ,2024. Park, S., Ghosh, D., Eysenbach, B., and Levine, S. HIQL: Offline goal-conditioned RL with latent states as actions. In NeurIPS , volume 36, 2024. Peng, X. B., Kumar, A., Zhang, G., and Levine, S. Advantage-weighted regression: Simple and scalable off-policy reinforcement learning. arXiv preprint arXiv:1910.00177 , 2019. Rafailov, R., Yu, T., Rajeswaran, A., and Finn, C. Offline reinforcement learning from images with latent space models. In L4DC , pp. 1154–1168, 2021. Rao, D., Sadeghi, F., Hasenclever, L., Wulfmeier, M., Zam-belli, M., Vezzani, G., Tirumala, D., Aytar, Y., Merel, J., Heess, N., et al. Learning transferable motor skills with hierarchical latent mixture policies. In ICLR , 2022. Rigter, M., Lacerda, B., and Hawes, N. Rambo-RL: Robust adversarial model-based offline reinforcement learning. In NeurIPS , volume 35, pp. 16082–16097, 2022. Schmeckpeper, K., Rybkin, O., Daniilidis, K., Levine, S., and Finn, C. Reinforcement learning with videos: Com-bining offline observations with interaction. In CoRL ,volume 155, pp. 339–354, 2021. Schulman, J., Wolski, F., Dhariwal, P., Radford, A., and Klimov, O. Proximal policy optimization algorithms. 
+
+arXiv preprint arXiv:1707.06347 , 2017. Seo, Y., Lee, K., James, S. L., and Abbeel, P. Reinforcement learning with action-free pre-training from videos. In 
+
+ICML , pp. 19561–19579. PMLR, 2022. Shah, D., Bhorkar, A., Leen, H., Kostrikov, I., Rhinehart, N., and Levine, S. Offline reinforcement learning for visual navigation. arXiv preprint arXiv:2212.08244 , 2022. 11 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+Sun, Y., Zhang, J., Jia, C., Lin, H., Ye, J., and Yu, Y. Model-bellman inconsistency for model-based offline reinforce-ment learning. In ICML , pp. 33177–33194, 2023. Tian, S., Nair, S., Ebert, F., Dasari, S., Eysenbach, B., Finn, C., and Levine, S. Model-based visual planning with self-supervised functional distances. arXiv preprint arXiv:2012.15373 , 2020. Todorov, E., Erez, T., and Tassa, Y. Mujoco: A physics engine for model-based control. In IROS , pp. 5026–5033, 2012. Torabi, F., Warnell, G., and Stone, P. Behavioral cloning from observation. In IJCAI , pp. 4950–4957, 2018. Valevski, D., Leviathan, Y., Arar, M., and Fruchter, S. Dif-fusion models are real-time game engines. arXiv preprint arXiv:2408.14837 , 2024. Van Den Oord, A., Vinyals, O., et al. Neural discrete repre-sentation learning. In NeurIPS , volume 30, 2017. Van der Maaten, L. and Hinton, G. Visualizing data using t-sne. Journal of machine learning research , 9(11), 2008. Veeriah, V., Zahavy, T., Hessel, M., Xu, Z., Oh, J., Kemaev, I., van Hasselt, H. P., Silver, D., and Singh, S. Discov-ery of options via meta-learned subgoals. In NeurIPS ,volume 34, pp. 29861–29873, 2021. Walke, H., Black, K., Lee, A., Kim, M. J., Du, M., Zheng, C., Zhao, T., Hansen-Estruch, P., Vuong, Q., He, A., Myers, V., Fang, K., Finn, C., and Levine, S. Bridgedata v2: A dataset for robot learning at scale. In CoRL , 2023. Wang, Q., Yang, J., Wang, Y., Jin, X., Zeng, W., and Yang, X. Making offline rl online: Collaborative world models for offline visual reinforcement learning. In NeurIPS ,2024. Wu, J., Ma, H., Deng, C., and Long, M. Pre-training con-textualized world models with in-the-wild videos for re-inforcement learning. In NeurIPS , 2023. Wu, Y., Tucker, G., and Nachum, O. Behavior regu-larized offline reinforcement learning. arXiv preprint arXiv:1911.11361 , 2019. Yadav, K., Ramrakhya, R., Majumdar, A., Berges, V.-P., Kuhar, S., Batra, D., Baevski, A., and Maksymets, O. Offline visual representation learning for embodied nav-igation. In Workshop on Reincarnating Reinforcement Learning at ICLR 2023 , 2023. Yang, M., Li, J., Fang, Z., Chen, S., Yu, Y., Fu, Q., Yang, W., and Ye, D. Playable game generation. arXiv preprint arXiv:2412.00887 , 2024a. Yang, R., Zhong, H., Xu, J., Zhang, A., Zhang, C., Han, L., and Zhang, T. Towards robust offline reinforcement learning under diverse data corruption. In ICLR , 2024b. Yarats, D., Fergus, R., Lazaric, A., and Pinto, L. Mastering visual continuous control: Improved data-augmented re-inforcement learning. arXiv preprint arXiv:2107.09645 ,2021a. Yarats, D., Zhang, A., Kostrikov, I., Amos, B., Pineau, J., and Fergus, R. Improving sample efficiency in model-free reinforcement learning from images. In AAAI , pp. 10674–10681, 2021b. Ye, W., Zhang, Y., Abbeel, P., and Gao, Y. Become a proficient player with limited data through watching pure videos. In ICLR , 2022. Yu, T., Quillen, D., He, Z., Julian, R., Hausman, K., Finn, C., and Levine, S. Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning. In CoRL ,2019. Yu, T., Kumar, A., Rafailov, R., Rajeswaran, A., Levine, S., and Finn, C. Combo: Conservative offline model-based policy optimization. In NeurIPS , volume 34, pp. 28954–28967, 2021. Yu, T., Kumar, A., Chebotar, Y., Hausman, K., Finn, C., and Levine, S. How to leverage unlabeled data in of-fline reinforcement learning. In ICML , pp. 25611–25635, 2022. Zang, H., Li, X., Yu, J., Liu, C., Islam, R., Combes, R. T. D., and Laroche, R. Behavior prior representation learning for offline reinforcement learning. In ICLR , 2023. Zhang, Q., Peng, Z., and Zhou, B. Learning to drive by watching youtube videos: Action-conditioned contrastive policy pretraining. In ECCV , pp. 111–128. Springer, 2022. 12 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+Appendix A. Algorithm of VeoRL 
+
+We provide the overall training scheme of VeoRL in Algorithm 1. 
+
+Algorithm 1 The training scheme of VeoRL 
+
+Require: Target offline RL dataset Btar and source video set Bsrc .
+
+Initialize: Random policy network πϕ and value network vψ .
+
+1: while not converged do 
+
+2: // Behavior abstraction learning 
+
+3: for update m1 steps do 
+
+4: Draw observation sequences otar  
+
+> 1: T
+
+∼ B tar and osrc  
+
+> 1: T
+
+∼ B src .
+
+5: Train BAN using ℓVQ + αℓ plan on otar  
+
+> 1: T
+
+.
+
+6: Train the image encoder using ℓMMD on otar  
+
+> 1: T
+
+and osrc  
+
+> 1: T
+
+.
+
+7: end for 
+
+8: // World model learning 
+
+9: for update m2 steps do 
+
+10: Draw trajectories τ tar = {(otar  
+
+> t
+
+, a tar  
+
+> t
+
+, r tar  
+
+> t
+
+)}Tt=1 ∼ B tar and osrc  
+
+> 1: T
+
+∼ B src .
+
+11: Train the low-level trunk net using Objective (3) on τ tar .
+
+12: Predict latent behaviors ¯atar   
+
+> 1: T−1
+
+∼ BAN( otar  
+
+> 1: T
+
+) and ¯asrc   
+
+> 1: T−1
+
+∼ BAN( osrc  
+
+> 1: T
+
+).
+
+13: Train the high-level plan net using Objective (4) on (otar  
+
+> 1: T
+
+, ¯atar  
+
+> 1: T−1
+
+) and (osrc  
+
+> 1: T
+
+, ¯asrc  
+
+> 1: T−1
+
+).
+
+14: Train the behavior cloning network FBC using ¯atar   
+
+> 1: T−1
+
+and ¯asrc  
+
+> 1: T−1
+
+.
+
+15: end for 
+
+16: end while 
+
+17: // Model-based policy learning 
+
+18: while not converged do 
+
+19: Draw {(otar  
+
+> t
+
+, a tar  
+
+> t
+
+, r tar  
+
+> t
+
+)}Tt=1 ∼ B tar .
+
+20: for each t do 
+
+21: Generate {(st, a t, r t)}t+Lt using πϕ and the low-level trunk net. 
+
+22: Generate {(¯ st, ¯at)}t+Lt using FBC and the high-level plan net. 
+
+23: Compute the intrinsic rewards {¯rt}t+Lt using Eq. (5). 
+
+24: Update vψ and πϕ using Objective (7). 
+
+25: end for 
+
+26: end while 
+
+B. Implementation Details 
+
+The model configurations and hyperparameter settings are detailed in Table 2. 
+
+C. Benchmark Details 
+
+We evaluate the performance of VeoRL in the following three visual RL environments: • Meta-World (Yu et al., 2019): The Meta-World benchmark simulates 50 manipulation tasks with complex visual dynamics, all executed by the same robotic arm. These tasks involve a variety of actions such as reaching, pushing, and grasping, implemented with the MuJoCo physics engine (Todorov et al., 2012). The action space is represented as a 
+
+2-tuple: the 3D movement of the end-effector and a normalized torque for the gripper fingers, with values ranging from 
+
+−1 to 1. We collect six offline datasets from the tasks button press , drawer open , handle pull , handle press , plate slide ,and coffee push . Each dataset consists of 200 trajectories, each with 500 time steps. • CARLA (Dosovitskiy et al., 2017): CARLA provides realistic visual observations for autonomous driving research, including varied weather conditions, road layouts, and traffic signs. The agent controls the vehicle using steering, acceleration, and braking commands. The goal is to maximize driving distance over 1,000 time steps while avoiding 13 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach  
+
+> Table 2. An overview of layers and hyperparameters used in VeoRL in the three environments.
+
+Item Meta-World CARLA MineDojo 
+
+World Model 
+
+Image encoder Conv3-32 Conv3-32 Conv3-96 GRU hidden size 200 200 4096 RSSM number of units 200 200 1024 Stochastic latent dimension 50 50 32 Discrete latent classes 0 0 32 Weighting factor α 1 1 1World model learning rate 3 · 10 −4 3 · 10 −4 1 · 10 −4
+
+BAN’s update iterations 40K 40K 30K 
+
+Behavior Learning 
+
+Imagination horizon L 15 15 15 
+
+λ-target 0.95 0.95 0.95 Discount γ in Eq. (6) 0.99 0.99 0.99 
+
+ω in Eq. (6) 0.05 0.1 1 · 10 −5
+
+ρ in Eq. (7) 0 0 1
+
+η in Eq. (7) 1 · 10 −4 1 · 10 −4 3 · 10 −4
+
+MLP number of Policy network 4 4 5MLP number of Value network 3 3 5Policy network learning rate 8 · 10 −5 8 · 10 −5 3 · 10 −5
+
+Value network learning rate 8 · 10 −5 8 · 10 −5 3 · 10 −5
+
+Environment Setting 
+
+Time limit 500 1000 1000 Action repeat 1 4 1Image size 64 × 64 64 × 64 64 × 64 
+
+collisions with 30 vehicles or barriers. The reward function incorporates velocity, collision impact, and steering effort, encouraging safe and efficient driving. The offline dataset includes approximately 1,000 episodes. • MineDojo (Fan et al., 2022): This platform provides convenient APIs built on Minecraft, standardizing task specifications, world settings, and observation and action spaces for agents. In our study, we focus on three challenging tasks: harvest log in plains , harvest water with bucket , and harvest sand . We set the maximum time steps of each episode as 1,000 and adopt a binary reward indicating task completion, supplemented by the MineCLIP reward (Fan et al., 2022). For the auxiliary video datasets, we select two datasets, BridgeData-V2 and NuScenes, as source domains due to their relevance to Meta-World and CARLA, as well as publicly available Minecraft videos for MineDojo: • BridgeData-V2 (Walke et al., 2023): This is a large and diverse robot manipulation dataset featuring 24 environments and 60 ,096 trajectories. Most trajectories are video recordings from the Toy Kitchen and Toy Tabletops environments. For our experiments, we use trajectories longer than 20 steps as the source domain data for Meta-World, resulting in approximately 50 ,000 trajectories. • NuScenes (Caesar et al., 2019): This large-scale autonomous driving dataset contains 1,000 diverse scenes with detailed 3D object annotations. For our experiments, we use only the video recordings, excluding annotations, as the source domain data for tasks in the CARLA environment. In total, we collect 850 episodes with varying time step lengths. • Minecraft videos: For the source domain of MineDojo, we use publicly available videos of humans playing Minecraft. We collect a dataset of 5,000 episodes with varying lengths. 14 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach      
+
+> Table 3. Performance on Meta-World robotic manipulation tasks in success rate. We compute the mean and standard deviation of 50
+> episodes over 3random training seeds.
+
+Methods DrQ + CQL DreamerV2 APV VIP LOMPO Ours Drawer Open 0 ± 0 0.18 ± 0.04 0.02 ± 0.05 0.02 ± 0.04 0 ± 0 0.70 ± 0.07 
+
+Handle Press 0.60 ± 0.48 0.33 ± 0.11 0.10 ± 0.09 0.56 ± 0.17 0 ± 0 0.60 ± 0.12 
+
+Handle Pull 0 ± 0 0.04 ± 0.01 0 ± 0 0.36 ± 0.15 0 ± 0 0.30 ± 0.10 Plate Slide 0.23 ± 0.41 0.48 ± 0.02 0 ± 0 0.34 ± 0.12 0 ± 0 0.67 ± 0.03 
+
+Coffee Push 0 ± 0 0.29 ± 0.01 0.12 ± 0.11 0.16 ± 0.15 0 ± 0 0.31 ± 0.05 
+
+Button Press 0 ± 0 0.58 ± 0.08 0.01 ± 0.01 0.18 ± 0.08 0 ± 0 0.62 ± 0.02 
+
+Average 0.14 0.32 0.04 0.27 0 0.53   
+
+> Table 4. The ablation study of the quality of source videos on Meta-World (Handle Press). As the number of source domain videos increases, the model’s performance improves accordingly.
+
+Handle Press All videos 1/2 videos 1/4 videos DreamerV2 Episode return 2651 ± 620 2477 ± 441 1859 ± 423 1202 ± 422 
+
+D. Compared Methods 
+
+We compare VeoRL against existing model-based and model-free offline RL methods: • CQL (Kumar et al., 2020): A model-free method that conservatively learns value functions to address value overestimation. Following (Fu et al., 2020), we integrate CQL regularizers into the DrQ-V2 algorithm (Yarats et al., 2021a) to adapt it for pixel-based inputs. • DreamerV2 (Hafner et al., 2019): A model-based RL approach that learns policies directly from latent states within the world model. We adapt it to the offline setting and refer to this version as Offline DV2. • APV (Seo et al., 2022): This method builds an action-conditional RSSM model on top of an action-free RSSM model pretrained on video datasets. We adapt APV to the offline scenario for a fair comparison. • VIP (Ma et al., 2023): A pretraining approach that focuses on learning universal visual representations from video datasets, enabling generalization to downstream offline tasks. For this comparison, we pair VIP with the AWR algorithm (Peng et al., 2019) for offline policy learning. • LOMPO (Rafailov et al., 2021): A model-based offline visual RL method that addresses model uncertainty in the latent space while incorporating explicit reward estimation. • VPT (Baker et al., 2022): A foundational model for Minecraft trained using standard behavior cloning. VPT uses an inverse dynamics model trained on limited labeled data to annotate a vast set of unlabeled online videos. For task-specific performance, we finetune VPT on the offline dataset using PPO (Schulman et al., 2017), following the methodology outlined in DECKARD (Nottingham et al., 2023). 
+
+E. Further Results of Performance Comparison 
+
+Table 3 provides a detailed comparison of VeoRL and existing methods on the Meta-World benchmark, evaluated by success rate. VeoRL outperforms DreamerV2 with a remarkable advantage in Drawer Open (0.18 → 0.70 ), Handle Pull 
+
+(0.04 → 0.30 ) and Handle Press (0.33 → 0.60 ) in terms of success rate. 
+
+F. Analyses of the Quality of Source Videos and Target Domain Trajectories 
+
+To partially investigate the impact of using fewer high-quality videos, we have conducted an ablation study analyzing how the quantity of unlabeled source videos affects policy performance. The results are summarized in Table 4. As the number of 15 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+source domain videos increases, the model’s performance improves accordingly, demonstrating that our method effectively leverages information from source domain videos and exhibits strong scalability. Even when using only a quarter of the videos, VeoRL’s results still significantly outperform DreamerV2 (which does not utilize any source domain videos for training), indicating that our method can effectively extract useful skills from the videos. Our framework trains the Plan Net and the corresponding BC model using data from both the source domain (BridgeData) and the target domain (Meta-World). This design leverages the diversity of BridgeData to enable the BC model to infer high-level behavioral abstractions ( e.g. , “reach” or “grasp”) that are applicable to the target task ( e.g. , “Button press”), even when the offline data is of low quality and lacks successful trajectories. To validate this, we conduct a new experiment in which the offline Meta-World data consists of random trajectories, potentially containing extremely poor demonstrations. As shown in Table 5, the results indicate that our method could still benefit from the latent skills (estimated by BC) from the auxiliary videos, demonstrating the robustness of our approach in challenging offline RL settings.   
+
+> Table 5. The ablation study of the quality of target domain trajectories on Meta-World (Button Press) in episode return. It demonstrates the robustness of our approach in challenging offline RL settings.
+
+Button Press Medium offline data Random offline data Ours 850 ± 169 638 ± 150 DreamerV2 765 ± 120 505 ± 150 VIP 545 ± 94 276 ± 99 
+
+G. Hyperparameter Analysis of Latent Action Space 
+
+Figure 9 provides the results of varying the number of discrete latent behaviors in the Meta-World ( Handle Press ) and CARLA benchmarks. We observe that setting num = 50 consistently yields the best performance across all tested environments, striking a good balance between the complexity of the learned latent action space and its stability of policy learning. Furthermore, VeoRL demonstrates robust performance across varying numbers of latent behaviors, compared with DreamerV2 without training with natural videos from the BridgeData-V2 and NuScenes datasets (dashed lines). Meta-World CARLA 
+
+num=5 num=20 num=100 num=50     
+
+> Figure 9. Hyperparameter analyses of the dimension of the latent action space. We observe that (i) VeoRL demonstrates robust performance across varying numbers of latent actions, compared with DreamerV2 without training with natural videos from the BridgeData-V2 and NuScenes datasets; (ii) A setting of 50 latent actions consistently yields the best performance across different tasks.
+
+H. Generalizability across Tasks 
+
+We conduct the experiments on Meta-World and MineDojo to validate the transferability of latent behaviors across tasks. In the training phase, the behavior abstraction network is frozen after training on Task A, with a fixed latent codebook. For Task B, this pre-trained network is directly deployed without undergoing task-specific fine-tuning on source video data. As presented in Table 6, the minimal performance degradation confirms that our method’s latent behaviors trained on Task A 16 Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach 
+
+remain effective for Task B, consistently outperforming other baselines trained specifically on Task B. This transferability significantly reduces training costs for downstream tasks, as it spares the time for re-training on the auxiliary videos.     
+
+> Table 6. The study of the generalization ability of the latent behaviors across tasks on Meta-World and MineDojo. We compute the mean and standard deviation over 3random training seeds.
+
+Methods Codebook construction Downstream task Success rate Meta-World VeoRL Button Press Button Press 0.62 ± 0.02 VeoRL Handle Press Button Press 0.63 ± 0.12 DreamerV2 N/A Button Press 0.58 ± 0.08 VIP N/A Button Press 0.18 ± 0.08 MineDojo VeoRL Harvest sand Harvest sand 0.55 ± 0.05 VeoRL Harvest water with bucket Harvest sand 0.50 ± 0.10 DreamerV2 N/A Harvest sand 0.25 ± 0.06 VPT N/A Harvest sand 0.20 ± 0.04 
+
+I. Analyses of MMD in Domain Adaptation 
+
+We performed an ablation study in the Meta-World environment to evaluate the role of MMD loss. To quantify its impact, we compared performance under conditions with and without MMD loss, accompanied by feature distribution visualizations derived from principal component analysis (PCA). The results in Table 7 validate that MMD loss critically bridges domain discrepancies. By aligning feature distributions, it enables the target domain to effectively transfer and adapt knowledge from the source domain, leading to a 33% improvement in success rates ( 0.60 vs. 0.45 ). Furthermore, as shown in the Figure 10, incorporating MMD significantly aligns the feature distributions between the source and target domains. This alignment correlates with policy generalization.  
+
+> Table 7. The ablation study on the MMD loss in the Meta-World environment.
+
+Handle Press w/ MMD loss w/o MMD loss DreamerV2 Episode return 2651 ± 620 1961 ± 585 1202 ± 422 Success rate 0.60 ± 0.12 0.45 ± 0.15 0.33 ± 0.11 W/ MMD loss W/o MMD loss   
+
+> Figure 10. Distribution visualization using PCA. We observe that incorporating MMD significantly aligns the feature distributions between the source and target domains.
+
+17

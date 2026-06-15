@@ -1,0 +1,1308 @@
+Title: Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network
+
+URL Source: https://openreview.net/pdf?id=9LSx4IS9Mx
+
+Number of Pages: 22
+
+Markdown Content:
+# Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Jijia Liu 1 Feng Gao 1 Qingmin Liao 1 Chao Yu 1 2 Yu Wang 1
+
+Abstract 
+
+Reinforcement learning (RL) for continuous con-trol often requires large amounts of online interac-tion data. Value-based RL methods can mitigate this burden by offering relatively high sample ef-ficiency. Some studies further enhance sample efficiency by incorporating offline demonstration data to “kick-start” training, achieving promis-ing results in continuous control. However, they typically compute the Q-function independently for each action dimension, neglecting interdepen-dencies and making it harder to identify optimal actions when learning from suboptimal data, such as non-expert demonstration and online-collected data during the training process. To address these issues, we propose Auto-Regressive Soft Q-learning (ARSQ), a value-based RL algorithm that models Q-values in a coarse-to-fine, auto-regressive manner. First, ARSQ decomposes the continuous action space into discrete spaces in a coarse-to-fine hierarchy, enhancing sample effi-ciency for fine-grained continuous control tasks. Next, it auto-regressively predicts dimensional action advantages within each decision step, en-abling more effective decision-making in continu-ous control tasks. We evaluate ARSQ on two con-tinuous control benchmarks, RLBench and D4RL, integrating demonstration data into online train-ing. On D4RL, which includes non-expert demon-strations, ARSQ achieves an average 1.62 × per-formance improvement over SOTA value-based baseline. On RLBench, which incorporates expert demonstrations, ARSQ surpasses various base-lines, demonstrating its effectiveness in learning from suboptimal online-collected data.                   
+
+> 1Tsinghua University, Beijing, China 2Beijing Zhong-guancun Academy, Beijing, China. Correspondence to: Chao Yu <zoeyuchao@gmail.com >,Yu Wang <yu-wang@tsinghua.edu.cn >.
+> Proceedings of the 42 nd International Conference on Machine Learning , Vancouver, Canada. PMLR 267, 2025. Copyright 2025 by the author(s).
+
+1. Introduction 
+
+Deep reinforcement learning (RL) has demonstrated remark-able performance across various continuous control domains (Haarnoja et al., 2018; Schulman et al., 2017). However, these breakthroughs often come at the cost of extensive online interactions, which are required for effective con-vergence (Berner et al., 2019; Mnih et al., 2015). This reliance on large-scale exploration poses a major challenge in real-world applications, where data collection can be ex-pensive, time-consuming, or even risky. To alleviate this burden, value-based RL methods, which directly approx-imate the Q-function rather than parameterizing a policy, have gained popularity due to their improved sample effi-ciency (Seyde et al., 2024; Tavakoli et al., 2021; Seyde et al., 2023) and have shown advances in continuous control tasks by discretizing each of the dimensions of continuous action spaces (Seo et al., 2024). Moreover, some studies integrate offline demonstration data into training to further accelerate early learning, reducing the dependence on purely online exploration (Ball et al., 2023). In this paper, we adopt this training paradigm to address continuous control using value-based RL, incorporating offline data into the online training process. For value-based RL, the discretization scheme results in an exponentially large discrete action space, making RL train-ing and exploration challenging. To mitigate this, existing value-based methods often estimate the Q-value for each action dimension independently (Metz et al., 2017; Seyde et al., 2023). However, this simplification comes with a limi-tation—it neglects interdependencies between action dimen-sions, potentially leading to suboptimal decision-making. When training data exhibits multiple modes, such as a mix of optimal and suboptimal demonstrations, independently estimating Q-values can bias action selection toward the most frequent behaviors rather than the truly optimal ones. This limitation is particularly pronounced in the early stages of learning, when the agent relies heavily on imperfect of-fline data and lacks sufficient online refinement. Consider a simple one-step decision-making task with two- 
+
+> Project page is https://sites.google.com/view/ ar-soft-q .
+
+1Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network r = 0.1 r = -1.0 r = 1.0                
+
+> Ac �on Dim 1 Ac �on Dim 2
+> (a) An example dataset for a one-step decision-making environment. 𝑄 11= 0.20 𝑄 12=−0.85
+> 𝑄 22 = −0.42
+> Subop �mal Mode
+> Ac �on Dim 1
+> Ac �on Dim 2
+> 𝑄 21 = −0.01
+> (b) Q function given by independent ac-tion decomposition. Op �mal Mode
+> 𝑄 (𝑠 ,𝑎 ) = 0.11 𝑄 𝑠 ,𝑎 =−0.52
+> 𝑄 (𝑠 ,𝑎 ) = 0.42 𝑄 𝑠 ,𝑎 =−1.00
+> Ac �on Dim 1
+> Ac �on Dim 2
+> (c) Q function given by auto-regressive action decomposition (Ours).
+> Figure 1. A motivating example of how Q decomposition influences policy training, as detailed in Appendix C.1.
+
+dimensional actions (a1, a 2) ∈ A = [ −1, 1] 2 ⊂ R2, shown in Fig. 1, where an agent selects an action (a1, a 2) given state s and receives a reward r before the episode terminates. Suppose the training dataset consists of three distinct modes: one optimal mode with r = 1 , two suboptimal modes with 
+
+r = 0 .1 and r = −1, with the latter occurring more fre-quently. If the suboptimal modes are more prevalent in the dataset, conventional Q-learning approaches that esti-mate action dimensions independently, i.e., Q(s, a i), could undervalue the optimal mode. This bias can hinder the cor-rect identification and reinforcement of the optimal action mode, leading to slow convergence and degraded policy performance. To address this issue, we propose Auto-Regressive Soft Q-learning (ARSQ), a novel approach that captures cross-dimensional dependencies in discretized high-dimensional action spaces. Instead of treating each dimension inde-pendently, ARSQ adopts an auto-regressive structure, se-quentially estimating advantages for each action dimension conditioned on the previously selected dimensions. This allows the method to better model interdependencies, ensur-ing that correlated action dimensions are jointly optimized rather than selected in isolation. Additionally, ARSQ adopts a coarse-to-fine hierarchical discretization strategy inspired by CQN (Seo et al., 2024), further enhancing sample effi-ciency for fine-grained continuous control. We theoretically show that the original Q function can be expanded into an auto-regressive formulation with dimensional advantage estimation under the framework of soft Q-learning. Our ap-proach integrates these insights into an auto-regressive soft Q-network, which is specifically designed for continuous control tasks. To evaluate ARSQ, we conduct extensive experiments on the D4RL and RLBench continuous control benchmarks, challenging it against a variety of widely used reinforcement learning and imitation learning baselines. Results indicate that ARSQ consistently surpasses these baselines, achiev-ing up to 1.62 × performance over existing value-based RL when trained with suboptimal demonstrations on D4RL. Ab-lation studies further highlight the significance of ARSQ’s key components, confirming its effectiveness in continuous control tasks. Our contributions include: • We extend Soft Q-learning framework to value-based reinforcement learning with dimensional advantage estimation. • We propose the ARSQ algorithm to capture dependen-cies in action dimensions and enhance learning from suboptimal data. • Through extensive experiments, we demonstrate that ARSQ can learn better policies when data suboptimal-ity arises from either offline datasets or data collected online. 
+
+2. Related Works 
+
+Value-based RL for Continuous Control. Despite their inherently straightforward critic-only framework, value-based reinforcement learning (RL) algorithms have achieved notable success (Mnih et al., 2015; Silver et al., 2017; Schrit-twieser et al., 2020; Seyde et al., 2024; Seo et al., 2024). Although these algorithms are primarily designed for dis-crete action spaces, recent efforts have sought to adapt them to continuous control by discretizing the continuous action space (Tavakoli et al., 2018; Seyde et al., 2023). However, the curse of dimensionality remains a significant challenge, as the number of discretization bins increases exponentially with the action dimension (Lillicrap, 2015). To address this issue, some studies have modified the Markov Decision 2Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Process (MDP) of the environment, transforming it into a sequential decision-making problem along the action dimen-sion (Metz et al., 2017; Chebotar et al., 2023). Other ap-proaches treat each action dimension independently, gener-ating the Q function separately for each dimension (Tavakoli et al., 2018; 2021; Seyde et al., 2023; 2024), akin to treating each action dimension as a multi-agent RL problem (Foer-ster et al., 2018; Yu et al., 2022). Recent research (Seo et al., 2024) has employed a coarse-to-fine discretization approach to improve sample efficiency. However, treating each action dimension independently may disrupt the correlation be-tween different action dimensions, potentially diminishing performance in policy optimization. Some studies (Seo & Abbeel, 2024) have attempted to solve this issue through action sequence prediction. Our approach generates actions in an auto-regressive manner, considering the correlations between dimensions and improving policy learning, which is orthogonal to (Seo & Abbeel, 2024). 
+
+Online RL with Offline Demonstration. Deep reinforce-ment learning often requires a large amount of online inter-actions to achieve convergence (Berner et al., 2019; Mnih et al., 2015). To address this challenge, many methods have been proposed that leverage offline demonstrations to guide online exploration and accelerate policy training (Ra-jeswaran et al., 2018; Ball et al., 2023). Some approaches involve performing offline RL pretraining before initiating online RL training (Lee et al., 2022; Nakamoto et al., 2023; LEI et al., 2024; Hu et al., 2024). However, these approaches often depend on expensive offline pretraining. To mitigate this, some works explore incorporating offline demonstra-tion data directly into the training process. One strategy initializes the replay buffer with offline data (Hester et al., 2018; Ball et al., 2023), while another balances sampling between online and offline data to improve training stabil-ity (Zhang et al., 2023; Hansen et al., 2023). Additionally, certain methods explicitly introduce a behavior cloning loss to leverage high-quality demonstrations for better guidance (Rudner et al., 2021; Rajeswaran et al., 2018; Nair et al., 2018). In this work, we adopt the paradigm of integrating offline demonstrations into training to enhance sample effi-ciency in continuous control tasks. Specifically, we improve value-based RL by introducing an auto-regressive structure that sequentially estimates advantage for each action dimen-sion. This design enables better handling of suboptimal data, whether from offline demonstrations or trajectories collected during training. 
+
+3. Preliminaries 
+
+3.1. Problem Formulation 
+
+In this paper, we consider the standard RL setting with the addition of a pre-collected dataset D for continuous control. The problem can be represented as MDP, defined by the tuple (S, A, γ, p, r, d 0). Here, S is the continuous state space, A is the continuous action space, γ ∈ (0 , 1) is the discount factor, p(s′ | s, a ) is the transition dynamics, 
+
+r(s, a ) is the reward function, and d0(s) is the distribution of the initial state. In addition to interacting with the envi-ronment online, we assume access to a pre-collected dataset 
+
+D = {(si, a i, r i, s ′
+
+> i
+
+)}, which can substantially reduce sam-ple complexity and provide broader state-action coverage. 
+
+3.2. Soft Q Learning 
+
+To improve policy exploration, maximum entropy RL en-hances the reward by adding an entropy term (Ziebart et al., 2008; Haarnoja et al., 2017; 2018), so the optimal policy seeks to maximize entropy at every state it visits. The ob-jective is defined as 
+
+J(π) = 
+
+> T
+
+X
+
+> t=0
+
+E(st,at)∼ρπ [r(st, at) + αH(π(·| st))] (1) where H is entropy, T is the episode length and ρπ is the trajectory distribution induced by policy π. The temperature parameter α dictates how much importance is placed on the entropy term in comparison to the reward. Let the soft Q-function and soft value function defined as: 
+
+Q∗
+
+> soft
+
+(st, at) = rt+
+
+E(st+1 ,... )∼ρπ
+
+" ∞X
+
+> l=1
+
+γl (rt+l + αH (π∗(·| st+l))) 
+
+# (2) 
+
+V ∗
+
+> soft
+
+(st) = α log 
+
+Z
+
+> A
+
+exp 
+
+ 1
+
+α Q∗
+
+> soft
+
+(st, a′)
+
+
+
+da′ (3) Then the optimal policy for Eq. (1) is given by 
+
+π∗(at|st) = exp 
+
+ 1
+
+α (Q∗
+
+> soft
+
+(st, at) − V ∗
+
+> soft
+
+(st)) 
+
+
+
+(4) Similar to the standard Q-function and value function, the Q-function can be connected to the value function at a future state using a soft Bellman equation. 
+
+Q∗
+
+> soft
+
+(st, at) = rt + γEst+1 ∼p(st,at) [V ∗
+
+> soft
+
+(st+1 )] (5) The proof can be found in (Ziebart et al., 2008; Haarnoja et al., 2017). 
+
+4. Method 
+
+In this section, we begin by discussing the process of dis-cretizing multi-dimensional actions in a coarse-to-fine man-ner. Building on this, we extend the soft Q-learning theory with a focus on the dimensional soft advantage. Subse-quently, we introduce our Auto-Regressive Soft Q-learning 
+
+(ARSQ) algorithm, which is overviewed in Fig. 2. 3Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network Ac �on Dim 1 Ac �on Dim 2 Ac �on Dim 3 Level 1 Level 2 Coarse-to-fi ne Discre �za �on         
+
+> 𝒂𝒄𝒕𝒊𝒐𝒏 = { 𝟓 ,𝟏 ,𝟗 }
+> observa �on Dim 1 Dimensional Advantage Low High So �Policy Sample Auto-regressive Neural Network Dim 2 Dim 3 Dim 1 Level 1 Level 2 Dim 2
+
+………     
+
+> Dimensional condi �oning Coarse-to-fi ne Condi �oning Sample Condi �oning Mask Infer Infer Infer Infer Infer Sample Sample Sample Value Network Infer
+> 𝑽 𝒔𝒐𝒇𝒕 𝒔 𝒕
+> pos: {0, 1} vel: {0.5, 0.2} acc: {0.01, 2.0} feedback: …
+
+Figure 2. The ARSQ algorithm. The action space is discretized using a coarse-to-fine approach. By predicting dimensional soft advantages, ARSQ generates actions in an auto-regressive manner within a single decision-making step. 
+
+4.1. Coarse-to-fine Action Discretization 
+
+To apply Q-learning (Mnih et al., 2015) in a continuous domain, a straightforward approach is to discretize the ac-tion space (Tang & Agrawal, 2020; Seo et al., 2024). For a continuous action of d dimensions ac = ( a1 
+
+> c
+
+, a 2 
+
+> c
+
+, . . . , a dc ) ∈
+
+RD , the discretized action a = ( a1, a 2, . . . , a D ) can be represented by 
+
+ad = arg max  
+
+> i
+
+|adc − bi| (6) where b = ( b1, . . . , b B ) are the centers of B discretization intervals, or bins, which typically provide a uniform separa-tion of the given action space. However, obtaining a finer separation of the action space necessitates a greater number of bins, thereby increasing the computational load when assessing the Q function for each discrete action bin. To address this issue, we can apply a coarse-to-fine action discretization approach (Seo et al., 2024), similar to the method used in (Yan et al., 2015) for computer vision, as illustrated in Fig. 2. With L levels and B uniform separation bins at each level, the discrete action for dimension d at level 
+
+l is expressed as: 
+
+ad,l = ⌊ ad − Pl−1 
+
+> i=1
+
+BL−iad,i 
+
+BL−l ⌋ (7) Here, ⌊·⌋ represents the floor function. During inference, the policy generates discrete actions progressively through each level (a⟨·⟩ ,1, a⟨·⟩ ,2, · · · , a⟨·⟩ ,L ).These are then combined to produce the final discrete action. 
+
+4.2. Dimensional Soft Advantage for Policy Representation 
+
+Building on action discretization, we initially extend soft Q-learning to discrete spaces. The soft value function is expressed as 
+
+V ∗
+
+> soft
+
+(s) = α log X
+
+> a′∈A
+
+exp 
+
+ 1
+
+α Q∗
+
+> soft
+
+(s, a′)
+
+
+
+(8) And we omit the subscript t for st and at To further stream-line the expression of the policy, we define the soft advan-tage. 
+
+Definition 4.1 (Soft Advantage) . The soft advantage of a
+
+at s is given by 
+
+A∗(s, a) = Q∗
+
+> soft
+
+(s, a) − V ∗
+
+> soft
+
+(s) (9) Similar to the advantage in policy gradient-based RL algo-rithms, the soft advantage assesses how much taking action 
+
+a at state s is beneficial. Thus, the optimal policy in Eq. (4) can be expressed as 
+
+π∗(a|s) = exp 
+
+ 1
+
+α A∗(s, a)
+
+
+
+(10) Considering the multi-dimensional action space, it still re-mains necessary to use a neural network to output BL×D Qvalues in the final layer, as per the DQN (Mnih et al., 2015). However, outputting such a large number of Q values im-poses a significant computational burden on the neural net-work. Inspired by auto-regression (Brown et al., 2020), we address this problem by make the policy π generate action 
+
+a = ( a1, a 2, . . . , a D ) auto-regressively along the action dimensions. For clarity, we treats discrete action discussed in Sec. 4.1 in one level. The multi-level coarse-to-fine discrete action can be considered as additional action dimensions, without compromising generalization. We first define the dimen-sional soft advantage to represent the auto-regressive policy at dimension d.4Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Definition 4.2 (Dimensional Soft Advantage) . The dimen-sional soft advantage of the action ad at state s, consid-ering the previous generated dimensional actions a−d =(a1, · · · , a d−1), is expressed by 
+
+π(ad|s, a−d) ∝ exp 
+
+ 1
+
+α Ad(s, a−d, a d)) 
+
+
+
+(11) However, the dimensional soft advantage is not normalized for each action dimension d. We propose the following theorem to establish a connection between the dimensional soft advantage and the soft advantage. 
+
+Theorem 4.3. If the dimensional soft advantage 
+
+Ad(s, a−d, a d) satisfies 
+
+X
+
+> ad
+
+exp 
+
+ 1
+
+α Ad(s, a−d, a d)
+
+
+
+= 1 (12) 
+
+for all dimension d, then the soft advantage can then be expressed as the summation of the dimensional soft advan-tages 
+
+> D
+
+X
+
+> d=1
+
+Ad(s, a−d, a d) = A(s, a) (13) 
+
+Proof. See Appendix A. Additionally, Eq. (12) shows that the exponential of the dimensional soft advantage represent a valid probability distribution. Using Eq. (11) together with Theorem 4.3, the dimensional soft advantage serves as a bridge between policy representation and Q prediction. Since we do not introduce additional elements in policy optimization, the Q-iteration follows the same update rule as soft Q-learning. Based on Eq. (5), we have 
+
+Vsoft (st)+ A(st, at) ← rt +γEst+1 ∼p(s) [Vsoft (st+1 )] (14) The maximum entropy policy described in Eq. (4) can be obtained by repeatedly applying Eq. (14) until it converges. 
+
+4.3. Auto-Regressive Soft Q-learning 
+
+Building on the theory outlined in Sec. 4.2, we introduce the 
+
+Auto-Regressive Soft Q-learning (ARSQ) algorithm. The pseudo code for the ARSQ algorithm is presented in Al-gorithm 1. We will discuss the various design choices of ARSQ. 
+
+Behavior Cloning Objective. To leverage offline demon-stration data during online training, we introduce an ad-ditional behavior cloning loss term. Following previous works (Hester et al., 2018; Seo et al., 2024), we encourage 
+
+Algorithm 1 Auto-Regressive Soft Q Algorithm (ARSQ) Initialize θ1,2, ϕ 1,2 for Aθi and V ϕi
+
+> soft
+
+Assign target parameters θi, ϕ i ← θi, ϕ i.Offline dataset D, replay buffer R ← D .
+
+for each epoch do for each environment step do 
+
+select at with Aθ1 and Aθ2 (10, 16) 
+
+st+1 ∼ p(st+1 |st, at)
+
+R ← R ∪ { st, at, r t, st+1 }
+
+end for for each gradient step do 
+
+Sample mini-batch bD , bR from D, R
+
+Calculate LD = LRL + βLBC with bD (15, 18) Calculate LR = LRL with bR (18) Update mθi according to ˆ∇θi (LD + LR)
+
+Update Vs,ϕ i according to ˆ∇ϕi (LD + LR)
+
+Update target networks θi ← ρθ i + (1 − ρ)θi and 
+
+ϕi ← ρϕ i + (1 − ρ)ϕi.
+
+end for end for 
+
+actions present in the offline dataset to be preferred over other actions. Specifically, we define the loss as 
+
+LdBC = X
+
+> ad
+
+max( Ad,θ i (s, a−de , a d)
+
+− Ad,θ i (s, a−de , a de ), C m)
+
+(15) where ae denotes the expert action observed in the offline dataset, and Cm is a hyper-parameter controlling the margin. This objective encourages the soft advantages of expert actions to be at least Cm higher than those of other actions. 
+
+Policy Representation. As discussed in Sec. 4.2, ARSQ predicts dimensional soft advantages, which function as both components of the Q function and policy representa-tion. The network architecture is illustrated in Fig. 3. In practical design, the soft value Vsoft and the dimensional soft advantage Ad are predicted using two separate neu-ral networks. The advantage prediction network estimates the dimensional soft advantage for each action dimension, based on the partially generated action from previous di-mensions, creating an auto-regressive sequence. In practical design, we use a globally-shared MLP in the advantage net-work, with separate heads to predict the dimensional soft advantages. Another challenge is applying the constraint of the dimen-sional soft advantage as per Eq. (12). Here, we enforce a hard constraint by normalizing each output head through log-sum-exp subtraction, ensuring consistency across out-5Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network pos: {0, 1} vel: {0.5, 0.2} acc: {0.01, 2.0} feedback: …                   
+
+> observa �on Infer
+> 𝑽 𝒔𝒐𝒇𝒕 𝒔 𝒕 𝑨 𝟏 (𝒔 𝒕 ,∅,⋅)
+> 𝒂 𝒕 𝟏
+> Head 1Infer
+> ∅
+> 𝒖 𝟐 (𝒔 𝒕 ,𝒂 −𝟐 ,⋅)
+> Infer Head 2
+> 𝒖 𝟏 (𝒔 𝒕 ,∅,⋅)
+> 𝒂 𝒕 𝟐
+> Head 3Infer Head 4
+> 𝒂 𝒕 𝟑
+
+# ………Infer                             
+
+> 𝑨 𝟐 (𝒔 𝒕 ,𝒂 −𝟐 ,⋅)𝑨 𝟑 (𝒔 𝒕 ,𝒂 −𝟑 ,⋅)
+> 𝒖 𝟑 (𝒔 𝒕 ,𝒂 −𝟑 ,⋅)
+> 𝑨 𝟒 (𝒔 𝒕 ,𝒂 −𝟒 ,⋅)
+> 𝒖 𝟒 (𝒔 𝒕 ,𝒂 −𝟒 ,⋅)
+> Advantage Shared Backbone Advantage Constraint
+
+Value Network 
+
+Figure 3. Network architecture of ARSQ. The soft value Vsoft and the dimensional soft advantage Ad are predicted by two separate networks. The advantage network utilizes a shared backbone, and advantage constraints are applied to its output. 
+
+puts. 
+
+Ad(st, a−d, a d) = ud(st, a−d, a d)
+
+− αlog X
+
+> ad′
+
+exp 
+
+ 1
+
+α ud(st, a−d, a d′
+
+)
+
+ (16) where ud is the output of the d-th output head. Furthermore, to stabilize training and address the over-estimation problem (Fujimoto et al., 2018; van Hasselt et al., 2016), we implement a double Q-learning approach with two separate value networks and their corresponding tar-get networks. Specifically, we maintain two online value networks V ϕ1 
+
+> soft
+
+and V ϕ2 
+
+> soft
+
+, along with their respective target networks V ϕ1 
+
+> soft
+
+and V ϕ2 
+
+> soft
+
+. Each target network is updated as an exponential moving average (EMA) of its respective online network parameters. The value target is then com-puted by taking the minimum of the two target networks’ predictions 
+
+yt = γEst+1 ∼p(s)
+
+h
+
+min 
+
+
+
+V ϕ1 
+
+> soft
+
+(st+1 ), V ϕ2 
+
+> soft
+
+(st+1 )
+
+i 
+
+(17) Thus the resulting optimization objective becomes 
+
+LRL = 12
+
+
+
+V ϕi
+
+> soft
+
+(st) + Aθi (st, at) − yt
+
+2
+
+(18) where Aθi is the soft advantage function parameterized by 
+
+θi.
+
+Auto-regressive Conditioning. In Sec. 4.2, we explained the process of handling discrete action in one coarse-to-fine level. With multi-level coarse-to-fine action discretiza-tion, the auto-regressive conditioning encompasses two as-pects. Dimensional conditioning refers to generating actions for each dimension in an auto-regressive sequence, while 
+
+coarse-to-fine conditioning involves generating actions for each dimension from coarse to fine. In practice, we imple-ment coarse-to-fine conditioning prior to dimensional condi-tioning. Specifically, dimensional conditioning serves as the inner conditioning, while coarse-to-fine conditioning acts as the outer conditioning across levels. We explore swapping the order of conditioning in Sec. 5.4, and the results indicate that the current design better captures interdependencies between action dimensions. 
+
+5. Experiment 
+
+We design our experiments to investigate the following ques-tions: (i) What is ARSQ’s performance when the offline dataset is suboptimal? (ii) What is ARSQ’s performance when online collected data is suboptimal? (iii) How do various design factors of ARSQ affect the performance? 
+
+Benchmarks. We evaluate our approach on two continuous control benchmarks: D4RL (Fu et al., 2020) and RLBench (James et al., 2020). Both domains provide access to online interaction data and a limited number of demonstrations, enabling us to assess the performance of ARSQ in diverse settings. We present representative results here due to lim-ited space and leave full results in Appendix D. 
+
+Baselines. We use CQN (Seo et al., 2024), a state-of-the-art value-based RL method for continuous control, as our baseline. CQN employs a coarse-to-fine action selection strategy and independently predicts Q-values for each action dimension. Additionally, CQN trains using a combination of online training and offline demonstrations. Besides, we also include DrQ-v2 (Yarats et al., 2022), a renowned actor-critic algorithm designed for vision-based RL, along with its enhanced version, DrQ-v2+, as benchmarks. We also 6Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network         
+
+> Figure 4. D4RL main results. mr ,m, and me represent medium-replay ,medium , and medium-expert , respectively.
+
+feature ACT (Zhao et al., 2023) and a CQN-style behavior cloning (BC) policy among our baselines. Details about the baselines can be found in Appendix C.3. 
+
+5.1. Performance on D4RL Main Results. To evaluate ARSQ’s performance when the offline dataset is suboptimal, we consider three distinct locomotion tasks from the D4RL benchmark, each with three datasets of varying quality. The medium dataset is gathered using a medium-level policy, whereas the medium-expert dataset comprises a combination of medium-level and expert demonstrations. The medium-replay dataset includes data ranging from completely random to medium-level. The input to the model consists of state representations, while the output corresponds to torques applied at each hinge joint. A dense reward is provided to encourage completing the task, staying alive, and discourage vigorous actions that consume excessive energy. We evaluate ARSQ, CQN (Seo et al., 2024), and BC in this setting. At the beginning of online training, the replay buffer for both ARSQ and CQN is initialized with an offline dataset, and online data is added as the training progresses. Additionally, both ARSQ and CQN incorporate the BC objective (Eq. (15)) towards offline dataset. The BC baseline is trained solely offline using the offline dataset with the BC objective. We report the converged performance of ARSQ, CQN and BC, averaged over three random seeds. As shown in Fig. 4, ARSQ exhibits outstanding performance across all nine datasets, demonstrating its ability to effec-tively identify suboptimal actions and learn more efficiently from the available offline data. ARSQ surpasses CQN, par-ticularly in the medium-replay and medium-expert datasets, where optimal data is not predominant, highlighting that ARSQ is less biased toward frequently observed suboptimal actions. Notably, both ARSQ and CQN outperform BC, indicating that conducting reinforcement learning online enhances policy performance.  
+
+> Figure 5. D4RL results on different demonstration quality aver-aged over 3 tasks, with each task containing 3 datasets respectively. We report the normalized return provided by D4RL.
+
+Analysis on Demonstration Quality. To better investi-gate the influence of dataset quality, we rank trajectories by episode return for each dataset, and labeling the top 30 %, middle 30 %, and bottom 30 % of the data as offline demon-strations. The behavior cloning objective is applied only to these offline demonstrations. We report the converged performance ARSQ, CQN and BC over three random seeds. As illustrated in Fig. 5, ARSQ consistently outperforms both CQN and BC across all three levels of demonstration quality. Notably, when using the bottom 30 % of data as of-fline demonstrations, ARSQ achieves approximately 2.0×
+
+the final performance of CQN. In contrast, with the lowest demonstration quality, CQN performs slightly worse than BC, revealing CQN’s sensitivity to demonstration quality, which negatively affects its online training. These results further validate the effectiveness of our method when using suboptimal offline datasets. 7Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 0 10k 20k 30k                     
+
+> Env. Steps
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+> open_oven
+> 010k 20k 30k
+> take_plate
+> 010k 20k 30k
+> pick_up_cup
+> 010k 20k 30k
+> open_door
+> 010k 20k 30k
+> meat_on
+> 010k 20k 30k
+> press_switch
+> ARSQ (Ours) CQN DrQ-v2+ DrQ-v2 ACT BC
+
+Figure 6. RLBench results on different tasks. Each experiment begins with 100 expert demonstrations, and all RL methods include a behavior cloning objective. 
+
+5.2. Performance on RLBench 
+
+To further evaluate ARSQ’s performance, we focus on six tasks from RLBench (James et al., 2020). The agent re-ceives input as RGB images and proprioceptive states and outputs the change in joint angles to control the robot arm. Unlike D4RL, the reward is sparse, offering a binary value (0 or 1) only at the final timestamp. Although each task is provided with 100 expert demonstrations, the agent might gather unsuccessful trajectories during its interaction with the environment. This setup allows us to examine the per-formance when the data collected online is suboptimal. In this domain, we evaluate the performance of ARSQ, CQN, DrQ-v2+, DrQ-v2, ACT and BC. All reinforcement learning methods incorporate the behavior cloning objective (Eq. (15)) towards expert demonstrations and successful trajectories collected online. Results are averaged over three random seeds. As shown in Fig. 6, ARSQ demonstrates superior perfor-mance compared to all other algorithms, highlighting its effectiveness in online learning with suboptimal collected data. Additionally, ARSQ exceeds ACT, highlighting the importance of reinforcement learning in online training. 
+
+5.3. Performance under Fully Offline Setting 
+
+To further examine the performance of ARSQ, we conduct experiments in a fully offline setting, where the algorithm learns solely from a predetermined dataset. We utilize nine locomotion datasets from D4RL, as outlined in Sec. 5.1. For offline RL methods, we employ CQL (Kumar et al., 2020), IQL (Kostrikov et al., 2022), TD3+BC (Fujimoto & Gu, 2021), Onestep RL (Brandfonbrener et al., 2021), and RvS-R (Emmons et al., 2022) as baselines. For offline imitation learning methods capable of handling suboptimal data, we use filtered BC (Chen et al., 2021; Emmons et al., 2022), Decision Transformer (Chen et al., 2021), and DWBC (Xu et al., 2022) as baselines. For DWBC, We adopt its best performance under “Setting 2” from its original paper (Xu et al., 2022), which mark top 5% trajectories as expert tra-jectories based on total reward, and we re-evaluate DWBC under the same conditions on additional datasets. The results are presented in Tab. 1. All data is sourced from the respective papers, with the reevaluated DWBC results marked by “*”. Both ARSQ and re-evaluated DWBC are assessed using 10 trajectories over three random seeds. ARSQ demonstrates superior overall performance compared to the other baselines, indicating its capability to effectively manage suboptimal data under fully offline setting. 
+
+5.4. Ablation Studies 
+
+In this section, we evaluate the impact of key design factors in ARSQ: auto-regressive conditioning (Fig.2) and advan-tage prediction network (Fig.3). 
+
+Ablation on Auto-regressive Conditioning. We consider several variants of ARSQ on auto-regressive conditioning. • Swap : We reverse the conditioning order, applying dimensional conditioning first, followed by coarse-to-fine conditioning. • w/o CF Cond. : We remove the coarse-to-fine condi-tioning and output actions at multiple levels simultane-ously. • w/o Dim Cond. : We remove the dimensional condition-ing and instead output all action dimensions simultane-ously at each level. • w/o CF : We replace the coarse-to-fine structure entirely by discretizing each action dimension into BL bins and then applying dimensional conditioning. • Plain : We remove both the coarse-to-fine structure and dimensional conditioning. We report results on hopper-medium-expert and hopper-medium-replay from D4RL, as well as Open Oven from RLBench, all evaluated across three random seeds. As depicted in Fig. 7, Swap demonstrates a slight decline in performance, underscoring the effectiveness of the current 8Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Table 1. Performance under fully offline setting. 
+
+Dataset CQL IQL TD3+BC Onestep RL RvS-R Filt. BC DT DWBC ARSQ (Ours) halfcheetah-m 44.0 47.4 48.3 48.4 41.6 42.5 42.6 *41.4 43.7 ± 0.6 hopper-m 58.5 66.3 59.3 59.6 60.2 56.9 67.6 *56.0 99.2 ± 0.5 
+
+walker2d-m 72.5 78.3 83.7 81.8 71.7 75.0 74.0 *72.3 81.2 ± 0.9 halfcheetah-mr 45.5 44.2 44.6 38.1 38.0 40.6 36.6 38.9 41.1 ± 0.1 hopper-mr 95.0 94.7 60.9 97.5 73.5 75.9 82.7 73.0 90.7 ± 4.4 walker2d-mr 77.2 73.9 81.8 49.5 60.6 62.5 66.6 59.8 74.0 ± 2.6 halfcheetah-me 91.6 86.7 90.7 93.4 92.2 92.9 86.8 *93.1 92.4 ± 1.2 hopper-me 105.4 91.5 98.0 103.3 101.7 110.9 107.6 *110.4 110.9 ± 1.0 
+
+walker2d-me 108.8 109.6 110.1 113.0 106.0 109.0 108.1 *108.3 107.9 ± 0.3 
+
+Total 698.5 692.4 677.4 684.6 645.5 666.2 672.6 653.2 741.1 ARSQ        
+
+> Swap
+> w/o CF Cond.
+> w/o CF
+> w/o Dim Cond.
+> Plain
+> 0
+> 50
+> 100
+> Normalized Return
+> 99.8 94.6 91.8 83.5 95.5
+> 80.9 010k 20k 30k
+> Environment Steps
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+> ARSQ
+> Swap
+> w/o CF Cond.
+> w/o CF
+> w/o Dim Cond.
+> Plain
+
+Figure 7. Ablation on auto-regressive conditioning in D4RL (left) and RLBench (right). 
+
+conditioning order design. Additionally, removing any of the components degrades performance to varying degrees. When all components are removed, as in Plain , the per-formance is at its lowest, emphasizing the significance of dimensional and coarse-to-fine action generation. 
+
+Ablation on Shared Backbone. The advantage network of ARSQ utilizes a shared backbone to reduce the number of parameters and speed up the learning process. To assess the impact of this choice, we introduce two variants. The network architecture of these two variants can be found in Appendix C.3. • Separate : We employ separate networks for each action dimension. • Level Shared : We employ shared networks for each coarse-to-fine level. We report results on hopper-medium from D4RL and Open Oven from RLBench over three random seeds. As shown in Fig. 8, the standard ARSQ consistently performs well in both environments. In contrast, using either a level-shared or separate backbone results in diminished performance. This demonstrates the effectiveness of the shared backbone design. ARSQ        
+
+> Separate
+> Level Shared
+> 0
+> 50
+> 100
+> Normalized Return
+> 97.5 92.3 90.2 010k 20k 30k
+> Environment Steps
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+> ARSQ Separate Level Shared
+
+Figure 8. Ablation on shared backbone in D4RL (left) and RL-Bench (right). 
+
+6. Conclusion 
+
+In this paper, we introduced Auto-Regressive Soft Q-learning (ARSQ), a novel value-based RL approach tailored for continuous control tasks with suboptimal data. ARSQ addresses the limitations of existing value-based methods by adopting an auto-regressive structure that sequentially estimates soft advantage for each action dimension, thereby capturing cross-dimensional dependencies. Through empiri-cal evaluations, we show that ARSQ significantly surpasses existing methods, highlighting its effectiveness in learning from suboptimal data. For future directions, an adaptive coarse-to-fine discretiza-tion can be used to balance control granularity with the overhead of additional bins. Another approach to explore is grouping unrelated dimensions to shorten the conditioning chain length, thereby speeding up computation. 
+
+Acknowledgements 
+
+This work was supported by National Natural Science Foundation of China (No.62406159, 62325405), Postdoc-toral Fellowship Program of CPSF under Grant Number (GZC20240830, 2024M761676), China Postdoctoral Sci-ence Special Foundation 2024T170496. 9Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Impact Statement 
+
+This paper presents work whose goal is to advance the field of Machine Learning. There are many potential societal consequences of our work, none which we feel must be specifically highlighted here. 
+
+References 
+
+Ba, J. L. Layer normalization. arXiv preprint arXiv:1607.06450 , 2016. Ball, P. J., Smith, L., Kostrikov, I., and Levine, S. Efficient online reinforcement learning with offline data. In Krause, A., Brunskill, E., Cho, K., Engelhardt, B., Sabato, S., and Scarlett, J. (eds.), Proceedings of the 40th International Conference on Machine Learning , volume 202 of Pro-ceedings of Machine Learning Research , pp. 1577–1594. PMLR, 23–29 Jul 2023. Berner, C., Brockman, G., Chan, B., Cheung, V., Debiak, P., Dennison, C., Farhi, D., Fischer, Q., Hashme, S., Hesse, C., et al. Dota 2 with large scale deep reinforcement learning. arXiv preprint arXiv:1912.06680 , 2019. Brandfonbrener, D., Whitney, W., Ranganath, R., and Bruna, J. Offline rl without off-policy evaluation. In Ranzato, M., Beygelzimer, A., Dauphin, Y., Liang, P., and Vaughan, J. W. (eds.), Advances in Neural Information Processing Systems , volume 34, pp. 4933–4946. Curran Associates, Inc., 2021. Brown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan, J. D., Dhariwal, P., Neelakantan, A., Shyam, P., Sastry, G., Askell, A., Agarwal, S., Herbert-Voss, A., Krueger, G., Henighan, T., Child, R., Ramesh, A., Ziegler, D., Wu, J., Winter, C., Hesse, C., Chen, M., Sigler, E., Litwin, M., Gray, S., Chess, B., Clark, J., Berner, C., McCandlish, S., Radford, A., Sutskever, I., and Amodei, D. Language models are few-shot learners. In Larochelle, H., Ranzato, M., Hadsell, R., Balcan, M., and Lin, H. (eds.), Advances in Neural Information Processing Systems , volume 33, pp. 1877–1901. Curran Associates, Inc., 2020. Chebotar, Y., Vuong, Q., Hausman, K., Xia, F., Lu, Y., Irpan, A., Kumar, A., Yu, T., Herzog, A., Pertsch, K., Gopalakrishnan, K., Ibarz, J., Nachum, O., Sontakke, S. A., Salazar, G., Tran, H. T., Peralta, J., Tan, C., Man-junath, D., Singh, J., Zitkovich, B., Jackson, T., Rao, K., Finn, C., and Levine, S. Q-transformer: Scalable offline reinforcement learning via autoregressive q-functions. In Tan, J., Toussaint, M., and Darvish, K. (eds.), Proceed-ings of The 7th Conference on Robot Learning , volume 229 of Proceedings of Machine Learning Research , pp. 3909–3928. PMLR, 06–09 Nov 2023. Chen, L., Lu, K., Rajeswaran, A., Lee, K., Grover, A., Laskin, M., Abbeel, P., Srinivas, A., and Mordatch, I. De-cision transformer: Reinforcement learning via sequence modeling. In Ranzato, M., Beygelzimer, A., Dauphin, Y., Liang, P., and Vaughan, J. W. (eds.), Advances in Neural Information Processing Systems , volume 34, pp. 15084–15097. Curran Associates, Inc., 2021. Emmons, S., Eysenbach, B., Kostrikov, I., and Levine, S. Rvs: What is essential for offline RL via supervised learn-ing? In International Conference on Learning Represen-tations , 2022. URL https://openreview.net/ forum?id=S874XAIpkR-.Foerster, J., Farquhar, G., Afouras, T., Nardelli, N., and Whiteson, S. Counterfactual multi-agent policy gradients. 
+
+Proceedings of the AAAI Conference on Artificial Intelli-gence , 32(1), Apr. 2018. doi: 10.1609/aaai.v32i1.11794. Fu, J., Kumar, A., Nachum, O., Tucker, G., and Levine, S. D4rl: Datasets for deep data-driven reinforcement learning. arXiv preprint arXiv:2004.07219 , 2020. Fujimoto, S. and Gu, S. S. A minimalist approach to offline reinforcement learning. In Ranzato, M., Beygelzimer, A., Dauphin, Y., Liang, P., and Vaughan, J. W. (eds.), 
+
+Advances in Neural Information Processing Systems , vol-ume 34, pp. 20132–20145. Curran Associates, Inc., 2021. Fujimoto, S., van Hoof, H., and Meger, D. Addressing function approximation error in actor-critic methods. In Dy, J. and Krause, A. (eds.), Proceedings of the 35th In-ternational Conference on Machine Learning , volume 80 of Proceedings of Machine Learning Research , pp. 1587– 1596. PMLR, 10–15 Jul 2018. Haarnoja, T., Tang, H., Abbeel, P., and Levine, S. Rein-forcement learning with deep energy-based policies. In Precup, D. and Teh, Y. W. (eds.), Proceedings of the 34th International Conference on Machine Learning , vol-ume 70 of Proceedings of Machine Learning Research ,pp. 1352–1361. PMLR, 06–11 Aug 2017. Haarnoja, T., Zhou, A., Abbeel, P., and Levine, S. Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. In Dy, J. and Krause, A. (eds.), Proceedings of the 35th International Conference on Machine Learning , volume 80 of Proceedings of Ma-chine Learning Research , pp. 1861–1870. PMLR, 10–15 Jul 2018. Hansen, N., Lin, Y., Su, H., Wang, X., Kumar, V., and Rajeswaran, A. Modem: Accelerating visual model-based reinforcement learning with demonstrations. In The Eleventh International Conference on Learning Represen-tations , 2023. URL https://openreview.net/ forum?id=JdTnc9gjVfJ .10 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Haykin, S. Neural networks: a comprehensive foundation .Prentice Hall PTR, 1998. Hendrycks, D. and Gimpel, K. Gaussian error linear units (gelus). arXiv preprint arXiv:1606.08415 , 2016. Hester, T., Vecerik, M., Pietquin, O., Lanctot, M., Schaul, T., Piot, B., Horgan, D., Quan, J., Sendonaris, A., Osband, I., Dulac-Arnold, G., Agapiou, J., Leibo, J., and Gruslys, A. Deep q-learning from demonstrations. Proceedings of the AAAI Conference on Artificial Intelligence , 32(1), Apr. 2018. doi: 10.1609/aaai.v32i1.11757. Hu, H., Yang, Y., Ye, J., Wu, C., Mai, Z., Hu, Y., Lv, T., Fan, C., Zhao, Q., and Zhang, C. Bayesian design principles for offline-to-online reinforcement learning. In Salakhut-dinov, R., Kolter, Z., Heller, K., Weller, A., Oliver, N., Scarlett, J., and Berkenkamp, F. (eds.), Proceedings of the 41st International Conference on Machine Learning , vol-ume 235 of Proceedings of Machine Learning Research ,pp. 19491–19515. PMLR, 21–27 Jul 2024. James, S., Ma, Z., Arrojo, D. R., and Davison, A. J. Rl-bench: The robot learning benchmark learning environ-ment. IEEE Robotics and Automation Letters , 5(2):3019– 3026, 2020. doi: 10.1109/LRA.2020.2974707. Kostrikov, I., Nair, A., and Levine, S. Offline reinforcement learning with implicit q-learning. In International Confer-ence on Learning Representations , 2022. URL https: //openreview.net/forum?id=68n2s9ZJWF8 .Kumar, A., Zhou, A., Tucker, G., and Levine, S. Conser-vative q-learning for offline reinforcement learning. In Larochelle, H., Ranzato, M., Hadsell, R., Balcan, M., and Lin, H. (eds.), Advances in Neural Information Process-ing Systems , volume 33, pp. 1179–1191. Curran Asso-ciates, Inc., 2020. Lee, S., Seo, Y., Lee, K., Abbeel, P., and Shin, J. Offline-to-online reinforcement learning via balanced replay and pessimistic q-ensemble. In Faust, A., Hsu, D., and Neu-mann, G. (eds.), Proceedings of the 5th Conference on Robot Learning , volume 164 of Proceedings of Machine Learning Research , pp. 1702–1712. PMLR, 08–11 Nov 2022. LEI, K., He, Z., Lu, C., Hu, K., Gao, Y., and Xu, H. Uni-o4: Unifying online and offline deep reinforcement learning with multi-step on-policy optimization. In The Twelfth International Conference on Learning Representations ,2024. URL https://openreview.net/forum? id=tbFBh3LMKi .Li, Z., Liu, F., Yang, W., Peng, S., and Zhou, J. A survey of convolutional neural networks: Analysis, applications, and prospects. IEEE Transactions on Neural Networks and Learning Systems , 33(12):6999–7019, 2022. doi: 10.1109/TNNLS.2021.3084827. Lillicrap, T. Continuous control with deep reinforcement learning. arXiv preprint arXiv:1509.02971 , 2015. Metz, L., Ibarz, J., Jaitly, N., and Davidson, J. Discrete sequential prediction of continuous actions for deep rl. 
+
+arXiv preprint arXiv:1705.05035 , 2017. Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., Graves, A., Riedmiller, M., Fidje-land, A. K., Ostrovski, G., et al. Human-level control through deep reinforcement learning. nature , 518(7540): 529–533, 2015. Nair, A., McGrew, B., Andrychowicz, M., Zaremba, W., and Abbeel, P. Overcoming exploration in reinforcement learning with demonstrations. In 2018 IEEE Interna-tional Conference on Robotics and Automation (ICRA) ,pp. 6292–6299, 2018. doi: 10.1109/ICRA.2018.8463162. Nakamoto, M., Zhai, S., Singh, A., Sobol Mark, M., Ma, Y., Finn, C., Kumar, A., and Levine, S. Cal-ql: Calibrated offline rl pre-training for efficient online fine-tuning. In Oh, A., Naumann, T., Globerson, A., Saenko, K., Hardt, M., and Levine, S. (eds.), Advances in Neural Informa-tion Processing Systems , volume 36, pp. 62244–62269. Curran Associates, Inc., 2023. Rajeswaran, A., Kumar, V., Gupta, A., Vezzani, G., Schul-man, J., Todorov, E., and Levine, S. Learning complex dexterous manipulation with deep reinforcement learning and demonstrations, 2018. Rudner, T. G. J., Lu, C., Osborne, M. A., Gal, Y., and Teh, Y. On pathologies in kl-regularized reinforcement learning from expert demonstrations. In Ranzato, M., Beygelz-imer, A., Dauphin, Y., Liang, P., and Vaughan, J. W. (eds.), Advances in Neural Information Processing Sys-tems , volume 34, pp. 28376–28389. Curran Associates, Inc., 2021. Schrittwieser, J., Antonoglou, I., Hubert, T., Simonyan, K., Sifre, L., Schmitt, S., Guez, A., Lockhart, E., Hassabis, D., Graepel, T., et al. Mastering atari, go, chess and shogi by planning with a learned model. Nature , 588(7839): 604–609, 2020. Schulman, J., Wolski, F., Dhariwal, P., Radford, A., and Klimov, O. Proximal policy optimization algorithms. 
+
+arXiv preprint arXiv:1707.06347 , 2017. Seo, Y. and Abbeel, P. Reinforcement learning with action sequence for data-efficient robot learning. arXiv preprint arXiv:2411.12155 , 2024. 11 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Seo, Y., Uru c¸ , J., and James, S. Continuous control with coarse-to-fine reinforcement learning. In 8th Annual Conference on Robot Learning , 2024. URL https: //openreview.net/forum?id=WjDR48cL3O .Seyde, T., Werner, P., Schwarting, W., Gilitschenski, I., Riedmiller, M., Rus, D., and Wulfmeier, M. Solv-ing continuous control via q-learning. In The Eleventh International Conference on Learning Representations ,2023. URL https://openreview.net/forum? id=U5XOGxAgccS .Seyde, T., Werner, P., Schwarting, W., Wulfmeier, M., and Rus, D. Growing Q-networks: Solving continuous con-trol tasks with adaptive control resolution. In Abate, A., Cannon, M., Margellos, K., and Papachristodoulou, A. (eds.), Proceedings of the 6th Annual Learning for Dy-namics Control Conference , volume 242 of Proceedings of Machine Learning Research , pp. 1646–1661. PMLR, 15–17 Jul 2024. Silver, D., Schrittwieser, J., Simonyan, K., Antonoglou, I., Huang, A., Guez, A., Hubert, T., Baker, L., Lai, M., Bolton, A., et al. Mastering the game of go without human knowledge. nature , 550(7676):354–359, 2017. Tang, Y. and Agrawal, S. Discretizing continuous action space for on-policy optimization. Proceedings of the AAAI Conference on Artificial Intelligence , 34(04):5981– 5988, Apr. 2020. doi: 10.1609/aaai.v34i04.6059. Tavakoli, A., Pardo, F., and Kormushev, P. Action branching architectures for deep reinforcement learning. Proceed-ings of the AAAI Conference on Artificial Intelligence , 32 (1), Apr. 2018. doi: 10.1609/aaai.v32i1.11798. Tavakoli, A., Fatemi, M., and Kormushev, P. Learning to rep-resent action values as a hypergraph on the action vertices. In International Conference on Learning Representations ,2021. URL https://openreview.net/forum? id=Xv_s64FiXTv .van Hasselt, H., Guez, A., and Silver, D. Deep reinforce-ment learning with double q-learning. Proceedings of the AAAI Conference on Artificial Intelligence , 30(1), Mar. 2016. doi: 10.1609/aaai.v30i1.10295. Xu, H., Zhan, X., Yin, H., and Qin, H. Discriminator-weighted offline imitation learning from suboptimal demonstrations. In Chaudhuri, K., Jegelka, S., Song, L., Szepesvari, C., Niu, G., and Sabato, S. (eds.), Proceed-ings of the 39th International Conference on Machine Learning , volume 162 of Proceedings of Machine Learn-ing Research , pp. 24725–24742. PMLR, 17–23 Jul 2022. Yan, Z., Zhang, H., Piramuthu, R., Jagadeesh, V., DeCoste, D., Di, W., and Yu, Y. Hd-cnn: Hierarchical deep convo-lutional neural networks for large scale visual recognition. In Proceedings of the IEEE International Conference on Computer Vision (ICCV) , December 2015. Yarats, D., Fergus, R., Lazaric, A., and Pinto, L. Master-ing visual continuous control: Improved data-augmented reinforcement learning. In International Conference on Learning Representations , 2022. URL https:// openreview.net/forum?id=_SJ-_yyes8 .Yu, C., Velu, A., Vinitsky, E., Gao, J., Wang, Y., Bayen, A., and WU, Y. The surprising effectiveness of ppo in cooperative multi-agent games. In Koyejo, S., Mohamed, S., Agarwal, A., Belgrave, D., Cho, K., and Oh, A. (eds.), 
+
+Advances in Neural Information Processing Systems , vol-ume 35, pp. 24611–24624. Curran Associates, Inc., 2022. Zhang, H., Xu, W., and Yu, H. Policy expansion for bridging offline-to-online reinforcement learning. In The Eleventh International Conference on Learning Representations ,2023. URL https://openreview.net/forum? id=-Y34L45JR6z .Zhao, T. Z., Kumar, V., Levine, S., and Finn, C. Learn-ing fine-grained bimanual manipulation with low-cost hardware, 2023. Ziebart, B. D., Maas, A., Bagnell, J. A., and Dey, A. K. Maximum entropy inverse reinforcement learning. In 
+
+Proceedings of the 23rd National Conference on Artificial Intelligence - Volume 3 , AAAI’08, pp. 1433–1438. AAAI Press, 2008. ISBN 9781577353683. 12 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+A. Proof of Theorem 4.3 
+
+First, we express the policy using conditional probability, and then replace it with Eq. (11). 
+
+π(a|s) = 
+
+> D
+
+Y
+
+> d=1
+
+π(ad|s, a−d)=
+
+> D
+
+Y
+
+> d=1
+
+exp   1 
+
+> α
+
+Ad(s, a−d, a d)
+
+Z(s, a−d)=
+
+QDd=1 exp   1 
+
+> α
+
+Ad(s, a−d, a d)QDd=1 Zd(s, a−d)=
+
+exp 
+
+ 1
+
+> α
+
+PDd=1 Ad(s, a−d, a d)
+
+QDd=1 Zd(s, a−d)
+
+(19) We can then apply Eq. (12), resulting in 
+
+π(a|s) = exp 1
+
+α
+
+> D
+
+X
+
+> d=1
+
+Ad(s, a−d, a d)
+
+!
+
+(20) Recall that the policy π(a|s) can be represented using the soft advantage as shown in Eq. (10). Therefore, we have 
+
+> D
+
+X
+
+> d=1
+
+Ad(s, a−d, a d) = A(s, a) (21) 
+
+B. Implementation Details 
+
+B.1. Action Selection 
+
+As illustrated in Algorithm 1, the action selection process receives inputs from Aθ1 and Aθ2 and produces at. Eq. (10) and Eq. (16) describe the action selection process utilizing a single soft advantage network. To leverage the benefits of a double network, we employ two advantage networks to generate more precise actions. This process is detailed in Algorithm 2. 
+
+Algorithm 2 ARSQ Action Selection with Double Q Network 
+
+Input: parameter θ1,2 for Aθi , state st
+
+Output: action at
+
+Initialize output action at = ∅
+
+for each action dimension d do 
+
+Compute Ad,θ i (st, at, a d) for each ad (16) Compute Ad(ad) = min i Ad,θ i (st, at, a d)
+
+Compute ˜πd(ad) = exp   1 
+
+> α
+
+Ad(ad) (10) Normalize ˜πd by πd(ad) = ˜πd(ad)  
+
+> P
+> ad′˜πd(ad′)
+
+Sample discrete action at dimension d with πd(ad)
+
+Append action at = at ∪ { ad}
+
+end for B.2. Variant of Behavior Cloning Objective 
+
+As discussed in Sec. 4.3, we incorporate an behavior cloning objective to effectively utilize offline demonstration data during online training, as defined in Eq. (15). Following prior works (Kumar et al., 2020), we also employ a variant of this objective, expressed as: 
+
+LdBC −v = max 
+
+log X 
+
+> ad̸=ade
+
+exp  Ad,θ i (s, a−de , a d) − Ad,θ i (s, a−de , a de ), C m
+
+ (22) 13 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+where ade is the expert action and Cm is a predefined margin constant. We observe that this variant objective achieves better performance in scenarios where action modes are concentrated, such as in the medium and medium-expert series of datasets in D4RL. Consequently, we adopt this variant objective when working with such datasets. 
+
+B.3. Network Architecture 
+
+In RLBench tasks, observations consist of a combination of RGB images and low-dimensional states. To compute the dimensional soft advantage for a given dimension, we first input the RGB images and low-dimensional states into a Convolutional Neural Network (CNN) (Li et al., 2022) encoder and a Multi-Layer Perceptron (MLP) (Haykin, 1998) encoder, respectively, to extract feature representations. These representations are then used to predict the soft value. Concurrently, the feature representations are combined with actions from previous dimensions and coarse-to-fine levels to create auto-regressive conditioning. An MLP-based shared backbone and output head are then utilized to determine the dimensional soft advantage for the given dimension. In D4RL tasks, observations consist solely of low-dimensional states, and feature representations are derived directly from these states. 
+
+B.4. Hyper-parameters  
+
+> Table 2. Typical hyper-parameters of ARSQ in D4RL and RLBench.
+
+Hyper-parameter D4RL RLBench Image resolution / 84 × 84 × 3
+
+Image augmentation / RandomShift Frame stack 1 8CNN - Encoder / Conv (c=[32, 64, 128, 256], s=2, p=1) Backbone Linear (512, 512, 512) Linear (512, 512, 512, bias=False) Output Head Layers 1 1Activation Tanh SiLU & LayerNorm Coarse-to-fine Levels 2 3Coarse-to-fine Bins 7 5Batch Size 512 512 Optimizer Adam AdamW (weight decay = 0.1) Learning Rate 3e-4 5e-5 Temperature Coefficient α 0.01 0.001 Target Critic Update Ratio ( τ ) 0.005 0.02 BC Margin Cm -1 -0.01 Action Roll-out Network Current Target The hyperparameters of ARSQ are presented in Table 2. We provide the typical hyperparameters for ARSQ in D4RL (hopper-medium ) and RLBench ( Open Oven ). In RLBench, ARSQ employs RandomShift (Yarats et al., 2022) for image augmentation. Additionally, ARSQ utilizes SiLU (Hendrycks & Gimpel, 2016) and LayerNorm (Ba, 2016) as activation functions in RLBench. 
+
+C. Experiment Setup 
+
+C.1. Motivating Example Setup 
+
+As introduced in Sec. 1 and illustrated in Fig. 1, we consider a motivating example to demonstrate the impact of Q decomposition on policy training. The dataset is depicted in Fig. 1a, with each point to be a data point in the dataset. The color of the data points indicates the reward of the data point. To illustrate the Q function of value-based RL algorithms, we first discretize the action space with 2 bins in each action dimension. 14 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+• Q function given by independent action decomposition is an example of DecQN (Seyde et al., 2023), as well as in CQN (Seo et al., 2024), which features just a single coarse-to-fine level. In this setting, we employ separate tabular Q functions, Q(s, a 1) and Q(s, a 2), for action dimension 1 and action dimension 2. The Q function is learned by gradient descent. • For the Q function obtained through auto-regressive action decomposition, we employ both tabular soft advantage functions, A1(s, a 1) and A2(s, a 1, a 2) for action dimension 1 and action dimension 2, and a tabular soft value function 
+
+Vsoft (s). The Q value reported in Fig. 1c is a sum of the soft value and the dimensional soft advantage of the corresponding dimensions, i.e., Q(s, a 1, a 2) = Vsoft (s) + A1(s, a 1) + A2(s, a 1, a 2). The soft advantage functions and the soft value function are simultaneously learned through gradient descent. 
+
+C.2. Environment and Dataset D4RL Gym Environment. D4RL (Fu et al., 2020) provides datasets for various tasks to evaluate the performance of reinforcement learning. In this context, we use 3 Gym Locomotion tasks and datasets from D4RL to assess the performance of ARSQ and other baselines. These tasks are illustrated in Fig. 9. The agent’s observations include its states, such as the angle and velocity of each rotor. The agent’s actions consist of torques applied between the robot’s links, constrained within the range of (−1, 1) . The reward is dense, offering incentives for task completion and survival, while penalizing excessive energy-consuming actions.  
+
+> Figure 9. D4RL Gym tasks used in experiment.
+
+D4RL Dataset. In D4RL, we use the medium-replay , medium , and medium-expert datasets for tasks involving half-cheetah ,
+
+hopper , and walker2d . In Section 5.1, to examine the impact of dataset quality, we rank trajectories based on episode returns within these nine datasets. Specifically, we compute the total reward for each data chunk within each dataset. We then rank these data chunks and select the top, middle, and bottom 30% accordingly. This is akin to rank trajectories but is easier to handle. To better demonstrate the suboptimal nature of the datasets, we plot a histogram of the data chunk rewards, as shown in Fig. 10. 
+
+RLBench Environment. RLBench (James et al., 2020) serves as a benchmark and learning environment for robot control. We have selected 20 tasks from RLBench and present results for 6 of them in Sec. 5. An illustration of the environment can be seen in Fig. 11. The input consists of RGB images with a resolution of 84 × 84, captured from four camera angles: front, wrist, left-shoulder, and right-shoulder, along with a history of the past seven observations. The output specifies the change in joint angles at each time step, utilizing the delta JointPosition mode provided by RLBench. In our experiments, we use a binary sparse reward system (0 or 1), which is awarded only at the final timestamp of an episode to indicate task success. 
+
+C.3. Baselines and Evaluation Details Main Results Baselines. As mentioned in Sec. 5.1, within D4RL, we utilize the implementation from (Seo et al., 2024) and modify its CNN-based encoder to an MLP-based encoder as the CQN baseline. The BC baseline originates from CQN but operates with the RL learning objective turned off and without any online environment interaction. 15 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 0.0 0.2 0.4 0.6 0.8 1.0 1.2                                                 
+
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> Count
+> halfcheetah-medium-replay
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> 120
+> 140
+> halfcheetah-medium
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> 0
+> 50
+> 100
+> 150
+> 200
+> 250
+> halfcheetah-medium-expert
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> 0
+> 50
+> 100
+> 150
+> 200
+> 250
+> Count
+> hopper-medium-replay
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> 120
+> 140
+> hopper-medium
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> 0
+> 50
+> 100
+> 150
+> 200
+> 250
+> 300
+> 350
+> hopper-medium-expert
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> Normalized Reward
+> 0
+> 25
+> 50
+> 75
+> 100
+> 125
+> 150
+> 175
+> Count
+> walker2d-medium-replay
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> Normalized Reward
+> 0
+> 20
+> 40
+> 60
+> 80
+> walker2d-medium
+> 0.0 0.2 0.4 0.6 0.8 1.0 1.2
+> Normalized Reward
+> 0
+> 100
+> 200
+> 300
+> 400
+> 500
+> walker2d-medium-expert
+
+Figure 10. Histogram of reward in D4RL datasets. 
+
+In RLBench, we adopt DrQ-v2+, an optimized variant of DrQ-v2 proposed by (Seo et al., 2024), as our baseline. DrQ-v2+ incorporates several optimization strategies introduced in the CQN algorithm. Specifically, compared to DrQ-v2, DrQ-v2+ employs a distributional critic instead of a standard critic network, utilizes an exploration strategy with small Gaussian noise, and features optimized network architectures and hyperparameters tailored for RLBench tasks. These enhancements strengthen DrQ-v2+’s performance, making it a more robust baseline than DrQ-v2. Additionally, DrQ-v2+ has been open-sourced by (Seo et al., 2024). 
+
+Ablation Study Baselines. As mentioned in Sec. 5.4, we utilize the Separate and Level Shared backbone baselines for an ablation study to explore the effectiveness of the shared backbone in the advantage network. The network architectures of these two baselines are illustrated in Fig. 12 and Fig. 13. 
+
+D. Additional Results 
+
+Sensitivity of Temperature Coefficient α. Our methods are derived from Soft Q-learning, which aims to achieve a maximum-entropy policy. The temperature coefficient α in Eq. (1) affects the balance between maximizing policy entropy and the reward from the environment. We conducted experiments to examine how varying α impacts policy learning. As shown in Fig. 14, a very high α results in reduced performance and unstable training, whereas a very low α also hampers policy improvement by restricting exploration. 
+
+Training Curves of D4RL Main Results. In Section 5.1, we discuss the converged performance of ARSQ, CQN, and BC. The training curves for each task are shown in Fig. 15. ARSQ converges after approximately 25,000 to 50,000 environment steps and generally outperforms the CQN and BC baselines across most tasks. This further demonstrates ARSQ’s strength in managing suboptimal data. 16 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+Figure 11. Example of RLBench tasks used in experiment. pos: {0, 1} vel: {0.5, 0.2} acc: {0.01, 2.0} feedback: …                   
+
+> observa �on Infer
+> 𝑽 𝒔𝒐𝒇𝒕 𝒔 𝒕 𝑨 𝟏 (𝒔 𝒕 ,∅,⋅)
+> 𝒂 𝒕 𝟏
+> Head 1Infer
+> ∅
+> 𝒖 𝟐 (𝒔 𝒕 ,𝒂 −𝟐 ,⋅)
+> Infer Head 2
+> 𝒖 𝟏 (𝒔 𝒕 ,∅,⋅)
+> 𝒂 𝒕 𝟐
+> Head 3Infer Head 4
+> 𝒂 𝒕 𝟑
+
+………Infer                                
+
+> 𝑨 𝟐 (𝒔 𝒕 ,𝒂 −𝟐 ,⋅)𝑨 𝟑 (𝒔 𝒕 ,𝒂 −𝟑 ,⋅)
+> 𝒖 𝟑 (𝒔 𝒕 ,𝒂 −𝟑 ,⋅)
+> 𝑨 𝟒 (𝒔 𝒕 ,𝒂 −𝟒 ,⋅)
+> 𝒖 𝟒 (𝒔 𝒕 ,𝒂 −𝟒 ,⋅)
+> Backbone 1 Advantage Constraint Value Network Backbone 2 Backbone 3 Backbone 4
+
+Figure 12. Network architecture of Separate backbone baseline in ablation study. 
+
+D4RL Results per Task for Different Demonstration Quality. In Sec. 5.1, we present the D4RL results, averaged over all 9 datasets, based on varying demonstration quality. The results for each task are illustrated in Fig. 16. ARSQ consistently outperforms the CQN and BC baselines in nearly every task, demonstrating its ability to maintain stable performance across datasets of varying quality. 
+
+RLBench Results in All 20 Tasks. In Sec. 5.2, we present results for six selected tasks from RLBench. The complete results for all 20 tasks are displayed in Fig. 17. These results indicate that ARSQ performs comparably or better across these tasks, showcasing its ability to learn effectively even when the data collected online is not optimal. 
+
+E. Computational Cost Analysis 
+
+As discussed in Sec. 4.3, ARSQ generates actions in each dimension in an auto-regressive manner. To analyze the overhead, we conducted experiments on both D4RL ( hopper-medium ) and RLBench ( Open Oven ) tasks. The training and inference times for ARSQ and CQN were evaluated 1,000 times and averaged. These experiments were conducted on a single Nvidia RTX 3090 graphics card. The results are shown in Fig. 3. ARSQ exhibits similar training times to CQN, due to the parallel optimization implemented and the batch training nature of the auto-regressive model. However, ARSQ experiences higher inference latency compared to CQN. We aim to address this issue by grouping the action dimensions and outputting the grouped dimensional actions auto-regressively, a solution we plan to explore in future work. 
+
+F. Performance under Fully Online Setting 
+
+In addition to the main experimental results presented in Sec. 5.1, we assess the performance of ARSQ in a fully online setting. We compare the fully online reinforcement learning performance of ARSQ and CQN on the hopper task, using PPO(Schulman et al., 2017) as a baseline for comparison. The results are depicted in Fig. 18, with all experiments conducted 17 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network pos: {0, 1} vel: {0.5, 0.2} acc: {0.01, 2.0} feedback: …                   
+
+> observa �on Infer
+> 𝑽 𝒔𝒐𝒇𝒕 𝒔 𝒕 𝑨 𝟏 (𝒔 𝒕 ,∅,⋅)
+> 𝒂 𝒕 𝟏
+> Head 1Infer
+> ∅
+> 𝒖 𝟐 (𝒔 𝒕 ,𝒂 −𝟐 ,⋅)
+> Infer Head 2
+> 𝒖 𝟏 (𝒔 𝒕 ,∅,⋅)
+> 𝒂 𝒕 𝟐
+> Head 3Infer Head 4
+> 𝒂 𝒕 𝟑
+
+………Infer                               
+
+> 𝑨 𝟐 (𝒔 𝒕 ,𝒂 −𝟐 ,⋅)𝑨 𝟑 (𝒔 𝒕 ,𝒂 −𝟑 ,⋅)
+> 𝒖 𝟑 (𝒔 𝒕 ,𝒂 −𝟑 ,⋅)
+> 𝑨 𝟒 (𝒔 𝒕 ,𝒂 −𝟒 ,⋅)
+> 𝒖 𝟒 (𝒔 𝒕 ,𝒂 −𝟒 ,⋅)
+> Backbone 1 Advantage Constraint Value Network Backbone 2 Level 1 Level 2
+
+Figure 13. Network architecture of Level Shared backbone baseline in ablation study. = 1.0       
+
+> = 0.1
+> = 0.01
+> = 1e-3
+> = 1e-4
+> 0
+> 50
+> 100
+> Normalized Return
+> 76.2
+> 95.7 97.5
+> 83.4
+> 92.2 010k 20k 30k
+> Environment Steps
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+> = 0.1 = 0.01 = 0.001
+
+Figure 14. Sensitivity of temperature coefficient α, evaluated on hopper-medium from D4RL and Open Oven from RLBench over three random seeds. 
+
+using three random seeds. We also illustrate the performance of both vanilla and offline ARSQ using the one of the hopper 
+
+dataset, specifically hopper-medium-replay .Online ARSQ achieves a similar converged performance to vanilla ARSQ, albeit requiring more environment steps. This highlights the importance of using offline datasets to enhance sample efficiency. Furthermore, ARSQ with online interaction achieves a higher final performance than in the offline setting, suggesting the necessity of online interaction to enhance policy performance. Additionally, online ARSQ demonstrates greater sample efficiency than CQN and PPO, underscoring its potential as a versatile reinforcement learning algorithm. 
+
+G. Error Analysis of Q Prediction and Action Discretization 
+
+To further examine the error introduced by action discretization, as discussed in Sec. 4, we designe a more complex case study similar to Fig. 1. We create a one-step environment featuring a two-dimensional action space (a1, a 2) ∈ A = [ −1, 1] 2 ⊂ R2.The agent performs an action at the initial timestamp, receives a reward, and the episode concludes. The Q function’s ground truth landscape, akin to the reward landscape, is illustrated in Fig. 19a. There is one optimal action mode, two sub-optimal action modes, and two negative action modes. We uniformly sample 2,000 data points from the environment to form a dataset. This dataset is then used to train agents with independent Q decomposition for each action dimension, ARSQ without hierarchical coarse-to-fine action discretization, and the standard ARSQ. The resulting Q landscapes are displayed in Fig. 19, and Q prediction errors are displayed in Fig. 20. When independently decomposing Q for each action dimension, the agent learns a blurred Q landscape, complicating the identification of optimal actions. ARSQ without coarse-to-fine action discretization produces a Q landscape similar to the vanilla ARSQ but with more ”glitches,” likely because too many action bins make it difficult for the dataset to cover them comprehensively. This underscores the importance of coarse-to-fine action discretization. Furthermore, we sample 1,000 data points in the proposed environment and calculate the Q prediction error against the ground truth for all three methods discussed, over three random seeds. The results are presented in Tab. 4. Independent Q 18 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 0 25k 50k 75k 100k 
+
+> 0
+> 50
+> 100
+> Normalized Return
+
+halfcheetah-mr     
+
+> 025k 50k 75k 100k
+
+halfcheetah-m     
+
+> 025k 50k 75k 100k
+
+halfcheetah-me     
+
+> 025k 50k 75k 100k
+> 0
+> 50
+> 100
+> Normalized Return
+
+hopper-mr     
+
+> 025k 50k 75k 100k
+
+hopper-m     
+
+> 025k 50k 75k 100k
+
+hopper-me     
+
+> 025k 50k 75k 100k
+
+Env. Steps 
+
+> 0
+> 50
+> 100
+> Normalized Return
+
+walker2d-mr     
+
+> 025k 50k 75k 100k
+
+Env. Steps 
+
+walker2d-m     
+
+> 025k 50k 75k 100k
+
+Env. Steps 
+
+walker2d-me 
+
+ARSQ (Ours) CQN BC 
+
+Figure 15. Training curves of D4RL main results, evaluated over three random seeds. 
+
+decomposition results in a significant error increase compared to ARSQ and continuous Q learning. Additionally, ARSQ without coarse-to-fine action discretization also results in higher Q error, further highlighting the necessity of our action discretization strategy. 19 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network bottom 30% middle 30% top 30% 
+
+0
+
+50 
+
+100      
+
+> Normalized Return
+> 23.3 16.2 18.2
+> 11.5
+> 28.9 33.8 33.1 38.2 39.9
+
+halfcheetah-medium-replay 
+
+bottom 30% middle 30% top 30% 
+
+0
+
+50 
+
+100       
+
+> 42.3 42.6 42.2 40.8 41.3 38.9
+> 44.8 44.8 45.1
+
+halfcheetah-medium 
+
+bottom 30% middle 30% top 30% 
+
+0
+
+50 
+
+100    
+
+> 44.3 43.6 41.9 40.1
+> 42.8
+> 69.5
+> 60.8
+> 90.3 85.1
+
+halfcheetah-medium-expert 
+
+bottom 30% middle 30% top 30% 
+
+0
+
+50 
+
+100   
+
+> Normalized Return
+> 11.0 12.1 9.7 11.9
+> 26.2
+> 43.6
+> 89.6
+> 97.0
+> 90.0
+
+hopper-medium-replay 
+
+bottom 30% middle 30% top 30% 
+
+0
+
+50 
+
+100    
+
+> 55.9
+> 50.5 51.1
+> 43.0
+> 51.8
+> 55.6
+> 79.6 95.7 94.0
+
+hopper-medium 
+
+bottom 30% middle 30% top 30% 
+
+0
+
+50 
+
+100 72.1    
+
+> 62.5
+> 73.2
+> 48.1
+> 102.7 110.0
+> 102.1 105.0 101.1
+
+hopper-medium-expert 
+
+bottom 30% middle 30% top 30% 
+
+Dataset Quality (%) 
+
+0
+
+50 
+
+100   
+
+> Normalized Return
+> 18.5
+> 12.2 14.8
+> 7.4
+> 18.2
+> 34.9 29.9
+> 48.9 43.2
+
+walker2d-medium-replay 
+
+bottom 30% middle 30% top 30% 
+
+Dataset Quality (%) 
+
+0
+
+50 
+
+100    
+
+> 55.9 60.1
+> 60.4 53.7
+> 72.4
+> 68.8
+> 80.7 79.6 75.2
+
+walker2d-medium 
+
+BC CQN ARSQ (Ours) 
+
+bottom 30% middle 30% top 30% 
+
+Dataset Quality (%) 
+
+0
+
+50 
+
+100 96.7   
+
+> 89.1
+> 97.1
+> 65.2
+> 93.3
+> 103.5 107.7 108.4 109.0
+
+walker2d-medium-expert 
+
+Figure 16. D4RL results per task on different demonstration quality, evaluated over three random seeds. 
+
+Table 3. Computational time in D4RL and RLBench (ms). 
+
+D4RL RLBench ARSQ Inference 4.1 32.1 ARSQ Training 12.2 290.5 CQN Inference 2.6 6.9 CQN Training 11.6 260.5 
+
+Table 4. Q prediction error with different action discretization strategy. 
+
+Discretization Method Error Independent Decomposition 17.57 ± 0.67 ARSQ w/o Coarse-to-fine 0.50 ± 0.21 ARSQ 0.16 ± 0.02 20 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 0 10k 20k 30k 
+
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+
+take_lid    
+
+> 010k 20k 30k
+
+open_drawer    
+
+> 010k 20k 30k
+
+stack_wine    
+
+> 010k 20k 30k
+
+toilet_seat    
+
+> 010k 20k 30k
+
+open_microwave    
+
+> 010k 20k 30k
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+
+open_oven    
+
+> 010k 20k 30k
+
+take_plate    
+
+> 010k 20k 30k
+
+turn_tap    
+
+> 010k 20k 30k
+
+put_money    
+
+> 010k 20k 30k
+
+phone_on_base    
+
+> 010k 20k 30k
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+
+put_books    
+
+> 010k 20k 30k
+
+sweep_to    
+
+> 010k 20k 30k
+
+pick_up_cup    
+
+> 010k 20k 30k
+
+open_door    
+
+> 010k 20k 30k
+
+meat_on    
+
+> 010k 20k 30k
+
+Env. Steps 
+
+> 0
+> 25
+> 50
+> 75
+> 100
+> Success Rate (%)
+
+basketball    
+
+> 010k 20k 30k
+
+Env. Steps 
+
+lamp_on    
+
+> 010k 20k 30k
+
+Env. Steps 
+
+press_switch    
+
+> 010k 20k 30k
+
+Env. Steps 
+
+put_rubbish    
+
+> 010k 20k 30k
+
+Env. Steps 
+
+insert_usb 
+
+ARSQ (Ours) CQN DrQ-v2+ DrQ-v2 ACT BC 
+
+Figure 17. RLBench results in all 20 tasks. 0 100k 200k 300k 400k 
+
+Env. Steps 
+
+0
+
+50 
+
+100 
+
+> Normalized Return
+
+ARSQ 
+
+ARSQ (online) 
+
+ARSQ (offline) 
+
+CQN (online) 
+
+PPO 
+
+Figure 18. Performance under fully online settings, on hopper task or hopper-medium-replay dataset. 
+
+21 Learning from Suboptimal Data in Continuous Control via Auto-Regressive Soft Q-Network 
+
+(a) Ground truth. (b) Independent action decom-position. 
+
+(c) ARSQ w/o coarse-to-fine discretization. 
+
+(d) ARSQ. 
+
+Figure 19. Visualization of Q prediction with different action discretization strategy. 
+
+(a) Independent action decom-position. 
+
+(b) ARSQ w/o coarse-to-fine discretization. 
+
+(c) ARSQ. 
+
+Figure 20. Q prediction errors with different action discretization strategy. 
+
+22
