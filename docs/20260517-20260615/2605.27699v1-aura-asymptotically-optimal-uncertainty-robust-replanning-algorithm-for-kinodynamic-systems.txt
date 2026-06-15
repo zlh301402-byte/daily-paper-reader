@@ -1,0 +1,590 @@
+Title: AURA: Asymptotically Optimal Uncertainty-Robust Replanning Algorithm for Kinodynamic Systems
+
+URL Source: https://arxiv.org/pdf/2605.27699v1
+
+Published Time: Thu, 28 May 2026 00:18:30 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+> 1
+
+# AURA: Asymptotically Optimal Uncertainty-Robust Replanning Algorithm for Kinodynamic Systems 
+
+Seyedali Golestaneh, Zhuoyun Zhong, Donghyung Lee, and Constantinos Chamzas 
+
+Abs tr ac t—Samp li ng -based mo ti on p l anne rs o ff er a p rac ti ca land sca lab l e app roach to k inod ynam i c mo ti on p l ann i ng , no tab ly fo r high - di mens iona l, unde rac tua t ed , or non - ho l onom ic s ys tems .Howe ver, t hese p l anne r s a re ty p ica lly used o ffli ne , r equ iri ng ex ecu ti on t o beg i n on ly aft er t he tr ajec t ory has been compu t ed . I nadd iti on , t he p l anned tr ajec t ory ma y no t be accu r ate ly tr acked i nthe p resence o f mo ti on unce rt ain ty, l ead ing to de vi a ti ons fr om the nom ina l so l uti on . I n t h is wo rk, t hese li mit a ti ons we re add ressed w it h in a un ifi ed fr amewo rk , AU R A, an as y mp to ti ca lly-op ti ma lme ta -p l anne r fr amewo r k tha t i mp roves bo th pa th qua lity and tr ack i ng pe rf o rmance du ri ng e x ecu ti on . I n add iti on t o the ma inex ecu ti on th read , t h is fr amewo r k comp ri ses a rep l ann ing me thod tha t con ti nuous ly exp lores the s tate space and re fi nes the tr ajec tory du ri ng e x ecu ti on , and an op ti mi za ti on p rocess t ha t r e fi nes fu tu recon tr ol i npu ts to reduce tr ack i ng e rr or. T oge t he r, t hese componen tsenab le AU R A t o l everage as y mp t o ti ca lly op ti ma l pl ann ing on li ne wh il e i mp rovi ng e xecu ti on accu r ac y unde r unce rt ai n ty. T he proposed app roach i s e valua ted in bo th s imu lati on and rea l-wo rl den vir onmen t s ac ross mu lti p le s ys t ems , demons tr ati ng cons is t en timp rovemen t s in tr ajec to ry qua lity, tr ack i ng accu rac y, and o ver all performance compared with baseline methods. 
+
+Index Terms —Motion and Path Planning, Kinodynamic Plan-ning, Planning Under Uncertainty 
+
+I. I NTRODUCTION 
+
+# SA MP LI N G- BA SE D ki nod y nam i c p l anne r s p r ovi de a gen -e r al and t heo r eti ca lly sound fr amewo rk fo r mo ti on p l ann i ng in s y st ems w it h comp l ex d y nam i cs [1]. B y r e lyi ng so le ly on f or wa r d p r opaga ti on , t he y avo id t he need f o r st ee ri ng func ti ons , wh i ch a re o ft en i ntr ac t ab l e fo r ar bitr ary dy nam i ca lsystems . Mo r eo ver, as ymp toti ca lly op ti ma l ( AO ) v a ri an ts [ 2]o ff e r probab ili sti c comp le t eness and as ymp to ti c op ti ma lity ,ensu ri ng tha t t he p r obab ility of fi nd ing a f eas i bl e tr a j ec to ry app roaches one and tha t t he cos t con ve rges a lmos t su re ly t othe global optimal as the number of samples increases. Desp it e t he s tr ong t heo r eti ca l gua ran tees , t wo p rac ti ca l i ssues hi nde r t he e xecu ti on o f tr a j ec to ri es compu t ed b y ki nod ynam i cp lanne rs . Cons ide r t he k i nod y nam i c p lann ing p rob l em o fpush ing an ob j ec t i n F ig . 1. Fir s t, t he i n iti a l k inod y nam ictr a jec t ory i s o ft en subop ti ma l due to li mit ed p lann ing ti me .Second , mo ti on unce rt a in ty , ari sing fr om mode l mi sma t ch and ac tua ti on e rr ors, i ne vit ab ly i nduces de vi ati on fr om the initi altrajectory during open-loop execution. On li ne r ep l ann i ng s tr a teg i es [3]–[5] a tt emp t t o hand le tr a jec -tory subop ti ma lity by r ecompu ti ng tr ajec tori es fr om the lates tobse rv ed s ta te . Howe ve r, f o r k i nod y nam ic AO p lanne r s, fr equen tr ep lann ing i s compu t ati ona lly ex pens iv e and ma y di sca r d p ri o r
+
+A ll au tho r s a r e a ffili ated w it h the D epa rt men t o f Robo ti cs Eng inee r-ing , Wo r ces ter Po lyt echn ic I ns tit ut e ( WP I), Wo r ces ter, M A 01 6 09 , US A
+
+{sgolestaneh, zzhong3, dlee5, cchamzas } @ wpi.edu .Initial Kinodynamic Trajectory AURA Replanning and Execution 
+
+> Open-Loop Execution Deviation
+
+Fi g. 1. Ill us tr ati on o f open -l oop e xecu ti on and AU R A fo r non - p rehens il eman ipu lati on . Unde r a li m it ed ti me budge t and w it h an app ro xi ma ted d y nam ics mode l, open -l oop e xecu ti on o f t he p lanned pa th yi elds a subop ti ma l tr a jec to ry and accumu l a tes l a rge e xecu ti on de vi a ti on ( bl ue ). I n con tr as t, AU R A pe rf or ms on li ne g loba l r ep lann ing and loca l op ti m iza ti on , r esu lti ng i n a be tt e r over all trajectory and smaller execution error (orange). 
+
+ex p lor a ti on p r og r ess . Fu rt he r mo re , w it hou t a s tee ri ng f unc ti on ,reconnecting to the original search tree is not trivial [6]. Meanwh il e, r eced i ng -ho ri zon con tr ol [7]–[ 9] miti ga tes mo -ti on unce rt a i n ty t h r ough c losed -l oop tr ack ing o f a re f e rence tr a jec to ry. Howe ve r, t he r e fe r ence i s ty pi ca lly fix ed and no timp roved du ri ng e xecu ti on . Mo r eo ve r, t hese me t hods o ft en re ly on h i gh -fr equenc y st at e feedback [10]. I n ce rt ai n t asks — such as the non -p rehens il e man i pu l a ti on scena ri o shown in F i g . 1— st a teobse rv ati ons ma y on ly be a vail ab le in ter mitt en tly ( e.g ., aft er apushing action is executed due to in-hand sensing). I n th i s wo rk , we p r opose AU R A, Asy mp t o ti ca lly Op ti ma l
+
+Unce rt ain ty-Robus t Rep lann ing Algo rit hm tha t comb ines the g loba l exp l o r ati on and as y mp to ti c gua r an tees o f AO k i nod y-nam i c p l anne rs [6], [11] wit h t he l oca l r obus t ness o f r eced i ng -ho ri zon con tr ol. Ra t he r t han tr ea ti ng p l ann ing and e xecu ti on independen tly, AU R A ope ra tes as a me ta-l aye r on top o f an yfo rwa rd -p ropaga ti on - based AO p lanne r, enab li ng : (i) con ti nuous on li ne re fi nemen t of tr aj ec t ory qua lity du ri ng e xecu ti on , and (ii) l oca l con tr o l op ti mi za ti on to m iti ga t e e xecu ti on de vi ati on .Concretely, the contributions of A URA are:  
+
+> •
+
+A no ve l on li ne rep lann ing fr amewo r k f o r k inod ynam icAO pl anne rs tha t con ti nuous ly i mp r oves tr a jec t o ry qua lity without requiring a steering function.  
+
+> •
+
+A G PU-accelerated local control optimization module to miti ga t e e xecu ti on de vi ati on up t o 7 2 %, and a p roo f t ha t areco veri ng con tr ol a lwa ys e xi sts unde r m il d assump ti ons . 
+
+> •
+
+Comp r ehens iv e e val ua ti on ac ross mu lti pl e d y nam i cs mod -
+
+> arXiv:2605.27699v1 [cs.RO] 26 May 2026 2
+
+e ls i n s i mu l at ed and r ea l-wo rl d t asks , i nc l ud i ng lea r ned models, demonstrating up to 50% reduction in total task time over receding-horizon and replanning baselines. II. R ELATED WORK 
+
+Th is sec ti on r evi ews the p ri o r wo r k mos t r elevan t t o AU R A
+
+fr om thr ee pe rspec tiv es : as ymp toti ca lly op ti ma l ki nod y nam i cp lann ing , on li ne r ep l ann i ng , and robus t con tr o l and op ti m iza ti on unde r unce rt ai nty. Our me thod li es a t t he in tersec ti on o f t hese ar eas b y comb i ning an AO ki nod ynam i c p l anne r w it h g loba lreplanning and local optimization. 
+
+A. Asymptotically-Optimal Kinodynamic Planners 
+
+Samp li ng - based p l anne r s f or k i nod y nam i c s ys tems mus tsa ti sfy syst em d ynam i cs and cons tr ai n ts [1 2 ]. T hese me thods ha ve been success fully app li ed to a va ri e ty o f s ystems , wh il eavo i di ng the need f or an e x p li c it s tee ri ng func ti on [1 3]. A mong such me thods , SS T* ach ieves as ymp to ti c op ti ma lity t h r ough pr un ing and bes t-node se lec ti on [ 6 ]. Mo r e gene r a lly, t he me ta-a lgo rit hm AO-X [11] lift s an y k inod y nam ic p lanne r, e . g ., RR T [14] o r ES T [15], i n to as ymp to ti ca lly op ti ma l p lanne rsby augmenting the search in state-cost space. Howe ve r, AO p lanne r s gua ran t ee con ve rgence to the op ti ma lpa th on ly i n p r obab ility as compu t a ti on ti me inc reases [ 2]. The ref or e, unde r li m it ed ti me scena ri os , t he r esu lti ng so lu ti on ma y r ema in subs t an ti ally subop ti ma l. T o add ress t hi s cha ll enge ,AU R A ex ploit s t he e xtr a ti me du ri ng e xecu ti on , enab li ng t he planner to further refine and improve the trajectory quality. 
+
+B. Online Replanning 
+
+AO p lann ing is ty p ica lly cas t as an o ffli ne p r ob lem , as the p lann ing te r m ina tes once a tr aj ec to ry i s se lec t ed fo rexecu ti on . I n con tr as t, r ea l-ti me p lann ing me t hods a re des igned t o coup le p l ann i ng and e xecu ti on , enab li ng on li ne adap t a ti on based on t he cu rr en t sta t e du ri ng e xecu ti on , bu t gene r a lly fa il t o o ff e r op ti ma lity [1 6 ]. Ea rly wo rk i n th i s d ir ec ti on inc l udes R A MP ’s e xt ens ion to non - ho lonom i c k inod y nam icsy s tems [3], [17] , wh ich lever ages r ep l ann i ng du ri ng e xecu ti on to adap t t o en vir onmen t al changes and ac ti on unce rt a i nty. Mo reo ve r, RR TX [4] enab l es reconnec ti ng t o t he o ri g i na l tr ee a t r un ti me in the p r esence o f en vir onmen t changes . Howe ve r, these methods require a steering function for local rewiring. A recen tly p r oposed k inod y nam i c r ep lann ing fr amewo r k ,KR AF T [5], avo i ds the need f or t he s tee ri ng f unc ti on . Ne ve rt he -less , it r e- propaga t es t he fu ll tr ee a ft er t he s t at e de vi at es fr om the nom ina l tr aj ec tory, wh ich canno t gua r an t ee the co lli sion -fr ee e xecu ti on w it hou t access t o t he tr ue d y nam i cs mode l. I ncon tr as t, AU R A compu tes a r eco very con tr o l t ha t s tee r s t he sy stem back t o t he co lli sion -fr ee p l anned tr a j ec to ry w it hou tdi sca rd ing t he p l ann ing p rog ress o r ha vi ng access t o t he tr ue dynamics of the model. 
+
+C. Control and Optimization under Uncertainty 
+
+On the e xecu ti on s ide , a b r oad c lass o f con tr o l and op ti-mi za ti on me t hods has been de ve l oped t o i mp r ove tr ack i ng accu rac y and robus tness unde r unce rt a in ty. Rep r esen ta tiv eexamp les inc lude Mode l P red ic tiv e Con tr o l ( MPC ) [7], r obus tcon tr ol [ 8 ], and d is tu rbance - obse rv er-based con tr o l ( DO B ) [ 9]. Among t hese , MPC and it s vari an ts can e xp li c itly hand l e s y s tem dy nam i cs and cons tr ai n ts [1 8 ], [1 9 ]. Re l a ted e xt ens ions i nc l ude diff eren ti ab le MPC f ormu l ati ons tha t enab l e on li ne pa rame teradap ta ti on [2 0], and samp li ng -based s t ochas ti c con tr ol me thods ,such as MPP I [ 21]. D esp it e the ir str ong e xecu ti on pe rf or mance ,they are susceptible to local minima in long-horizon tasks. A common so lu ti on i s to fo ll ow a p r e- p lanned re f e rence tr aj ec t o ry [ 22 ], [ 23 ], bu t t hese tr a j ec t o ri es r ema i n fix ed th rough -ou t execu ti on , and a r e no t r e fi ned . AU R A comb i nes AO ki nod y nam i c p l ann i ng w it h p r ed ic tiv e op ti mi za ti on du ri ng execu ti on , t o imp rove e xecu ti on accu rac y unde r unce rt a i n ty while continuing to refine the overall trajectory quality. III. P ROBLEM STATEMENT 
+
+I n t h is wo rk , t he k inod y nam i c mo ti on p l ann i ng p rob l em unde r bounded e xecu ti on unce rt a i n ty i s cons i de r ed . L e t X
+
+and U deno te the s ta te space and con tr o l space , r espec tiv e ly. The s ta te space X i s pa rtiti oned in to two d isj o in t subse ts ,
+
+X = Xobs ∪ Xfree , whe r e Xobs r ep r esen t s the i nva li d s t a tereg i on and Xfree i s t he va li d s ta t e reg i on . T he nom ina l d y nam i cs model f describes the evolution of the system: 
+
+x(T ) = x(0) + 
+
+Z T
+
+> 0
+
+f (x(t), u (t)) dt, (1) whe re x(t) ∈ X and u(t) ∈ U deno te t he s ta t e and con tr o linpu t of t he s y s tem a t ti me t. I n p r ac ti ce , f o rwa r d p r opaga ti on is common ly pe rf o r med o ve r ti me i nt e rv a ls ∆t us i ng p iecew ise -cons t an t con tr o l s [1]. L e t Γ( ·, ·) deno te t he nom i na l st a tetransition function over one such interval: 
+
+xi+1 = Γ( xi, u i) = xi +
+
+Z ∆t
+
+> 0
+
+f (x(t), u i)dt, x(0) = xi (2) whe re xi is the s ta rt st at e and ui i s t he cons t an t con tr o l app li ed .A tr aj ec to ry π i s de fi ned as {x0, u 0, . . . , x T −1, u T −1, x T },whe re x : {xi}Ti=0 → X i s the s t at e tr a jec to ry gene r a ted by app lyi ng t he con tr o l sequence u : {ui}T −1 
+
+> i=0
+
+→ U fr om 
+
+x0, sa ti s fyi ng Eq . 2. L et J(·) rep resen t t he cos t f unc ti on t ha ttypically measures the quality of a trajectory, defined as: 
+
+J(π) = PT −1 
+
+> i=0
+
+ℓ(xi, u i), (3) where ℓ : X × U → R+ is the running cost (e.g., path length, time, or energy consumption). D u ri ng tr a j ec t o ry execu ti on , t he tr ue s y st em s ta t e ma y de vi a tefr om t he nom ina l st at e xi+1 due t o mode l misma tch , unmode l ed dy nam i cs , and ac tua ti on e rr o rs . T h i s e xecu ti on de vi a ti on i smodeled as: 
+
+xgt  
+
+> i+1
+
+= Γ( xi, u i) + wi, (4) whe re xgt  
+
+> i+1
+
+deno t es the obse rv ed g r ound -tr u th s y st em s t a tea ft er app lyi ng con tr o l ui ove r one i nt e rv a l o f du r a ti on ∆t,and wi is t he bounded e xecu ti on e rr o r, sa ti sfyi ng ∥wi∥ ≤ δ.Acco rd i ng ly, t he tr ack i ng e rr o r a l ong tr a jec to ry π i s de fi ned as :
+
+E(π) = PTi=0 ∥xi − xgt  
+
+> i
+
+∥, (5) whe re xi and xgt  
+
+> i
+
+deno t e t he nom ina l and obse rv ed s ta t es a ft e rexecution, respectively. 3Execution Module 
+
+𝑻 𝐢𝐧𝐢𝐭 + 𝜟𝒕 
+
+> Initial Planning  Execution Module Local Optimization Module Global Replanning Module Execution Module Local Optimization Module Global Replanning Module
+
+𝑻 𝐢𝐧𝐢𝐭 𝑻 𝐢𝐧𝐢𝐭 + 𝑻 𝐩𝐥𝐚𝐧 − 𝜟𝒕   
+
+> Satisfy Goal Condition
+> Offline Phase Runtime Phase
+> Synchronization 𝑥 curr
+> Πnew
+> 𝒰 opt
+> 𝑢 exec
+> 𝑥 next
+> 𝒯 new
+> 𝑥 curr
+> Πnew
+> 𝒰 opt
+
+𝑻 𝐢𝐧𝐢𝐭 + 𝟐𝜟𝒕 𝑢 exec 
+
+> 𝒯 𝑥 next
+
+𝟎 
+
+> Synchronization
+
+𝑻 𝐢𝐧𝐢𝐭 + 𝑻 𝐩𝐥𝐚𝐧 𝑢 exec                                                                                                               
+
+> Fig.2.Ti me fr ame o fAURAalgo rit hm ,wh ich inc ludes o ffli ne and run ti me phase . T he o ffli ne phase p rovi des an initi algu ide for t he ne xt phase .At r un ti me ,three modu les wo rk concu rr en tly f oreach ∆tinterv al: ( a)Execu ti on modu le app li es the ne xt con tr oland returns the resu lti ng s tate, ( b)Globa l r ep lann ing modu le e xpands the e xi sti ng p lann ing tr ee , ( c)Opti miza ti on modu le p red ictsthe poss iblefuture con tr ols based on the ne xt state. ( d)At t he end o f t he c ycle,all the data is synced to provide the inputs for the next cycle.
+
+The unce rt a in ty-r obus t k inod y nam ic p l ann ing p r ob l em isfo rma li zed as f oll ows : G iv en an i n iti a l s ta t e xstart , a goa l r eg i on 
+
+Xgoal , and the nom i na l p r opaga ti on mode l Γ, AU R A a ims t odetermine a nominal trajectory π, such that: 
+
+xi+1 = Γ( xi, u i), ∀i ∈ { 0, 1, . . . , T − 1},x0 = xstart , xT ∈ X goal ,xi, x gt  
+
+> i
+
+∈ X free , u i ∈ U , ∀i ∈ { 0, 1, . . . , T },
+
+(6) wh il e seek i ng to m ini mize the tr ajec to ry cos t i n Eq . 3 and t he tr ack i ng e rr or i n Eq . 5. T he r eb y, AU R A i s des igned to imp r ovetr a jec t ory qua lity wh il e ma i n ta in i ng robus tness to bounded motion uncertainty during execution. IV. A URA FRAMEWORK 
+
+The ma in idea o f AU R A is shown in Al g . 1 and F i g. 2 . G iv en an AO p lanne r P and t he nom i na l f o rwa r d p ropaga to r Γ, AU R A
+
+ai ms t o p r oduce a tr a jec t o ry t ha t sa ti sfi es t he goa l cond iti on wh il e m ini miz ing a cos t f unc ti on and e xecu ti on e rr or. I n t he 
+
+O ffli ne Phase , a se t of i n iti al tr ajec to ri es Π = {π1, π 2, ..., π N }
+
+is computed by the planner P within planning time Tinit , and the bes t tr a jec to ry i s se l ec t ed t o s t a rt execu ti on ( Al g . 1, li ne 1 -li ne 5). A ft er wa r d, t he Run ti me Phase beg i ns , wh ich cons is ts o fth r ee pa r all el modu l es runn i ng t oge t he r: (a) E xecu ti on Modu le ,
+
+( b) Gl oba l Rep lann ing Modu le , and ( c ) L oca l Op ti m iza ti on Modu l e. Ra t he r t han ope rati ng sequen ti ally, t hese modu l es run concu rr en tly du ri ng tr a j ec to ry execu ti on . T hi s p r ocedu r e isrepeated iteratively until the system reaches the goal region. 
+
+A. Execution Module 
+
+Th i s modu le , shown as b l ue b l ocks in F ig . 2 , i s respons i bl efor execu ti ng the fir st con tr ol ac ti on uexec o f t he cu rr en t bes ttr aj ec tory and obse rvi ng t he resu lti ng g round -tr uth s tate xgt curr .The con tr o l i s app li ed to the cu rr en t st a te fo r a fix ed du ra ti on ∆t,du ri ng wh i ch the s y st em e volv es based on Eq . 4 ( A lg . 1, li ne 7). In s imu la ti on , t he s y st em e vo lu ti on is compu t ed b y t he ph ys ics eng i ne a ft e r app lyi ng the con tr o l. I n the r ea l wo rl d ,the consequen t st a te resu lt s d ir ec tly fr om the s y st em ’s ph y s ica lresponse to the e xecu ted con tr ol. I n bo th cases , t he resu lti ng gr ound -tr uth s ta te is then obse rv ed and passed to the s ynch r o-niza ti on modu l e. I n this wo rk, t he obse rv ati on is assumed tobe available without measurement noise. 
+
+Algorithm 1: AURA Framework 
+
+Input: AO planner P; Transition function Γ( ·, ·);Start state xstart ; Goal region Xgoal ;In iti al pl ann ing ti me Tinit ; Con tr ol du rati on ∆t;Bounding region XB;
+
+Result: Control sequence driving xstart to Xgoal  
+
+> 1
+
+(Π , T ) ← PLAN (P, Γ, x start , Xgoal , time = Tinit ) 
+
+> 2
+
+xgt curr ← xstart  
+
+> 3
+
+π⋆ ← GET BEST PLAN (Π)  
+
+> 4
+
+uexec ← GET FIRST CONTROL (π⋆) 
+
+> 5
+
+xnext ← GET NEXT PLANNED STATE (π⋆) 
+
+> 6
+
+while xcurr /∈ X goal do 
+
+// Execution Thread  
+
+> 7
+
+xgt curr ← EXECUTE (xgt curr , u exec , ∆t)
+
+// Replanning Thread  
+
+> 8
+
+(Π , T ) ← REPLANNING (P, Γ, T , x next , Xgoal , ∆t)
+
+// Optimization Thread  
+
+> 9
+
+(Xchild , Uchild ) ← GET CHILDREN (xnext , T ) 
+
+> 10
+
+XB ← SAMPLE NEARBY (xnext , σ ) 
+
+> 11
+
+Uopt ← OPTIMIZATION (XB, Xchild , Uchild , Γ) 
+
+// Synchronization  
+
+> 12
+
+AWAIT THREADS ()  
+
+> 13
+
+Π ← RECALCULATE COST (xgt curr , Π)  
+
+> 14
+
+π⋆ ← GET BEST PLAN (Π)  
+
+> 15
+
+xnext ← GET NEXT PLANNED STATE (π⋆) 
+
+> 16
+
+x⋆ ← NEAREST (xgt curr , XB ∪ { xnext }) 
+
+> 17
+
+uexec ← U opt [x⋆, x next ]
+
+B. Global Replanning Module 
+
+As no ted ea rli er, t he ke y prope rty of t he AO planne r P isas y mp to ti c con ve rgence to the op ti ma l tr aj ec to ry as t he numbe rof samp les N inc reases [2 ]. T h is mo tiv a tes resum ing p lann ing fr om the e xi sti ng tr ee to fi nd h i ghe r- qua lity tr a j ec t o ri es (F i g. 3 ). Two ma in ope ra ti ons occu r i n t h is modu le : Prun i ng and 
+
+Replanning (line 8 of Alg. 1, i.e., Alg. 2). 
+
+Pruning: After selecting the control to execute, the search tr ee needs to be upda t ed t o rema in k i nod y nam ica lly cons i st en t. As shown i n F i g . 3, du ri ng e xecu ti on towa r d x1, b ranches 4Goal Region                                                       
+
+> Pruned nodes Existing nodes New added nodes
+> Pruned edges Existing edges New added edges Initial solution New solution
+> Execution Path
+> 𝒙 𝟐 𝒙 𝟑 𝒙 𝟑 ′𝒙 𝟎 𝒙 𝟏
+> Fig.3.An e xamp le o f t he tr ee ad jus tmen tdu ri ng the run ti me phase .Asthe fir stsegmen tof t he so luti on is e xecu ted fr om x0tox1,nodes and edges tha tare no longe r r eachab le a re p runed (f aded ), and new samp les a re added tothe tr ee (dashed ). If a new lowe r-cos tso luti on (go lden ) i sfound , it i s chosen as the current best path π∗.
+
+Algorithm 2: Replanning 
+
+Input: AO planner P; Transition function Γ( ·, ·);Tree Tcurr ; Next state xnext ; Goal region Xgoal ;Replanning time Treplan ;
+
+Output: Updated plans Πnew , Updated tree Tnew  
+
+> 1
+
+xstart ← xnext  
+
+> 2
+
+Tpruned ← PRUNE UNREACHABLE NODES (Tcurr , x start ) 
+
+> 3
+
+(Π new , Tnew ) ← PLAN 
+
+ P, x start , Xgoal , Γ, T replan , Tpruned 
+
+ 
+
+> 4
+
+return (Π new , Tnew )
+
+tha t ar e no t descendan ts o f x1 (f aded nodes ) can no longe r be used . F i nd i ng a su it ab l e con tr ol t o connec t x1 t o these nodes cons tit u t es a 2 -Po i n t Bounda ry V a l ue P rob lem ( 2PB VP ) t ha trequ ir es a s tee ri ng func ti on t o so lv e , t o wh i ch t hi s wo rk does no t assume access . T he ne xt s ta te on t he cu rr en t bes t so luti on ,
+
+x1, i s se t as the new roo t ( Alg . 2, li ne 1). T hen a ll nodes and b ranches tha t a re no t descendan t s o f t h is new roo t a re remo ved to construct the tree Tpruned (Alg. 2, line 2). 
+
+Rep lann i ng : The p lanne r t hen con ti nues r e fi ni ng t he tr a -jec t ory, and r uns f o r t he rema in ing e xecu ti on i n te rv a l Treplan 
+
+w it h a new s ta rt sta t e , sta rti ng w it h t he e xi s ti ng tr ee Tpruned .A s P i s an AO p lanne r, t he re i s a non -ze ro p robab ility t ha t alowe r- cos t tr a jec to ry can be f ound [ 2 ], an e x amp le o f wh ich i sillustrated by the highlighted golden trajectory in Fig. 3. 
+
+C. Local Optimization Module 
+
+Th is modu le emp loy s a no vel pr ecompu ta ti on - based op ti-m iza ti on s tr ateg y t o r educe the tr ack ing e rr o r de fi ned in Eq . 5. In con tr as t t o MPC and o t he r r eced ing -ho ri zon me t hods , wh i ch compu te an op ti mi zed con tr o l sequence a ft e r obse rvi ng t he upda t ed s y s tem s t at e , t h is me t hod compu tes cand i da t e reco ve ry con tr ol s f or t he ne xt cyc l e be f o r e t he ac t ua l s t at e is obse rv ed ,du ri ng t he cu rr en t execu ti on i nt e rv al. T he r esu lti ng op ti m i zed con tr ol se t Uopt se rv es as the cand i da te poo l f or se lec ti ng the execution control in the next cycle. In t he p resence o f mo ti on unce rt ain ty ( Eq . 4), execu ti ng t he con tr o l w ill l ead the s y st em t o de vi at e fr om t he nom ina l s ta teℬ𝛿 ℬ𝜆𝛿 ℬ𝜆𝛿 (a )(b) Sampled batch Tree nodes Nominal control (Planned )Optimized control Execution Path Recovery control Other edges Next state Neighborhood ℬ𝛿 (𝑥 𝑖 )𝑥 𝑖 −1ℬ𝜆𝛿 (𝑥 𝑖 +1)𝑢 𝑖 𝑢 𝑖 𝑢 rec                                                                 
+
+> Fig. 4. Ba tched op ti miza ti on p rocess .(a)Thisis a tr ajec tory segmen t. When the executed state deviates from the desired state ( xi), applying the nominal con tr ol (r ed a rr ow )can furt he ramp lify t he de vi ati on . T he op ti miza ti on modu leseeks to app roxi ma tethe op ti ma l r eco very con tr ol ( dashed red a rr ow ). (b)Fo reach samp leinthe ne ighbo rhood o fxi(green nodes )and each ch il d on the tree (orange nodes), A URA calculated an optimized control (dashed lines).
+
+Algorithm 3: Optimization 
+
+Input: Sampled local nodes XB; Children nodes Xc;Corresponding controls U; Transition Γ;
+
+Output: Optimized controls Uopt  
+
+> 1
+
+(Xstart , X children , U 0) ← ASSEMBLE BATCH (XB, Xc, U) 
+
+> 2
+
+for k ← 0 to N do  
+
+> 3
+
+L ← Γ Xstart , U k − Xchildren  
+
+> 2
+> 4
+
+U k+1 ← U k − α ∂L
+
+∂U k 
+
+> 5
+
+return U N
+
+xi t o the tr ue s t at e xgt  
+
+> i
+
+∈ B δ (xi), whe r e Bδ (xi) deno t es the ne i ghbo rhood o f xi de fi ned as a ba ll of r ad ius δ. A s shown b ythe so li d r ed li ne i n F ig . 4 ( a ), t hi s de vi a ti on can accumu l at ealong the tr ajec to ry. P ropos iti on 1 i n Sec . V proves tha t t he reexi s ts a reco ve ry tr a j ec t o ry segmen t, gene r at ed b y a con tr o lfunc ti on urec , fr om t he pe rt u rbed s t a te back t owa rd t he nom i na ltr a jec to ry. T h i s mo tiv a tes the use o f nume ri ca l op ti mi za ti on to sea r ch fo r a loca l con tr o l t ha t bes t app r o xi ma t es such a recovery by minimizing the terminal propagation error. Wh il e the e xecu ti on i s unde r wa y, t h is modu le samp les a ba t ch o f st at es XB i n t he ne i ghbo rhood o f t he ne xt successo rst at e ( Al g . 1, li ne 9 - li ne 10) as cand i da t es fo r poss i b le ro ll ou tou t comes , ill us tr a t ed as g reen s t a tes i n F ig . 4. Fo r each samp l ed cand i da t e , t he ne xt p l anned con tr o l p rovi ded b y t he p lanne r(so li d li nes i n F ig . 4 ( b)) se rv es as an in iti a l guess f or an op ti mi za ti on p rocess t ha t ad j us t s con tr o l i npu t s to ge t cl ose r t othe next children (dashed line in Fig. 4 (b) ). A lg . 3 shows t he op ti miza ti on p rocedu r e, wh i ch i s pe rf o rmed over a ll pa ir s be t ween t he b samp l ed s t a tes i n the ba t ch XB and the c ch il d s ta tes in Xc. T he op ti mi ze r compu tes one reco ve ry con tr ol f or each samp led s ta te– ch il d pa ir, produc i ng a se t of
+
+b × c op ti mi zed con tr o l s. T o enab l e e ffi c i en t GPU - based pa r a ll e lop ti mi za ti on , t he samp le – ch il d i npu t s a r e vec to ri zed i nt o a li gned ma tri ces . Each samp led s ta t e is repea t ed c ti mes , once f or each 5
+
+ch il d s ta t e, wh il e t he ch il d s ta tes and co rr espond i ng o ri gina lp lanned con tr ols a r e repea t ed fo r each o f t he b samp l ed s ta tes .Th i s fo r ms th r ee a li gned ma tri ces w it h b × c en tri es : i n iti a lst at es Xstart , t a rge t st a tes Xchildren , and o ri g ina l con tr o l s U 0
+
+(Alg. 3, line 1). To nume ri ca lly es ti ma t e urec fo r each samp l e -ch il d comb ina -ti on and m in i mize the e rr o r ∥Γ( Xstart , U ) − Xchildren ∥, g rad ien tdescen t i s emp loy ed us ing t he de riv a tiv e o f t he d y nam ics w it hrespec t t o the con tr ol i npu ts (A l g. 3 , li ne 2 - li ne 4). T h i s gene ra lfor mu la ti on makes AU R A compa ti b le w it h an y d iff e ren ti ab ledy nam ics equa ti on , i nc lud ing ana lyti ca l f unc ti ons and lea rned neural network models. 
+
+D. Synchronization 
+
+At t h is s t age o f t he p r ocess , t he e xecu ti on t h read has ad vanced the system to a new state xcurr , the global replanning process has e xpanded the tr ee fr om the new roo t, and the op ti miza ti on process has generated a Uopt set to mitigate deviation. Aft e r t he e xecu ti on , an y sma ll de vi a ti ons can a lt e r t he r e la tiv ecos ts o f p revi ous ly compu ted tr a jec t o ri es . T he r e fo r e , a t t he end o f each c yc le , t he cos ts o f t he s t ored cand ida te so luti ons a re reca lcu l a ted (A lg . 1, li ne 13 ) based on the cu rr en t st a te .A cco rd i ng ly, t he ne xt s ta t e a l ong the cu rr en t bes t tr aj ec t o ry π⋆
+
+is chosen as the ne xt t a rge t sta t e ( Al g . 1, li ne 14 - li ne 15). A dd iti ona lly, t he samp led s ta t e i n XB tha t i s c loses t t o t he cu rr en t s y st em s ta t e xcurr i s se l ec t ed as the bes t es ti ma t e (A lg . 1, li ne 16). Based on t hi s es ti ma t e and t he targe t st at e, t he bes top ti mi zed con tr ol i s se l ec t ed fr om t he p recompu t ed se t Uopt t obe executed in the next cycle (Alg. 1, line 17). V. R ECOVERY CONTROL EXISTENCE PROOF 
+
+This sec ti on p roves the e xi stence o f a r eco very con tr ol t ha ttakes a pe rt u rbed s t a te back t owa rd t he nom ina l successo r al ong a planned trajectory, as shown in Fig. 4 (a) .
+
+A ssump ti on 1. The s y st em d y nam i cs Γ i s Li psch it z con ti nuous in bo th t he s ta te and con tr o l v a ri ab les . Fo r ma lly, ∃KΓ 
+
+> x
+
+, K Γ 
+
+> u
+
+≥ 0
+
+such that, ∀x, x ′ ∈ X , ∀u, u ′ ∈ U :
+
+∥Γ( x, u ) − Γ( x′, u )∥ ≤ KΓ 
+
+> x
+
+∥x − x′∥,
+
+∥Γ( x, u ) − Γ( x, u ′)∥ ≤ KΓ 
+
+> u
+
+∥u − u′∥. (7) 
+
+Assumption 2. The system satisfies Chow’s condition [6]. 
+
+The Chow ’s cond iti on imp li es sma ll-ti me loca l access ib ility ( STL A ), mean ing tha t t he reachab le se t fr om a s ta te con t ai ns an open neighborhood around that state. Such assump ti ons a re s tanda r d in t he ana ly s is o f k inod y nam i csamp li ng - based p l anne r s. Unde r t hese assump ti ons , we bo rr ow the following result from [6, Lemma 6, Definition 7]. 
+
+Lemma 1. Le t x be a s t a te tr a jec t ory f o r a s yst em sa ti s -fyi ng A ssump ti on 1 and A ssump ti on 2 . T hen the re e xi st s a pos itiv e va lue δ0, t e rmed d ynam ic c lea rance , such tha t f orev e ry η ∈ (0 , η 0], ev e ry x′ 
+
+> 0
+
+∈ B δ (x0), and e ve ry x′ 
+
+> T
+
+∈ B δ (xT ),the re e xi s ts a d y nam ica lly f eas i bl e s t at e tr aj ec t o ry ˆx sa ti sfyi ng 
+
+ˆx0 = x′ 
+
+> 0
+
+and ˆxT = x′ 
+
+> T
+
+. T he tr a jec to ry i s ca ll ed δ-r obus t if bo t hit s obs tac l e c l ea rance ϵ, i. e., m in i mum d ist ance fr om obs t ac les ove r a ll tr a j ec t o ry s ta tes , and it s d ynam ic c lea rance η0 a regreater than δ.
+
+With Lemma 1, we can obtain the following proposition. 
+
+P ropos iti on 1 (E xi s t ence o f a Reco ve ry Segmen t) . Le t xixi+1 
+
+be a segmen t fr om xi t o xi+1 al ong a δ0-r obus t nom i na l s ta t etr a jec to ry. T hen f o r an y pe rt u rbed s ta te x′ 
+
+> i
+
+∈ B δ (xi) wit h
+
+δ ≤ δ0, t he re e xi s ts a d ynam i ca lly f eas i b le s t a te tr aj ec to ry segment x′
+
+> i
+
+xi+1 from x′ 
+
+> i
+
+to xi+1 .Proof. Cons ide r a nom i na l δ0-r obus t tr a jec to ry segmen t xixi+1 .By L emma 1, f or an y δ ∈ (0 , δ 0], an y i n iti a l s ta t e ˆx0 ∈ B δ (xi),and an y t e rmina l s tate ˆxT ∈ B δ (xi+1 ), t he re e xi sts a d ynam i-ca lly f eas ib le tr a j ec to ry segmen t connec ti ng ˆx0 to ˆxT . Now choose ˆx0 = x′
+
+> i
+
+, whe re x′ 
+
+> i
+
+∈ B δ (xi) b y assump ti on , and choose 
+
+ˆxT = xi+1 . Si nce xi+1 ∈ B δ (xi+1 ) fo r an y δ > 0, t he r e e xi st sa d y nam i ca lly f eas ib l e tr a jec to ry segmen t fr om x′ 
+
+> i
+
+t o xi+1 .Th i s resu lt gua r an tees the e xi stence o f a l oca l r eco ve ry tr aj ec t o ry segmen t, t oge t he r wit h an adm i ss ib l e reco very con tr o lfunc ti on urec t ha t gene r at es it. Our op ti miza ti on modu l e does no t cl a im t o r eco ve r urec ex ac tly fr om the nom i na l i n iti a li za ti on .Ins t ead , it i s a p r ac ti ca l l oca l sea rch p r ocedu re t ha t a tt emp t s toapp ro xi ma t e it wit h uopt b y mi n imi zi ng the t er mina l p ropaga ti on err o r ∥Γ( x′
+
+> i
+
+, u opt ) − xi+1 ∥2. T he re fo r e, t he t heo ry mo tiv at es t he ob jec tiv e o f t he op ti miza ti on , wh il e the op ti m iza ti on modu l e(Sec. IV-C) serves as a numerical approximation mechanism. A dd iti ona lly, Pr opos iti on 2 shows tha t exac t r eco very i s no trequ ir ed . It i s su ffi ci en t f or t he loca l op ti miza ti on modu le toreduce t he p r ed i c ted successo r e rr o r t o a sma ll e r ba ll a round t he nom i na l successo r, pr ovi ded tha t t he r ema i n ing e xecu ti on e rr o ris co rr espond i ng ly bounded , wh i ch i s p r ac ti ca lly r easonab le. If the e xecu ti on e rr or s we r e r ou ti ne ly on t he o r de r of δ, t hen a pl anned δ-r obus t tr a j ec to ry wou ld it se lf be un r e li ab l e , since the s y st em cou ld eas ily l ea ve the c l ea rance r eg ion and co lli de with obstacles. 
+
+Propos iti on 2 ( App ro xi ma te Reco ve ry Su ffi ces ). L e t x′ 
+
+> i
+
+∈Bδ (xi), and suppose the loca l op ti m iza ti on modu l e re tu rns a con tr ol uopt such t ha t Γ( x′
+
+> i
+
+, u opt ) ∈ B λδ (xi+1 ) fo r some 
+
+λ ∈ (0 , 1) . If t he e x ecu ti on e rr o r w of t hi s op ti mi zed segmen t i sbounded b y (1 − λ)δ, t ha t i s, ∥x′ 
+
+> i+1
+
+− Γ( x′
+
+> i
+
+, u opt )∥ ≤ (1 − λ)δ, 
+
+whe re x′ 
+
+> i+1
+
+deno tes the e x ecu t ed successo r st a te, t hen we ha ve
+
+x′ 
+
+> i+1
+
+∈ B δ (xi+1 ).
+
+Proof. Applying the triangle inequality gives 
+
+∥x′ 
+
+> i+1
+
+− xi+1 ∥≤ ∥ x′ 
+
+> i+1
+
+− Γ( x′
+
+> i
+
+, u opt )∥ + ∥Γ( x′
+
+> i
+
+, u opt ) − xi+1 ∥≤ (1 − λ)δ + λδ = δ. 
+
+(8) Hence x′ 
+
+> i+1
+
+∈ B δ (xi+1 ).VI. E XPERIMENTS AND RESULTS 
+
+Th i s sec ti on p r esen ts a de ta il ed e x pe ri men t a l eva l ua ti on of AU R A on mu lti pl e s y stems w it h d iff e r en t d y nam i cs inbo t h s i mu l a ti on and r ea l-wo rl d en vir onmen ts. T he r esu lt sdemons tr a te t he e ff ec t o f diff e r en t modu les on the o ve ra ll pe rf or mance . All t he e x pe ri men t s we r e r un on a wo r ks ta ti on w it h an U ltr a 7-26 5KF CPU , an N VI DI A RTX4070 Ti Supe rGPU, and 32 GB of RAM. 6Vanilla-AORRT AURA-AORRT Vanilla-SST AURA-SST Vanilla-AOEST AURA-AOEST                                              
+
+> Cost
+> Fig. 5. Tr ajec tory qua lity compa ri son .The fi na lcos t f unc ti on value o f t he so luti on pa thisrep resen ted for t hree p lanne rs ac ross three s ystems .When integrated with A URA , any AO planner can further improve trajectory quality in the runtime phase, given any initial planning time.
+
+To demons tr a t e t he gene ra li zab ility o f t he p r oposed me t hod ,sy s tems w it h d iff e r en t nom i na l dy nam i cs and s ta te spaces we r einvestigated, including:  
+
+> •
+
+6 D D oub le I n teg r a to r: A si ng l e -po in t acce le ra ti on con tr o lmode l used f o r f o rwa rd p ropaga ti on , w it h s ta t e space 
+
+x = [ px, p y , p z , ˙px, ˙py , ˙pz ]⊤ ∈ X ⊆ R6 whe r e p deno tes position, and control space u = [¨ px, ¨py , ¨pz ]⊤ ∈ U ⊆ R3. 
+
+> •
+
+Ki nema ti c Ca r: A p lana r ca r wit h s ta t e x = [ px, p y , θ ]⊤ ∈X ⊆ SE 2 and con tr o l u = [ v, ϕ ]⊤ ∈ U ⊆ R2, whe re θ,
+
+v, and ϕ deno te yaw , li nea r v eloc ity, and s tee ri ng ang le ,respectively. The dynamics follow the model in [24].  
+
+> •
+
+Lea rned Non -p rehens il e Push i ng D y nam i cs : A l ea r ned d y nam ics o f con t ac t-ri ch p lana r push ing f o ll ow ing t he mode l i n [2 5], w it h s t a te x = [ px, p y , θ ]⊤ ∈ X ⊆ SE 2
+
+and con tr ol u = [ us, u o, u d]⊤ ∈ U ⊆ R3, whe r e us se l ec t st he push ing s ide , uo de fi nes t he l at e ra l o ff se t a long t he contacted side, and ud specifies the pushing distance. The r obus t ness o f AU R A was e va l ua t ed ac ross en vir onmen t swith different forms of execution uncertainty w (Eq. 4).  
+
+> •
+
+Gauss i an No ise : Execu ti on unce rt a in ty i s mode l ed as bounded add itiv e G auss ian no i se app li ed to the nom i na lmotion of each system.  
+
+> •
+
+Mu j oco S i mu l ati on : Unce rt a i nty a ri ses fr om the m i sma t ch be tween the nom ina l d y nam ics and t he Mu J oCo s imu l a ti on d y nam ics [26 ], eval ua ted us ing a MuSHR ca r mode l [ 27] (Fig. 6 (a)) and a UR10 manipulation task (Fig. 6 (b)).  
+
+> •
+
+Rea l-Wo rl d Robo t: Ha rdwa r e inaccu rac i es and unmode l ed d y nam i cs in tr oduce unce rt a in ty i n a tab l et op man i pu l a ti on task (Fig. 6 (c)). Fo r each s y st em and en vir onmen t, t h ree AO p lanne rs i mp le -men t ed i n the O pen Mo ti on P lann ing Li bra ry ( O MP L) [28 ]were used: SST [6], AO-RRT, and AO-EST [11]. (a) Car in Simulation (b) Manipulator in Simulation (c)Manipulator in Real -World                 
+
+> Fig.6.Evalua ti on en vir onmen ts.(a)Mu JoCo MuSHR ca r, ( b)Mu JoCo UR10 non-prehensile task, and (c) Real-world UR10 non-prehensile task.
+
+A. Runtime Trajectory Quality Improvement 
+
+A s d i scussed i n Sec . IV-B , AU R A pl anne r s u tili ze each execu ti on inte rv a l ∆t t o con ti nue the g l oba l sea rch fr om the re ta ined p lann ing tr ee , pr og r ess iv e ly i mp rovi ng t he cos t o f t he cand i da t e tr a jec t o ry un til t he s ys tem r eaches the goa l. T hi sex pe ri men t eva lua tes t he a tt ai ned imp r ovemen t i n tr a j ec t o ry cos t
+
+J(π) under a noise-free execution setting ( ∥w∥ = 0 ), thereby iso l ati ng t he e ff ec t o f r un ti me g loba l r e fi nemen t on so l u ti on qua lity fr om t he e ff ec t s o f tr ack ing e rr o r. T he base li ne i s the in iti a l tr a j ec to ry gene r a ted b y t he co rr espond ing van ill a AO planne r du ri ng t he o ffli ne phase , as shown i n F ig. 5. Resu lt sar e a ve r aged o ve r 50 tri a l s fo r each s y st em , p l anne r, and in iti a lpl ann i ng ti me . A s men ti oned i n Sec . IV-B , AU R A pl anne r sutili ze each e xecu ti on i nt e rv a l ∆t t o pe rf o r m g loba l r ep lann ing ,prog ress iv e ly i mp rovi ng the cand ida t e tr aj ec to ry cos t, un til t he system reaches the goal. Fo r all t he s y st ems , AU R A cons is ten tly p roduced lowe r- cos ttr aj ec t o ri es (v e rti ca l a xi s) t han van ill a p l anne rs , g iv en t he same offli ne p lann ing ti me . No t ab ly, f o r t he k inema ti c ca r, 5 seconds of o ffli ne p lann i ng w it h AU R A cou l d ach i eve a tr a jec to ry qua lity compa rab le t o t ha t ob ta i ned fr om 3 0 seconds o f o ffli ne p l ann i ng .A s imil ar tr end is obse rv ed ac ross a ll sy s tems , i nc l ud ing the lea rned d ynam ics mode l, whe r e fi nd i ng a so l u ti on is mo recha ll eng i ng . T hese ou t comes a r e cons is ten t wit h t he theo re ti ca lproperties of asymptotic optimality [2].                         
+
+> TABLE I MEAN STEP -WISE TRACKING ERROR
+> System Environment AURA Open-loop Execution
+> Kinematic Car Gaussian Noise 0.0188 0.0689 Double Integrator Gaussian Noise 0.0048 0.0130 Pushing Dynamics Gaussian Noise 0.0515 0.0744 Kinematic Car MuJoCo Simulation 0.0475 0.0894 Pushing Dynamics MuJoCo Simulation 0.1051 0.1495 Pushing Dynamics Real-World 0.0873 0.1856
+
+B. Tracking Robustness 
+
+To e xam i ne how l oca l op ti m i za ti on a ff ec t s e xecu ti on unde runce rt ai n ty, st ep - wise tr ack i ng e rr or was measu red us ing Eq . 5. Th is e val ua ti on inc ludes e xecu ti on unce rt a i nty, and the s y st em i stasked w it h fo ll ow i ng an a rb itr a ry r e fe rence tr aj ec to ry gene ra t ed by t he nom ina l d y nam i cs ( Eq . 2 ) us i ng 10 consecu tiv e random ly 7AORRT SST AOEST Replanning MPPI RR RR RR RR RR RR                                                                  
+
+> Fig. 7. Task ti me compa ri son .The d istri bu ti on o foverall t ask comp leti on ti me (i n seconds )overmu lti pletri alsforAURA, r es tart r ep lann ing ,and MPP I i sshown . L owe r v alues ind ica tefas ter t ask comp leti on and be tt erpe rf ormance .AURAcons isten tly ach ieves lowe rwa ll ti me and reduced vari ab ility compa red toother baselines, with pronounced gains in complex and long-horizon scenarios.
+
+samp l ed con tr o l i npu ts . Fo r r ea l-wo rl d tri a l s, t hi s i s reduced t o5 pushes . Resu lt s a r e a ve raged o ver 5 tri a l s. T he compa ri son i smade aga ins t open -l oop e xecu ti on , i n wh i ch the nom i na l con tr ol sa re app li ed d ir ec tly. I n AU R A, t he bes t op ti m i zed con tr o l i sse lec ted a t each s tep fr om Uopt based on the cu rr en t obse rv ed state and the next target state, as described in Sec. IV-C. As repo rt ed i n Tab le I, se lec ti ng the op ti m ized con tr o lsubs t an ti ally dec r eases tr ack i ng e rr o r ac r oss a ll sy st ems , yi e ld i ng a reduc ti on o f up to 7 2 % i n s i mu la ti on and 5 3 % i n rea l wo rl d.
+
+C. End-to-End Task Time Efficiency 
+
+To e va l ua t e the o ve r a ll t ask pe rf o r mance , wa ll ti me was measu red as the t ot a l e lapsed ti me requ ir ed fo r each s y s tem t oreach the goa l, unde r ac ti on unce rt a in ty. T h is inc ludes bo th t he initial offline planning time and the total execution time. The compa ri son inc ludes Res ta rt Rep l ann i ng (RR ) and Mode l P red i c tiv e Pa t h I nt eg r al ( MPP I) [ 21]. Fo ll ow i ng common p rac ti ce i n r ep l ann i ng unde r unce rt a in ty [ 29 ], r es t a rt r ep l ann i ng is tri gge red whene ver t he s tep -w ise tr ack ing e rr or ex ceeds a th resho l d. T hi s app r oach d i sca r ds p ri or p lann ing p rog r ess and compu t es a new tr ajec to ry fr om the cu rr en t obse rv ed s tat e tothe goa l. MPP I i s inc luded as a rep resen t a tiv e r eced i ng -ho ri zon optimization baseline. Resu lt s i n F ig . 7 demons tr a te t ha t AU R A cons i st en tly r educes wa ll ti me ac ross s y st ems and en vir onmen t s b y utili zi ng g l oba lrep l ann i ng and l oca l op ti mi za ti on modu l es . A lt hough t he RR app roach uses t he l at es t gr ound -tr ut h s t at e f or pl ann i ng , each tri gge r r equ ir es a cos tly tr a jec t ory r ecompu ta ti on . I n con tr as t, AU R A pr og ress iv ely l owe r s tr a j ec t o ry cos t wh il e r educ i ng tr ack ing e rr o r, li miti ng the need f or r es ta rt r ep lann ing . T he bene fit becomes mos t appa ren t i n mo r e comp l ex se tti ngs , such as Mu JoCo s i mu l ati on and r ea l-wo rl d push ing t asks , whe reRR exhibits higher variance and longer execution times. Wh il e MPP I ach ieves compe titiv e pe rf or mance fo r t he k inema ti c ca r, it s wa ll ti me inc r eases subs t an ti a lly i n mo recomp l ex sy st ems . T h is is because MPP I op ti mi zes o ve r a li mit ed ho ri zon w it hou t ex p li cit awa r eness o f t he g l oba l s tat e space o rlong -t e rm cons tr aints . T he refor e, t he con tr o ll er a li gns loca lly f eas ib le s tates and con verges t o l oca l m ini ma . I n con tr as t, t he long -ho ri zon p l anne r i n AU R A enab l es g loba l exp lo ra ti on and tr a jec to ry r e fi nemen t, suppo rti ng mo re e ffi c ien t t ask comp l e ti on in complex systems and environments. 0.5 1.0 1.5 2.0 2.5 3.0 36912 15 min 18.86 max 42.89 1 2 3 4 512345Control Duration Offline Planning Time (b) Wall Time Over Different Hyperparameters (a) Experiment Environment                                                                                                                
+
+> xy
+> 12345Task Time
+> Fig.8.Hype rpa rame tersAna ly sis.(a)XY plane w it h obs tac les (black )and the ir i nfl ated bounda ri es (dashed li nes ). T he red s imu lated ca r i stasked w it hreach ing the goa l r eg ion (Green ). T he g ray tr ajec tory i sthe o ffli ne p lann ing ou tpu t, t he pu rple segmen tshows the e xecu ted tr ajec tory, and the b lue li ne shows the bes tcu rr en t tr ajec tory compu ted b yAURA. ( b)Eff ec tofdiff eren toffli ne p lann ing ti mes and con tr oldu rati ons on the o verall wa ll ti me (z-axi s).
+
+D. Hyperparameter Analysis 
+
+Th i s sec ti on ana ly zes t he sens itivity o f AU R A to two c riti ca l hy pe r pa rame te r s: O ffli ne P l ann i ng Ti me Tinit and 
+
+Con tr o l D u ra ti on ∆t, wh i ch se t t he i niti a l compu t a ti on budge tand r un ti me i nterv al fr equenc y, r espec tiv ely. T his e xpe ri men twas conduc ted us ing the k inema ti c ca r wit h AO - RR T i n the en vir onmen t shown in F i g . 8 ( a ), whe re the wa ll ti me was measu r ed o ver 10 tri a ls unde r d iff e ren t hy pe rpa rame te r se tti ngs .In th is en vir onmen t, t he op ti ma l so lu ti on passes th rough the na rr ow passage on t he ri gh t, wh il e a l onge r tr a jec t o ry t h r ough the w ide r r eg ion on the le ft i s mo r e li ke ly t o be f ound du ri ng early planning. A s shown i n F i g . 8 ( b), l a rge r offli ne p l ann ing ti me gene r a lly inc reases wa ll ti me . T h is i mp li es tha t mo r e in iti a l p l ann i ng ti me does no t necessa rily i mp rove r un ti me e ffi cienc y. Us ing AU R A,the i niti a l so l u ti on on ly needs to be f eas ib l e to beg i n e xecu ti on ,as t he tr a jec t ory i s con ti nuous ly r e fi ned du ri ng the r un ti me phase . T hi s a ll ows t he s yst em to s t a rt w it h m i n ima l o ffli ne compu ta ti on wh il e imp rovi ng so lu ti on qua lity du ri ng e xecu ti on .T he con tr ol du ra ti on , howe ver, has mo re infl uence on wa ll ti me . Sho rt e r con tr o l du r ati ons enab le mo re fr equen t r ep lann ing ,all ow i ng the g loba l r ep l ann ing modu l e to upda te t he tr aj ec to ry mo re o ft en . Howe ve r, ex cess iv ely sho rt du ra ti ons reduce the compu ta ti on ti me a va il ab l e fo r l oca l op ti m iza ti on , li m iti ng the unce rt a in ty compensa ti on . T hus , t he bes t pe rf o r mance 8
+
+is ob ta i ned a t an i n te r med ia t e con tr o l du r a ti on ( wh i ch is 1second fo r t h i s s y s tem ) t ha t ba l ances r ep l ann i ng fr equenc y wit hsufficient optimization time. Over a ll, t h i s ana ly si s i nd i ca t es t ha t AU R A’s wa ll ti me g rows wit h o ffli ne p l ann i ng ti me w it h the same tr end , ac r oss d iff e ren tcon tr ol du rati ons , once a feas ib le in iti al tr a jec to ry i s a vail ab le .Be y ond t ha t po i n t, an y add iti ona l o ffli ne compu ta ti on does no ttr ans la te into imp roved pe rf ormance . I ns tead , pe rf ormance isp ri ma rily de t e rmi ned b y t he run ti me fr equenc y, wh i ch p rovi des frequent replanning and enough time for optimization. VII. C ONCLUSION AND FUTURE WORK 
+
+Th is pape r presen t s A U R A, a me ta -p lann ing fr amewo r k f orrobus t mo ti on p l ann ing unde r execu ti on unce rt a i nty. AU R A i sbu ilt on t op o f as y mp to ti ca lly op ti ma l samp li ng -based p lanne rsand augmen ts them w it h two comp l emen t ary on li ne modu les :
+
+(i) a Gl oba l Rep lann ing Modu l e t ha t con ti nuous ly r e fi nes the r ef e r ence tr a j ec t o ry du ri ng e xecu ti on , and (ii) a Loca lO p ti m i za ti on Modu le tha t r eco ve rs fr om poss ib le ou t comes b y r elyi ng on fo rwa r d d y nam i cs p ropaga ti on . By comb in ing as y mp t oti c pa t h imp r ovemen t wit h p red ic tiv e fo rwa rd -d y nam ics op ti m iza ti on , AU R A imp roves tr a jec to ry qua lity du ri ng e xecu -ti on wh il e m iti ga ti ng tr ack ing e rr o r s unde r mo ti on unce rt a in ti es .Ex pe ri men ta l r esu lt s ac ross mu lti ple s yst em d ynam ics and st a te spaces demons tr a t e t he gene r a lity and p r ac ti ca l ad van t ages o f t h i s fr amewo rk . I n pa rti cu l a r, AU R A imp r oves o ve r a ll pe rf ormance in te rms o f wa ll ti me w it hou t r equ iri ng e xt ens iv eoffli ne p lann ing , all ow ing the s yst em to beg in e xecu ti on fr om a feas i b le p l an and refi ne it on li ne . T he resu lt s fu rt he r show tha t AU R A i s compa ti b l e w it h bo t h ana lyti ca l and lea r ned d ynam ics mode l s, mak i ng it app li cab le to s ys tems whe reaccu ra te mode ls a re d iffi cu lt t o ob ta in . Fu rt he rmo re , t he r ea l-wo rl d e x pe ri men t demons tr a t es tha t AU R A can hand l e ha rdwa r eexecu ti on unce rt a in ti es . T oge the r, t hese fi nd ings h i gh li gh tAU R A as a fl exi b l e and compu t ati ona lly e ffi c i en t app r oach f or i mp r ovi ng the r obus t ness and pe rf o r mance o f samp li ng -based motion planning during execution. Desp it e the ad van t ages o f t he p roposed me thod , some li mit a ti ons rema i n . T he l oca l op ti m i za ti on modu l e ma y ex h i b it va ryi ng reco ve ry pe rf o r mance depend ing on the samp l ed ba tch se t and nom ina l dy nam ics comp l exity. I n add iti on , t he hy pe r pa r ame t er st ud i es i nd i ca te t ha t pe rf ormance depends on se l ec ti ng an app r op ri a t e con tr o l du r ati on , wh ich mus t be adap t ed based on the s y s tem ’s d ynam ics . As fu tu re wo rk , t he p l ann ing compu t ati ons in bo t h the o ffli ne phase and the g loba l r ep l ann i ng modu le cou ld be pa r a ll e li zed [ 3 0], acce le r a ti ng t he o ve r a ll p ipe li ne and enab li ng t he me thod to be tt e r suppo rt sy st ems that require shorter control durations. REFERENCES [1] A . O rt he y, C . Chamzas , and L. E. Ka vr ak i, “ Samp li ng - based mo ti on p lann ing : A compa r a tiv e r evi ew ,” Annua l Re vi ew o f Con tr o l, Robo t., and Au tom . Sy s t. , vo l. 7, no . 1, pp . 28 5– 310, 2 0 24. https://doi.org/10.1146/annurev-control-061623-094742 [2] J. D. G amme ll and M . P. S tr ub , “ A sy mp toti ca lly op ti ma l samp li ng -based mo ti on p lann ing me thods ,” Annua l Re vi ew o f Con tr o l, Robo t., and Autom .Syst. , vol. 4, no. 1, pp. 295–318, 2021. [3] J. V anno y and J. Xi ao , “ Rea l-ti me adap tiv e mo ti on p l ann i ng (r amp ) o fmob il e man i pu l at or s i n d ynam ic en vir onmen t s w it h un fo reseen changes ,” 
+
+IEEE Trans. Robot. , vol. 24, no. 5, pp. 1199–1212, 2008. [4] M. Ott e and E . F razzo li, “ Rrt x: Rea l-ti me mo ti on p l ann ing /r ep lann i ng foren vir onmen t s w it h unp red ic tab le obs t ac l es ,” i n Al go rit hm ic Founda ti ons of Robotics XI . Springer, 2015, pp. 461–478. [5] A . Siv ar amak ri shnan , S . T ang ir ala, D . M. Ramesh , E . G ranados , and K . E .Bek ri s , “ K ra ft: Samp li ng -based k inod y nam i c rep lann ing and f eedback con tr ol ove r app ro xi ma te , i den tifi ed mode ls o f v eh i cu la r sys tems ,” a rXiv preprint arXiv:2409.11522 , 2024. [6] Y. Li, Z. Littl e fi eld , and K . E . Bek ri s , “ A sy mp to ti ca lly op ti ma l samp li ng -based k inod y nam ic p l ann ing ,” Intl. J. o f Robo ti cs Resea rch , v ol. 35, no . 5, pp. 528–564, 2016. [7] J. Richa let, A . Rau lt, J. T es tud , and J. Papon , “ Mode l pred ictiv e heu ri s ti ccon tr o l,” Au toma ti ca (j ou rna l o f I FAC), v ol. 14, no . 5, pp . 41 3–4 28 , 1 97 8.[8] K. Zhou and J. C . D oyl e , Essen ti a ls o f r obus t con tr o l. Pr en ti ce ha ll Upper Saddle River, NJ, 1998, vol. 104. [9] W.- H. Chen , J. Y ang , L. Guo , and S . Li, “ D ist u r bance - obse rv e r- based con tr ol and r elated me thods —an o vervi ew ,” IEEE Tr ansac ti ons on Industrial Electronics , vol. 63, no. 2, pp. 1083–1095, 2015. [10] S. Kleff, A . Medu ri, R . Budh ir aja, N . Mansa r d , and L. R ighe tti, “ H igh -fr equenc y non li nea r mode l pred ictiv e con tr o l o f a man ipu lat or,” in I EEE I n tl. Con f. Robo t. Aut om ., 2 02 1, p . 733 0–7 336 . h tt ps ://doi.org/10.1109/ICRA48506.2021.9560990 [11] K . Hause r and Y. Zhou , “ A sy mp t oti ca lly op ti ma l p lann ing b y f eas ib leki nod ynam ic p lann ing in a s t ate– cos t space ,” IEEE Tr ans . Robo t. , v ol. 32 ,no. 6, pp. 1431–1443, 2016. [12] S. M. L aVall e, Plann i ng Algo rit hms . Camb ri dge , U.K.: Camb ri dge University Press, 2006. [13] I. A . Sucan and L. E . Ka vr ak i, “ A samp li ng - based tr ee p lanne r f o rs ys tems w it h comp lex dy nam ics ,” IEEE Tr ans . Robo t. , v o l. 28 , no . 1, pp .116–131, 2011. [14] S . M. L aVall e and J. J. Ku ff ne r Jr, “ Random ized k inod y nam ic p lann ing ,” 
+
+Intl. J. of Robotics Research , vol. 20, no. 5, pp. 378–400, 2001. [15] D . Hsu , J.-C. L a tombe , R . Mo twan i, and P . A ga rwa l, “ Pa th p lann ing inex pans iv e con fi gu r a ti on spaces .” I n tl. J. o f Compu t a ti ona l Geome try & Applications , vol. 9, 1999. [16] K. I. T s ianos and L. E . Ka vr ak i, “ Rep lann ing : A powe rf ul p lann ing s tr ateg y f o r ha r d k inod ynam ic p r ob lems ,” i n I EEE /RS J I n tl. Con f. on Intell. Robots and Syst. IEEE, 2008, pp. 1667–1672. [17] S. Mc Leod and J. Xi ao , “ Rea l-ti me adap tiv e non - ho lonom ic mo ti on plann ing in un for eseen d ynam ic en vir onmen ts ,” i n IEEE /RS J I ntl. Con f. on Intell. Robots and Syst. , 2016, pp. 4692–4699. [18] D . Ma y ne and H . M icha lska , “ Reced ing ho ri zon con tr o l o f non li nea rs ys tems ,” I EEE Tr ans . on Au toma ti c Con tr ol, v o l. 3 5, no . 7, pp . 814– 82 4, 1990. [19] Y. Song , B. Zhang , C. Wen , D . Wang , and G . We i, “ Mode l p red ictiv econ tr o l f or comp li ca ted d ynam ic s ys tems : a su rv ey,” In ter na ti ona l J ou r na lof Systems Science , vol. 56, no. 9, pp. 2168–2193, 2025. [20] A. Osh in, H . Almuba rak , and E . A. T heodo rou , “ Diff e ren ti ab le robus tmodel predictive control,” Robotics: Science and Syst. , 2024. [21] G. Willi ams , P. D rews , B. Go ldfai n, J. M . Rehg , and E . A. T heodo r ou ,“A gg ress iv e d rivi ng w it h mode l p red ic tiv e pa th in teg ral con tr ol,” i n IEEE Intl. Conf. Robot. Autom. IEEE, 2016, pp. 1433–1440. [22] D. Q. Ma y ne and E . C . Ke rri gan , “T ube -based robus t non li nea r mode lp r ed i ctiv e con tr o l1,” I FAC P roceed ings Vo lumes , v ol. 40, no . 1 2 , pp .36–41, 2007. [23] J. K ¨oh ler, D . Zhang , R . So lope rt o, A . Ca rr on , and M . Ze ili nge r, “ A nmpc fr amewo r k f o r e ffi cien t na vi ga ti on o f mob il e r obo ts in c lu tt er ed environments,” arXiv preprint arXiv:2509.15917 , 2025. [24] T. He ll str ¨om , “ K inema ti cs equa ti ons fo r d iff eren ti al d riv e and a rti cu l ated steering,” 2011. https://api.semanticscholar.org/CorpusID:60171842 [25] Z . Zhong , S . G oles t aneh , and C . Chamzas , “ A ctiv epushe r: Ac tiv e lea rning and p l ann i ng w it h res idua l ph ysi cs for nonp rehens il e man ipu l ati on ,” i n
+
+IEEE Intl. Conf. Robot. Autom. , 2026. [26] E . T odo r ov, T. E rez , and Y. T assa , “ Mu joco : A ph y sics eng ine fo r mode l-based con tr o l,” i n IEEE /RS J I ntl. Con f. on Inte ll. Robo t s and S y st. , 201 2 ,pp. 5026–5033. [27] S. S . Sri n iv asa , P. L ancas te r, J. Mi cha l ove, M. Schm ittl e , C. Summe r s,M . Rocke tt, J. R. Sm it h, S . Chouhu ry, C. Ma vr og iann is, and F . Sadegh i, “ MuSHR : A low - cos t, open - sou r ce r obo ti c r aceca r f o r educa ti on and research,” CoRR , vol. abs/1908.08031, 2019. [28] I. A . S¸ ucan , M . Mo ll, and L. E. Ka vr ak i, “T he O pen Mo ti on P lann ing Li b r ary,” I EEE Robo ti cs & Au toma ti on Magaz ine , v o l. 1 9, no . 4, pp .72–82, December 2012, https://ompl.kavrakilab.org. [29] W. Sun , S. Pa til, and R . Alt er ovit z , “ H igh -fr equenc y r ep lann ing unde runce rt ai nty us i ng pa r all e l samp li ng - based mo ti on p lann ing ,” I EEE Tr ans .Robot. , vol. 31, no. 1, pp. 104–116, 2015. 9
+
+[30] N . Pe rr au lt, Q . H. Ho , and M . L ah ij an ian , “ Ki no - pa x+: Nea r-op ti ma lmass iv e ly pa ra ll el ki nod y nam i c samp li ng -based mo ti on p l anne r,” arXiv preprint arXiv:2602.02846 , 2026.

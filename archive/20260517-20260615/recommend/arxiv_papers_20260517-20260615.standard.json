@@ -1,15 +1,15 @@
 {
   "mode": "standard",
-  "generated_at": "2026-06-15T10:44:58.858632+00:00",
+  "generated_at": "2026-06-15T11:13:04.076170+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 5,
+    "deep_divecandidates": 7,
     "deep_cap": 6,
-    "deep_selected": 5,
-    "quick_candidates": 3,
+    "deep_selected": 6,
+    "quick_candidates": 6,
     "quick_skim_target": 11,
-    "quick_selected": 3
+    "quick_selected": 6
   },
   "deep_dive": [
     {
@@ -39,13 +39,13 @@
         "query:aerial-arm"
       ],
       "llm_score": 10.0,
-      "llm_evidence_en": "Proposes aerial manipulation control architecture decoupling UAV movement and arm manipulation",
-      "llm_evidence_cn": "提出解耦无人机运动与机械臂操作的空中操作控制架构",
-      "llm_evidence": "提出解耦无人机运动与机械臂操作的空中操作控制架构",
-      "canonical_evidence": "提出解耦无人机运动与机械臂操作的空中操作控制架构",
-      "llm_tldr_en": "Addresses representation coupling in end-to-end aerial manipulation control by proposing AIR-VLA+, a flow matching architecture with cascaded dual-action decoders and asymmetric MoE, achieving coordinated movement-manipulation and state-of-the-art performance on aerial tasks.",
-      "llm_tldr_cn": "针对空中操作系统中端到端控制的表示耦合问题，提出AIR-VLA+架构，采用级联双动作解码器和非对称专家混合，实现无人机运动与机械臂操作的解耦与协调，在多个空中操作任务上取得最优性能，推动了空中机器人的灵巧操控。",
-      "llm_tldr": "针对空中操作系统中端到端控制的表示耦合问题，提出AIR-VLA+架构，采用级联双动作解码器和非对称专家混合，实现无人机运动与机械臂操作的解耦与协调，在多个空中操作任务上取得最优性能，推动了空中机器人的灵巧操控。",
+      "llm_evidence_en": "Architecture for aerial manipulation decoupling movement and manipulation",
+      "llm_evidence_cn": "空中操纵中解耦运动与操作的架构",
+      "llm_evidence": "空中操纵中解耦运动与操作的架构",
+      "canonical_evidence": "空中操纵中解耦运动与操作的架构",
+      "llm_tldr_en": "Proposes AIR-VLA+, a flow matching architecture for aerial manipulation that decouples UAV movement and arm manipulation via cascaded dual-action decoders and asymmetric Mixture of Experts, improving control coordination and performance.",
+      "llm_tldr_cn": "现有空中操纵系统的端到端控制中，无人机运动与机械臂操作的动作空间耦合严重，导致协调困难。本文提出AIR-VLA+，一种基于流匹配的动作生成架构，通过级联双动作解码器实现单向意图观察，并采用非对称混合专家模型，有效解耦运动与操作。仿真与实验表明，该方法显著提升了空中作业的协调性和成功率，为实现高自主空中机器人操作提供了新途径。",
+      "llm_tldr": "现有空中操纵系统的端到端控制中，无人机运动与机械臂操作的动作空间耦合严重，导致协调困难。本文提出AIR-VLA+，一种基于流匹配的动作生成架构，通过级联双动作解码器实现单向意图观察，并采用非对称混合专家模型，有效解耦运动与操作。仿真与实验表明，该方法显著提升了空中作业的协调性和成功率，为实现高自主空中机器人操作提供了新途径。",
       "llm_tags": [
         "query:aerial-arm"
       ],
@@ -77,53 +77,13 @@
         "query:aerial-arm"
       ],
       "llm_score": 10.0,
-      "llm_evidence_en": "Language-guided object placement with aerial manipulators",
-      "llm_evidence_cn": "语言引导的空中机械臂物体放置",
-      "llm_evidence": "语言引导的空中机械臂物体放置",
-      "canonical_evidence": "语言引导的空中机械臂物体放置",
-      "llm_tldr_en": "Introduces a framework for language-guided object placement with aerial manipulators, leveraging image editing to generate visual markers indicating placement locations from natural language instructions, enabling intuitive human-robot interaction for aerial manipulation tasks.",
-      "llm_tldr_cn": "针对传统空中机械臂放置任务需指定精确坐标、不够直观的问题，提出AERMANI-PLACE框架，利用图像编辑模型根据自然语言指令生成视觉标记以指示放置位置。该方法支持人类通过语言和手势自然地传达空间目标，简化了空中操纵中的物体放置交互。实验表明，该系统在多种场景下可实现准确、鲁棒的语言引导放置，提升了空中机械臂的实用性和易用性。",
-      "llm_tldr": "针对传统空中机械臂放置任务需指定精确坐标、不够直观的问题，提出AERMANI-PLACE框架，利用图像编辑模型根据自然语言指令生成视觉标记以指示放置位置。该方法支持人类通过语言和手势自然地传达空间目标，简化了空中操纵中的物体放置交互。实验表明，该系统在多种场景下可实现准确、鲁棒的语言引导放置，提升了空中机械臂的实用性和易用性。",
-      "llm_tags": [
-        "query:aerial-arm"
-      ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
-      "matched_requirement_id": "req-7",
-      "selection_source": "fresh_fetch"
-    },
-    {
-      "id": "2605.19431v1",
-      "source": "arxiv",
-      "title": "Self-assembling Modular Aerial Robot for Versatile Aerial Tasks",
-      "abstract": "Multirotor aerial robots excel at maneuvering in three-dimensional space, and recent advances enable nimble navigation in cluttered and confined environments, especially for small airframes. By contrast, platforms built for high-altitude work tend to be larger to deliver high thrust for stable physical interaction with the environment. However, these conflicting design requirements create a long-standing trade-off between nimble navigation and robust aerial manipulation. Here, we present LEGION units, which are reconfigurable modular aerial robots capable of in-flight self-assembly for cooperative manipulation, drawing inspiration from the self-organized collectives formed by ants. Each unit retains nimble maneuverability while joint-equipped docking interfaces at both ends enable end-to-end self-assembly into a flying manipulator. We show that multiple units autonomously dock in flight; once latched, they maintain a zero-clearance interlock by controlling the contact force and torque, enabling reliable aggregation and articulated motion even outdoors. We further show that self-reconfigurability enables morphological switching between nimble individual flight and collective articulated manipulation, while realizing core in-flight manipulation primitives including pushing, pulling, rotating, grasping, and carrying. LEGION's self-organization enables aerial robots, especially in swarms, to shift from passive observers to active participants in their environment, broadening the scope of aerial physical interaction.",
-      "authors": [
-        "Junichiro Sugihara",
-        "Masaki Kitagawa",
-        "Jinjie Li",
-        "Yunong Li",
-        "Takuzumi Nishio",
-        "Kei Okada",
-        "Moju Zhao"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO"
-      ],
-      "published": "2026-05-19T06:36:10+00:00",
-      "link": "https://arxiv.org/pdf/2605.19431v1",
-      "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
-      ],
-      "llm_score": 9.0,
-      "llm_evidence_en": "modular aerial robots for cooperative manipulation, physical interaction",
-      "llm_evidence_cn": "模块化空中机器人协同操作与物理交互",
-      "llm_evidence": "模块化空中机器人协同操作与物理交互",
-      "canonical_evidence": "模块化空中机器人协同操作与物理交互",
-      "llm_tldr_en": "Introduces self-assembling modular aerial robots that overcome the trade-off between nimble navigation and robust aerial manipulation by docking in-flight to form cooperative manipulators.",
-      "llm_tldr_cn": "针对小型多旋翼无法兼顾灵活导航与强力空中操作的矛盾，本文受蚂蚁自组织行为启发，提出了LEGION可重构模块化空中机器人，各单元可独立灵巧飞行，通过配备关节的对接接口在空中自主组装成协作操作构型，实现了稳定的物理交互与环境操作，扩展了空中机器人的任务能力。",
-      "llm_tldr": "针对小型多旋翼无法兼顾灵活导航与强力空中操作的矛盾，本文受蚂蚁自组织行为启发，提出了LEGION可重构模块化空中机器人，各单元可独立灵巧飞行，通过配备关节的对接接口在空中自主组装成协作操作构型，实现了稳定的物理交互与环境操作，扩展了空中机器人的任务能力。",
+      "llm_evidence_en": "language-guided object placement with aerial manipulators",
+      "llm_evidence_cn": "面向空中机械手的语言引导物体放置框架",
+      "llm_evidence": "面向空中机械手的语言引导物体放置框架",
+      "canonical_evidence": "面向空中机械手的语言引导物体放置框架",
+      "llm_tldr_en": "Proposes AERMANI-PLACE, using language instructions and image editing to generate visual markers for aerial manipulator object placement, eliminating explicit coordinate specification.",
+      "llm_tldr_cn": "现有空中操控需显式指定放置坐标，不够直观。本文提出AERMANI-PLACE，通过自然语言指令和图像编辑模型生成视觉放置标记，使空中机械手能直觉化放置物体。实验验证该方法有效简化人机交互，拓宽空中操控应用。",
+      "llm_tldr": "现有空中操控需显式指定放置坐标，不够直观。本文提出AERMANI-PLACE，通过自然语言指令和图像编辑模型生成视觉放置标记，使空中机械手能直觉化放置物体。实验验证该方法有效简化人机交互，拓宽空中操控应用。",
       "llm_tags": [
         "query:aerial-arm"
       ],
@@ -163,13 +123,13 @@
         "query:aerial-arm"
       ],
       "llm_score": 9.0,
-      "llm_evidence_en": "autonomous aerial manipulation via contextual contrastive meta-RL for payload delivery",
-      "llm_evidence_cn": "基于上下文对比元强化学习的自主空中操控，用于载荷递送",
-      "llm_evidence": "基于上下文对比元强化学习的自主空中操控，用于载荷递送",
-      "canonical_evidence": "基于上下文对比元强化学习的自主空中操控，用于载荷递送",
-      "llm_tldr_en": "Proposes Aco2, a meta-RL method enabling a single policy to adapt to varying payload dynamics for fully autonomous aerial delivery without manual recalibration.",
-      "llm_tldr_cn": "针对无人机自主抓取与递送不同载荷时飞行动力学高度变化的问题，提出Aco2框架，通过上下文对比元强化学习训练单一策略在线适应载荷动力学，无需手动标定或系统辨识。仿真和实验表明该方法能成功完成从抓取到递送的全流程自主任务，对推动物流无人机应用有重要意义。",
-      "llm_tldr": "针对无人机自主抓取与递送不同载荷时飞行动力学高度变化的问题，提出Aco2框架，通过上下文对比元强化学习训练单一策略在线适应载荷动力学，无需手动标定或系统辨识。仿真和实验表明该方法能成功完成从抓取到递送的全流程自主任务，对推动物流无人机应用有重要意义。",
+      "llm_evidence_en": "autonomous aerial payload acquisition using contrastive meta RL",
+      "llm_evidence_cn": "使用对比元强化学习的自主空中负载获取",
+      "llm_evidence": "使用对比元强化学习的自主空中负载获取",
+      "canonical_evidence": "使用对比元强化学习的自主空中负载获取",
+      "llm_tldr_en": "This paper addresses autonomous aerial delivery where a UAV grasps and transports diverse payloads, proposing a meta-RL framework that uses context encoding and contrastive learning to adapt to varying dynamics without manual calibration, enabling versatile end-to-end aerial manipulation.",
+      "llm_tldr_cn": "针对空中物流中无人机需自主抓取和运输不同负载，但负载变化导致飞行动力学高度不确定的难题，本文提出一种基于上下文对比的元强化学习框架Aco2。该框架通过编码负载动力学上下文并利用对比学习在线自适应，无需人工标定即可实现端到端的自主空中抓取与运输。实验表明，该方法能够使单一策略适应多种未知负载，提升了空中操作的通用性和鲁棒性，为空中机械臂的自主操作提供了新思路。",
+      "llm_tldr": "针对空中物流中无人机需自主抓取和运输不同负载，但负载变化导致飞行动力学高度不确定的难题，本文提出一种基于上下文对比的元强化学习框架Aco2。该框架通过编码负载动力学上下文并利用对比学习在线自适应，无需人工标定即可实现端到端的自主空中抓取与运输。实验表明，该方法能够使单一策略适应多种未知负载，提升了空中操作的通用性和鲁棒性，为空中机械臂的自主操作提供了新思路。",
       "llm_tags": [
         "query:aerial-arm"
       ],
@@ -177,83 +137,6 @@
       "matched_query_text": "grasping and manipulation with aerial robot manipulators",
       "matched_requirement_id": "req-7",
       "selection_source": "fresh_fetch"
-    },
-    {
-      "id": "2605.29410v1",
-      "source": "arxiv",
-      "title": "A Progress-Aware Leader-Follower Midair Docking System for Dual-Drone Aerial Manipulation",
-      "abstract": "Reliable midair docking between small unmanned aerial vehicles (UAVs) is essential for modular aerial cooperation and manipulation, but it requires precise relative-pose control and repeatable platform under tight thrust and payload constraints. We present a dual-drone docking platform where two quadrotors operate in a leader-follower formation and dock using a lightweight modular frame with passive magnetic latching. A progress-aware mission supervisor manages phase transitions: approach, alignment, capture, and settle. This platform integrates a complete hardware-software stack (ROS 2 with Crazyflie/PX4 interfaces) and synchronized logging for benchmark evaluation. We evaluate the platform in simulation and real-world experiments using quantitative metrics such as formation error, baseline and yaw consistency, docking success rate, time-to-dock, and failure-mode statistics. The platform enables statistically grounded comparison of docking supervision and synchronization strategies and provides a practical testbed for modular aerial cooperation and repeatable midair aerial manipulation.",
-      "authors": [
-        "Yifan Cai",
-        "Jan Ming Kevin Tan",
-        "Xiangqi Li",
-        "Chenzhe Jin",
-        "Narsimlu Kemsaram",
-        "Valerio Modugno"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO"
-      ],
-      "published": "2026-05-28T06:00:52+00:00",
-      "link": "https://arxiv.org/pdf/2605.29410v1",
-      "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
-      ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "dual-drone docking platform for aerial manipulation with progress-aware supervisor",
-      "llm_evidence_cn": "面向空中操作的双无人机对接平台，含进度感知监督器",
-      "llm_evidence": "面向空中操作的双无人机对接平台，含进度感知监督器",
-      "canonical_evidence": "面向空中操作的双无人机对接平台，含进度感知监督器",
-      "llm_tldr_en": "Presents a leader-follower dual-drone docking platform for aerial manipulation, featuring a progress-aware supervisor and precise relative-pose control, validated in sim and real-world experiments.",
-      "llm_tldr_cn": "本文针对空中操作中无人机对接需求，提出一种领航-跟随双无人机对接系统，通过轻量化模块化框架和被动磁锁完成精准对接。系统设计了进度感知任务监督器，有效管理接近、对准、捕获和稳定阶段，并在仿真和真实环境中验证了平台性能。实验结果表明，系统能在多种条件下实现稳定对接，为未来空中操作任务奠定了基础。该平台整合了ROS 2与飞控接口，支持同步数据记录和基准评估。通过进度感知的任务监督，系统可自主完成对接流程，减少了人工干预，推动了模块化空中协作与操作技术的发展。",
-      "llm_tldr": "本文针对空中操作中无人机对接需求，提出一种领航-跟随双无人机对接系统，通过轻量化模块化框架和被动磁锁完成精准对接。系统设计了进度感知任务监督器，有效管理接近、对准、捕获和稳定阶段，并在仿真和真实环境中验证了平台性能。实验结果表明，系统能在多种条件下实现稳定对接，为未来空中操作任务奠定了基础。该平台整合了ROS 2与飞控接口，支持同步数据记录和基准评估。通过进度感知的任务监督，系统可自主完成对接流程，减少了人工干预，推动了模块化空中协作与操作技术的发展。",
-      "llm_tags": [
-        "query:aerial-arm"
-      ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "aerial manipulation control strategies",
-      "matched_requirement_id": "req-1",
-      "selection_source": "fresh_fetch"
-    }
-  ],
-  "quick_skim": [
-    {
-      "id": "2606.14617v1",
-      "source": "arxiv",
-      "title": "Whole-Body Impedance Model Predictive Control for Safe Physical Human--Robot Interaction on Floating-Base Platforms",
-      "abstract": "Floating-base robots must balance under rigid contact constraints while interacting safely with humans. Existing whole-body control~(WBC) frameworks allocate the full joint space to locomotion or rely on fixed-gain impedance feedback that accumulates steady-state error under sustained physical human--robot interaction~(pHRI) forces. This paper extends the authors' fixed-base two-layer Impedance MPC to floating-base platforms through a three-level architecture: a centroidal MPC plans contact forces over a 500\\,ms horizon; a priority-driven WBC layer resolves balance into joint torques through contact-consistent null-space projection; and the residual null space is governed by a receding-horizon quadratic program~(QP) that predicts and rejects pHRI disturbances using a Kalman-augmented state. A contact-consistent feedback linearization reduces the arm end-effector plant to a double integrator with a \\emph{constant} state matrix within each contact mode, enabling offline precomputation of the QP cost and ${\\geq}1$\\,kHz operation. A covariance-inflation protocol preserves the disturbance estimate across contact-mode switches, guaranteeing zero steady-state error under bounded constant pHRI loads, and an Impedance Equivalence Theorem shows the infinite-horizon limit recovers a classical task-space impedance law whose effective mass, damping, and stiffness adapt to posture and contact configuration. Simulations on a 17-DOF biped and the Unitree G1 humanoid validate the design.",
-      "authors": [
-        "Yongyan Cao"
-      ],
-      "primary_category": "cs.RO",
-      "categories": [
-        "cs.RO",
-        "eess.SY"
-      ],
-      "published": "2026-06-12T16:41:20+00:00",
-      "link": "https://arxiv.org/pdf/2606.14617v1",
-      "tags": [
-        "keyword:aerial-arm",
-        "query:aerial-arm"
-      ],
-      "llm_score": 7.0,
-      "llm_evidence_en": "Whole-body impedance MPC for floating-base platforms with physical interaction, conceptually equivalent to impedance control for aerial manipulator.",
-      "llm_evidence_cn": "针对浮基平台的全身阻抗模型预测控制，适用于空中机械臂的阻抗控制。",
-      "llm_evidence": "针对浮基平台的全身阻抗模型预测控制，适用于空中机械臂的阻抗控制。",
-      "canonical_evidence": "针对浮基平台的全身阻抗模型预测控制，适用于空中机械臂的阻抗控制。",
-      "llm_tldr_en": "Extends two-layer Impedance MPC to floating-base robots via a three-level architecture for safe pHRI, achieving whole-body compliance and balance, which can be transferred to aerial manipulation control.",
-      "llm_tldr_cn": "该论文针对浮基平台在物理人机交互中需要平衡与安全交互的挑战，提出了一种三层架构的全身阻抗模型预测控制方法：重心MPC规划接触力，足式控制层通过零空间投影解析平衡，残余零空间由滚动时域二次规划管理，实验验证了其在悬浮基底上实现柔顺安全交互的有效性，为空中操作机械臂的阻抗控制提供了方法论支撑。",
-      "llm_tldr": "该论文针对浮基平台在物理人机交互中需要平衡与安全交互的挑战，提出了一种三层架构的全身阻抗模型预测控制方法：重心MPC规划接触力，足式控制层通过零空间投影解析平衡，残余零空间由滚动时域二次规划管理，实验验证了其在悬浮基底上实现柔顺安全交互的有效性，为空中操作机械臂的阻抗控制提供了方法论支撑。",
-      "llm_tags": [
-        "query:aerial-arm"
-      ],
-      "matched_query_tag": "query:aerial-arm",
-      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
-      "matched_requirement_id": "req-6",
-      "selection_source": "fresh_fetch",
-      "quick_tier": "7"
     },
     {
       "id": "2605.28367v1",
@@ -278,22 +161,61 @@
         "keyword:aerial-arm",
         "query:aerial-arm"
       ],
-      "llm_score": 6.0,
-      "llm_evidence_en": "Adaptive impedance control for safe physical interaction with robotic manipulators",
-      "llm_evidence_cn": "面向机器人机械臂安全物理交互的自适应阻抗控制",
-      "llm_evidence": "面向机器人机械臂安全物理交互的自适应阻抗控制",
-      "canonical_evidence": "面向机器人机械臂安全物理交互的自适应阻抗控制",
-      "llm_tldr_en": "Proposes an online adaptive impedance control framework with non-smooth control barrier functions to ensure safe physical interaction under uncertain dynamics for robotic manipulators, enhancing compliance and safety.",
-      "llm_tldr_cn": "针对机器人机械臂在物理交互中的安全性与顺从性问题，提出一种在线自适应阻抗控制框架，结合非光滑控制屏障函数，在不确定动力学下保障关节状态安全并实现柔顺交互。该方法通过二次规划安全滤波器和区间二型模糊逻辑补偿未知动力学，实验证明可有效处理接触任务中的安全约束。该框架为空中机械臂的安全物理交互控制提供了可迁移的方法基础。",
-      "llm_tldr": "针对机器人机械臂在物理交互中的安全性与顺从性问题，提出一种在线自适应阻抗控制框架，结合非光滑控制屏障函数，在不确定动力学下保障关节状态安全并实现柔顺交互。该方法通过二次规划安全滤波器和区间二型模糊逻辑补偿未知动力学，实验证明可有效处理接触任务中的安全约束。该框架为空中机械臂的安全物理交互控制提供了可迁移的方法基础。",
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive impedance control for safe physical interaction",
+      "llm_evidence_cn": "自适应阻抗控制用于安全物理交互",
+      "llm_evidence": "自适应阻抗控制用于安全物理交互",
+      "canonical_evidence": "自适应阻抗控制用于安全物理交互",
+      "llm_tldr_en": "Proposes online adaptive impedance control with control barrier functions for safe robotic interaction under uncertainty, applicable to aerial manipulators.",
+      "llm_tldr_cn": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
+      "llm_tldr": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
       "llm_tags": [
         "query:aerial-arm"
       ],
       "matched_query_tag": "query:aerial-arm",
       "matched_query_text": "physical interaction control of aerial robots",
       "matched_requirement_id": "req-5",
-      "selection_source": "fresh_fetch",
-      "quick_tier": "6"
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.19431v1",
+      "source": "arxiv",
+      "title": "Self-assembling Modular Aerial Robot for Versatile Aerial Tasks",
+      "abstract": "Multirotor aerial robots excel at maneuvering in three-dimensional space, and recent advances enable nimble navigation in cluttered and confined environments, especially for small airframes. By contrast, platforms built for high-altitude work tend to be larger to deliver high thrust for stable physical interaction with the environment. However, these conflicting design requirements create a long-standing trade-off between nimble navigation and robust aerial manipulation. Here, we present LEGION units, which are reconfigurable modular aerial robots capable of in-flight self-assembly for cooperative manipulation, drawing inspiration from the self-organized collectives formed by ants. Each unit retains nimble maneuverability while joint-equipped docking interfaces at both ends enable end-to-end self-assembly into a flying manipulator. We show that multiple units autonomously dock in flight; once latched, they maintain a zero-clearance interlock by controlling the contact force and torque, enabling reliable aggregation and articulated motion even outdoors. We further show that self-reconfigurability enables morphological switching between nimble individual flight and collective articulated manipulation, while realizing core in-flight manipulation primitives including pushing, pulling, rotating, grasping, and carrying. LEGION's self-organization enables aerial robots, especially in swarms, to shift from passive observers to active participants in their environment, broadening the scope of aerial physical interaction.",
+      "authors": [
+        "Junichiro Sugihara",
+        "Masaki Kitagawa",
+        "Jinjie Li",
+        "Yunong Li",
+        "Takuzumi Nishio",
+        "Kei Okada",
+        "Moju Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-19T06:36:10+00:00",
+      "link": "https://arxiv.org/pdf/2605.19431v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "modular aerial robots in-flight self-assembly for cooperative manipulation",
+      "llm_evidence_cn": "模块化空中机器人飞行中自组装进行协同操作",
+      "llm_evidence": "模块化空中机器人飞行中自组装进行协同操作",
+      "canonical_evidence": "模块化空中机器人飞行中自组装进行协同操作",
+      "llm_tldr_en": "LEGION units are reconfigurable modular aerial robots that self-assemble in flight to perform cooperative manipulation, overcoming the trade-off between nimble navigation and robust aerial manipulation.",
+      "llm_tldr_cn": "针对空中机器人灵活性与操作力难以兼顾的问题，本文提出LEGION模块化空中机器人，可通过飞行中自组装形成协同操作系统。各单元保持机动性，利用对接接口联合操作。实验证明该方法兼具灵活导航和强力操作能力，为模块化空中操控提供新思路。",
+      "llm_tldr": "针对空中机器人灵活性与操作力难以兼顾的问题，本文提出LEGION模块化空中机器人，可通过飞行中自组装形成协同操作系统。各单元保持机动性，利用对接接口联合操作。实验证明该方法兼具灵活导航和强力操作能力，为模块化空中操控提供新思路。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
     },
     {
       "id": "2605.28367v2",
@@ -318,20 +240,256 @@
         "keyword:aerial-arm",
         "query:aerial-arm"
       ],
-      "llm_score": 6.0,
-      "llm_evidence_en": "Adaptive impedance control for safe physical interaction with robotic manipulators",
-      "llm_evidence_cn": "面向机器人机械臂安全物理交互的自适应阻抗控制",
-      "llm_evidence": "面向机器人机械臂安全物理交互的自适应阻抗控制",
-      "canonical_evidence": "面向机器人机械臂安全物理交互的自适应阻抗控制",
-      "llm_tldr_en": "Proposes an online adaptive impedance control framework with non-smooth control barrier functions to ensure safe physical interaction under uncertain dynamics for robotic manipulators, enhancing compliance and safety.",
-      "llm_tldr_cn": "针对机器人机械臂在物理交互中的安全性与顺从性问题，提出一种在线自适应阻抗控制框架，结合非光滑控制屏障函数，在不确定动力学下保障关节状态安全并实现柔顺交互。该方法通过二次规划安全滤波器和区间二型模糊逻辑补偿未知动力学，实验证明可有效处理接触任务中的安全约束。该框架为空中机械臂的安全物理交互控制提供了可迁移的方法基础。",
-      "llm_tldr": "针对机器人机械臂在物理交互中的安全性与顺从性问题，提出一种在线自适应阻抗控制框架，结合非光滑控制屏障函数，在不确定动力学下保障关节状态安全并实现柔顺交互。该方法通过二次规划安全滤波器和区间二型模糊逻辑补偿未知动力学，实验证明可有效处理接触任务中的安全约束。该框架为空中机械臂的安全物理交互控制提供了可迁移的方法基础。",
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive impedance control for safe physical interaction",
+      "llm_evidence_cn": "自适应阻抗控制用于安全物理交互",
+      "llm_evidence": "自适应阻抗控制用于安全物理交互",
+      "canonical_evidence": "自适应阻抗控制用于安全物理交互",
+      "llm_tldr_en": "Proposes online adaptive impedance control with control barrier functions for safe robotic interaction under uncertainty, applicable to aerial manipulators.",
+      "llm_tldr_cn": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
+      "llm_tldr": "针对机器人在人机交互与接触任务中的安全物理交互问题，提出了一种结合非光滑控制屏障函数的在线自适应阻抗控制框架。该方法通过二次规划安全滤波器与区间二型模糊逻辑补偿未知动力学，确保在状态与输入约束下的柔顺安全交互。实验表明，该框架能有效处理不确定性并保证安全，为空中机械臂的力控交互提供了可迁移的控制方法。",
       "llm_tags": [
         "query:aerial-arm"
       ],
       "matched_query_tag": "query:aerial-arm",
       "matched_query_text": "physical interaction control of aerial robots",
       "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.29410v1",
+      "source": "arxiv",
+      "title": "A Progress-Aware Leader-Follower Midair Docking System for Dual-Drone Aerial Manipulation",
+      "abstract": "Reliable midair docking between small unmanned aerial vehicles (UAVs) is essential for modular aerial cooperation and manipulation, but it requires precise relative-pose control and repeatable platform under tight thrust and payload constraints. We present a dual-drone docking platform where two quadrotors operate in a leader-follower formation and dock using a lightweight modular frame with passive magnetic latching. A progress-aware mission supervisor manages phase transitions: approach, alignment, capture, and settle. This platform integrates a complete hardware-software stack (ROS 2 with Crazyflie/PX4 interfaces) and synchronized logging for benchmark evaluation. We evaluate the platform in simulation and real-world experiments using quantitative metrics such as formation error, baseline and yaw consistency, docking success rate, time-to-dock, and failure-mode statistics. The platform enables statistically grounded comparison of docking supervision and synchronization strategies and provides a practical testbed for modular aerial cooperation and repeatable midair aerial manipulation.",
+      "authors": [
+        "Yifan Cai",
+        "Jan Ming Kevin Tan",
+        "Xiangqi Li",
+        "Chenzhe Jin",
+        "Narsimlu Kemsaram",
+        "Valerio Modugno"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-28T06:00:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.29410v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "midair docking for dual-drone aerial manipulation, precise relative-pose control",
+      "llm_evidence_cn": "用于双无人机空中操作的空中对接，精确相对位姿控制",
+      "llm_evidence": "用于双无人机空中操作的空中对接，精确相对位姿控制",
+      "canonical_evidence": "用于双无人机空中操作的空中对接，精确相对位姿控制",
+      "llm_tldr_en": "This paper presents a complete midair docking platform for two quadrotors, enabling modular aerial manipulation via leader-follower formation and passive magnetic latching, with a progress-aware supervisor ensuring reliable docking, thus enabling physical interaction for collaborative aerial tasks.",
+      "llm_tldr_cn": "为实现模块化空中合作与操作，本文提出了一种双无人机空中对接系统。系统采用领导-跟随编队和被动磁吸对接机构，并设计进度感知任务管理器管理对接阶段。通过仿真和真实飞行实验验证了平台在推力与载荷约束下实现可靠精确相对位姿控制的能力，为多无人机协同操作提供了硬件与软件基础，推动了空中物理交互技术的发展。",
+      "llm_tldr": "为实现模块化空中合作与操作，本文提出了一种双无人机空中对接系统。系统采用领导-跟随编队和被动磁吸对接机构，并设计进度感知任务管理器管理对接阶段。通过仿真和真实飞行实验验证了平台在推力与载荷约束下实现可靠精确相对位姿控制的能力，为多无人机协同操作提供了硬件与软件基础，推动了空中物理交互技术的发展。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.28367v3",
+      "source": "arxiv",
+      "title": "Safety-Critical Adaptive Impedance Control via Nonsmooth Control Barrier Functions under State and Input Constraints",
+      "abstract": "Safe physical interaction is critical for deploying robotic manipulators in human-robot interaction and contact-rich tasks, where uncertainty, external forces, and actuator limitations can compromise both performance and safety. We propose an online adaptive impedance control framework that enforces joint-state safety while achieving compliant interaction under uncertain dynamics. The approach combines a quadratic-program-based safety filter with a novel composed position-velocity non-smooth control barrier function (NCBF), enabling joint position and velocity constraints to be enforced through a unified relative-degree-one barrier. Unknown dynamics are compensated online using an interval type-2 fuzzy logic system, while actuator torque limits are handled through soft constraints with exact penalty recovery of feasible solutions. A disturbance-observer-enhanced safety mechanism improves robustness against modelling errors and external interaction forces. Using composite Lyapunov analysis, we prove forward invariance of the safe set and the uniform ultimately boundedness of the impedance-tracking error. Simulations on a 7-DOF manipulator with severe parametric uncertainty and external interaction wrenches demonstrate safe constraint satisfaction and robust impedance tracking.",
+      "authors": [
+        "Faisal Lawan",
+        "Xiaoran Han",
+        "Joaquin Carrasco",
+        "Barry Lennox",
+        "Xiaoxiao Cheng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-05-27T12:04:03+00:00",
+      "link": "https://arxiv.org/pdf/2605.28367v3",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adaptive impedance control for safe physical interaction of robotic manipulators",
+      "llm_evidence_cn": "适用于机器人操作器安全物理交互的自适应阻抗控制",
+      "llm_evidence": "适用于机器人操作器安全物理交互的自适应阻抗控制",
+      "canonical_evidence": "适用于机器人操作器安全物理交互的自适应阻抗控制",
+      "llm_tldr_en": "Proposes an online adaptive impedance control with safety constraints for robotic manipulators, enabling compliant interaction under uncertain dynamics; potentially applicable to aerial manipulators for safe contact tasks.",
+      "llm_tldr_cn": "针对存在不确定性和外部力的机器人操作器安全物理交互问题，提出一种在线自适应阻抗控制框架，结合二次规划安全滤波器和新型非光滑控制屏障函数，实现关节位置与速度约束的强制执行，利用区间二型模糊逻辑在线补偿未知动态，仿真验证了其在接触任务中的安全性与顺应性，为空中操作器的物理交互提供了可迁移的方法。",
+      "llm_tldr": "针对存在不确定性和外部力的机器人操作器安全物理交互问题，提出一种在线自适应阻抗控制框架，结合二次规划安全滤波器和新型非光滑控制屏障函数，实现关节位置与速度约束的强制执行，利用区间二型模糊逻辑在线补偿未知动态，仿真验证了其在接触任务中的安全性与顺应性，为空中操作器的物理交互提供了可迁移的方法。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.21811v1",
+      "source": "arxiv",
+      "title": "Safe and Steerable Geometric Motion Policies for Robotic Dexterous Manipulation",
+      "abstract": "Robotic dexterous manipulation requires continuously reconciling objectives and constraints defined on heterogeneous geometric spaces: a robot controlled on a $\\mathbb{R}^7$ configuration manifold may need to track end effector poses on $\\mathrm{SE}(3)$ while satisfying obstacle avoidance margins in $\\mathbb{R}$. We present Safe Pullback Bundle Dynamical Systems (SafePBDS), a geometrically consistent framework that computes optimal, certifiably safe configuration manifold accelerations from objectives and safety requirements on arbitrary task manifolds. SafePBDS builds on prior work that combines predefined task manifold dynamical systems to produce autonomous motion. Its first innovation is a pullback control barrier function construction, which converts task manifold safety conditions into linear constraints on configuration manifold accelerations. The second innovation is a task manifold action interface that allows a high-level policy to inject low dimensional residual motions; zero input recovers the autonomous behavior, while safety is preserved under arbitrary inputs. This lets high-level policies efficiently steer exploration while leaving precise motion to the autonomous behavior. We validate SafePBDS in simulation and on a 23-DOF Franka Panda-Allegro Hand platform. On dexterous grasping, SafePBDS achieves a $92.5\\%$ success rate across 20 household objects and 120 trials. Using the action interface, the method can exclude any one of the four fingers during grasping via a one-dimensional action, achieving $94.4\\%$ 3-finger grasp success across 3 objects and 36 trials. The efficient planning and safety guarantee of SafePBDS also enables the first model-based, fully actuated palm-down in-hand reorientation, exceeding $360^\\circ$ of yaw rotation in both directions under varying object weight and wrist motion. Demo video and details: https://tml.stanford.edu/safe-pbds",
+      "authors": [
+        "Albert Wu",
+        "Riccardo Bonalli",
+        "Thomas Lew",
+        "C. Karen Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-20T23:16:01+00:00",
+      "link": "https://arxiv.org/pdf/2605.21811v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "geometric motion policies for safe dexterous manipulation, applicable to aerial manipulator control",
+      "llm_evidence_cn": "用于灵巧操作的安全几何运动策略，可应用于空中机械臂控制",
+      "llm_evidence": "用于灵巧操作的安全几何运动策略，可应用于空中机械臂控制",
+      "canonical_evidence": "用于灵巧操作的安全几何运动策略，可应用于空中机械臂控制",
+      "llm_tldr_en": "This paper introduces SafePBDS, a geometrically consistent framework that computes optimal safe accelerations from objectives and safety constraints on arbitrary task manifolds, potentially useful for controlling robotic arms on aerial vehicles during physical interaction.",
+      "llm_tldr_cn": "针对机器人灵巧操作需要在异构几何空间上协调目标与约束的挑战，本文提出SafePBDS框架，通过拉回控制障碍函数构造在任意任务流形上计算最优安全加速度。该方法为具有浮动基座的空中机械臂在物理交互时的安全控制提供了几何一致的解决方案，有助于实现空中操作的安全运动规划。",
+      "llm_tldr": "针对机器人灵巧操作需要在异构几何空间上协调目标与约束的挑战，本文提出SafePBDS框架，通过拉回控制障碍函数构造在任意任务流形上计算最优安全加速度。该方法为具有浮动基座的空中机械臂在物理交互时的安全控制提供了几何一致的解决方案，有助于实现空中操作的安全运动规划。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.10818v1",
+      "source": "arxiv",
+      "title": "IMPACT: Learning Internal-Model Predictive Control for Forceful Robotic Manipulation",
+      "abstract": "Real-world robotic manipulation tasks often involve forceful interactions with the environment, such as using tools of varying weights, transporting objects with different masses, and performing contact-rich tasks like table wiping. Previous learning-based approaches typically employ imitation learning policies that output target end-effector poses tracked by low-level impedance controllers. In these systems, forceful interactions are either implicitly realized through steady-state tracking errors or explicitly commanded using wrist force/torque or tactile sensors. However, implicit approaches generalize poorly across object weights, while explicit approaches require specialized hardware and increase system complexity. In this work, we propose IMPACT, a framework that decouples these forceful tasks into task-planning and internal-model-based predictive control. Extensive simulation and real-world experiments demonstrate that the proposed framework achieves higher success rates and improved generalization to unseen object weights, as well as better safety and energy efficiency.",
+      "authors": [
+        "Jiawei Gao",
+        "Chaoqi Liu",
+        "Peilin Wu",
+        "Haonan Chen",
+        "Yilun Du"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-06-09T13:00:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.10818v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning predictive control for forceful robotic manipulation tasks",
+      "llm_evidence_cn": "适用于强力机器人操作任务的学习预测控制",
+      "llm_evidence": "适用于强力机器人操作任务的学习预测控制",
+      "canonical_evidence": "适用于强力机器人操作任务的学习预测控制",
+      "llm_tldr_en": "Introduces a learning-based internal model predictive control that directly outputs joint torques for forceful manipulation, improving generalization across object weights without specialized sensors; relevant to aerial manipulation force control.",
+      "llm_tldr_cn": "针对机器人强力操作中隐含方法泛化差、显式方法需专用传感器的问题，提出一种学习内部模型预测控制框架，直接输出关节力矩进行力控交互，在真实机器人上验证了抓取、工具使用等任务中优于基线的泛化性能，为空中操作器的强力交互提供了可借鉴的学习控制方法。",
+      "llm_tldr": "针对机器人强力操作中隐含方法泛化差、显式方法需专用传感器的问题，提出一种学习内部模型预测控制框架，直接输出关节力矩进行力控交互，在真实机器人上验证了抓取、工具使用等任务中优于基线的泛化性能，为空中操作器的强力交互提供了可借鉴的学习控制方法。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.27699v1",
+      "source": "arxiv",
+      "title": "AURA: Asymptotically Optimal Uncertainty-Robust Replanning Algorithm for Kinodynamic Systems",
+      "abstract": "Sampling-based motion planners offer a practical and scalable approach to kinodynamic motion planning, notably for high-dimensional, underactuated, or non-holonomic systems. However, these planners are typically used offline, requiring execution to begin only after the trajectory has been computed. In addition, the planned trajectory may not be accurately tracked in the presence of motion uncertainty, leading to deviations from the nominal solution. In this work, these limitations were addressed within a unified framework, \\method, an asymptotically-optimal meta-planner framework that improves both path quality and tracking performance during execution. In addition to the main execution thread, this framework comprises a replanning method that continuously explores the state space and refines the trajectory during execution, and an optimization process that refines future control inputs to reduce tracking error. Together, these components enable \\method to leverage asymptotically optimal planning online while improving execution accuracy under uncertainty. The proposed approach is evaluated in both simulation and real-world environments across multiple systems, demonstrating consistent improvements in trajectory quality, tracking accuracy, and overall performance compared with baseline methods.",
+      "authors": [
+        "Seyedali Golestaneh",
+        "Zhuoyun Zhong",
+        "Donghyung Lee",
+        "Constantinos Chamzas"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-26T21:20:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.27699v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "replanning algorithm for kinodynamic systems, useful for aerial manipulator trajectory tracking under uncertainty",
+      "llm_evidence_cn": "用于动力学系统的重规划算法，可用于空中机械臂不确定性下的轨迹跟踪",
+      "llm_evidence": "用于动力学系统的重规划算法，可用于空中机械臂不确定性下的轨迹跟踪",
+      "canonical_evidence": "用于动力学系统的重规划算法，可用于空中机械臂不确定性下的轨迹跟踪",
+      "llm_tldr_en": "This paper proposes an asymptotically-optimal meta-planner that combines offline planning with online execution-time replanning to improve path quality and tracking performance under motion uncertainty, applicable to kinodynamic systems like aerial manipulators requiring accurate trajectory following.",
+      "llm_tldr_cn": "针对动力学系统运动规划通常离线进行且执行时可能因不确定性偏离轨迹的问题，本文提出一种渐近最优的元规划器AURA。该框架在执行过程中结合重规划线程，根据实际状态在线调整轨迹，同时保证规划质量的渐近最优性。该方法可应用于旋翼飞行机械臂的轨迹跟踪控制，提高其在运动不确定性下的跟踪精度和鲁棒性，为空中操作的运动规划提供了可靠工具。",
+      "llm_tldr": "针对动力学系统运动规划通常离线进行且执行时可能因不确定性偏离轨迹的问题，本文提出一种渐近最优的元规划器AURA。该框架在执行过程中结合重规划线程，根据实际状态在线调整轨迹，同时保证规划质量的渐近最优性。该方法可应用于旋翼飞行机械臂的轨迹跟踪控制，提高其在运动不确定性下的跟踪精度和鲁棒性，为空中操作的运动规划提供了可靠工具。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "rotorcraft manipulator modeling and trajectory tracking",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.08725v1",
+      "source": "arxiv",
+      "title": "Real-Time and Accurate Collision-Free Teleoperation via Differentiable Constraint-Based Trajectory Planning",
+      "abstract": "In teleoperation, the human operator typically controls only the end-effector pose, which often leads to self-collisions of the manipulator and collisions with environmental obstacles, since joints and links are not controlled individually. A common strategy to mitigate this issue is to enhance the operator's input using optimal-control-based trajectory planning. As derivative-based solvers require differentiable constraints, existing approaches either approximate robots and obstacles with spheres, reducing geometric accuracy, or approximate derivatives, degrading convergence and increasing computation times. We address these limitations by adapting a recent formulation of differentiable collision-avoidance constraints, based on duality in convex optimization, to the teleoperation setting. The robot is approximated with capsules and the environment with polytopes. We compare the resulting trajectory planning method against state-of-the-art techniques in simulation with varying numbers of obstacles and evaluate it on a UR5e manipulator in a real-world teleoperation test. Results show that our approach achieves lower computation times while enabling more accurate obstacle modeling, leading to smoother and collision-free end-effector teleoperation.",
+      "authors": [
+        "Max Grobbel",
+        "Tristan Schneider",
+        "Daniel Flögel",
+        "Sören Hohmann"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-07T16:39:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.08725v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "presents differentiable constraint-based trajectory planning for manipulator teleoperation, relevant to motion planning for aerial manipulators",
+      "llm_evidence_cn": "提出基于可微约束的机械臂遥操作轨迹规划，相关于空中机械臂的运动规划",
+      "llm_evidence": "提出基于可微约束的机械臂遥操作轨迹规划，相关于空中机械臂的运动规划",
+      "canonical_evidence": "提出基于可微约束的机械臂遥操作轨迹规划，相关于空中机械臂的运动规划",
+      "llm_tldr_en": "Proposes a differentiable constraint-based trajectory planning method for collision-free teleoperation of robotic manipulators, achieving real-time accurate avoidance.",
+      "llm_tldr_cn": "针对遥操作中机械臂自碰撞和环境碰撞问题，提出一种基于可微约束的轨迹规划方法，利用精确几何模型实现实时避碰，提高了操作安全性和准确性，适用于高自由度机械臂远程操控。",
+      "llm_tldr": "针对遥操作中机械臂自碰撞和环境碰撞问题，提出一种基于可微约束的轨迹规划方法，利用精确几何模型实现实时避碰，提高了操作安全性和准确性，适用于高自由度机械臂远程操控。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
+      "matched_requirement_id": "req-6",
       "selection_source": "fresh_fetch",
       "quick_tier": "6"
     }
