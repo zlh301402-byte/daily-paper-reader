@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T11:29:01.901678+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.09640v1",
+      "source": "arxiv",
+      "title": "Physics-Aware Sparse Learning and Selective Online Adaptation for Euler-Lagrange Robot Dynamics",
+      "abstract": "Accurate dynamics models are essential for model-based robotic control, yet nominal Euler--Lagrange models often become inaccurate in the presence of payload variation, unmodeled coupling, friction, aerodynamic effects, and changing operating conditions. Most learning-based correction methods improve prediction accuracy by introducing a single additive residual, but do not preserve the internal mechanical structure of Euler--Lagrange systems. This leads to models that do not preserve symmetry, positive-definiteness, or the coupling between inertia and velocity-dependent terms, which can result in physically inconsistent predictions and reduced reliability when embedded in model-based controllers. We propose a structure-preserving residual learning framework that decomposes model mismatch into an inertia correction, the corresponding induced Coriolis term, and a generalized-force residual. The mechanical component is learned under physical constraints, while the disturbance-sensitive component is represented through a sparse history-dependent latent interaction model and adapted online using Bayesian linear regression. This separation preserves key mechanical structure while restricting adaptation to the part of the dynamics most affected by changing conditions. Experiments across multiple robotic platforms, including mobile, aerial, and manipulator systems, show that the proposed method improves dynamics prediction and trajectory tracking under coupled and time-varying dynamics. These results highlight the value of combining structured residual modeling, compact latent interaction selection, and selective online adaptation for real-world model-based control.",
+      "authors": [
+        "Rishabh Dev Yadav",
+        "Samaksh Ujjawal",
+        "Sihao Sun",
+        "Spandan Roy",
+        "Wei Pan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-08T15:36:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.09640v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Structure-preserving learning for Euler-Lagrange dynamics, directly applicable to modeling multirotor with onboard manipulator",
+      "llm_evidence_cn": "保持结构的学习方法用于欧拉-拉格朗日动力学，直接适用于多旋翼搭载机械臂的建模",
+      "llm_evidence": "保持结构的学习方法用于欧拉-拉格朗日动力学，直接适用于多旋翼搭载机械臂的建模",
+      "canonical_evidence": "保持结构的学习方法用于欧拉-拉格朗日动力学，直接适用于多旋翼搭载机械臂的建模",
+      "llm_tldr_en": "This paper proposes a physics-aware sparse learning method that preserves Euler-Lagrange structure while correcting model inaccuracies due to payload, friction, and aerodynamics, benefiting aerial manipulator model-based control.",
+      "llm_tldr_cn": "针对欧拉-拉格朗日机器人模型在负载变化、摩擦和空气动力学效应下失准的问题，提出一种物理感知的稀疏学习方法，在修正模型误差的同时保持惯性/科氏项的正定性和耦合结构。仿真与实验表明，该方法在保证物理一致性的前提下提高了预测精度，嵌入基于模型控制器后提升了跟踪性能。这为多旋翼-机械臂系统的精确动力学建模提供了新工具。",
+      "llm_tldr": "针对欧拉-拉格朗日机器人模型在负载变化、摩擦和空气动力学效应下失准的问题，提出一种物理感知的稀疏学习方法，在修正模型误差的同时保持惯性/科氏项的正定性和耦合结构。仿真与实验表明，该方法在保证物理一致性的前提下提高了预测精度，嵌入基于模型控制器后提升了跟踪性能。这为多旋翼-机械臂系统的精确动力学建模提供了新工具。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "modeling and control of multirotor with onboard manipulator",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.08281v1",
+      "source": "arxiv",
+      "title": "Impedance MPC for Physical Human-Robot Interaction: Predictive Disturbance Rejection with Joint-Limit Safety",
+      "abstract": "Physical human-robot interaction (pHRI) demands simultaneous trajectory accuracy and compliant safety under unplanned contact. Classical impedance control incurs a nonzero steady-state position error under sustained human force -- the applied force divided by the task stiffness -- which integral action reduces only within a narrow stable-gain budget. We present a two-layer Impedance MPC that resolves this tension. Layer~1 analytically cancels gravity, Coriolis, and task-space inertia, reducing the residual plant to a configuration-independent double integrator with a constant state-transition matrix. Layer~2 solves a 30-variable convex QP at 100\\,Hz, exploiting this constant structure so the free-response matrix is precomputed once; an augmented Kalman filter estimates the persistent disturbance state, giving a formal zero-steady-state-error guarantee. A null-space inverse-barrier potential and a task-space workspace projection enforce joint-limit safety across the tested workspace. On a 7-DOF Franka FR3, Impedance MPC with Kalman augmentation attains sub-0.05\\,mm steady-state error versus 44.8\\,mm for classical impedance (a $>$800-fold reduction) under a sustained 15\\,N force, sub-millimeter tracking on four 3-D circles, and graceful robustness to measurement noise and inertial mismatch up to 30\\%.",
+      "authors": [
+        "Yongyan Cao",
+        "Jinshan Tang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-06T18:06:25+00:00",
+      "link": "https://arxiv.org/pdf/2606.08281v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "impedance MPC for physical interaction, predictive disturbance rejection with joint-limit safety",
+      "llm_evidence_cn": "用于物理交互的阻抗MPC，预测性扰动抑制并保证关节限位安全",
+      "llm_evidence": "用于物理交互的阻抗MPC，预测性扰动抑制并保证关节限位安全",
+      "canonical_evidence": "用于物理交互的阻抗MPC，预测性扰动抑制并保证关节限位安全",
+      "llm_tldr_en": "A two-layer Impedance MPC resolves steady-state error in impedance control under sustained human force, with potential applicability to physical interaction control of aerial manipulators.",
+      "llm_tldr_cn": "本文解决阻抗控制在持续外力下产生稳态误差的问题，提出双层阻抗模型预测控制，通过解析补偿和凸优化实现精确跟随与安全交互。该方法可迁移至空中机械臂的物理交互控制，提升鲁棒性。",
+      "llm_tldr": "本文解决阻抗控制在持续外力下产生稳态误差的问题，提出双层阻抗模型预测控制，通过解析补偿和凸优化实现精确跟随与安全交互。该方法可迁移至空中机械臂的物理交互控制，提升鲁棒性。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.10818v1",
+      "source": "arxiv",
+      "title": "IMPACT: Learning Internal-Model Predictive Control for Forceful Robotic Manipulation",
+      "abstract": "Real-world robotic manipulation tasks often involve forceful interactions with the environment, such as using tools of varying weights, transporting objects with different masses, and performing contact-rich tasks like table wiping. Previous learning-based approaches typically employ imitation learning policies that output target end-effector poses tracked by low-level impedance controllers. In these systems, forceful interactions are either implicitly realized through steady-state tracking errors or explicitly commanded using wrist force/torque or tactile sensors. However, implicit approaches generalize poorly across object weights, while explicit approaches require specialized hardware and increase system complexity. In this work, we propose IMPACT, a framework that decouples these forceful tasks into task-planning and internal-model-based predictive control. Extensive simulation and real-world experiments demonstrate that the proposed framework achieves higher success rates and improved generalization to unseen object weights, as well as better safety and energy efficiency.",
+      "authors": [
+        "Jiawei Gao",
+        "Chaoqi Liu",
+        "Peilin Wu",
+        "Haonan Chen",
+        "Yilun Du"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-06-09T13:00:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.10818v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Learning predictive control for forceful manipulation using impedance controllers, applicable to aerial manipulator physical interaction",
+      "llm_evidence_cn": "使用阻抗控制器的强力操作学习预测控制，适用于空中机械臂物理交互",
+      "llm_evidence": "使用阻抗控制器的强力操作学习预测控制，适用于空中机械臂物理交互",
+      "canonical_evidence": "使用阻抗控制器的强力操作学习预测控制，适用于空中机械臂物理交互",
+      "llm_tldr_en": "This paper learns an internal-model predictive controller for forceful robotic manipulation with impedance control, addressing object weight variation without specialized sensors, and could transfer to aerial manipulators.",
+      "llm_tldr_cn": "针对机器人强力操作中物体重量变化导致泛化能力差的问题，提出一种基于学习的内部模型预测控制方法，利用阻抗控制器实现接触丰富的任务。实验表明，该方法无需腕部力/扭矩传感器即可处理不同质量物体，在多种工具使用和表面擦拭任务中表现良好。该框架为空中机械臂的物理交互控制提供了可迁移的方法。",
+      "llm_tldr": "针对机器人强力操作中物体重量变化导致泛化能力差的问题，提出一种基于学习的内部模型预测控制方法，利用阻抗控制器实现接触丰富的任务。实验表明，该方法无需腕部力/扭矩传感器即可处理不同质量物体，在多种工具使用和表面擦拭任务中表现良好。该框架为空中机械臂的物理交互控制提供了可迁移的方法。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

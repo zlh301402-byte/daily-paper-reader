@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-15T11:13:04.077491+00:00",
-  "updated_date": "20260517-20260615",
+  "generated_at": "2026-06-15T11:29:01.902369+00:00",
+  "updated_date": "20260606-20260615",
   "carryover_days": 9,
   "tag_states": {
     "aerial-arm": {
-      "updated_date": "20260517-20260615",
+      "updated_date": "20260606-20260615",
       "carryover_days": 9,
       "items": []
     }
