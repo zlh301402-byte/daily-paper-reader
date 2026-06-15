@@ -1,0 +1,87 @@
+{
+  "version": 2,
+  "extractor": "papercropper",
+  "tables": [
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-001.webp",
+      "caption": "",
+      "page": 0,
+      "index": 1,
+      "width": 1446,
+      "height": 347,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-002.webp",
+      "caption": "",
+      "page": 0,
+      "index": 2,
+      "width": 1450,
+      "height": 184,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-003.webp",
+      "caption": "",
+      "page": 0,
+      "index": 3,
+      "width": 1443,
+      "height": 359,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-004.webp",
+      "caption": "",
+      "page": 0,
+      "index": 4,
+      "width": 901,
+      "height": 226,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-005.webp",
+      "caption": "",
+      "page": 0,
+      "index": 5,
+      "width": 452,
+      "height": 340,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-006.webp",
+      "caption": "",
+      "page": 0,
+      "index": 6,
+      "width": 424,
+      "height": 399,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-007.webp",
+      "caption": "",
+      "page": 0,
+      "index": 7,
+      "width": 620,
+      "height": 143,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-008.webp",
+      "caption": "",
+      "page": 0,
+      "index": 8,
+      "width": 514,
+      "height": 143,
+      "label": "Table"
+    },
+    {
+      "url": "assets/tables/openreview/openreview-neurips-2025-qjee4tibgz/table-009.webp",
+      "caption": "",
+      "page": 0,
+      "index": 9,
+      "width": 1344,
+      "height": 804,
+      "label": "Table"
+    }
+  ]
+}

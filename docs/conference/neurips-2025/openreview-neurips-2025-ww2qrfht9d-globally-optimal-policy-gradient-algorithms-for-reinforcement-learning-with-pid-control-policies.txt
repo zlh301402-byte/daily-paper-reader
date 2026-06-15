@@ -1,0 +1,2497 @@
+Title: 24962_Globally_Optimal_Policy_.pdf
+
+URL Source: https://openreview.net/pdf?id=wW2qRfhT9d
+
+Number of Pages: 41
+
+Markdown Content:
+# Globally Optimal Policy Gradient Algorithms for Reinforcement Learning with PID Control Policies 
+
+Vipul K. Sharma 
+
+Edwardson School of Industrial Engineering Purdue University West Lafayette, IN 47906 
+
+sharm697@purdue.edu 
+
+Wesley A. Suttle 
+
+U.S. Army Research Laboratory Adelphi, Maryland 20783 
+
+wesley.a.suttle.ctr@army.mil 
+
+S. Sivaranjani 
+
+Edwardson School of Industrial Engineering Purdue University West Lafayette, IN 47906 
+
+sseetha@purdue.edu 
+
+## Abstract 
+
+We develop policy gradient algorithms with global optimality and convergence guarantees for reinforcement learning (RL) with proportional-integral-derivative (PID) parameterized control policies. RL enables learning control policies through direct interaction with a system, without explicit model knowledge that is typically assumed in classical control. The PID policy architecture offers built-in structural advantages, such as superior tracking performance, elimination of steady-state er-rors, and robustness to model error that have made it a widely adopted paradigm in practice. Despite these advantages, the PID parameterization has received limited attention in the RL literature, and PID control designs continue to rely on heuristic tuning rules without theoretical guarantees. We address this gap by rigorously integrating PID control with RL, offering theoretical guarantees while maintain-ing the practical advantages that have made PID control ubiquitous in practice. Specifically, we first formulate PID control design as an optimization problem with a control policy that is parameterized by proportional, integral, and derivative components. We derive exact expressions for policy gradients in these parameters, and leverage them to develop both model-based and model-free policy gradient algorithms for PID policies. We then establish gradient dominance properties of the PID policy optimization problem, and provide theoretical guarantees on conver-gence and global optimality in this setting. Finally, we benchmark the performance of our algorithms on the controlgym suite of environments. 
+
+## 1 Introduction 
+
+Reinforcement learning (RL) for control, particularly policy gradient (PG) methods, have received significant attention in recent years (see [25] for a comprehensive survey). This has been spurred by theoretical advances in characterizing the convergence, sample complexity, and global optimality of PG methods in classical control settings like the linear quadratic regulator (LQR) [18, 28, 31], where the underlying problems have challenging, often non-convex optimization landscapes. Further developments have also extended such theoretical guarantees to additional control problems including stabilization [36], H2 and H∞ control [48, 21], noisy LQR [23, 20], output-feedback [17] and partially observed problems like linear quadratic Gaussian (LQG) control [44, 16, 30], nonlinear control [42], and robust control problems including adversarial disturbances [47, 49]. 
+
+39th Conference on Neural Information Processing Systems (NeurIPS 2025). The proportional-integral-derivative (PID) control architecture has received surprisingly limited attention within the RL for control literature, despite its prominent place within control theory and engineering practice [2, 4]. PID control offers built-in structural advantages due to its control law being parameterized by three interpretable components: proportional action to shape stability and transient performance, integral action to eliminate tracking errors, and derivative action based on anticipated future error to enhance robustness. Due to these properties, PID control is a widely adopted paradigm in several domains including industrial control, aerospace, and robotics applications [10], with over 90 % controllers used in industry employing PID architectures [22]. Further, the output-feedback architecture and low-dimensional parameterization of PID control make it a promising avenue for policy-gradient based exploration. However, most PID control design approaches remain heuristic, relying on engineering intuition and lacking provable guarantees on performance, optimality, or even stability [4, 40]. In this paper, we bridge this gap by rigorously integrating PG approaches from RL with the PID control parameterization, enabling us to obtain convergence and global optimality guarantees enjoyed by PG methods for control while maintaining the practical advantages that have made PID control ubiquitous in practice. Specifically, we first provide an optimization-based formulation of the PID control problem, and derive exact policy gradient expressions in the PID parameters. Based on these gradient expressions, we develop two new PG algorithms, a model-based approach for PID control and a model-free approach for PI control. We prove that the objective of these problems enjoys the gradient dominance property, establish convergence rates to global optimality for our model-based approach, and characterize the sample complexity needed to achieve approximate global optimality for our model-free algorithm. Finally, we benchmark the performance of our algorithms on the 
+
+controlgym suite of control environments [51]. We summarize our core contributions as follows: • Policy optimization framework and algorithms. Our optimization-based formulation of the PID problem and our proof that its objective enjoys gradient dominance together establish a critical link between the PID control problem and the literature on PG methods for control. Our derivation of exact gradient expressions for this problem also paves the way for the development of principled PG algorithms for tuning PID control policies. Specifically, we develop two new PG algorithms: a model-based method leveraging system identification to learn PID control policies, and a model-free method for learning PI control policies. In the model-free setting, we bypass the need for model knowledge by applying the classic policy gradient theorem, and derive a novel algorithm that employs stochastic policies during training to provably learn the optimal parameters of an underlying deterministic PI control policy. This allows us to provably achieve approximate global optimality in a model-free manner on PI problems, resolving an important open problem. • Global optimality, convergence, sample complexity. We establish global optimality, convergence, and sample complexity guarantees for our algorithms. For our model-based approach, we leverage gradient dominance to establish a linear convergence rate to global optimality. In the model-free setting, we prove that our optimization objective enjoys weak gradient dominance and establish convergence rate and sample complexity guarantees to global optimality. In the model-free setting, the analysis is particularly challenging due to the use of stochastic policies to learn the parameters of an underlying deterministic policy. To overcome this, we establish weak gradient dominance under stochastic policies, then use this to derive the algorithm’s sample complexity for achieving approximate global optimality. While there are some recent results [33] on theoretical guarantees for learning deterministic policies via stochastic gradients, these analyses assume global Lipschitz properties, which are not satisfied by PID control policies. In contrast, we obtain theoretical guarantees of convergence and sample complexity for a class of problems that only satisfy less restrictive local Lipschitz properties. In addition, our model-free approach yields a first-order PG algorithm that is applicable not only to PI control but also to general LQR problems (which constitute a special case of our framework where the control policy is parameterized only by the proportional component of the PID policy), whereas only zero-order methods (where gradients are estimated using only objective function evaluations) were previously available [18]. 
+
+1.1 Related Work 
+
+While to our knowledge there is no literature integrating policy optimization theory with PID control, there is a rich literature on PG methods for problems like LQR, as well as attempts from control theory to introduce optimization objectives into PID control, which we review here. 2Policy gradient methods. Convergence of PG methods to global optimality, often referred to as 
+
+global convergence in the machine learning community, has received significant attention in recent years, starting with the fundamental results of [8, 29, 1, 26]. Subsequent works addressed optimal convergence rates [32], sample complexity [7], regret [6, 35], and even global convergence for general utilities [50, 41] and deterministic policies [33]. A key feature of these analyses lies in establishing gradient dominance of the optimization objective, which allows global optimality to be established despite the typical non-convexity of the problem. Within RL for control, PG methods for a variety of control problems [25] have been shown to enjoy gradient dominance, particularly LQR and its variants where model-based and zero-order model-free PG methods have been developed [18, 28], PG for least squares problems has been analyzed [13], sample complexity results for PG methods have been provided [14], and system identification-based approaches developed [46]. Despite the wide range of works on PG for control, to our knowledge, globally convergent PG methods for PID control remain unexplored in the literature. We close this gap in this paper. 
+
+Optimization in PID Control. While most PID designs rely in practice on heuristic tuning rules and simplified models, there have been attempts to formalize PID control design as an optimization prob-lem [3, 5, 24]. Constrained optimization approaches for PID control with robustness specifications [34, 19] and linear and bilinear matrix inequality-based tuning for single and multi-variable settings have also been proposed [11, 45, 9]. However, all of these methods rely on frequency domain system descriptions, making them difficult to integrate into RL theory, where state space descriptions are fundamental. Critically, these approaches lack theoretical guarantees on optimality and convergence. Recently, [37] proposed a new optimization framework connecting model-based PID control to the standard continuous-time LQR problem. We adopt a similar approach to formulate an optimization problem for PID control design, albeit in the discrete-time setting. Importantly, our work goes far beyond the scope of [37] by providing exact policy gradient expressions and rigorous theoretical guarantees in both the model-based and model-free settings. 
+
+## 2 Problem Formulation 
+
+We focus on the following optimal control problem with linear system dynamics and proportional-integral-derivative (PID) control policies, given by 
+
+minimize E
+
+" ∞X
+
+> t=0
+
+yTt Y y t + uTt Ru t
+
+#
+
+subject to xt+1 = Ax t + Bu t, yt= Cx t, x0 ∼ D ,
+
+(1) where xt ∈ Rn is the system state at time t ≥ 0, yt ∈ Rp represents the output, and ut ∈ Rm denotes the output of the control policy. We henceforth adopt the scalar input and output setting ( m, p = 1 )for ease of exposition, but we note that all of our theory can be extended to the multivariable setting. The control policy is parameterized by the PID parameters ˜K = [ KP , K I , K D ]T , where 
+
+KP , K I , K D ∈ R, as 
+
+ut = −KP yt − KD
+
+yt+1 − yt
+
+τ − KIk−1X
+
+> j=0
+
+yj , (2) and τ > 0 is the sampling time of the discrete-time dynamics. The system is initialized at x0 ∼ D 
+
+according to some probability distribution D over the state space, Y ∈ Rp×p and R ∈ Rm×m are positive definite matrices, and A ∈ Rn×n and B ∈ Rn×m are the system and the input matrices. Intuitively, for a classical tracking problem, where the objective is to drive the system state to track an external reference, the proportional parameter KP responds to the current tracking error, the integral parameter KI addresses long-term errors by accumulating the error signal over time, and the derivative parameter KD predicts future errors by evaluating the rate of change of the error. The PID control problem presented in equations (1) - (2) in the PID parameters ˜K is equivalent to a related problem, as formalized in the following proposition. We defer all proofs to the appendix. 
+
+Proposition 2.1. The optimization problem (1) is equivalent to the following problem: 
+
+minimize J( ˜K) = E
+
+" ∞X
+
+> t=0
+
+gTt Qg t + uTt Ru t
+
+#
+
+subject to gt+1 = ¯Ax t + ¯Bu t, g0 ∼ D ,
+
+(3) 3where 
+
+gt := 
+
+xt
+
+zt
+
+
+
+, zt := 
+
+> t−1
+
+X
+
+> i=0
+
+yi =
+
+> t−1
+
+X
+
+> i=1
+
+Cx t, z0 = 0 (4) 
+
+¯A =
+
+A 0
+
+C I
+
+
+
+, ¯B =
+
+B
+
+0
+
+
+
+, Q =
+
+CT Y C 00 0
+
+
+
+, Y is as in (1) , and g0 ∼ D is used to signify 
+
+x0 ∼ D , z 0 = 0 with a slight abuse of notation. The control policy in (3) is given by 
+
+ut = −Kg t, (5) 
+
+where the control parameter K is obtained from the PID parameters ˜K = [ KP , K I , K D ]T as 
+
+K = ϕ( ˜K) = 
+
+
+
+1 + KD CB τ
+
+−1 h
+
+KP C + KD C(A−I) 
+
+> τ
+
+KI
+
+i
+
+. (6) Proposition 2.1 extends the continuous-time results in [37] to our discrete-time PID setting, establish-ing an equivalence between the PID control problem and an LQR problem in an extended state space. By (6) , the parameter K is completely determined given the PID parameters ˜K. For this reason, in what follows we will abuse notation and use J(K) and J( ˜K) interchangeably, depending on context. Specifically, when we write J( ˜K) and ∇ ˜K J( ˜K), we consider J(ϕ( ˜K)) and ∇ ˜K J(ϕ( ˜K)) ,respectively. It is important to note that PG methods for LQR (e.g., [18]) do not apply directly to the PID control problem, since, though K in (5) is completely determined given the PID parameters 
+
+˜K by (6) , there does not necessarily exist a feasible decomposition of K in terms of ˜K. For this reason, it is not possible to use existing PG methods for LQR to solve (3) , then translate the resulting policy into a feasible PID policy. Fortunately, it is possible to perform PG descent directly in the PID parameters. To achieve this, we derive gradient expressions in the PID parameters in the following section. 
+
+## 3 Algorithms 
+
+In this section we develop PG algorithms for optimal tuning of PID and PI controllers. In order to achieve this, we first derive policy gradient expressions for the objective (3) with respect to the PID parameters in Theorem 3.1, then build on this result to derive our algorithms. The first algorithm is a model-based approach that leverages system identification [27] to learn a controller for the full PID problem. The second algorithm is a model-free approach for learning a PI controller. We assume throughout that the matrix C appearing in (1) is known, which is common in practice, since the output y is typically designed depending on the application at hand. 
+
+PID Gradient Expressions. We begin by deriving expressions for the gradients of J( ˜K) with respect to KP , K I , K D . We will use these expressions in the remainder of this section to develop PG algorithms for performing gradient descent in the PID parameters. In order to obtain closed-form gradient expressions for J( ˜K) in terms of the PID parameters ˜K, we first develop additional notation concerning the closed-loop dynamics of (3) . First, from gt+1 = ¯Ag t + ¯Bu t and ut = −Kg t, we get 
+
+gt+1 = AK gt, AK = ¯A − ¯BK. (7) Expanding the definitions of ¯A, ¯B yields             
+
+> AK=
+> A−BF DKPC−BF DKD C(A−I)
+> τ−BF DKI
+> CI
+> 
+> ,(8)
+
+where 
+
+FD = [1 + KD CB τ ]−1. (9) For this closed-loop system, the corresponding cost function is given by J( ˜K) = E gT 
+
+> 0
+
+PK g0
+
+ ,
+
+where PK is the solution to the discrete algebraic Riccati equation 
+
+ATK PK AK − PK + Q + KT RK = 0 , (10) and K is obtained from ˜K via (6) . We now provide gradient expressions for the objective of (3) in the PID parameters. 4Algorithm 1 PG4PID 
+
+1: Input: Tolerance ε, stepsizes αP , α I , α D ,trajectory length N
+
+2: Initialize: K0 
+
+> P
+
+, K 0 
+
+> I
+
+, K 0 
+
+> D
+
+, set t ← 0
+
+3: Generate x0, u 0, . . . , x N , u N with (5) 
+
+4: Form XN , U N from the above trajectory 
+
+5: Estimate A, B from XN , U N using (77) 
+
+6: repeat 
+
+7: Compute Kt from ˜Kt = [ KtP , K tI , K tD ]T
+
+using (6) 
+
+8: Estimate PKt using (88) 
+
+9: Compute EKt using (14) 
+
+10: Compute 
+
+∇KP J( ˜Kt), ∇KI J( ˜Kt), ∇KD J( ˜Kt)
+
+from Theorem 3.1 
+
+11: Kt+1  
+
+> P
+
+← KtP − αP ∇KP J( ˜Kt)
+
+12: Kt+1  
+
+> I
+
+← KtI − αI ∇KI J( ˜Kt)
+
+13: Kt+1  
+
+> D
+
+← KtD − αD ∇KD J( ˜Kt)
+
+14: t ← t + 1 
+
+15: until ∇ ˜K J( ˜Kt) < ε 
+
+Algorithm 2 PG4PI 
+
+1: Input: Tolerance ε, stepsizes αP , α I , trajec-tory length N , noise parameter σ > 0
+
+2: Initialize: ˜K0 := [ K0 
+
+> P
+
+K0 
+
+> I
+
+]T , set t ← 0
+
+3: repeat 
+
+4: Sample g0 ∼ D 
+
+5: Generate 
+
+g0, u 0, c 0, . . . , g N −1, u N −1, c N −1
+
+with π ˜K
+
+6: Ct ← PN −1 
+
+> k=0
+
+ck
+
+7: Compute ∇Ki log π ˜K (u0|g0), i =
+
+P, I using (22), (23) 
+
+8: Kt+1  
+
+> P
+
+← KtP −
+
+αP Ct∇KP log π ˜K (u0|g0)
+
+9: Kt+1  
+
+> I
+
+← KtI − αI Ct∇KI log π ˜K (u0|g0)
+
+10: t ← t + 1 
+
+11: until ∇ ˜K J( ˜Kt) < ε 
+
+Theorem 3.1. The gradients of the objective J( ˜K) of (3) with respect to KP , K I , K D are given by 
+
+∇KP J( ˜K) = 2 FD EK ΣK T Tx CT , (11) 
+
+∇KI J( ˜K) = 2 FD EK ΣK T Tz , (12) 
+
+∇KD J( ˜K) = 2 FD EK ΣK (α1T Tx (A − I)T CT − α2α3), (13) 
+
+where Tx = [In 0n×1] , T z = [0 1×n 1] , α1 = (τ + KD CB )−1, α2 = (τ +
+
+KD CB )−1(τ T Tx CT KP + T Tx (A − I)T CT KD + τ T Tz KD ), α3 = CB , and 
+
+EK = ( R + ¯BT PK ¯B)K − ¯BT PK ¯A, (14) ΣK = E
+
+> ∞
+
+X
+
+> t=0
+
+gtgTt . (15) 
+
+Recall that EK and ΣK are functions of K and therefore of ˜K by (6) . Equipped with the explicit gradient expressions provided by Theorem 3.1, we turn next to developing algorithms using them. 
+
+3.1 Model-based Policy Gradient 
+
+We now derive our model-based PG algorithm for solving (1) . Our approach is model-based in the sense that it relies on explicitly estimating the system matrices A and B and the solution PK
+
+to the Riccati equation (10) from collected trajectory data. Our algorithm builds on the approach proposed in [46], with the key difference that our procedure for gradient estimation procedure requires estimation of fewer system matrices, thereby enjoying superior computational efficiency. To estimate A and B, we follow a least-squares system identification approach similar to that proposed in [27]. Given trajectory data x0, u 0, x 1, u 1, . . . , x t+1 , u t+1 collected from the system, for some 
+
+t > 0, and taking k ≤ t, let Xk = [ x0 x1 . . . x k−1], U k = [ u0 u1 . . . u k−1] denote matrices whose columns are formed, respectively, by the states x0, . . . , x k−1 and inputs u0, . . . , u k−1. Using this trajectory data, we can estimate A and B by simply computing the least-squares estimator of the error 
+
+∥Xt+1 − (AX t + BU t)∥2 in terms of A and B, as described in Section A.2.2 in the Appendix. To estimate PKt for Kt at time t ≥ 0, we use the iterative Riccati equation solution approach described in Section A.2.2 in the appendix. Combining the above procedures for estimating A, B , and PK with the gradient expressions of Theorem 3.1, we provide the model-based PG algorithm in Algorithm 1. 53.2 Model-free Policy Gradient 
+
+Though the model-based Algorithm 1 achieves a globally optimal PID controller as shown in Section 4, direct estimation of A, B , and PK can be computationally burdensome in practice. To address this, we now propose a model-free PG approach to learn globally optimal PI controllers without the need to estimate the system dynamics. The key to our approach is to use a stochastic policy centered around the deterministic PID policy (5) , whose form allows us to apply the PG theorem [43] to perform model-free learning of optimal PI control policies. While the use of Gaussian policies is widespread in the RL literature, the key innovation in our work is the use of the PID parameterization (5) for the mean. This allows us to combine the PG expressions of Theorem 3.1 with the PG theorem [43] to directly tune the parameters of our control policy in a model-free manner. For a state g in the augmented state space of problem (3) , consider the deterministic policy μ ˜K (g) = 
+
+−Kg of (5). We define a stochastic policy based on this deterministic controller by 
+
+π ˜K (u|g) = 1 
+
+> σ√2π
+
+e− (u−μ ˜K (g)) T (u−μ ˜K (g)) 2σ2 , (16) where σ > 0 is a user-specified constant. Notice that (16) is simply the probability density function corresponding to N (μ ˜K (g), σ 2I), a Gaussian random variable with mean μ ˜K (g) and covariance σ2I,where I is the identity matrix. Sampling a control input u ∼ π ˜K (·| g) is thus equivalent to using the control μ ˜K (g) plus zero-mean Gaussian noise. Since the policy in (16) is stochastic, it can be used in the policy gradient theorem, which states in the finite-horizon case that, for initial g0 and horizon N ,
+
+∇J( ˜K) = E
+
+h N −1X
+
+> t=0
+
+c(gt, u t)∇ log π ˜K (u0|g0)
+
+i
+
+, (17) where c(gt, u t) := gTt Qg t + uTt Ru t. This expression enables truly model-free approaches to solving (3) , since it provides a way to minimize costs given access only to information about costs and the policy π ˜K . Note that, in order for (17) to be well-defined, it is critical that π ˜K (u|g) > 0, for all 
+
+g, u . The stochastic policy π(·| g) satisfies this property, while the deterministic controller μ ˜K (g),which can be viewed as the limiting case of (16) as σ → 0, does not. This highlights the necessity of introducing the stochastic policy (16) in order to apply (17). Notice that (17) holds whether the gradient is taken with respect to K or ˜K, again by equation (6) . In our setting, if the score function ∇Ki log π ˜K (u0|g0) is well-defined and efficiently com-putable, for each i = P, I, D , then (17) can be used to approximate ∇Ki J( ˜K) by sampling 
+
+g0 ∼ D , u 0 ∼ π ˜K (·| g0), then collecting an N -length trajectory g0, u 0, g 1, u 1, . . . , g N −1, u N −1,where N is sufficiently large. We therefore need expressions for computing ∇Ki log π ˜K (u|g), for 
+
+i = P, I, D . First notice that, for i = P, I, D , equation (16) and the chain rule give 
+
+∇Ki log π ˜K (u|g) = 1 
+
+> σ2
+
+(u − μ ˜K (g)) ∇Ki μ ˜K (g). (18) Thus, to apply (17), all we need are the following expressions for ∇Ki μ ˜K (g), i = P, I, D .
+
+Theorem 3.2. For K defined in (6) , we have 
+
+∇KP μ ˜K (g) = −τ (τ + KD CB )−1CT xg (19) 
+
+∇KI μ ˜K (g) = −τ (τ + KD CB )−1Tz g (20) 
+
+∇KD μ ˜K (g) = −(τ + KD CB )−1(C(A − I)Txg − KgCB ). (21) 
+
+It is clear from Theorem 3.2 that ∇KP μ ˜K (g) and ∇KI μ ˜K (g) depend on B, while ∇KD μ ˜K (g)
+
+depends on both A and B. Due to the presence of KD in the denominator, however, we note that fixing KD = 0 eliminates this dependence on A and B in (19) -(20) , allowing us to estimate gradients for PI policies in a truly model-free way. Combining (18) with Theorem 3.2, we immediately have: 
+
+Corollary 3.3. For PI control, with KD = 0 , we have 
+
+∇KP log π ˜K (u|g) = gT T Tx CT (μ ˜K (g) − u)
+
+σ2 , (22) ∇KI log π ˜K (u|g) = gT T Tz (μ ˜K (g) − u)
+
+σ2 . (23) 
+
+In the convergence results of the following section, σ in (22) - (23) is chosen to be small enough that suitable gradient dominance and convergence results can still be recovered. In practice, the choice of 6σ comes down to ensuring numerical stability, and in our experiments we observed that Algorithm 2 remained stable for a wide variety of σ values. Pseudocode for our model-free PI approach based on Corollary 3.3 is provided in Algorithm 2. Though our model-free algorithm provides only PI instead of PID control, we emphasize that it is still broadly applicable, since active tuning of the derivative component of PID controllers is uncommon in practice [4]. 
+
+## 4 Convergence Analysis 
+
+In this section, we provide convergence and global optimality guarantees for Algorithms 1 and 2. We first provide a detailed overview of our results. Denote the expected costs under the deterministic policy (5) and the stochastic, Gaussian policy (16), respectively, by                    
+
+> JDμ( ˜K) = Eμ˜K
+> h∞X
+> t=0
+> yTtY y t+uTtRu t
+> i
+> ,(24) JGπ( ˜K) = Eπ˜K
+> h∞X
+> t=0
+> yTtY y t+uTtRu t
+> i
+> ,(25)
+
+and let ˜K∗ and ˜K∗ 
+
+> G
+
+denote the global minimizers of (24) and (25) , respectively. Note that, due to the structure of problem (3) , such optimal parameters are guaranteed to exist and to be unique [18]. In what follows, we first establish that the objective (24) enjoys the gradient dominance property in the PID parameters ˜K, which implies that any first-order stationary point of (24) is globally optimal. This key result, which leverages Proposition 2.1 and our PID policy gradient results of Theorem 3.1, lays the foundation for the global optimality guarantees for both algorithms. Second, we establish the convergence rate of Algorithm 1 to the global minimizer ˜K∗ of (24) . Finally, we provide convergence rate and sample complexity results demonstrating that Algorithm 2 achieves an approximately globally optimal solution of (24) . We highlight that existing analyses of PG for LQR [18] and global optimality of stochastic PG methods for learning deterministic policies [33] require gradient dominance and globally Lipschitz system dynamics, whereas we improve on these results in our analysis by requiring only weak gradient dominance [32] and locally Lipschitz system dynamics. 
+
+PID Gradient Dominance. We now establish gradient dominance of the objective (3) in the PID pa-rameters ˜K, which implies that any algorithm that achieves a first-order stationary point of the problem in fact achieves global optimality. For any matrix M , let ρ(M ) and σmin (M ) denote its spectral radius and minimal singular value, respectively, and let MP ID = (∇K KP )T (∇K KI )T (∇K KD )T T .
+
+Finally, define the set of stabilizing PID parameters as 
+
+˜K := {(KP , K I , K D ) ∈ R3 : ρ( ¯A − ¯BK ) < 1, K satisfies (6) }. (26) We have the following result. 
+
+Theorem 4.1. Let ˜K∗ = min ˜K∈ ˜K J( ˜K). Then 
+
+J( ˜K) − J( ˜K∗) ≤ ˜α ∇ ˜K J( ˜K) 2
+
+, for all ˜K ∈ ˜K, (27) 
+
+where ˜α = ∥ΣK∗ ∥ [σmin (Σ K )2R]−1 ∥MP ID ∥2, K∗ is obtained using (6) with ˜K = ˜K∗, and, ΣK∗
+
+is obtained from (15) with K = K∗.
+
+As mentioned above, Theorem 4.1 implies that any first-order stationary point of J( ˜K) is in fact globally optimal, i.e., that if ˜K′ satisfies ∇ ˜K J( ˜K′) = 0 , then ˜K′ is optimal, since J( ˜K′) = 
+
+J( ˜K∗). For this reason, the development of PG algorithms for (3) is well-motivated: PG algorithms performing gradient descent in ˜K on this problem can be reasonably expected to achieve global optimality. We next leverage Theorem 4.1 to show that Algorithms 1 and 2 do precisely this. 
+
+4.1 Model-based policy gradient for PID 
+
+We now establish the convergence rate of Algorithm 1 to the global minimizer ˜K∗ of (24) . As we will see, Algorithm 1 achieves global optimality due to two factors: (i) the algorithm directly learns the parameters of the deterministic controller (5) , and (ii) the problem (3) enjoys gradient dominance in the PID parameters, as established in Theorem 4.1 above. The following result, which partially extends the result [13, Theorem 3] to the PID setting, establishes the convergence rate of Algorithm 1 to the globally optimal objective function value. 7Theorem 4.2. Let η > 0 be as in Section A.3.1. Fix η′ ∈ (0 , η ), let Algorithm 1 be run with stepsizes 
+
+αP , α I , α D = η′, and let { ˜Kt} denote the sequence of parameters generated. Then there exist 
+
+κ ∈ (0 , 1) such that             
+
+> JDμ( ˜Kt)−JDμ( ˜K∗)≤κt
+> JDμ( ˜K0)−JDμ( ˜K∗)
+> 
+> .(28)
+
+This theorem establishes linear convergence of Algorithm 1 to a globally optimal solution in the case where A, B and PKt are estimated perfectly at each step. This result can be generalized to incorporate estimation error in the system identification procedure by following analysis techniques such as those in [46]. Since we focus on the development of globally convergent PG methods for PID control in this paper, we leave this for future work. 
+
+4.2 Model-free policy gradient for PI 
+
+We now turn to providing convergence and global optimality guarantees for Algorithm 2. Specifically, we establish convergence rate and sample complexity results for achieving within β > 0 of an 
+
+ϵ-global solution of (24) , where β is controlled by choice of variance σ2 and rollout length N in Algorithm 2. It is important to observe that, despite the fact that Algorithm 2 actually optimizes (25) ,it is nonetheless able to achieve near-optimality for (24) for appropriate choice of σ and N . This is because the objective (25) enjoys weak gradient dominance, as we prove in Theorem 4.4. Similar to [33], the reason that approximate instead of exact ϵ-optimality is achieved is due to the use of the stochastic version (16) of the deterministic controller (5). We now establish that the objective (25) of Algorithm 2 enjoys the weak gradient dominance property studied in [33], which is critical to establishing the global optimality guarantee below. We prove this result under the following mild assumption, which is a technical condition ensuring that the difference between the costs (24) and (25) remains bounded. 
+
+Assumption 4.3. The variance of the stochastic policy (16) at time t ≥ 0 is σ2 
+
+> t
+
+= σ2/(1 + t)2.Assumption 4.3 is akin to technical assumptions on decreasing step size that are common across most gradient-based algorithms, including stochastic gradient descent (SGD). This assumption can likely be relaxed in practice, since we observe across all our experiments in Section 5 that PG4PI achieves convergence even with a constant σt, that is σt = σ, ∀t ≥ 0. In addition, our experimental ablation studies in A.4.2 also demonstrate convergence for a wide range of fixed values of σ.
+
+Theorem 4.4. Let Assumption 4.3 hold and let ˜K∗ 
+
+> G
+
+be a minimizer of (25) . We have             
+
+> JGπ( ˜K)−JGπ( ˜K∗
+> G)≤˜α∇˜KJGπ( ˜K)2
+> +β, (29)
+
+for all ˜K ∈ ˜K, where ˜K is as in (26) and β = 2∥R∥σ2π2 
+
+> 3
+
+.
+
+With Theorem 4.4 in hand, we turn to our main result. Denote the estimate obtained from (17) by           
+
+> d∇˜KJGπ( ˜K) =
+> N−1X
+> t=0
+> c(gt, u t)∇˜Klog π˜K(u0|g0).(30)
+
+We will need the following conditions on (30). 
+
+Assumption 4.5. There exists finite ¯V > 0 such that, for all ˜K, g 0, u 0 and N ∈ N, we have Var ∥d∇ ˜K JGπ ( ˜K)∥ ≤ ¯V /N. 
+
+Assumption 4.6. For { ˜Kt} generated by Algorithm 2 we have ∥d∇ ˜K JGπ ( ˜Kt)∥ ≤ 1, for all t ≤ T .Assumption 4.5 is a mild condition also assumed in [33], and can likely be shown to hold under reasonable conditions on σ and mild continuity and differentiability properties of JGπ . In practice, we can enforce this assumption by choosing a sufficiently long rollout length, which is a common strategy to decrease variance of PG estimates in RL. Assumption 4.6 is for technical convenience in Corollary A.9’s proof and can be dispensed with by using appropriate gradient normalization in Algorithm 2. We observed in our experiments in Section 5 that the proposed algorithm PG4PI achieves convergence even without such gradient normalization, indicating that Assumption 4.6 can be relaxed in practice. We are now ready to provide our sample complexity result for Algorithm 2. 8Figure 1: Reward curves for Algorithm 1 (PG4PID), Algorithm 2 (PG4PI), and PPO-based PID on the 8-dimensional Chemical Reactor and 48-dimensional LA University Hospital environments. Plots show mean and one standard deviation over multiple independent training runs. 
+
+Figure 2: Stabilization and reference tracking curves for Algorithm 2 (PG4PI) and model-free LQR, on the 8-dimensional Chemical Reactor environment. Plots show that both PG4PI and LQR stabilize the states to origin; however, LQR fails to track the unit-step reference input in contrast to the perfect tracking obtained with PG4PI. 
+
+Theorem 4.7. Let Assumptions 4.3, 4.5, and 4.6 hold. Let Algorithm 2 run for T > 0 iterations with rollout length N > 0 and stepsizes αP = αI = η satisfying η ≤ min { 1
+
+> lTmx
+
+, ˜α2 
+
+> c0
+
+, N ˜α2  
+
+> lTmx ¯V
+
+}. Let 
+
+{ ˜Kt}t=0 ,...,T denote the sequence of iterates generated and β = 2 ∥R∥ σ2π2. Then, we have                 
+
+> EJGπ( ˜KT)−JDμ( ˜K∗)≤β+cT1−
+> r
+> η3lTmx ¯V
+> 4˜ α2N
+> !T
+> +
+> r
+> lTmx ¯V η ˜α2
+> N,(31)
+
+where ck := max {0, J π ( ˜Kk) − JGπ ( ˜K∗) − β/ 3} for 0 ≤ k ≤ T , and, lTmx =max {l( ˜K0), . . . , l ( ˜KT )}, where l( ˜K) is the local Lipschitz constant defined in Corollary A.8. Moreover, to guarantee E[JGπ ( ˜KT )] − JDμ ( ˜K∗) ≤ ϵ + β, for ϵ > 0, setting the stepsize to be 
+
+η = (ϵ ˜α)2N  
+
+> 4lTmx ¯V
+
+yields sample complexity at most      
+
+> N T = 16˜ α4lTmx ¯Vϵ3log
+> cT
+> ϵ
+> 
+> .(32)
+
+Theorem 4.7 provides a useful tool for striking a balance between suboptimality and sample com-plexity: choosing σ sufficiently small and N sufficiently large improves the convergence rate and suboptimality as quantified in (31) , while (32) quantifies the corresponding increase in sample com-plexity. We emphasize that [33] assumes the objective and its gradient are globally Lipschitz, while the objective of (3) is known to only satisfy local Lipschitz properties [18, 28]. To overcome this, we quantify the maximum possible deviation that can occur given the local Lipschitz properties over the entire sequence of parameter iterates, then incorporate this into the bounds (31) - (32) . See Appendix A.3 for details. 95 Experiments 
+
+Experiment setup. We evaluate the performance of Algorithms 1 and 2 and compare with baseline methods on two environments from the controlgym library [51]: the 8-dimensional state-space Chemical Reactor and a 48 -dimensional state-space LA University Hospital environments. Both environments are tracking problems, where the objective is to stabilize the system and ensure that the output tracks the reference input. On each environment we ran independent replications (see appendix for details) of Algorithms 1 and 2, the PG method for LQR from [18], and the StableBaselines3 
+
+[38] implementation of PPO [39] with a policy parameterization mapping states to PID parameters. We collected rewards (i.e., negative costs), tracking error, time-domain tracking information, and state evolutions encountered during training. For our figures, we plotted reward, tracking performance, tracking error, and state evolution as a function of the number of samples used, i.e., the number of interactions the algorithm performed in the environment during training. We provide experiments illustrating reward performance for Algorithms 1, 2, and PPO in Fig. 1, tracking performance and error in Appendix A.4.1, ablation studies comparing various values of σ for Algorithm 2 in Appendix A.4.2, and comparison with model-free LQR in Appendix A.4.3. We also compare the tracking performance of our proposed model-free PG4PI algorithm with model-free LQR, on the Chemical Reactor environment, in Figure 2. The code for this implementation is publicly available at 
+
+https://github.com/sharma1256/RL-optimal-pid .
+
+General discussion. As illustrated in Fig. 1, for Algorithms 1 and 2, the rewards accumulated during training rapidly converge to zero on both environments, indicating that both algorithm rapidly learn to stabilize the system and track the reference output. PPO, on the other hand, requires a large number of samples before it begins to learn to stabilize the system, and its tracking performance remains far worse than that of our proposed methods. The superior performance of Algorithms 1 and 2 is due to the fact that they directly search over the space of PID parameters and are guaranteed to converge to global optimality, while PPO searches over the much larger space of all policy parameterizations mapping states to PID control parameters and may only achieve a local optimum or saddle point of this much larger, highly nonconvex problem where gradient dominance likely does not hold. Finally, our ablation experiments studying the impact of σ on performance of Algorithm 2 indicate that the choice of σ does not have a noticeable impact on convergence in practice. 
+
+Benchmarks vs. LQR. We implement PG-based LQR algorithms from [18] on both the environments. From Figures 2 and 6 in the Appendix, we see that the PID control policy achieves zero steady-state tracking error in contrast to non-zero tracking error with the LQR policy, due to the inclusion of the integral parameter in the PID control policy. Importantly, LQR/LQG variants are known to be fragile to model error [15]. In contrast, PID policies can yield higher robustness margins in practice due to the output-feedback structure and low dimensionality. We demonstrate this in Fig. 7 in the Appendix, where a very small perturbation of the matrix A (∥∆A∥ = 0 .5) breaks stability even in model-based LQR, while our model-free PI policy maintains stability and tracking. 
+
+## 6 Conclusion 
+
+In this paper, we proposed and studied a new optimization framework bridging the gap between PG methods for control and the PID control architecture. Building on this framework, we developed model-based and model-free PG methods for learning PID and PI control policies, respectively, then established convergence, global optimality, and sample complexity guarantees. Important future directions include extending our mathematical framework to encompass multi-objective trade-offs arising from classical control specifications or through mixed PID H2/H∞ controller parameterizations, as well as incorporating hard constraints on system states or outputs, which will involve extending our theoretical framework to constrained optimization settings via safety-constrained exploration [42] or safety filters [12] to obtain safe PID policies. 
+
+## References 
+
+[1] Alekh Agarwal et al. “Optimality and approximation with policy gradient methods in markov decision processes”. In: Conference on Learning Theory . 2020, pp. 64–66. [2] Karl J Åström. “PID controllers: theory, design, and tuning”. In: The international society of measurement and control (1995). 10 [3] Karl Johan Åström and Tore Hägglund. Advanced PID control . ISA-The Instrumentation, Systems and Automation Society, 2006. [4] Karl Johan Åström and Tore Hägglund. “The future of PID control”. In: Control engineering practice 9.11 (2001), pp. 1163–1175. [5] Karl Johan Åström, Hélène Panagopoulos, and Tore Hägglund. “Design of PI controllers based on non-convex optimization”. In: Automatica 34.5 (1998), pp. 585–601. [6] Qinbo Bai, Washim Uddin Mondal, and Vaneet Aggarwal. “Regret analysis of policy gradient algorithm for infinite horizon average reward Markov decision processes”. In: AAAI Conference on Artificial Intelligence . 2024. [7] Amrit Singh Bedi et al. “On the hidden biases of policy mirror ascent in continuous action spaces”. In: International Conference on Machine Learning . 2022, pp. 1716–1731. [8] Jalaj Bhandari and Daniel Russo. “Global optimality guarantees for policy gradient methods”. In: Operations Research (2024). [9] Fernando D Bianchi, Ricardo J Mantz, and Carlos F Christiansen. “Multivariable PID control with set-point weighting via BMI optimisation”. In: Automatica 44.2 (2008), pp. 472–478. [10] Rakesh P Borase et al. “A review of PID control, tuning methods and applications”. In: 
+
+International Journal of Dynamics and Control 9 (2021), pp. 818–827. [11] Stephen Boyd, Martin Hast, and Karl Johan Åström. “MIMO PID tuning via iterated LMI restriction”. In: International Journal of Robust and Nonlinear Control 26.8 (2016), pp. 1718– 1731. [12] Lukas Brunke et al. “Safe learning in robotics: From learning-based control to safe reinforce-ment learning”. In: Annual Review of Control, Robotics, and Autonomous Systems 5.1 (2022), pp. 411–444. [13] Jingjing Bu and Mehran Mesbahi. “Global convergence of policy gradient algorithms for indefinite least squares stationary optimal control”. In: IEEE Control Systems Letters 4.3 (2020), pp. 638–643. [14] Sarah Dean et al. “On the sample complexity of the linear quadratic regulator”. In: Foundations of Computational Mathematics 20.4 (2020), pp. 633–679. [15] John Doyle. “Guaranteed margins for LQG regulators”. In: IEEE Transactions on automatic Control 23.4 (2003), pp. 756–757. [16] Jingliang Duan et al. “On the optimization landscape of dynamic output feedback linear quadratic control”. In: IEEE Transactions on Automatic Control 69.2 (2023), pp. 920–935. [17] Ilyas Fatkhullin and Boris Polyak. “Optimizing static linear feedback: Gradient method”. In: 
+
+SIAM Journal on Control and Optimization 59.5 (2021), pp. 3887–3911. [18] Maryam Fazel et al. “Global convergence of policy gradient methods for the linear quadratic regulator”. In: International conference on machine learning . PMLR. 2018, pp. 1467–1476. [19] Olof Garpinger. “Design of robust PID controllers with constrained control signal activity”. In: (2009). [20] Benjamin Gravell, Peyman Mohajerin Esfahani, and Tyler Summers. “Learning optimal con-trollers for linear systems with multiplicative noise via policy gradient”. In: IEEE Transactions on Automatic Control 66.11 (2020), pp. 5283–5298. [21] Xingang Guo and Bin Hu. “Global Convergence of Direct Policy Search for State-Feedback 
+
+H∞ Robust Control: A Revisit of Nonsmooth Synthesis with Goldstein Subdifferential”. In: 
+
+Advances in Neural Information Processing Systems 35 (2022), pp. 32801–32815. [22] Tore Hägglund and José Luis Guzmán. “Give us PID controllers and we can control the world”. In: IFAC-PapersOnLine 58.7 (2024), pp. 103–108. [23] Ben Hambly, Renyuan Xu, and Huining Yang. “Policy gradient methods for the noisy linear quadratic regulator over a finite horizon”. In: SIAM Journal on Control and Optimization 59.5 (2021), pp. 3359–3391. [24] Martin Hast et al. “PID design by convex-concave optimization”. In: 2013 European Control Conference (ECC) . IEEE. 2013, pp. 4460–4465. [25] Bin Hu et al. “Toward a theoretical foundation of policy optimization for learning control policies”. In: Annual Review of Control, Robotics, and Autonomous Systems 6.1 (2023), pp. 123–158. 11 [26] Yanli Liu et al. “An improved analysis of (variance-reduced) policy gradient and natural policy gradient methods”. In: Advances in Neural Information Processing Systems 33 (2020), pp. 7624–7636. [27] Lennart Ljung. “System identification”. In: Signal analysis and prediction . Springer, 1998, pp. 163–173. [28] Dhruv Malik et al. “Derivative-free methods for policy optimization: Guarantees for linear quadratic systems”. In: Journal of Machine Learning Research 21.21 (2020), pp. 1–51. [29] Jincheng Mei et al. “On the global convergence rates of softmax policy gradient methods”. In: 
+
+International Conference on Machine Learning . 2020, pp. 6820–6829. [30] Hesameddin Mohammadi, Mahdi Soltanolkotabi, and Mihailo R Jovanovi´ c. “On the lack of gradient domination for linear quadratic Gaussian problems with incomplete state information”. In: 2021 60th IEEE Conference on Decision and Control (CDC) . IEEE. 2021, pp. 1120–1124. [31] Hesameddin Mohammadi et al. “Convergence and sample complexity of gradient methods for the model-free linear–quadratic regulator problem”. In: IEEE Transactions on Automatic Control 67.5 (2021), pp. 2435–2450. [32] Washim U Mondal and Vaneet Aggarwal. “Improved sample complexity analysis of natural policy gradient algorithm with general parameterization for infinite horizon discounted re-ward markov decision processes”. In: International Conference on Artificial Intelligence and Statistics . PMLR. 2024, pp. 3097–3105. [33] Alessandro Montenegro et al. “Learning Optimal Deterministic Policies with Stochastic Policy Gradients”. In: Forty-first International Conference on Machine Learning . 2024. [34] Hélène Panagopoulos, KJ Åström, and T Hagglund. “Design of PID controllers based on constrained optimisation”. In: IEE Proceedings-Control Theory and Applications 149.1 (2002), pp. 32–40. [35] Bhrij Patel et al. “Towards Global Optimality for Practical Average Reward Reinforcement Learning without Mixing Time Oracles”. In: Forty-first International Conference on Machine Learning . 2024, pp. 39889–39907. [36] Juan Perdomo, Jack Umenberger, and Max Simchowitz. “Stabilizing dynamical systems via policy gradient methods”. In: Advances in neural information processing systems 34 (2021), pp. 29274–29286. [37] Boris T Polyak and Mikhail V Khlebnikov. “New criteria for tuning PID controllers”. In: 
+
+Automation and Remote Control 83.11 (2022), pp. 1724–1741. [38] Antonin Raffin et al. “Stable-baselines3: Reliable reinforcement learning implementations”. In: Journal of machine learning research 22.268 (2021), pp. 1–8. [39] John Schulman et al. “Proximal policy optimization algorithms”. In: arXiv preprint arXiv:1707.06347 (2017). [40] Oluwasegun Ayokunle Somefun, Kayode Akingbade, and Folasade Dahunsi. “The dilemma of PID tuning”. In: Annual Reviews in Control 52 (2021), pp. 65–74. [41] Wesley A Suttle, Alec Koppel, and Ji Liu. “Occupancy information ratio: Infinite-horizon, information-directed, parameterized policy search”. In: SIAM Journal on Control and Opti-mization 62.6 (2024), pp. 3145–3171. [42] Wesley A Suttle et al. “Sampling-based safe reinforcement learning for nonlinear dynamical systems”. In: International Conference on Artificial Intelligence and Statistics . PMLR. 2024, pp. 4420–4428. [43] Richard S Sutton et al. “Policy gradient methods for reinforcement learning with function approximation”. In: Advances in neural information processing systems 12 (1999). [44] Yujie Tang, Yang Zheng, and Na Li. “Analysis of the optimization landscape of Linear Quadratic Gaussian (LQG) control”. In: Mathematical Programming 202.1 (2023), pp. 399– 444. [45] Qing-Guo Wang et al. PID control for multivariable processes . Vol. 373. Springer Science & Business Media, 2008. [46] Farnaz Adib Yaghmaie, Fredrik Gustafsson, and Lennart Ljung. “Linear quadratic control using model-free reinforcement learning”. In: IEEE Transactions on Automatic Control 68.2 (2022), pp. 737–752. 12 [47] Kaiqing Zhang, Bin Hu, and Tamer Basar. “On the stability and convergence of robust adversarial reinforcement learning: A case study on linear quadratic systems”. In: Advances in Neural Information Processing Systems 33 (2020), pp. 22056–22068. [48] Kaiqing Zhang, Bin Hu, and Tamer Basar. “Policy Optimization for H2 Linear Control with 
+
+H∞ Robustness Guarantee: Implicit Regularization and Global Convergence”. In: SIAM Journal on Control and Optimization 59.6 (2021), pp. 4081–4109. [49] Kaiqing Zhang et al. “Derivative-free policy optimization for linear risk-sensitive and ro-bust control design: Implicit regularization and sample complexity”. In: Advances in neural information processing systems 34 (2021), pp. 2949–2964. [50] Kaiqing Zhang et al. “Global convergence of policy gradient methods to (almost) locally optimal policies”. In: SIAM Journal on Control and Optimization 58.6 (2020), pp. 3586–3612. [51] Xiangyuan Zhang et al. “Controlgym: Large-scale control environments for benchmarking rein-forcement learning algorithms”. In: 6th Annual Learning for Dynamics & Control Conference .PMLR. 2024, pp. 181–196. 13 A Appendix 
+
+Here, we present proofs of all the results in the paper, and additional details for each section. 
+
+A.1 Proofs and Additional Details for Section 2 
+
+Proof of Theorem 2.1 . From yt = Cx t, we can write 
+
+yTt Y y t = xTt CT Y Cx t = xTt CT Y Cx t = gTt Qg t. (33) Now, the PID control policy from (2) can be expressed as 
+
+ut = −KP Cx t − KD C xk+1 − xt
+
+τ − KI zt. (34) Substituting xt+1 = Ax t + Bu t, (5) can be further written as 
+
+ut = −KP Cx t − KD C Ax t + Bu t − xt
+
+τ − KI zt (35) Rearranging the above equation, we get 
+
+ut = −1 + KD CB τ
+
+−1 KP C + KD
+
+C(A − I)
+
+τ
+
+xt + KI zt
+
+
+
+. (36) Substituting the control policy ut from (36) into the dynamics xt+1 = Ax t + Bu t, we can write 
+
+xt+1 = Ax t − B1 + KD CB τ
+
+−1 KP C + KD
+
+C(A − I)
+
+τ
+
+xt + KI zt
+
+
+
+(37) From zt = Pt−1 
+
+> i=0
+
+yi, we can write zt+1 = yt + zt = Cx t + zt. Now, we have 
+
+gt+1 =
+
+xt+1 
+
+zt+1 
+
+
+
+=
+
+"
+
+Ax t − B1 + KD CB τ
+
+−1 KP C + KD C(A−I)
+
+> τ
+
+xt + KI zt
+
+
+
+Cx t + zt
+
+#
+
+=
+
+ Ax t
+
+Cx t + zt
+
+
+
++
+
+"
+
+−B1 + KD CB τ
+
+−1 KP C + KD C(A−I)
+
+> τ
+
+xt + KI zt
+
+
+
+0
+
+#
+
+,
+
+=
+
+ Ax t
+
+Cx t + zt
+
+
+
+−
+
+B
+
+0
+
+ 1 + KD CB τ
+
+−1 KP C + KD
+
+C(A − I)
+
+τ
+
+xt + KI zt
+
+
+
+.
+
+(38) Recalling from (6) that 
+
+K =
+
+
+
+1 + KD CB τ
+
+−1 h
+
+KP C + KD C(A−I) 
+
+> τ
+
+KI
+
+i
+
+, (39) we can write 
+
+gt+1 = ¯Ag t + ¯Bu t, (40) where ¯A =
+
+A 0
+
+C I
+
+
+
+, ¯B =
+
+B
+
+0
+
+
+
+, and ut = −Kg t. Finally, from (33), we have that 
+
+J(K) = E ∞X
+
+> t=0
+
+yTt Y y t + uTt Ru t
+
+ = E ∞X
+
+> t=0
+
+gTt Qg t + uTt Ru t
+
+, (41) whence the PID control problem can be rewritten as 
+
+minimize J( ˜K) = E
+
+" ∞X
+
+> t=0
+
+gTt Qg t + uTt Ru t
+
+#
+
+subject to gt+1 = ¯Ax t + ¯Bu t, g0 ∼ D ,
+
+(42) with ut = −Kg t where K is obtained from PID parameters ˜K using (6). 14 A.2 Proofs and Additional Details for Section 3 
+
+In this section, we provide a detailed proofs of each of the results of Section 3. We begin by defining the cost-to-go at a fixed initial state g0 by 
+
+VK (g0) = gT 
+
+> 0
+
+PK g0. (43) From (10), the cost-to-go can also be written as 
+
+VK (g0) = gT 
+
+> 0
+
+(ATK PK AK + Q + KT RK )g0. (44) Notice that J(K) = Eg0∼D [VK (g0)] . This cost-to-go expression will be useful when calculating gradients with respect to the the individual PID control parameters KP , K I , K D in the following gradient expressions. 
+
+A.2.1 Proof in subsection 3.1 
+
+En route to proving Theorem 3.1, we establish the following helper lemmas that provide derivatives with respect to the parameters in ˜K of certain expressions involving AK and KT RK that arise in the main results to follow. We first begin with the derivative of the expression vT AK g0, where v is an arbitrarily chosen vector with appropriate dimensions and g0 is the initial state. 
+
+Lemma A.1 (Helper Lemma for Theorem 3.1) . Let v be a vector of suitable dimensions such that 
+
+vT AK g0 is a scalar, where g0 is the initial condition. Then, the matrix derivatives ∇Ki vT AK g0, for all i ∈ { P, I, D } are given as 
+
+∇KP vT AK g0 = − FD ¯BT vg T 
+
+> 0
+
+T Tx CT , (45) 
+
+∇KI vT AK g0 = − FD ¯BT vg T 
+
+> 0
+
+T Tz , (46) 
+
+∇KD vT AK g0 =α1
+
+ ¯BT vg T 
+
+> 0
+
+(α2α3 − T Tx (A − I)T CT ), (47) 
+
+where, Tx = [In 0n×1] , T z = [0 1×n 1] , α1 = (τ + KD CB )−1, α2 = (τ +
+
+KD CB )−1(τ T Tx CT KP + T Tx (A − I)T CT KD + τ T Tz KD ), α3 = CB , and FD = [1 + KD CB τ ]−1.Proof. From (8), we know that g1 = AK g0, and therefore 
+
+x1 =( A − BF D KP C − BF D KD
+
+C(A − I)
+
+τ )x0 − BF D KI z0,z1 =Cx 0 + z0.
+
+(48) We note that the variables FD , K P , K I , K D are scalars, and, that the matrix PK is symmetric. Since we know that z1 does not contain any of the KP , K I , K D parameters, we can write 
+
+∇Ki vT AK g0 = ∇Ki vT
+
+> 1: n
+
+x1, for all i ∈ { P, I, D }, (49) where v1: n denotes the the first n-elements of v. Then, we can write 
+
+∇KP vT
+
+> 1: n
+
+x1 = −∇ KP (vT
+
+> 1: n
+
+BF D KP Cx 0),
+
+where 
+
+∇KP (vT
+
+> 1: n
+
+BF D KP Cx 0) = vT
+
+> 1: n
+
+BF D Cx 0,
+
+due to the fact that KP is a scalar. Observe that, vT
+
+> 1: n
+
+B = vT ¯B. Thus, 
+
+∇KP vT AK g0 = −vT ¯BF D Cx 0. (50) Since the above expression is a scalar, we transpose the right hand side to obtain 
+
+∇KP vT AK g0 = −FD ¯BT vx T 
+
+> 0
+
+CT . (51) From the fact that x0 = Txg0, we can write 
+
+∇KP vT AK g0 = −FD ¯BT vg T 
+
+> 0
+
+T Tx CT . (52) Similarly, from (49), we can write 
+
+∇KI vT
+
+> 1: n
+
+x1 = −∇ KI (vT
+
+> 1: n
+
+BF D KI z0). (53) 15 Then, since z0 = Tz g0, we can obtain the gradient 
+
+∇KI vT AK g0 = −FD ¯BT vg T 
+
+> 0
+
+T Tz . (54) We can further expand the above as 
+
+∇KD vT
+
+> 1: n
+
+x1 = −∇ KD (vT
+
+> 1: n
+
+B 11 + KD CB τ
+
+(KP Cx 0KD
+
+C(A − I)
+
+τ x0 − KI z0)) = −[vT
+
+> 1: n
+
+B(KP Cx 0KD
+
+C(A − I)
+
+τ x0 + KI z0)] ∇KD
+
+11 + KD CB τ
+
+− [vT
+
+> 1: n
+
+B 11 + KD CB τ
+
+(∇KD (KP Cx 0KD
+
+C(A − I)
+
+τ x0 − KI z0))] ,
+
+= ( vT ¯B(KP Cx 0KD
+
+C(A − I)
+
+τ x0 − KI z0)) CB τ
+
+1(1 + KD CB τ )2
+
+− (vT ¯B 11 + KD CB τ
+
+( C(A − I)
+
+τ x0)) .
+
+Simplifying the above expression, we obtain 
+
+∇KD vT AK g0 = α1
+
+ ¯BT vg T 
+
+> 0
+
+(α2α3 − T Tx (A − I)T CT ). (55) We next provide derivatives of the expression gT 
+
+> 0
+
+KT RKg 0 with respect to ˜K, where g0 is the initial state. 
+
+Lemma A.2 (Helper Lemma for Theorem 3.1) . The matrix derivatives ∇Ki gT 
+
+> 0
+
+KT RKg 0, for each 
+
+i ∈ { P, I, D } are 
+
+∇KP gT 
+
+> 0
+
+KT RKg 0 = 2 FD RKg 0gT 
+
+> 0
+
+T Tx CT , (56) 
+
+∇KI gT 
+
+> 0
+
+KT RKg 0 = 2 FD RKg 0gT 
+
+> 0
+
+T Tz , (57) 
+
+∇KD gT 
+
+> 0
+
+KT RKg 0 = 2 α1
+
+RKg 0gT 
+
+> 0
+
+[T Tx (A − I)T CT − α2α3)] ,
+
+where, Tx = [In 0n×1] , T z = [0 1×n 1] , α1 = (τ + KD CB )−1, α2 = (τ +
+
+KD CB )−1(τ T Tx CT KP + T Tx (A − I)T CT KD + τ T Tz KD ), α3 = CB , and FD = [1 + KD CB τ ]−1.Proof. We begin by noting that FD , K P , K I , K D , R are scalars. Now, for all i ∈ { P, I, D }, we can write 
+
+∇Ki gT 
+
+> 0
+
+KT RKg 0 = 2 ∇Ki wT Kg 0, (58) where w is given by w = RT Kg 0 = RKg 0. Then, from Kg 0 = FD
+
+ KP C + KD C(A−I)
+
+> τ
+
+x0 −
+
+FD KI z0, we get 
+
+∇KP wT Kg 0 = ∇KP wT FD KP Cx 0 = wT FD Cx 0 = gT 
+
+> 0
+
+KT RF D Cx 0. (59) Since the above gradient is a scalar, we take transpose on the right hand side and get 
+
+∇KP wT Kg 0 = FD RKg 0xT 
+
+> 0
+
+CT . (60) We note that x0 = Txg0, and, therefore we can write 
+
+∇KP wT Kg 0 = FD RKg 0gT 
+
+> 0
+
+T Tx CT . (61) Similarly, we can write 
+
+∇KI wT Kg 0 = FD RKg 0gT 
+
+> 0
+
+T Tz . (62) We now calculate ∇KD wT Kg 0. We first expand the gradient as follows: 
+
+∇KD wT Kg 0 = wT    KP C + KD
+
+C(A − I)
+
+τ
+
+x0 − FD KI z0
+
+∇KD FD
+
++ FD ∇KD wT    KP C + KD
+
+C(A − I)
+
+τ
+
+x0 − KI z0
+
+
+
+= −wT    KP C + KD
+
+C(A − I)
+
+τ
+
+x0 − FD KI z0
+
+ τ CB 
+
+(τ + CB )2
+
++ wT FD ( C(A − I)
+
+τ )x0.
+
+16 Expanding these terms, we finally get the following expression 
+
+∇KD wT Kg 0 = α1
+
+RT Kg 0gT 
+
+> 0
+
+[T Tx (A − I)T CT − α2α3)] ,
+
+where the expressions for α1, α 2, α 3 are as defined in statement of Theorem 3.1. We are now ready to prove the Theorem 3.1. 
+
+Proof of Theorem 3.1 . For each i ∈ { P, I, D }, we have 
+
+∇Ki VK (g0) = ∇Ki gT 
+
+> 0
+
+PK g0
+
+=∇Ki gT 
+
+> 0
+
+ATK PK AK g0 + ∇Ki gT 
+
+> 0
+
+Qg 0 + ∇Ki gT 
+
+> 0
+
+KT RKg 0. (63) In the above expression, we first focus on ∇Ki gT 
+
+> 0
+
+ATK PK AK g0, which we can rewrite as 
+
+∇Ki gT 
+
+> 0
+
+ATK PK AK g0 = 2 ∇Ki vT AK g0 + ∇Ki gT 
+
+> 1
+
+PK g1, (64) where v = P TK AK g0 and g1 = AK g0.However, we note that VK (g1) = gT 
+
+> 1
+
+PK g1 and thus 
+
+∇Ki gT 
+
+> 0
+
+ATK PK AK g0 = 2 ∇Ki vT AK g0 + ∇Ki VK (g1). (65) Then, from Lemma A.1, we obtain 
+
+∇KP vT AK g0 = −FD ¯BT PK AK g0gT 
+
+> 0
+
+T Tx CT ,
+
+∇KI vT AK g0 = −FD ¯BT PK AK g0gT 
+
+> 0
+
+T Tz ,
+
+∇KD vT AK g0 = α1
+
+ ¯BT PK AK g0gT 
+
+> 0
+
+(α2α3 − T Tx (A − I)T CT )
+
+Moreover, we know from Lemma A.2 that 
+
+∇KP gT 
+
+> 0
+
+KT RKg 0 = 2 FD RKg 0gT 
+
+> 0
+
+T Tx CT ,
+
+∇KI gT 
+
+> 0
+
+KT RKg 0 = 2 FD RKg 0gT 
+
+> 0
+
+T Tz ,
+
+∇KD gT 
+
+> 0
+
+KT RKg 0 = 2 α1
+
+RKg 0gT 
+
+> 0
+
+[T Tx (A − I)T CT − α2α3)] .
+
+Combining these expressions, we can write 
+
+∇KP VK (g0) = −2FD ¯BT PK AK g0gT 
+
+> 0
+
+T Tx CT + ∇KP VK (g1) + 2 FD RKg 0gT 
+
+> 0
+
+T Tx CT . (66) Note that ∇KP VK (g1) can again be written as 
+
+∇KP VK (g1) = −2FD ¯BT PK AK g1gT 
+
+> 1
+
+T Tx CT + ∇KP VK (g2) + 2 FD RKg 1gT 
+
+> 1
+
+T Tx CT . (67) Proceeding in this manner, we have 
+
+∇KP VK (g0) = 
+
+> ∞
+
+X
+
+> i=0
+
+{− 2FD ¯BT PK AK gigTi T Tx CT + 2 FD RKg igTi T Tx CT }. (68) In light of this, we can write 
+
+∇KP J(K) = 2( −FD ¯BT PK AK + FD RK )Σ K T Tx CT . (69) Noting that 
+
+EK = ( R + ¯BT PK ¯B)K − ¯BT PK ¯A = − ¯BT PK AK + RK, (70) we obtain 
+
+∇KP J(K) = 2 FD EK ΣK T Tx CT . (71) Similarly, we can obtain 
+
+∇KI J(K) = 2 FD EK ΣK T Tz ,
+
+∇KD J(K) = 2 FD EK ΣK (α1T Tx (A − I)T CT − α2α3).
+
+17 A.2.2 Estimation of Matrices (A, B, P K ) in Algorithm 1 
+
+In the next two subsections, we provide details regarding the estimation of matrices (A, B, P K ). We begin by describing a standard system identification approach that we use to obtain matrices (A, B ),which are required to estimate the gradients utilized in the update rules of Algorithm 1. 
+
+System Identification for (A, B ). We follow the standard least squares system identification ap-proach in [27] to estimate the matrices A and B. Given trajectory data x0, u 0, x 1, u 1, . . . , x t+1 , u t+1 
+
+collected from the system, for some t > 0, and taking k ≤ t, we first consider the following dynamical equation 
+
+Xk+1 = AX k + BU k, (72) where 
+
+Xk = [ x0 x1 . . . x k−1], (73) 
+
+Uk = [ u0 u1 . . . u k−1]. (74) We then define the least squares estimation error as 
+
+E(A, B ) = ∥Xk+1 − (AX k + BU k)∥2. (75) Defining 
+
+θ := [ A B ] , M := 
+
+Xk
+
+Uk
+
+
+
+, (76) and noting that Xk+1 = θM , we obtain the following estimate 
+
+θ = Xk+1 M T (M M T )−1 (77) for the system matrices (A, B ). With the estimation technique for (A, B ) described, we estimate the matrix PKt by the method described in the next section to ultimately estimate the gradients 
+
+∇Ki J( ˜K), for each i ∈ { P, I, D }.
+
+Iterative Method for Estimating PK . Consider the following Riccati equation for our reformulated system in Proposition 2.1, where K is obtained from ˜K using (6): 
+
+PK = ( ¯A − ¯BK )T PK ( ¯A − ¯BK ) + Q + KT RK. (78) Right multiplying the above equation by gTt , and left multiplying it by gt, we can write 
+
+gTt PK gt = gTt ( ¯A − ¯BK )T PK ( ¯A − ¯BK )gt + gTt Qg t + gTt KT RKg t. (79) Using gt+1 = ¯Ag t + ¯Bu t, ut = −Kg t, we rearrange the above expression and write 
+
+gTt PK gt − gTt+1 PK gt+1 = gTt Qg t + gTt KT RKg t. (80) We can now use (80) to estimate the matrix PK by collecting sufficient samples of gt. Consider 
+
+qt := gTt Qg t + gTt KT RKg t, (81) and the vector P vK ∈ R(n+1) 2
+
+is obtained by vertically concatenating the column vectors of PK .Before defining the data set for the estimation PK , we review some preliminary results from matrix theory. For a vector w ∈ Rn and a matrix U ∈ Rn×n, we know that wT U w = Pn+1 
+
+> i=0
+
+Pn+1  
+
+> j=0
+
+Ui,j wiwj ,where Ui,j is the (i, j )-th element of U , and wi is the i-th element of the vector w. Consequently, we can write wT U w = Pn2 
+
+> i=0
+
+U vi wvi , where U vi and wvi are the i-th elements of the vectorized version of matrix U and the Kronecker product w ⊗ w, respectively. Using the above facts, we can write 
+
+gTt PK gt − gTt+1 PK gt+1 = P vT 
+
+> K
+
+(gt ⊗ gt − gt+1 ⊗ gt+1 ), (82) from which we obtain 
+
+(gt ⊗ gt − gt+1 ⊗ gt+1 )T P vK = qt. (83) 18 We now define matrices Gk and Ok, for k ≥ n(n+1) 2 + n + 1 , as 
+
+Gk = [ g0 ⊗ gt g1 ⊗ g1 · · · gk−1 ⊗ gk−1] , (84) 
+
+Ok = [ q0 q1 · · · qk−1] . (85) Observe that these matrices can be constructed from the set Xk, defined in (73) . Then, we can write 
+
+ˆGkv = yk, (86) where v = P vT 
+
+> Kt
+
+, ˆGk := ( Gk − Gk+1 )T , and yk = Ok. Finally, we minimize the squared error 
+
+E(v) = ∥yk − ˆGkv∥2, (87) to obtain 
+
+v = ( ˆGTk ˆGk)−1 ˆGTk yk. (88) In this manner, we estimate the vectorized version of PK .
+
+A.2.3 Proofs in Subsection 3.2 
+
+In this subsection, we provide proofs of results in Subsection 3.2 on calculating policy gradients in the model-free setting that are used in the update rules of Algorithm 2. We first begin with the proof of Theorem 3.2, where expressions for the score functions with respect to each of the P ID 
+
+parameters are provided. 
+
+Proof of Theorem 3.2 . Given μK (g) = −Kg = −[1 + KD CB τ ]−1[( KP C + KD C(A−I) 
+
+> τ
+
+)x − KI z],it immediately follows that 
+
+∇KP μK (g) = −τ (τ + KD CB )−1CT xg (89) 
+
+∇KI μK (g) = −τ (τ + KD CB )−1Tz g. (90) To compute ∇KD μK (g), we first write 
+
+(1 + KD CB τ )μK (g) = −(KP C + KD C(A − I)
+
+τ )x + KI z. 
+
+Then, applying the operator ∇KD on both the sides, we obtain 
+
+∇KD {(1 + KD CB τ )μK (g)} = − C(A − I)xτ ,
+
+or, equivalently, 
+
+μK (g)CB τ + (1 + KD CB τ )∇KD μK (g) = − C(A − I)xτ .
+
+Rearranging the above expression, we get 
+
+∇KD μK (g) = −(τ + KD CB )−1(C(A − I)x + μK (g)CB ).
+
+We now move on to proving Corollary 3.3, where we establish expressions for the score function with respect to P I parameters that do not require the knowledge of matrices (A, B ).
+
+Proof of Corollary 3.3 . From (18), we know that 
+
+∇KP log πK (u|g) = u − μK (g)
+
+σ2 ∇KP μK (g), (91) 
+
+∇KI log πK (u|g) = u − μK (g)
+
+σ2 ∇KI μK (g). (92) From Theorem 3.2 with KD = 0 , we get 
+
+∇KP log πK (u|g) = − u − μK (g)
+
+σ2 gT T Tx CT , (93) 
+
+∇KI log πK (u|g) = − u − μK (g)
+
+σ2 gT T Tz . (94) 19 A.3 Proofs and Additional Details for Section 4 
+
+We begin with proving that the objective of problem 3 enjoys the gradient dominance property in ˜K.
+
+Proof of Theorem 4.1 . We first define the set of stabilizing control parameters as 
+
+K := K ∈ R1×n+1 : ρ( ¯A − ¯BK ) < 1 . (95) Then, we know from Lemma 3 in [18] that the objective in Proposition 2.1 with the control policy in (5), enjoys the gradient dominance property in K, that is, 
+
+|J(K) − J(K∗)| ≤ α ∥∇ K J(K)∥2 , for all K ∈ K , (96) 
+
+where K, K ∗ are obtained from ˜K, ˜K∗ using (6), and, α = ∥ΣK∗ ∥ [σmin (Σ K )2R]−1.Since, we can replace J(K) with J( ˜K) Further, we note that ∇ ˜K J(K) =[∇KP J(K) ∇KI J(K) ∇KD J(K)] T . We can rewrite dJ (K) 
+
+> dK
+
+, using the chain rule, as 
+
+dJ (K)
+
+dK = ( ∇K KP )∇KP J( ˜K) + ( ∇K KI )∇KI J( ˜K) + ( ∇K KD )∇KD J( ˜K),
+
+or, equivalently, 
+
+∇K J(K) = mP ∇KP J( ˜K) + mI ∇KI J( ˜K) + mD ∇KD J( ˜K),
+
+where the matrices mP , m I , m D are given by mP = ∇K KP , mI = ∇K KI and mD = ∇K KD .Then, we can write the following: 
+
+∇K J(K) = ∇ ˜K J( ˜K)T MP ID , (97) where 
+
+MP ID =
+
+"mP
+
+mI
+
+mD
+
+#
+
+. (98) Applying the norm operator on both sides, we obtain ∥∇ K J(K)∥ = ∇ ˜K J( ˜K)T MP ID . Then, using the face that ∥∇ K J(K)∥2 ≤ ∥ MP ID ∥2 ∇ ˜K J( ˜K) 2
+
+, we have 
+
+|J(K) − J(K∗)| ≤ α ∥MP ID ∥2 ∥∇ ˜K J( ˜K)∥2.
+
+Finally, from the equivalence J( ˜K) = J(K), we have 
+
+J( ˜K) − J( ˜K∗) ≤ α ∥MP ID ∥2 ∥∇ ˜K J( ˜K)∥2.
+
+A.3.1 Proofs in subsection 4.1 
+
+In this section, we present the proof of Theorem 4.2. First, we define relevant variables from Theorem 3 in [13] for our formulation and then adapt their sample complexity result for our setting. We begin with the following conditions on the step size η. Let η > 0 be such that 
+
+ρ( ¯A − ¯BK η ) < 1,T r (ETK ∇K JDμ (K)Σ Kη (1 − ηa ΣK )) > 0, . (99) where Kη = K − η∇K JDμ (K) and a = λmax (R + ¯BT PK ¯B).
+
+Proof of Theorem 4.2 . We note that ∇K JDμ (K) = 2 EK ΣK , where ΣK = E P∞ 
+
+> i=0
+
+gigTi and EK
+
+is given (14) . Comparing to the gradient of the function f (K) from [13, Proposition 1], we have 
+
+Y := Σ K , Yη := Σ Kη , AKη = ¯A − ¯BK η and ϕη = 12 T r (ETK ∇K JDμ (K)Σ Kη (1 − ηa ΣK )) in our setting. Then, from [13, Theorem 3] , for all t ≥ 0,
+
+JDμ (Kt) − JDμ (K∗) ≤ κt  JDμ (K0) − JDμ (K∗) .
+
+20 We note that K is a function of ˜K by (6) , and, ˜K∗ := [ K∗ 
+
+> P
+
+K∗ 
+
+> I
+
+K∗ 
+
+> D
+
+]T corresponds to K∗, the global minimizer of JDμ (K). Thus, with a slight abuse in notation, we can write 
+
+JDμ ( ˜Kt) − JDμ ( ˜K∗) ≤ κt 
+
+JDμ ( ˜K0) − JDμ ( ˜K∗)
+
+
+
+.
+
+We now move on to convergence results for model-free case. 
+
+A.3.2 Proofs in Subsection 4.2 
+
+First, recall that for the model-free PI algorithm where KD = 0 , we modify the P I control parameter to be 
+
+˜K := 
+
+KP
+
+KI
+
+
+
+. (100) Consequently, from (6) with KD = 0 , we get 
+
+K = [ KP C KI ] , (101) or equivalently, 
+
+K = S ˜K, (102) where 
+
+S = [ C 1] . (103) Further, we define the matrix MP I as 
+
+MP I := 
+
+∇K KP
+
+∇K KI
+
+
+
+. (104) Second, under Assumption 4.3, the stochastic policy in (16) becomes 
+
+πK (u|gt) = 1( σt+1 )√2π e− (u−μ ˜K (gt)) T (u−μ ˜K (gt)) 2( σt+1 )2
+
+, (105) that is, ut ∼ N (μ ˜K (gt), σ 2/(t + 1) 2), for all t ≥ 0. We can also write the following: 
+
+ut = μ ˜K (gt) + ηt, (106) where ηt ∼ N (0 , σ 2/(t + 1) 2), for all t ≥ 0. We note that the {ηi}∞ 
+
+> i=0
+
+are i.i.d. random variables and independent of g0.We now present helper results that we will use in the proof of Theorem 4.7. We begin by obtaining a uniform bound over the magnitude JGπ ( ˜K) − JDμ ( ˜K) .
+
+Theorem A.3. The costs JK and JGK satisfy 
+
+JDμ ( ˜K) − JGπ ( ˜K) ≤ ∥R∥π2σ2
+
+6 , for all ˜K ∈ ˜K. (107) 
+
+Proof. Since the control input ut depends on g0 through gt and {ηi}∞
+
+> i=0
+
+, the expectation in (25) will be with respect to {ηi}∞ 
+
+> i=0
+
+and g0. Furthermore, by (6) we can write JGπ (K) = JGπ ( ˜K) and 
+
+JDμ (K) = JDμ ( ˜K). We expand the expression for JGπ (K) to get 
+
+JGπ (K) = E{ηi}∞ 
+
+> i=0
+
+Eg0 [
+
+> ∞
+
+X
+
+> j=0
+
+yTj Y y j + ( μK (gj ) + ηj )T R(μK (gj ) + ηj )] . (108) Further expanding this expression gives 
+
+JGπ (K) = E{ηi}∞ 
+
+> i=0
+
+Eg0 [
+
+> ∞
+
+X
+
+> j=0
+
+yTj Y y j + μK (gj )T Rμ K (gj ) + 2 ηTj Rμ K (gj ) + ηTj Rη j ]. (109) 21 We observe that the expectation in JDμ ( ˜K) is with respect to μ ˜K = −Kg , with K given by (6) ,which implies that the expectation is taken with respect to g0 ∼ D , and thus 
+
+JDμ ( ˜K) = Eg0 [
+
+> ∞
+
+X
+
+> j=0
+
+yTj Y y j + μ ˜K (gj )T Rμ ˜K (gj )] . (110) Thus, we can further write the following: 
+
+JGπ (K) = JDμ (K) + E{ηi}∞ 
+
+> i=0
+
+Eg0 [
+
+> ∞
+
+X
+
+> j=0
+
+2ηTj Rμ ˜K (gj ) + ηTj Rη j ]. (111) First, since {ηi}s are independent of g0, we have 
+
+E{ηi}∞ 
+
+> i=0
+
+Eg0 [
+
+> ∞
+
+X
+
+> j=0
+
+ηTj Rη j ] = E{ηi}∞ 
+
+> i=0
+
+[
+
+> ∞
+
+X
+
+> j=0
+
+ηTj Rη j ] (112) Then, from definition of variance and the fact the Eηj [ηj ] = 0 , for all j ≥ 0, we get 
+
+lim   
+
+> T→∞
+
+E{ηi}∞ 
+
+> i=0
+
+[
+
+> T
+
+X
+
+> j=0
+
+ηTj Rη j ] = R lim  
+
+> T→∞
+> T
+
+X
+
+> t=0
+
+σ2
+
+(t + 1) 2 . (113) Since lim T →∞ 
+
+PTt=0 1(t+1) 2 = π2 
+
+> 6
+
+, we therefore have 
+
+lim   
+
+> T→∞
+
+E{ηi}∞ 
+
+> i=0
+
+[
+
+> T
+
+X
+
+> j=0
+
+ηTj Rη j ] = Rσ 2π2
+
+6 . (114) Second, we examine the expression lim T →∞ E{ηi}∞ 
+
+> i=0
+
+Eg0 [PTj=0 2ηTj Rμ ˜K (gj )] and focus on the 
+
+j-th term, that is, E{ηi}∞ 
+
+> i=0
+
+Eg0 [2 ηTj Rμ ˜K (gj )] .We note that {ηi} are i.i.d. and that the control input μ ˜K (gj ) only depends on the first j − 1 random variables. We therefore have 
+
+E{ηi}∞ 
+
+> i=0
+
+Eg0 [2 ηTj Rμ ˜K (gj )] = 2 Eηj [ηTj ]E{ηi}j−1
+
+> i=0
+
+Eg0 [Rμ ˜K (gj )] . (115) However, since Eηj [ηTj ] = 0 , we conclude that E{ηi}∞ 
+
+> i=0
+
+Eg0 [2 ηTj Rμ ˜K (gj )] = 0 and thus 
+
+lim   
+
+> T→∞
+
+E{ηi}∞ 
+
+> i=0
+
+Eg0 [
+
+> T
+
+X
+
+> j=0
+
+2ηTj Rμ ˜K (gj )] = 0 . (116) Therefore we can rewrite (111) using (113) and (116) as 
+
+JGπ ( ˜K) − JDμ ( ˜K) = JGπ (K) − JDμ (K) = Rσ 2π2
+
+6 . (117) Taking norms on both sides in (117) and applying the triangle inequality finally establishes that 
+
+JGπ ( ˜K) − JDμ ( ˜K) ≤ ∥R∥σ2π2
+
+6 , for all ˜K ∈ ˜K. (118) We now show that the added noise in the stochastic policy has no effect on the gradient. 
+
+Theorem A.4. The gradients ∇ ˜K JDμ and ∇ ˜K JGπ are equivalent for all ˜K ∈ ˜K, that is, 
+
+∇ ˜K JDμ ( ˜K) = ∇ ˜K JGπ ( ˜K). (119) 22 Proof. From (117), we know that 
+
+JGπ ( ˜K) − JDμ ( ˜K) = Rσ 2π2
+
+6 , (120) for all ˜K ∈ ˜K. Applying the operator ∇ ˜K on both sides, we immediately obtain the desired equality as 
+
+∇ ˜K JDμ − ∇ ˜K JGπ = 0 , for all ˜K ∈ ˜K. (121) Leveraging the last two results, we now bound the optimality gap arising due to use of the stochastic policy (16). 
+
+Theorem A.5. Suppose ˜K∗ 
+
+> G
+
+∈ arg min ˜K {JGπ ( ˜K)} and ˜K∗ ∈ arg min ˜K JDμ ( ˜K). We have 
+
+JGπ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) ≤ ∥R∥σ2π2
+
+3 . (122) 
+
+Proof. Consider the following: 
+
+JGπ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) = JGπ ( ˜K∗
+
+> G
+
+) − JGμ ( ˜K∗
+
+> G
+
+) + JGμ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗)
+
+≤ JGπ ( ˜K∗
+
+> G
+
+) − JGμ ( ˜K∗
+
+> G
+
+) + JGμ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) .
+
+(123) From the definition of JGπ ( ˜K∗
+
+> G
+
+), we have that JGπ ( ˜K∗
+
+> G
+
+) ≤ JGπ ( ˜K∗). Moreover, since JGπ ( ˜K∗
+
+> G
+
+) = 
+
+JGμ ( ˜K∗
+
+> G
+
+) + Rσ 2π2 
+
+> 6
+
+, we have JGπ ( ˜K∗
+
+> G
+
+) ≥ JGμ ( ˜K∗
+
+> G
+
+). We thus have JGπ ( ˜K∗) ≥ JGπ ( ˜K∗
+
+> G
+
+) ≥ JGμ ( ˜K∗
+
+> G
+
+).Combining the above two results and then applying Theorem A.3, we get that 
+
+JGπ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) ≤ JGπ ( ˜K∗
+
+> G
+
+) − JGμ ( ˜K∗
+
+> G
+
+) + JGπ ( ˜K∗) − JDμ ( ˜K∗) ≤ ∥R∥σ2π2
+
+3 . (124) We are now ready to prove Theorem 4.4, establishing weak gradient dominance of the cost JGπ ( ˜K).
+
+Proof of Theorem 4.4 . We first rewrite 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) = JGπ ( ˜K) − JDμ ( ˜K) + JDμ ( ˜K) + JDμ ( ˜K∗
+
+> G
+
+)
+
+− JDμ ( ˜K∗
+
+> G
+
+) + JDμ ( ˜K∗) − JDμ ( ˜K∗) − JGπ ( ˜K∗
+
+> G
+
+) .
+
+(125) Rearranging terms gives 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) = JGπ ( ˜K) − JDμ ( ˜K) + JDμ ( ˜K) − JDμ ( ˜K∗)
+
+− JDμ ( ˜K∗
+
+> G
+
+) + JDμ ( ˜K∗) + JDμ ( ˜K∗
+
+> G
+
+) − JGπ ( ˜K∗
+
+> G
+
+) .
+
+(126) Using the triangle inequality, we obtain 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ JGπ ( ˜K) − JDμ ( ˜K) + JDμ ( ˜K) − JDμ ( ˜K∗)
+
++ −JDμ ( ˜K∗
+
+> G
+
+) + JDμ ( ˜K∗) + JDμ ( ˜K∗
+
+> G
+
+) − JGπ ( ˜K∗
+
+> G
+
+) .
+
+(127) From Theorems A.3 and A.5, we have 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ ∥R∥σ2π2
+
+6 + JDμ ( ˜K) − JDμ ( ˜K∗) ∥R∥σ2π2
+
+6 + 2∥R∥σ2π2
+
+6 . (128) From Theorem 4.1 we can write 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ ∥R∥σ2π2
+
+6 + ˜ α ∇ ˜K JDμ ( ˜K) 2 ∥R∥σ2π2
+
+6 + 2∥R∥σ2π2
+
+6 , (129) 23 or, equivalently, 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ 2∥R∥σ2π2
+
+3 + ˜ α ∇ ˜K JDμ ( ˜K) 2
+
+. (130) Then, following Theorem A.4, we finally get 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ 2∥R∥σ2π2
+
+3 + ˜ α ∇ ˜K JGπ ( ˜K) 2
+
+. (131) We are now ready to present a result on the local Lipschitzness of the LQR problem from [28], adapted for our PID control formulation. Recall that the equivalent problem in our setting is given by Proposition 2.1 with control parameter K, where K is obtained from ˜K using (6). 
+
+Lemma A.6. There exist constants ( ¯ m(K), ¯l(K)) for a given control parameter K such that for every K′ satisfying ∥K′ − K∥ ≤ ¯m(K), we have 
+
+∇K JGπ (K′) − ∇ K JGπ (K) ≤ ¯l(K)∥K′ − K∥. (132) 
+
+Proof. Since we know that JDμ (K′) = J(K), the proof follows from Theorem A.4 combined with Lemma 5 from [28]. We establish a similar local Lipschitzness result for our cost gradient ∇ ˜K JGπ ( ˜K) in terms of the parameter ˜K.
+
+Proposition A.7. We have that σmin (MP I ) > 0.Proof. From (102), we can write 
+
+KP = K 1
+
+CC T T Tx CT (133) 
+
+KI = KT Tz . (134) Taking derivatives of KP and KI with respect to K, we get 
+
+∇K KP = 1
+
+CC T CT x (135) 
+
+∇K KI = Tz . (136) Therefore, we can write MP I as 
+
+MP I =
+
+ 1 
+
+> CC T
+
+CT x
+
+Tz
+
+
+
+, (137) and, consequently, 
+
+MP I M TP I =
+
+ 1 
+
+> CC T
+
+CT x
+
+T Tz
+
+  1 
+
+> CC T
+
+(CT x)T Tz
+
+ =
+
+ 1(CC T )2 CT xT Tx CT 1 
+
+> CC T
+
+CT xT Tz 
+
+> 1
+> CC T
+
+Tz (CT x)T Tz T Tz
+
+
+
+. (138) From the definition of Tx and Tz , we have 
+
+TxT Tx = In, T z T Tz = 1 , T xT Tz = 0 ,
+
+which yields 
+
+MP I M TP I =
+
+ 1(CC T )2 CC T 00 1
+
+
+
+. (139) Finally, we establish that 
+
+σmin (MP I ) = 
+
+q
+
+λmin (MP I M TP I ) = 
+
+r
+
+min { 1
+
+CC T , 1} > 0, (140) where λmin represents the minimum eigenvalue. 24 Corollary A.8. The gradient ∇ ˜K JGπ ( ˜K) is locally Lipschitz in parameter ˜K, that is, for all ˜K′ such that ˜K′ − ˜K ≤ m( ˜K), we have 
+
+∇ ˜K JGπ ( ˜K′) − ∇ ˜K JGπ ( ˜K) ≤ l( ˜K) ˜K′ − ˜K , (141) 
+
+Proof. Consider the left hand side of (141) and write 
+
+h := ∇K JGπ (K′) − ∇ K JGπ (K) . (142) Then, from Theorem A.4, we know that ∇K JGπ (K) = ∇K JDμ (K). Therefore, we get 
+
+h = ∇K JDμ (K′) − ∇ K JDμ (K) . (143) Applying the chain rule on ∇K JDμ (K), we get 
+
+∇K JDμ (K) = ∇K KTP ∇KP JDμ ( ˜K) + ∇K KTI ∇KI JDμ ( ˜K), (144) which can be rewritten as 
+
+∇K JDμ (K) = ∇K KTP ∇K KTI
+
+ ∇KP JDμ ( ˜K)
+
+∇KI JDμ ( ˜K)
+
+
+
+. (145) Note that ∇ ˜K JDμ ( ˜K) = 
+
+∇KP JDμ ( ˜K)
+
+∇KI JDμ ( ˜K),
+
+
+
+, then and therefore ∇K JDμ (K) = M TP I ∇ ˜K JDμ ( ˜K). Con-sequently, we have 
+
+h = M TP I ∇ ˜K JDμ ( ˜K′) − M TP I ∇ ˜K JDμ ( ˜K) . (146) Let σmin (MP I ) represent the minimum singular value of MP I . Then, we can write 
+
+h ≥ σmin (M TP I ) ∇ ˜K JDμ ( ˜K′) − ∇ ˜K JDμ ( ˜K) . (147) Since σmin (MP I ) = σmin (M TP I ) and that σmin (MP I ) > 0 from Proposition (A.7), we can write 
+
+∇ ˜K JDμ ( ˜K′) − ∇ ˜K JDμ ( ˜K) ≤ 1
+
+σmin (MP I ) ¯l(K) ∥K′ − K∥ . (148) Now, defining ∇K = K′ − K and ∇ ˜K = ˜K′ − ˜K, then we can write 
+
+∆K = [∆ KP C ∆KI ] , (149) or, equivalently, 
+
+∆K = S∆ ˜K. (150) Applying the Cauchy-Schwarz inequality, we have 
+
+∇ ˜K JDμ ( ˜K′) − ∇ ˜K JDμ ( ˜K) ≤ 1
+
+σmin (MP I ) ¯l(K) ∥S∥ ˜K′ − ˜K . (151) From Theorem A.4, we can finally write 
+
+∇ ˜K JGπ ( ˜K′) − ∇ ˜K JGπ ( ˜K) ≤ l( ˜K) ˜K′ − ˜K , (152) where 
+
+l( ˜K) = 1
+
+σmin (MP I ) ¯l(K) ∥S∥ , (153) which completes the proof. Before moving on to proving Theorem 4.7, we present a weak gradient dominance result in parameter 
+
+˜K, from Theorem 4.4. 25 Corollary A.9 (Weak Gradient Dominance) . Suppose that Assumption 4.6 holds for the gradient 
+
+∇ ˜K JGπ ( ˜K). Then the following version of weak gradient dominance holds 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ 2∥R∥σ2π2
+
+3 + ˜ α ∇ ˜K JGπ ( ˜K) , for all ˜K ∈ ˜K, (154) 
+
+where ˜α = ∥ΣK∗ ∥ [σmin (Σ K )2R]−1 ∥MP I ∥2.Proof. The above claim immediately follows from the fact that ∇ ˜K JGπ ( ˜K) ≥ ∇ ˜K JGπ ( ˜K) 2
+
+due to Assumption 4.6 and the fact that ˜α > 0.We now provide proof of the sample complexity result of Theorem 4.7. 
+
+Proof of Theorem 4.7 . Using the fact that x ≤ ∥ x∥ and Corollary A.9, we can write 
+
+JGπ ( ˜K) − JGπ ( ˜K∗
+
+> G
+
+) ≤ ˜α ∇ ˜K JGπ ( ˜K) + β/ 3. (155) Define ¯JGπ ( ˜K∗
+
+> G
+
+) := JGπ ( ˜K∗
+
+> G
+
+) + β/ 3. Then, from (155), we have the following: 
+
+1˜α max {0, J GK − ¯JGπ ( ˜K∗
+
+> G
+
+)} ≤ ∇ ˜K JGπ ( ˜K) . (156) We note that, for time-step t ≥ 0,
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+) = JGπ ( ˜Kt+1 ) − JGπ ( ˜Kt) + JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+). (157) Using the local Lipschitz property from Corollary A.8 and the second-order Taylor expansion gives 
+
+JGπ ( ˜Kt+1 ) − JGπ ( ˜Kt) ≤ ⟨∇ ˜K JGπ ( ˜Kt), ˜Kt+1 − ˜Kt⟩ + l( ˜Kt)2 ∥ ˜Kt+1 − ˜Kt∥22, (158) and we therefore have that 
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+) ≤ JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) + ⟨∇ K JGK ( ˜Kt), ˜Kt+1 − ˜Kt⟩
+
++ l( ˜Kt)2 ∥ ˜Kt+1 − ˜Kt∥22.
+
+(159) Recalling the update rule ˜Kt+1 = ˜Kt − ηt d∇ ˜K JGπ ( ˜Kt), by the unbiasedness of the gradient estimator we have 
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+) ≤ JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt⟨∇ ˜K JGπ ( ˜Kt), d∇ ˜K JGπ ( ˜Kt)⟩
+
++ l( ˜Kt)2 η2 
+
+> t
+
+d∇ ˜K JGπ ( ˜Kt) 2
+
+.
+
+(160) Let Ft = σ( ˜Kk, η k; 0 ≤ k ≤ t) denote the σ-algebra generated by all randomness in the system up until time t, and let Et[·] = E[·|F t−1]. Taking expectations over the foregoing yields 
+
+Et
+
+h
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+)
+
+i
+
+≤ Et
+
+h
+
+JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt⟨∇ ˜K JGπ ( ˜Kt), d∇ ˜K JGπ ( ˜Kt)⟩
+
++ l( ˜Kt)2 η2 
+
+> t
+
+d∇ ˜K JGπ ( ˜Kt) 2 i
+
+.
+
+(161) 26 Given Et[d∇ ˜K JGπ ( ˜Kt)] = ∇ ˜K JGπ ( ˜Kt) from the fact the our estimator is unbiased, and recalling the definition of the variance of a random variable, we can write the following 
+
+Et
+
+h
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+)
+
+i
+
+≤ JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt⟨∇ ˜K JGπ ( ˜Kt), ∇ ˜K JGπ ( ˜Kt)⟩
+
++ l( ˜Kt)2 η2 
+
+> t
+
+V ar (d∇ ˜K JGπ ( ˜Kt)) + l( ˜Kt)2 η2 
+
+> t
+
+(Et
+
+h d∇ ˜K JGπ ( ˜Kt)
+
+i
+
+)2,
+
+= JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt ∇ ˜K JGπ ( ˜Kt) 2
+
++ l( ˜Kt)2 η2 
+
+> t
+
+V ar (d∇ ˜K JGπ ( ˜Kt)) + l( ˜Kt)2 η2 
+
+> t
+
+∇ ˜K JGπ ( ˜Kt) 2
+
+,
+
+= JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt
+
+
+
+1 − l( ˜Kt)2 ηt
+
+
+
+∇ ˜K JGπ ( ˜Kt) 2
+
++ l( ˜Kt)2 η2 
+
+> t
+
+V ar (d∇ ˜K JGπ ( ˜Kt)) .
+
+(162) Using Assumption 4.5, we finally obtain 
+
+Et
+
+h
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+)
+
+i
+
+≤ JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt
+
+
+
+1 − l( ˜Kt)2 ηt
+
+
+
+∇ ˜K JGπ ( ˜Kt) 2
+
++ l( ˜Kt)2 η2
+
+> t
+
+¯VN .
+
+(163) For a sequence of Lipschitz constants {l(Ki)}, suppose that the largest Lipschitz constant is given by 
+
+lmx . Further, suppose that we pick a step size ηt ≤ 1 
+
+> lmx
+
+; then it follows that (1 − lmx  
+
+> 2
+
+ηt ≥ 12 ). We can then re-write the above inequality as follows 
+
+Et
+
+h
+
+JGπ ( ˜Kt+1 ) − ¯JGπ ( ˜K∗
+
+> G
+
+)
+
+i
+
+≤ JGπ ( ˜Kt) − ¯JGπ ( ˜K∗
+
+> G
+
+) − ηt
+
+2 ∇ ˜K JGπ ( ˜Kt) 2
+
++ l( ˜Kt)2 η2
+
+> t
+
+¯VN .
+
+(164) At this point, we can now follow the proof of Theorem 6.1 in [33] with L2 = lmx to obtain the bound 
+
+EJGπ ( ˜KT ) − JGπ ( ˜K∗
+
+> G
+
+) ≤ β/ 3 + cT 1 −
+
+r η3lTmx ¯V
+
+4˜ α2N
+
+!T
+
++
+
+r lTmx ¯V η ˜α2
+
+N , (165) where we note that, for finite T , we can replace the lmx by lTmx . From Theorem A.5, we have 
+
+JGπ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) ≤ 2∥R∥σ2π2
+
+6 = 2 β/ 3. (166) Note that, by (117) , we have JGπ ( ˜K∗
+
+> G
+
+) = JDμ ( ˜K∗
+
+> G
+
+) + Rσ 2π2 
+
+> 6
+
+. Furthermore, since JDμ ( ˜K∗
+
+> G
+
+) ≥
+
+JDμ ( ˜K∗), we obtain 
+
+JGπ ( ˜K∗
+
+> G
+
+) ≥ JDμ ( ˜K∗) + Rσ 2π2
+
+6 . (167) In other words, we have that JDμ ( ˜K∗) is the global minimum. Noisily perturbing the function 
+
+JDμ ( ˜K) to yield JGπ ( ˜K) leads to a minimum that satisfies JDμ ( ˜K∗) ≤ JGπ ( ˜K∗
+
+> G
+
+), or, equivalently, 
+
+JGπ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) ≥ 0. From the fact that x ≤ ∥ x∥, this implies 
+
+JGπ ( ˜K∗
+
+> G
+
+) − JDμ ( ˜K∗) ≤ 2β/ 3, (168) i.e., that 
+
+−JGπ ( ˜K∗
+
+> G
+
+) ≥ − JDμ ( ˜K∗) − 2β/ 3. (169) We therefore finally obtain 
+
+EJGπ ( ˜KT ) − JDμ ( ˜K∗) ≤ β + cT 1 −
+
+r η3lTmx ¯V
+
+4˜ α2N
+
+!T
+
++
+
+r lTmx ¯V η ˜α2
+
+N .
+
+The remainder of Theorem 4.7 now follows in a straightforward manner from the rest of the proof of [33, Theorem 6.1]. 27 A.4 Experiment Details 
+
+We note that both the environments rea and lah have scalar input and output spaces. In our experiments, we set R = Y = 1 .0, where matrices R and Y are as in (1) . Further, the cost accumulated over each length-N rollout, at time t, is given by 
+
+− 
+
+> t+N−1
+
+X
+
+> i=t
+
+ gTi Qg i + uTi Ru i
+
+. (170) For the experiments generating reward curves in Figures 1, we ran 100 trials of our proposed algorithms and 4 trials of the PPO algorithm. The simulation hyperparameters for our experiments are provided in Tables 1, 2, 3 and 4. Finally, we ran our experiments on a Windows laptop, configured with a 6-core i7-8750H, 2.20GHz CPU, an NVIDIA GeForce RTX 2070 GPU, and 32GB RAM. Table 1: Simulation Parameters for PG4PID Parameters Values No. of episodes T 10 Rollout length N 100 Step sizes {αP , α I , α D } 0.0001 Tolerance ϵ 0.001 Sampling time τ 0.1 sec Table 2: Simulation Parameters for PG4PI Parameters Values No. of episodes T 10 Rollout length N 100 Step sizes {αP , α I , α D } 0.0001 Noise variance σ 0.1 Tolerance ϵ 0.001 Sampling time τ 0.1 sec Table 3: Simulation Parameters for Model-free LQR Parameters Values No. of episodes T 10 Rollout length N 100 Step size α 0.0001 Tolerance ϵ 0.001 Sampling time τ 0.1 sec Table 4: Simulation Parameters for PPO Policy learning rate 0.0003 Palue learning rate 0.0003 Entropy coefficient 0.0 Clip range 0.2 Weight decay 0.0 Layer size 2Batch size 2Buffer size 60000 Number of epochs 10 Rollout length 8Discount factor 0.99 
+
+A.4.1 Validation on rea and lah 
+
+We present the state, input tracking, and tracking error trajectories for our experiments on the Chemical Reactor ( rea ) and the LA University Hospital ( lah ) controlgym environments. Recall that we consider the unit step tracking task which entails two subtasks: i) system output tracking unit step input, and ii) stabilizing the closed loop system. The step tracking performance is shown in Figures 3a and 3b with the model-based PID Algorithm PG4PID, and Figures 3c and 3d with the model-free PI Algorithm PG4PI. We also plot corresponding trajectories for the tracking error (deviation from reference step input) in Figures 3e and 3f with PG4PID, and Figures 3g and 3h with PG4PI. Finally, we illustrate the efficacy of our model-based and model-free algorithms for the task of system stabilization. The corresponding state trajectories are illustrated in Figures 4a and 4b with PG4PID, and Figures 4c and 4d with PG4PI. 
+
+A.4.2 Ablation Studies 
+
+We carry out ablation studies on the impact of the variance parameter σ on the convergence of our Model-free PI Algorithm, PG4PI, on both the Chemical Reactor and LA Hospital environments. The results are presented in Figure 5. We find that varying the σ does not have a significant impact on algorithm performance for small σ (between 0.0001-2); however, some performance degradation occurs for larger variances ( σ = 3 ). In general, σ is chosen to be small enough that suitable gradient dominance and convergence results can still be recovered. In practice, the choice of σ comes down 28 to ensuring numerical stability, and we find from our ablation study that Algorithm 2 is stable for a wide range of σ values. 
+
+A.4.3 Benchmarking vs. PG based LQR 
+
+We present the results of our benchmarking experiment where we implement both a model-free (zero-order optimization method) PG method and model-based (using exact gradient expressions) method for tuning LQR control policies from [18] in Figures 6 and 7 respectively. In model-based LQR, we use estimates of matrices (A, B ) to compute the policy gradient, while we use their Algorithm 1 in [18] to estimate the gradient in the model-free method. The experimental parameters for model-free LQR are presented in Table 3. We note that our proposed model-free Algorithm 2 follows a first-order optimization method, that our model-free PID control policy outperforms both model-based and model-free LQR control policies in both tracking behavior and robustness to model errors, as discussed in Section 5. 
+
+A.5 Broader Impacts 
+
+This work is primarily theoretical and pertains to the development of policy gradient based algorithms to design PID control policies, and does not have any direct societal impact. 29 (a) Tracking performance for unit step refer-ence in lah environment with PG4PID. 
+
+(b) Tracking performance for unit step refer-ence in rea environment with PG4PID. 
+
+(c) Tracking performance for unit step refer-ence in lah environment with PG4PI. 
+
+(d) Tracking performance for unit step refer-ence in rea environment with PG4PI. 
+
+(e) Tracking error with unit step reference in 
+
+lah with PG4PID. 
+
+(f) Tracking error with unit step reference in 
+
+rea with PG4PID. 
+
+(g) Tracking error with unit step reference in 
+
+lah with PG4PI. 
+
+(h) Tracking error with unit step reference in 
+
+rea with PG4PI. 
+
+Figure 3: Output trajectories and tracking errors in response to unit step reference input signal, and illustrating perfect tracking with PG4PID and PG4PI. 30 (a) State trajectories in lah with PG4PID. (b) State trajectories in rea with PG4PID. 
+
+(c) State trajectories in lah with PG4PI. (d) State trajectories in rea with PG4PI. 
+
+Figure 4: State trajectories for the lah and rea environments illustrating stabilization with PG4PID and PG4PI. 31 Figure 5: Reward curves for the PG4PI Algorithm on the 8-dimensional Chemical Reactor and the on the 48-dimensional LA University Hospital environments. Plots contain two sets of experiments, run for a smaller set and a larger set of variances σ. While smaller variances ( σ < 2) have negligible effect on the convergence rates, slower convergence is observed for some larger variances ( σ = 3 ). 32 Figure 6: State stabilization trajectories and tracking performance for a unit step reference with model-free PG with LQR policy and model-free PG4PI on the Chemical Reactor and LA University Hospital environments. While the Model-free LQR controller stabilizes the states for both the environments, there is a non-zero steady state tracking error for the unit step input, while the model-free PI controller achieves both stabilization and perfect tracking with zero steady-state error. 33 Figure 7: Comparison of model-based PG with LQR policy and model-free PG4PI with small model error for the Chemical Reactor environment. LQR is highly fragile and exhibits instability with a model error of ∥∆A∥ = 0 .05 even with a model-based implementation, while our model-free PI controller achieves stabilization and perfect tracking with zero steady-state error. 34 NeurIPS Paper Checklist 
+
+1. Claims 
+
+Question: Do the main claims made in the abstract and introduction accurately reflect the paper’s contributions and scope? Answer: [Yes] Justification: The main claims in our abstract and introduction accurately reflect the paper’s scope and contributions. All the theoretical and experimental results are aligned with the claims made in the abstract and introduction. Guidelines: • The answer NA means that the abstract and introduction do not include the claims made in the paper. • The abstract and/or introduction should clearly state the claims made, including the contributions made in the paper and important assumptions and limitations. A No or NA answer to this question will not be perceived well by the reviewers. • The claims made should match theoretical and experimental results, and reflect how much the results can be expected to generalize to other settings. • It is fine to include aspirational goals as motivation as long as it is clear that these goals are not attained by the paper. 2. Limitations 
+
+Question: Does the paper discuss the limitations of the work performed by the authors? Answer: [Yes] Justification: We clearly discuss all the theoretical and experimental assumptions behind our work. Guidelines: • The answer NA means that the paper has no limitation while the answer No means that the paper has limitations, but those are not discussed in the paper. • The authors are encouraged to create a separate "Limitations" section in their paper. • The paper should point out any strong assumptions and how robust the results are to violations of these assumptions (e.g., independence assumptions, noiseless settings, model well-specification, asymptotic approximations only holding locally). The authors should reflect on how these assumptions might be violated in practice and what the implications would be. • The authors should reflect on the scope of the claims made, e.g., if the approach was only tested on a few datasets or with a few runs. In general, empirical results often depend on implicit assumptions, which should be articulated. • The authors should reflect on the factors that influence the performance of the approach. For example, a facial recognition algorithm may perform poorly when image resolution is low or images are taken in low lighting. Or a speech-to-text system might not be used reliably to provide closed captions for online lectures because it fails to handle technical jargon. • The authors should discuss the computational efficiency of the proposed algorithms and how they scale with dataset size. • If applicable, the authors should discuss possible limitations of their approach to address problems of privacy and fairness. • While the authors might fear that complete honesty about limitations might be used by reviewers as grounds for rejection, a worse outcome might be that reviewers discover limitations that aren’t acknowledged in the paper. The authors should use their best judgment and recognize that individual actions in favor of transparency play an impor-tant role in developing norms that preserve the integrity of the community. Reviewers will be specifically instructed to not penalize honesty concerning limitations. 3. Theory assumptions and proofs 
+
+Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof? Answer: [Yes] 35 Justification: We provide the assumptions behind the theoretical results in Sections 2, 3 and 4. The detailed proofs of all results are provided in the Appendix. Guidelines: • The answer NA means that the paper does not include theoretical results. • All the theorems, formulas, and proofs in the paper should be numbered and cross-referenced. • All assumptions should be clearly stated or referenced in the statement of any theorems. • The proofs can either appear in the main paper or the supplemental material, but if they appear in the supplemental material, the authors are encouraged to provide a short proof sketch to provide intuition. • Inversely, any informal proof provided in the core of the paper should be complemented by formal proofs provided in appendix or supplemental material. • Theorems and Lemmas that the proof relies upon should be properly referenced. 4. Experimental result reproducibility 
+
+Question: Does the paper fully disclose all the information needed to reproduce the main ex-perimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)? Answer: [Yes] Justification: All the experimental details are described in Section 5 and in the Appendix, and all the code and data are submitted along with the paper. Guidelines: • The answer NA means that the paper does not include experiments. • If the paper includes experiments, a No answer to this question will not be perceived well by the reviewers: Making the paper reproducible is important, regardless of whether the code and data are provided or not. • If the contribution is a dataset and/or model, the authors should describe the steps taken to make their results reproducible or verifiable. • Depending on the contribution, reproducibility can be accomplished in various ways. For example, if the contribution is a novel architecture, describing the architecture fully might suffice, or if the contribution is a specific model and empirical evaluation, it may be necessary to either make it possible for others to replicate the model with the same dataset, or provide access to the model. In general. releasing code and data is often one good way to accomplish this, but reproducibility can also be provided via detailed instructions for how to replicate the results, access to a hosted model (e.g., in the case of a large language model), releasing of a model checkpoint, or other means that are appropriate to the research performed. • While NeurIPS does not require releasing code, the conference does require all submis-sions to provide some reasonable avenue for reproducibility, which may depend on the nature of the contribution. For example (a) If the contribution is primarily a new algorithm, the paper should make it clear how to reproduce that algorithm. (b) If the contribution is primarily a new model architecture, the paper should describe the architecture clearly and fully. (c) If the contribution is a new model (e.g., a large language model), then there should either be a way to access this model for reproducing the results or a way to reproduce the model (e.g., with an open-source dataset or instructions for how to construct the dataset). (d) We recognize that reproducibility may be tricky in some cases, in which case authors are welcome to describe the particular way they provide for reproducibility. In the case of closed-source models, it may be that access to the model is limited in some way (e.g., to registered users), but it should be possible for other researchers to have some path to reproducing or verifying the results. 5. Open access to data and code 
+
+Question: Does the paper provide open access to the data and code, with sufficient instruc-tions to faithfully reproduce the main experimental results, as described in supplemental material? 36 Answer: [Yes] Justification: All the code and data are submitted along with the paper, and will be open-sourced upon acceptance. Guidelines: • The answer NA means that paper does not include experiments requiring code. • Please see the NeurIPS code and data submission guidelines ( https://nips.cc/ public/guides/CodeSubmissionPolicy ) for more details. • While we encourage the release of code and data, we understand that this might not be possible, so “No” is an acceptable answer. Papers cannot be rejected simply for not including code, unless this is central to the contribution (e.g., for a new open-source benchmark). • The instructions should contain the exact command and environment needed to run to reproduce the results. See the NeurIPS code and data submission guidelines ( https: //nips.cc/public/guides/CodeSubmissionPolicy ) for more details. • The authors should provide instructions on data access and preparation, including how to access the raw data, preprocessed data, intermediate data, and generated data, etc. • The authors should provide scripts to reproduce all experimental results for the new proposed method and baselines. If only a subset of experiments are reproducible, they should state which ones are omitted from the script and why. • At submission time, to preserve anonymity, the authors should release anonymized versions (if applicable). • Providing as much information as possible in supplemental material (appended to the paper) is recommended, but including URLs to data and code is permitted. 6. Experimental setting/details 
+
+Question: Does the paper specify all the training and test details (e.g., data splits, hyper-parameters, how they were chosen, type of optimizer, etc.) necessary to understand the results? Answer: [Yes] Justification: Yes, the paper details the experimental setting and benchmarks in Section 5 and the Appendix. Guidelines: • The answer NA means that the paper does not include experiments. • The experimental setting should be presented in the core of the paper to a level of detail that is necessary to appreciate the results and make sense of them. • The full details can be provided either with the code, in appendix, or as supplemental material. 7. Experiment statistical significance 
+
+Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments? Answer: [Yes] Justification: Yes, we report the mean and one standard deviation of all reward curves in our experiments over 100 independent training runs. Guidelines: • The answer NA means that the paper does not include experiments. • The authors should answer "Yes" if the results are accompanied by error bars, confi-dence intervals, or statistical significance tests, at least for the experiments that support the main claims of the paper. • The factors of variability that the error bars are capturing should be clearly stated (for example, train/test split, initialization, random drawing of some parameter, or overall run with given experimental conditions). • The method for calculating the error bars should be explained (closed form formula, call to a library function, bootstrap, etc.) • The assumptions made should be given (e.g., Normally distributed errors). • It should be clear whether the error bar is the standard deviation or the standard error of the mean. 37 • It is OK to report 1-sigma error bars, but one should state it. The authors should preferably report a 2-sigma error bar than state that they have a 96% CI, if the hypothesis of Normality of errors is not verified. • For asymmetric distributions, the authors should be careful not to show in tables or figures symmetric error bars that would yield results that are out of range (e.g. negative error rates). • If error bars are reported in tables or plots, The authors should explain in the text how they were calculated and reference the corresponding figures or tables in the text. 8. Experiments compute resources 
+
+Question: For each experiment, does the paper provide sufficient information on the com-puter resources (type of compute workers, memory, time of execution) needed to reproduce the experiments? Answer: [Yes] Justification: The computational resources utilized for the experiments are provided in the Appendix. Guidelines: • The answer NA means that the paper does not include experiments. • The paper should indicate the type of compute workers CPU or GPU, internal cluster, or cloud provider, including relevant memory and storage. • The paper should provide the amount of compute required for each of the individual experimental runs as well as estimate the total compute. • The paper should disclose whether the full research project required more compute than the experiments reported in the paper (e.g., preliminary or failed experiments that didn’t make it into the paper). 9. Code of ethics 
+
+Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics https://neurips.cc/public/EthicsGuidelines ?Answer: [Yes] Justification: We have reviewed the NeurIPS Code of Ethics, and ensured that our paper conforms to these regulations. Guidelines: • The answer NA means that the authors have not reviewed the NeurIPS Code of Ethics. • If the authors answer No, they should explain the special circumstances that require a deviation from the Code of Ethics. • The authors should make sure to preserve anonymity (e.g., if there is a special consid-eration due to laws or regulations in their jurisdiction). 10. Broader impacts 
+
+Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed? Answer: [Yes] Justification: The paper is primarily theoretical, and does not have any immediate societal impact. We discuss this in the Appendix A.5. Guidelines: • The answer NA means that there is no societal impact of the work performed. • If the authors answer NA or No, they should explain why their work has no societal impact or why the paper does not address societal impact. • Examples of negative societal impacts include potential malicious or unintended uses (e.g., disinformation, generating fake profiles, surveillance), fairness considerations (e.g., deployment of technologies that could make decisions that unfairly impact specific groups), privacy considerations, and security considerations. • The conference expects that many papers will be foundational research and not tied to particular applications, let alone deployments. However, if there is a direct path to any negative applications, the authors should point it out. For example, it is legitimate to point out that an improvement in the quality of generative models could be used to 38 generate deepfakes for disinformation. On the other hand, it is not needed to point out that a generic algorithm for optimizing neural networks could enable people to train models that generate Deepfakes faster. • The authors should consider possible harms that could arise when the technology is being used as intended and functioning correctly, harms that could arise when the technology is being used as intended but gives incorrect results, and harms following from (intentional or unintentional) misuse of the technology. • If there are negative societal impacts, the authors could also discuss possible mitigation strategies (e.g., gated release of models, providing defenses in addition to attacks, mechanisms for monitoring misuse, mechanisms to monitor how a system learns from feedback over time, improving the efficiency and accessibility of ML). 11. Safeguards 
+
+Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse (e.g., pretrained language models, image generators, or scraped datasets)? Answer: [NA] Justification: This paper does not pose any such risk. Guidelines: • The answer NA means that the paper poses no such risks. • Released models that have a high risk for misuse or dual-use should be released with necessary safeguards to allow for controlled use of the model, for example by requiring that users adhere to usage guidelines or restrictions to access the model or implementing safety filters. • Datasets that have been scraped from the Internet could pose safety risks. The authors should describe how they avoided releasing unsafe images. • We recognize that providing effective safeguards is challenging, and many papers do not require this, but we encourage authors to take this into account and make a best faith effort. 12. Licenses for existing assets 
+
+Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected? Answer: [NA] Justification: All the datasets, environments, and the benchmarks to evaluate our algorithms are cited in the main text and in our code. Guidelines: • The answer NA means that the paper does not use existing assets. • The authors should cite the original paper that produced the code package or dataset. • The authors should state which version of the asset is used and, if possible, include a URL. • The name of the license (e.g., CC-BY 4.0) should be included for each asset. • For scraped data from a particular source (e.g., website), the copyright and terms of service of that source should be provided. • If assets are released, the license, copyright information, and terms of use in the package should be provided. For popular datasets, paperswithcode.com/datasets has curated licenses for some datasets. Their licensing guide can help determine the license of a dataset. • For existing datasets that are re-packaged, both the original license and the license of the derived asset (if it has changed) should be provided. • If this information is not available online, the authors are encouraged to reach out to the asset’s creators. 13. New assets 
+
+Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets? Answer: [Yes] 39 Justification: All the code and data are submitted along with the paper, and will be released publicly with detailed documentation upon publication. Guidelines: • The answer NA means that the paper does not release new assets. • Researchers should communicate the details of the dataset/code/model as part of their submissions via structured templates. This includes details about training, license, limitations, etc. • The paper should discuss whether and how consent was obtained from people whose asset is used. • At submission time, remember to anonymize your assets (if applicable). You can either create an anonymized URL or include an anonymized zip file. 14. Crowdsourcing and research with human subjects 
+
+Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)? Answer: [NA] Justification: This paper is mainly theoretical and does not involve crowdsourcing or human subjects. Guidelines: • The answer NA means that the paper does not involve crowdsourcing nor research with human subjects. • Including this information in the supplemental material is fine, but if the main contribu-tion of the paper involves human subjects, then as much detail as possible should be included in the main paper. • According to the NeurIPS Code of Ethics, workers involved in data collection, curation, or other labor should be paid at least the minimum wage in the country of the data collector. 15. Institutional review board (IRB) approvals or equivalent for research with human subjects 
+
+Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained? Answer: [NA] Justification: This paper is mainly theoretical and does not involve crowdsourcing or human subjects. Guidelines: • The answer NA means that the paper does not involve crowdsourcing nor research with human subjects. • Depending on the country in which research is conducted, IRB approval (or equivalent) may be required for any human subjects research. If you obtained IRB approval, you should clearly state this in the paper. • We recognize that the procedures for this may vary significantly between institutions and locations, and we expect authors to adhere to the NeurIPS Code of Ethics and the guidelines for their institution. • For initial submissions, do not include any information that would break anonymity (if applicable), such as the institution conducting the review. 16. Declaration of LLM usage 
+
+Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Note that if the LLM is used only for writing, editing, or formatting purposes and does not impact the core methodology, scientific rigorousness, or originality of the research, declaration is not required. Answer: [NA] Justification: We have not utilized LLLMs in any of the research described in this paper. 40 Guidelines: • The answer NA means that the core method development in this research does not involve LLMs as any important, original, or non-standard components. • Please refer to our LLM policy ( https://neurips.cc/Conferences/2025/ LLM ) for what should or should not be described. 41
