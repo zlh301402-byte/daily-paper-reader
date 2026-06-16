@@ -1,0 +1,446 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-16T22:40:58.725815+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 3,
+    "deep_cap": 7,
+    "deep_selected": 3,
+    "quick_candidates": 7,
+    "quick_skim_target": 12,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2606.12859v1",
+      "source": "arxiv",
+      "title": "AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots",
+      "abstract": "Aerial manipulation systems have long suffered from representation coupling in end-to-end control, as platform-level Unmanned Aerial Vehicle (UAV) movement and end-effector-level arm manipulation differ substantially in action scale, dynamics, and control objectives. In this paper, we propose AIR-VLA+, a flow matching action generation architecture specifically designed for aerial manipulation, featuring cascaded dual-action decoders and an asymmetric feature-level Mixture of Experts (MoE). We construct cascaded manipulation and movement decoders, allowing the UAV to unidirectionally observe the manipulator's intent during movement to achieve workflow coordination, while isolating the impact of UAV movement information backpropagation on arm manipulation stability. Addressing the characteristic that UAV movement is highly dependent on high-level semantics and responsible for task state transitions in aerial manipulation, we design an input feature enhancement module for the UAV movement decoder. This module introduces an implicit visual grasp projector to perceive the interaction state between the gripper and the object, and injects compressed global semantic features. Within the UAV movement decoder, we deploy an implicit MoE architecture, enabling different movement experts to spontaneously exhibit capacity inclinations for various task stages during training. Through dense soft blending computation on the feature manifold, the UAV movement is endowed with stronger task-stage adaptability. Experiments on the standardized AIR-VLA benchmark demonstrate that our method comprehensively surpasses all baselines with an overall average score of 48.0. The overall task completion score improves by 80.2\\% compared to the single-head $π_{0.5}$ policy, effectively mitigating the heterogeneous coordinated control conflicts of composite robots.",
+      "authors": [
+        "Jianli Sun",
+        "Bin Tian",
+        "Qiyao Zhang",
+        "Zijian Liu",
+        "Yutong Wang",
+        "Zhiyong Cui",
+        "Bai Li",
+        "Yisheng Lv",
+        "Yonglin Tian"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-11T03:42:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.12859v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "aerial manipulation control strategy",
+      "llm_evidence_cn": "空中操纵控制策略",
+      "llm_evidence": "空中操纵控制策略",
+      "canonical_evidence": "空中操纵控制策略",
+      "llm_tldr_en": "Proposes AIR-VLA+ that decouples UAV movement and arm manipulation using cascaded dual-action decoders and asymmetric MoE for aerial robots.",
+      "llm_tldr_cn": "针对空中操纵系统中无人机运动与机械臂操作在动作尺度、动力学和控制目标上的耦合问题，提出AIR-VLA+架构。通过级联操作与运动解码器实现流程协调，并采用非对称专家混合模块隔离运动对操作的影响。实验验证了该方法在空中操纵任务中的有效性。",
+      "llm_tldr": "针对空中操纵系统中无人机运动与机械臂操作在动作尺度、动力学和控制目标上的耦合问题，提出AIR-VLA+架构。通过级联操作与运动解码器实现流程协调，并采用非对称专家混合模块隔离运动对操作的影响。实验验证了该方法在空中操纵任务中的有效性。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16621v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning with Inner-loop Dynamics Estimator for Aerial Manipulation under Uncertainty",
+      "abstract": "Aerial manipulators enable physical interaction in hard-to-reach environments; however, the combined problem of direct whole-body aerial manipulation under rapid arm motion, payload changes, and related unknown dynamic uncertainty remains a largely unsolved problem. We present a hierarchical control framework that combines Reinforcement Learning (RL) with an inner-loop dynamics estimator to address this problem. The RL outer loop maps desired 6-degrees-of-freedom (DOF) end-effector targets to coordinated whole-body commands, enabling direct task-driven control without relying on a fully accurate coupled dynamic model in the policy layer. An inner loop then tracks these commands while compensating for transient inertial shifts and uncertainty during execution via a dynamics estimator scheme without requiring system model knowledge. We validate the proposed approach on a custom quadrotor equipped with a 3-DoF manipulator through hardware experiments under varying payload conditions. Compared with RL+PID and RL+INDI+PID baselines, the proposed method reduces end-effector tracking error and improves task success rate across the tested hardware conditions. These results show that combining learned whole-body coordination with estimator-based low-level compensation improves the precision and robustness of aerial manipulation under changing operating conditions.",
+      "authors": [
+        "Shivansh Pratap Singh",
+        "Samaksh Ujjwal",
+        "Ishita Chaudhary",
+        "V R Vasudevan",
+        "Rishabh Dev Yadav",
+        "Spandan Roy"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-15T12:16:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.16621v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RL with dynamics estimator for aerial manipulation",
+      "llm_evidence_cn": "用于空中操作的带动力学估计器的强化学习",
+      "llm_evidence": "用于空中操作的带动力学估计器的强化学习",
+      "canonical_evidence": "用于空中操作的带动力学估计器的强化学习",
+      "llm_tldr_en": "This paper proposes a hierarchical control framework combining reinforcement learning with an inner-loop dynamics estimator for aerial manipulators, enabling direct task-driven 6-DOF end-effector control under dynamic uncertainty.",
+      "llm_tldr_cn": "针对空中机械臂在快速臂运动和负载变化下的动力学不确定性问题，本文提出一种结合强化学习与内环动力学估计器的分层控制框架。强化学习外环将末端执行器目标直接映射为全身协调指令，无需精确耦合模型；内环跟踪指令并补偿惯性偏移。在仿真和实际实验中验证了该方法能有效处理不确定性，实现稳定空中操作。该方法为空中机器人的稳健控制提供了新思路。",
+      "llm_tldr": "针对空中机械臂在快速臂运动和负载变化下的动力学不确定性问题，本文提出一种结合强化学习与内环动力学估计器的分层控制框架。强化学习外环将末端执行器目标直接映射为全身协调指令，无需精确耦合模型；内环跟踪指令并补偿惯性偏移。在仿真和实际实验中验证了该方法能有效处理不确定性，实现稳定空中操作。该方法为空中机器人的稳健控制提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulation using reinforcement learning",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15918v1",
+      "source": "arxiv",
+      "title": "Energy-Efficient Arm Reaching for a Humanoid Robot via Deep Reinforcement Learning with Identified Power Models",
+      "abstract": "Humanoid robots performing in-field manipulation tasks, such as robotic apple harvesting, face severe energy constraints that directly limit the number of reaching motions that can be executed per battery charge. This paper presents an end-to-end, energy-aware reinforcement learning framework for the 7-degree-of-freedom left arm of the Unitree~G1 humanoid robot, combining a physics-based, experimentally identified electrical power model with a Soft Actor-Critic (SAC) policy trained in a Pinocchio-based rigid-body dynamics simulator. The RL policy operates on an incremental joint-position action space and is trained with a Hybrid Constellation Reward that combines a four-point end-effector constellation distance with a torque-norm energy proxy; after % $5\\times10^6$ training it reaches a $69.9\\%$ success rate over $1\\,000$ random targets in kinematic simulation, at a mean energy of \\SI{98.16}{\\joule} on successful episodes. Finally, on the physical Unitree~G1, the policy is validated over three independent 10-target batches, achieving a mean energy of $71.5 \\pm 48.3$\\,J, an end-effector position error of $2.64 \\pm 1.04$\\,cm, and an orientation error of $6.92 \\pm 1.33^\\circ$ -- within the \\SI{4}{\\centi\\metre}/$8.6^\\circ$ training tolerance. These results constitute a first step toward energy-aware reinforcement-learning-based arm reaching for humanoid robots.",
+      "authors": [
+        "Nestor N. Deniz",
+        "Simon Parsons",
+        "Fernando Auat Cheein"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-14T16:46:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.15918v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "deep reinforcement learning for robot arm control with energy efficiency",
+      "llm_evidence_cn": "用于机器人臂控制的深度强化学习与能效优化",
+      "llm_evidence": "用于机器人臂控制的深度强化学习与能效优化",
+      "canonical_evidence": "用于机器人臂控制的深度强化学习与能效优化",
+      "llm_tldr_en": "Energy-aware SAC with identified power model reduces energy consumption for humanoid arm reaching, directly relevant to RL for arm control.",
+      "llm_tldr_cn": "针对人形机器人在野外交互任务（如果实采摘）中能量限制问题，提出端到端能量感知深度强化学习框架，结合实验辨识的电气功率模型和Soft Actor-Critic算法，在基于Pinocchio的仿真中训练。采用增量关节位置动作空间和混合星座奖励，显著降低每次到达运动的能耗，延长电池续航。该方法直接体现了强化学习在机器人臂控制中的有效性，可迁移至空中机械臂的节能控制。",
+      "llm_tldr": "针对人形机器人在野外交互任务（如果实采摘）中能量限制问题，提出端到端能量感知深度强化学习框架，结合实验辨识的电气功率模型和Soft Actor-Critic算法，在基于Pinocchio的仿真中训练。采用增量关节位置动作空间和混合星座奖励，显著降低每次到达运动的能耗，延长电池续航。该方法直接体现了强化学习在机器人臂控制中的有效性，可迁移至空中机械臂的节能控制。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.09337v1",
+      "source": "arxiv",
+      "title": "TORL-VLA: Tactile Guided Online Reinforcement Learning for Contact-Rich Manipulation",
+      "abstract": "Vision-Language-Action (VLA) models have become a powerful framework for robotic manipulation, and recent studies have introduced tactile or force feedback into VLAs to address contact-rich tasks. However, these models are typically deployed as offline policies. When contact conditions shift from the training distribution, the policy cannot perform online adaptation, leading to problems such as inappropriate contact forces and inefficient retries. Therefore, we propose TORL-VLA, a tactile-guided online reinforcement learning framework that couples tactile feedback with policy refinement for contact-rich manipulation. Our method introduces a tactile-derived wrench-aware VLA to predict reference actions and future wrench sequences, while a lightweight online RL module is used to refine the reference actions. To stabilize learning from mixed exploratory policy-generated and human-intervention data, we introduce an intervention-censored critic that prevents post-intervention success from being wrongly credited to policy-generated actions preceding intervention. Real-robot experiments on long-horizon contact-rich tasks, including latch manipulation, coffee-cup placement, and egg handling, show that TORL-VLA improves success rates at both subtask and full-task levels, as well as time-bounded execution efficiency over strong baselines.",
+      "authors": [
+        "Huaihang Zheng",
+        "Yi Yang",
+        "Kai Ma",
+        "Shenglin Xu",
+        "Tian Xie",
+        "Guozheng Li",
+        "Xiangyu Wang",
+        "Yiren Ma",
+        "Si Liu",
+        "Yinian Mao",
+        "Baoxu Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-08T11:05:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.09337v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "online RL for contact-rich manipulation with robotic arm",
+      "llm_evidence_cn": "在线强化学习用于机械臂接触式操作",
+      "llm_evidence": "在线强化学习用于机械臂接触式操作",
+      "canonical_evidence": "在线强化学习用于机械臂接触式操作",
+      "llm_tldr_en": "Proposes TORL-VLA, a tactile-guided online reinforcement learning framework that couples tactile feedback with policy refinement for contact-rich robotic manipulation, addressing offline policy failure under distribution shift.",
+      "llm_tldr_cn": "针对现有视觉-语言-动作（VLA）模型在接触条件变化时无法在线适应的问题，提出TORL-VLA框架，引入触觉引导的在线强化学习，通过触觉导出的力矩感知VLA预测参考动作和未来力矩序列，并与策略细化耦合。实验表明该方法在接触式操作任务中有效提升了鲁棒性。该方法为机器人臂控制提供了可迁移的RL范式。",
+      "llm_tldr": "针对现有视觉-语言-动作（VLA）模型在接触条件变化时无法在线适应的问题，提出TORL-VLA框架，引入触觉引导的在线强化学习，通过触觉导出的力矩感知VLA预测参考动作和未来力矩序列，并与策略细化耦合。实验表明该方法在接触式操作任务中有效提升了鲁棒性。该方法为机器人臂控制提供了可迁移的RL范式。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.09337v2",
+      "source": "arxiv",
+      "title": "TORL-VLA: Tactile Guided Online Reinforcement Learning for Contact-Rich Manipulation",
+      "abstract": "Vision-Language-Action (VLA) models have become a powerful framework for robotic manipulation, and recent studies have introduced tactile or force feedback into VLAs to address contact-rich tasks. However, these models are typically deployed as offline policies. When contact conditions shift from the training distribution, the policy cannot perform online adaptation, leading to problems such as inappropriate contact forces and inefficient retries. Therefore, we propose TORL-VLA, a tactile-guided online reinforcement learning framework that couples tactile feedback with policy refinement for contact-rich manipulation. Our method introduces a tactile-derived wrench-aware VLA to predict reference actions and future wrench sequences, while a lightweight online RL module is used to refine the reference actions. To stabilize learning from mixed exploratory policy-generated and human-intervention data, we introduce an intervention-censored critic that prevents post-intervention success from being wrongly credited to policy-generated actions preceding intervention. Real-robot experiments on long-horizon contact-rich tasks, including latch manipulation, coffee-cup placement, and egg handling, show that TORL-VLA improves success rates at both subtask and full-task levels, as well as time-bounded execution efficiency over strong baselines.",
+      "authors": [
+        "Huaihang Zheng",
+        "Yi Yang",
+        "Kai Ma",
+        "Shenglin Xu",
+        "Tian Xie",
+        "Guozheng Li",
+        "Xiangyu Wang",
+        "Yiren Ma",
+        "Si Liu",
+        "Yinian Mao",
+        "Baoxu Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-08T11:05:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.09337v2",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "online reinforcement learning for contact-rich robotic manipulation",
+      "llm_evidence_cn": "在线强化学习用于接触丰富机器人操纵",
+      "llm_evidence": "在线强化学习用于接触丰富机器人操纵",
+      "canonical_evidence": "在线强化学习用于接触丰富机器人操纵",
+      "llm_tldr_en": "Proposes TORL-VLA, a tactile-guided online RL framework for contact-rich manipulation, coupling tactile feedback with VLA models to enable online adaptation and improve contact forces.",
+      "llm_tldr_cn": "针对VLA模型在接触条件变化时无法在线适应导致接触力不当的问题，提出TORL-VLA框架，结合触觉反馈与VLA模型，通过在线强化学习进行策略细化。在接触丰富任务上实验表明，该方法能够有效提高操作成功率并减小接触力误差，为机器人操纵中的在线自适应提供了新思路。",
+      "llm_tldr": "针对VLA模型在接触条件变化时无法在线适应导致接触力不当的问题，提出TORL-VLA框架，结合触觉反馈与VLA模型，通过在线强化学习进行策略细化。在接触丰富任务上实验表明，该方法能够有效提高操作成功率并减小接触力误差，为机器人操纵中的在线自适应提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.12406v1",
+      "source": "arxiv",
+      "title": "FACTR 2: Learning External Force Sensing for Commodity Robot Arms Improves Policy Learning",
+      "abstract": "Contact-rich manipulation requires force sensitivity, but many robot arms lack dedicated force sensors due to their high cost. We present Neural External Torque Estimation (NEXT), a data-driven method that estimates external joint torques without needing any dedicated force sensors. NEXT trains in 1 minute from only 10 minutes of free-motion data, yet achieves estimates comparable to dedicated joint-torque sensors. NEXT enables force-feedback teleoperation on low-cost arms and improves policy learning through Force-Informed Re-Sampling Training (FIRST), which up-samples pre-contact and contact segments during behavior cloning. Across five long-horizon tasks, FIRST outperforms prior force-aware policies by over 17% in task progress. Together, NEXT and FIRST bring force-aware teleoperation and policy learning to off-the-shelf robots without additional sensing hardware. Video results and code are available at https://jasonjzliu.com/factr2",
+      "authors": [
+        "Steven Oh",
+        "Jason Jingzhou Liu",
+        "Tony Tao",
+        "Philip Han",
+        "Kenneth Shaw",
+        "Satoshi Funabashi",
+        "Ruslan Salakhutdinov",
+        "Deepak Pathak"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG",
+        "eess.SY"
+      ],
+      "published": "2026-06-10T17:59:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.12406v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "external force sensing for robot arms improves manipulation policies",
+      "llm_evidence_cn": "机器人臂外部力感提升操纵策略学习",
+      "llm_evidence": "机器人臂外部力感提升操纵策略学习",
+      "canonical_evidence": "机器人臂外部力感提升操纵策略学习",
+      "llm_tldr_en": "NEXT estimates external joint torques without sensors, enabling force-aware policy learning that improves contact-rich manipulation by over 17%.",
+      "llm_tldr_cn": "针对接触丰富操纵需要力感但传感器成本高的问题，提出神经外部扭矩估计（NEXT），仅用10分钟自由运动数据即可在1分钟内训练出与专用扭矩传感器相当的估计。结合力信息重采样训练（FIRST），在五项长时程任务上任务进度优于先前力感知策略17%以上。该方法可直接用于空中机械臂的物理交互控制，提升接触任务的鲁棒性。",
+      "llm_tldr": "针对接触丰富操纵需要力感但传感器成本高的问题，提出神经外部扭矩估计（NEXT），仅用10分钟自由运动数据即可在1分钟内训练出与专用扭矩传感器相当的估计。结合力信息重采样训练（FIRST），在五项长时程任务上任务进度优于先前力感知策略17%以上。该方法可直接用于空中机械臂的物理交互控制，提升接触任务的鲁棒性。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.13677v1",
+      "source": "arxiv",
+      "title": "Mana: Dexterous Manipulation of Articulated Tools",
+      "abstract": "Articulated tool manipulation remains a major challenge in dexterous robotics due to the need to coordinate internal degrees of freedom and contact-rich interactions. While prior work has largely focused on rigid objects, articulated tool use remains underexplored because of its physical complexity and the difficulty of learning functional grasping and manipulation policies. We present Mana (Manipulation Animator), a general sim-to-real framework that reinterprets dexterous manipulation as an animation problem. Inspired by computer animation, Mana employs a coarse-to-fine pipeline that transforms procedurally-generated grasp keyframes into manipulation trajectories through motion planning and reinforcement learning. The data generation process is largely automatic, requiring only a few mouse clicks to specify functional affordances (<1 minute per tool). Across four articulated tools spanning different scales and joint types, Mana achieves zero-shot sim-to-real transfer for both grasping and in-hand manipulation, demonstrating a scalable approach to dexterous articulated tool use.",
+      "authors": [
+        "Zhao-Heng Yin",
+        "Guanya Shi",
+        "Pieter Abbeel",
+        "C. Karen Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-11T17:59:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.13677v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning for articulated tool manipulation",
+      "llm_evidence_cn": "强化学习用于铰接工具操作",
+      "llm_evidence": "强化学习用于铰接工具操作",
+      "canonical_evidence": "强化学习用于铰接工具操作",
+      "llm_tldr_en": "Mana presents a sim-to-real framework that uses motion planning and reinforcement learning to dexterously manipulate articulated tools, addressing coordination and contact-rich interactions.",
+      "llm_tldr_cn": "铰接工具操作面临内部自由度协调和接触交互的挑战。Mana提出了一种模拟到现实的框架，将灵巧操作重新解释为动画问题，通过运动规划和强化学习将程序生成的抓取关键帧转化为操作轨迹。实验表明该方法能有效学习功能性抓取和操作策略，并支持自动数据生成。该工作为复杂铰接工具的灵巧操作提供了通用方案。",
+      "llm_tldr": "铰接工具操作面临内部自由度协调和接触交互的挑战。Mana提出了一种模拟到现实的框架，将灵巧操作重新解释为动画问题，通过运动规划和强化学习将程序生成的抓取关键帧转化为操作轨迹。实验表明该方法能有效学习功能性抓取和操作策略，并支持自动数据生成。该工作为复杂铰接工具的灵巧操作提供了通用方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.16303v1",
+      "source": "arxiv",
+      "title": "An Adjoint-based Neural Regulator for Real-Time Optimal Control with State Constraints",
+      "abstract": "This paper introduces a learning-based control framework for real-time constrained optimal control of nonlinear systems with safety guarantees based on the Pontryagin's Minimum Principle. The approach learns a neural co-state (adjoint) policy that encodes optimality through the system Hamiltonian, rather than directly approximating a control law. Feasibility is enforced separately at runtime through an efficient convex projection that incorporates actuator limits and safety constraints expressed as control barrier functions. We refer to this framework as an adjoint-based neural regulator (ANR) as it yields a controller that satisfies constraints while retaining the optimality structure encoded by the learned adjoint. We demonstrate the effectiveness of the proposed framework on nonlinear constrained control tasks using a unicycle model. The ANR achieves performance at par with nonlinear model predictive control at more than two orders of magnitude lower computational cost, while exhibiting near-invariant performance across unseen scenarios, thus, significantly outperforming reinforcement learning methods in out-of-training-distribution regimes.",
+      "authors": [
+        "Isaiah A. Agboola",
+        "Yuxin Tong",
+        "Uduak Inyang-Udoh"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-06-15T07:07:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.16303v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning-based optimal control framework with safety constraints, applicable to aerial manipulator control",
+      "llm_evidence_cn": "基于学习的最优控制框架带安全约束，可应用于空中机械臂控制",
+      "llm_evidence": "基于学习的最优控制框架带安全约束，可应用于空中机械臂控制",
+      "canonical_evidence": "基于学习的最优控制框架带安全约束，可应用于空中机械臂控制",
+      "llm_tldr_en": "ANR learns a neural adjoint policy that encodes optimality, with runtime convex projection for constraints, suitable for real-time aerial manipulation control.",
+      "llm_tldr_cn": "该论文提出一种基于伴随的神经调节器（ANR），通过学习神经协态策略来编码最优性，而不是直接逼近控制律。运行时通过凸投影高效满足执行器限制和安全约束（控制障碍函数）。在多个非线性系统上验证了实时性和安全性，其框架可直接迁移到空中机械臂的约束最优控制问题中。",
+      "llm_tldr": "该论文提出一种基于伴随的神经调节器（ANR），通过学习神经协态策略来编码最优性，而不是直接逼近控制律。运行时通过凸投影高效满足执行器限制和安全约束（控制障碍函数）。在多个非线性系统上验证了实时性和安全性，其框架可直接迁移到空中机械臂的约束最优控制问题中。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.15469v1",
+      "source": "arxiv",
+      "title": "Learning Context-Aware Neural ODE Dynamics for Adaptive Robotic Control",
+      "abstract": "Robotic systems deployed in uncertain and dynamically changing environments often face variations in contact conditions, aerodynamic effects, and external disturbances that challenge reliable control. To remain effective under model-based control, these systems require dynamics models that can adapt to such changes, especially when direct access to complete environmental information is limited. To enable adaptability and facilitate integration with model predictive control, we propose a context-aware dynamics model based on neural ordinary differential equations, which infers environmental factors from state-action histories using a two-phase training procedure. We validate the approach across diverse robotic platforms, including a quadrotor in simulation, as well as a Sphero BOLT robot and a Fanuc manipulator in real-world experiments. The results demonstrate that our method effectively adapts to temporally and spatially varying environmental changes across different tasks. Videos are available at https://youtu.be/PY0sNyF2rqE , and the source code is available at https://github.com/syyu410-yu/context-aware-neural-ode-control.git .",
+      "authors": [
+        "Shao-Yi Yu",
+        "Jen-Wei Wang",
+        "Maya Horii",
+        "Masayoshi Tomizuka",
+        "Vikas Garg"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-13T20:55:46+00:00",
+      "link": "https://arxiv.org/pdf/2606.15469v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "context-aware neural ODE dynamics for adaptive quadrotor control",
+      "llm_evidence_cn": "基于上下文的神经ODE动力学用于自适应四旋翼控制",
+      "llm_evidence": "基于上下文的神经ODE动力学用于自适应四旋翼控制",
+      "canonical_evidence": "基于上下文的神经ODE动力学用于自适应四旋翼控制",
+      "llm_tldr_en": "Proposes context-aware Neural ODE dynamics for adaptive control, validated on quadrotor; method could transfer to aerial manipulator control.",
+      "llm_tldr_cn": "针对机器人在变化环境中控制可靠性不足的问题，本文提出基于上下文感知神经ODE的动力学模型，通过两阶段训练从状态-动作历史推断环境因素。该方法在包括四旋翼在内的多种机器人平台上验证，能够自适应地调整动力学参数，实现鲁棒控制。该框架为空中机械臂的适应性控制提供了有潜力的方法论支持。",
+      "llm_tldr": "针对机器人在变化环境中控制可靠性不足的问题，本文提出基于上下文感知神经ODE的动力学模型，通过两阶段训练从状态-动作历史推断环境因素。该方法在包括四旋翼在内的多种机器人平台上验证，能够自适应地调整动力学参数，实现鲁棒控制。该框架为空中机械臂的适应性控制提供了有潜力的方法论支持。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.16564v1",
+      "source": "arxiv",
+      "title": "Elastic ODYN: Differentiable Optimization for Infeasible Control and Learning in Robotics",
+      "abstract": "Robotic systems routinely encounter conflicting objectives, modeling errors, and degenerate contact conditions that render quadratic programs (QPs) infeasible. Yet most optimization solvers and differentiable QP layers assume feasibility, leading to numerical failures, unstable gradients, or solver breakdown when constraints cannot be simultaneously satisfied. We present Elastic ODYN, a primal--dual non-interior-point QP solver that handles infeasibility through smooth squared-$\\ell_2$ elastic relaxations. The resulting formulation remains well posed under ill-conditioning and degeneracy, supports warm starting, and converges to closest-to-feasible solutions when no feasible point exists. A lightweight refinement stage recovers physically meaningful dual variables from the elastic solution. Building on this framework, we develop Elastic OdynLayer, a differentiable QP layer with stable gradients under infeasibility, and Elastic OdynSQP, an infeasibility-aware SQP method that resolves inconsistent subproblems and intrinsically infeasible optimal control tasks through selective constraint relaxation. We evaluate the framework on benchmark QPs, singular contact mechanics, differentiable parameter identification, and quadrupedal and humanoid trajectory optimization. Across all settings, Elastic ODYN consistently outperforms state-of-the-art elastic QP solvers in robustness, warm-start performance, and convergence reliability, enabling optimization, simulation, control, and learning beyond the feasibility assumptions of existing methods.",
+      "authors": [
+        "Aristotelis Papatheodorou",
+        "Jose Rojas",
+        "Ioannis Havoutis",
+        "Carlos Mastalli"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-06-15T11:06:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.16564v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable optimization solver for robotic control applicable to aerial manipulator planning",
+      "llm_evidence_cn": "可微优化求解器可用于空中机械臂规划与控制",
+      "llm_evidence": "可微优化求解器可用于空中机械臂规划与控制",
+      "canonical_evidence": "可微优化求解器可用于空中机械臂规划与控制",
+      "llm_tldr_en": "Elastic ODYN provides a smooth elastic relaxation QP solver that handles infeasibility, applicable to constrained optimal control in aerial manipulation.",
+      "llm_tldr_cn": "该论文针对机器人系统中优化问题不可行导致数值失败的问题，提出了Elastic ODYN，一种基于平滑弹性松弛的原始对偶非内点QP求解器。该方法能优雅处理约束冲突，收敛到最接近可行解，并支持热启动。实验表明其在多种机器人控制任务中有效，为空中机械臂等系统的实时优化控制提供了一个鲁棒的底层工具。",
+      "llm_tldr": "该论文针对机器人系统中优化问题不可行导致数值失败的问题，提出了Elastic ODYN，一种基于平滑弹性松弛的原始对偶非内点QP求解器。该方法能优雅处理约束冲突，收敛到最接近可行解，并支持热启动。实验表明其在多种机器人控制任务中有效，为空中机械臂等系统的实时优化控制提供了一个鲁棒的底层工具。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
