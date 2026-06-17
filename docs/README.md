@@ -6,50 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-16
-- 运行时间：2026-06-16 22:46:19 UTC
+- 最新运行日期：2026-06-17
+- 运行时间：2026-06-17 22:24:39 UTC
 - 运行状态：成功
-- 本次总论文数：10
-- 精读区：3
-- 速读区：7
+- 本次总论文数：5
+- 精读区：0
+- 速读区：5
 
 ### 今日简报（AI）
-空中机器人操控与不确定性处理研究今日领跑，两篇高分论文均聚焦此方向。最值得关注的是AIR-VLA+通过级联双动作解码器实现空中机器人运动与操控解耦，以及用强化学习结合内环动力学估计器应对不确定性。建议优先精读这两篇，掌握空中机器人操控的前沿方法。
-- 详情：[/202606/16/README](/202606/16/README)
+今天聚焦多旋翼无人机通用控制、机器人操作奖励建模及多任务技能迁移，共推送5篇论文。  
+最值得关注的是多旋翼无人机的具身条件通用控制（评分7.0）和机器人多任务阶段感知奖励建模（SARM2）。  
+建议优先阅读评分最高的《Embodiment-conditioned Generalist Control for Multirotor Aerial Robots》，了解无人机控制新范式。
+- 详情：[/202606/17/README](/202606/17/README)
 
 ### 精读区论文标签
-1. [AIR-VLA+: Decoupling Movement and Manipulation via Cascaded Dual-Action Decoders with Asymmetric MoE for Aerial Robots](/202606/16/2606.12859v1-air-vla-decoupling-movement-and-manipulation-via-cascaded-dual-action-decoders-with-asymmetric-moe-for-aerial-robots)  
-   标签：评分：9.0/10、query:aerial-arm
-   evidence：空中操纵控制策略
-2. [Reinforcement Learning with Inner-loop Dynamics Estimator for Aerial Manipulation under Uncertainty](/202606/16/2606.16621v1-reinforcement-learning-with-inner-loop-dynamics-estimator-for-aerial-manipulation-under-uncertainty)  
-   标签：评分：9.0/10、query:drone-arm
-   evidence：用于空中操作的带动力学估计器的强化学习
-3. [Energy-Efficient Arm Reaching for a Humanoid Robot via Deep Reinforcement Learning with Identified Power Models](/202606/16/2606.15918v1-energy-efficient-arm-reaching-for-a-humanoid-robot-via-deep-reinforcement-learning-with-identified-power-models)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：用于机器人臂控制的深度强化学习与能效优化
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [TORL-VLA: Tactile Guided Online Reinforcement Learning for Contact-Rich Manipulation](/202606/16/2606.09337v1-torl-vla-tactile-guided-online-reinforcement-learning-for-contact-rich-manipulation)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：在线强化学习用于机械臂接触式操作
-2. [FACTR 2: Learning External Force Sensing for Commodity Robot Arms Improves Policy Learning](/202606/16/2606.12406v1-factr-2-learning-external-force-sensing-for-commodity-robot-arms-improves-policy-learning)  
+1. [Embodiment-conditioned Generalist Control for Multirotor Aerial Robots](/202606/17/2606.10857v1-embodiment-conditioned-generalist-control-for-multirotor-aerial-robots)  
    标签：评分：7.0/10、query:aerial-arm
-   evidence：机器人臂外部力感提升操纵策略学习
-3. [An Adjoint-based Neural Regulator for Real-Time Optimal Control with State Constraints](/202606/16/2606.16303v1-an-adjoint-based-neural-regulator-for-real-time-optimal-control-with-state-constraints)  
-   标签：评分：7.0/10、query:aerial-arm
-   evidence：基于学习的最优控制框架带安全约束，可应用于空中机械臂控制
-4. [Elastic ODYN: Differentiable Optimization for Infeasible Control and Learning in Robotics](/202606/16/2606.16564v1-elastic-odyn-differentiable-optimization-for-infeasible-control-and-learning-in-robotics)  
-   标签：评分：7.0/10、query:aerial-arm
-   evidence：可微优化求解器可用于空中机械臂规划与控制
-5. [TORL-VLA: Tactile Guided Online Reinforcement Learning for Contact-Rich Manipulation](/202606/16/2606.09337v2-torl-vla-tactile-guided-online-reinforcement-learning-for-contact-rich-manipulation)  
+   evidence：多旋翼强化学习控制策略
+2. [SARM2: Multi-Task Stage Aware Reward Modeling for Self Improving Robotic Manipulation](/202606/17/2606.10305v1-sarm2-multi-task-stage-aware-reward-modeling-for-self-improving-robotic-manipulation)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：在线强化学习用于接触丰富机器人操纵
-6. [Mana: Dexterous Manipulation of Articulated Tools](/202606/16/2606.13677v1-mana-dexterous-manipulation-of-articulated-tools)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：强化学习用于铰接工具操作
-7. [Learning Context-Aware Neural ODE Dynamics for Adaptive Robotic Control](/202606/16/2606.15469v1-learning-context-aware-neural-ode-dynamics-for-adaptive-robotic-control)  
+   evidence：用于机器人操作强化学习的多任务阶段感知奖励模型
+3. [Learning to Adapt: Representation-Based Reinforcement Learning for Multi-Task Skill Transfer](/202606/17/2606.12890v1-learning-to-adapt-representation-based-reinforcement-learning-for-multi-task-skill-transfer)  
    标签：评分：6.0/10、query:aerial-arm
-   evidence：基于上下文的神经ODE动力学用于自适应四旋翼控制
+   evidence：多任务强化学习用于四旋翼轨迹跟踪，可应用于空中机械臂轨迹跟踪
+4. [MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency](/202606/17/2606.15148v2-mimicik-real-time-generative-inverse-kinematics-from-teleoperation-with-fk-consistency)  
+   标签：评分：6.0/10、query:aerial-arm
+   evidence：实时生成式逆运动学，可应用于空中机械臂
+5. [HOLO-MPPI: Multi-Scenario Motion Planning via Hierarchical Policy Optimization](/202606/17/2606.16480v1-holo-mppi-multi-scenario-motion-planning-via-hierarchical-policy-optimization)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：分层强化学习与MPPI结合的运动规划，适用于空中机械臂控制
 
 
 <div class="dpr-home-promo-card">

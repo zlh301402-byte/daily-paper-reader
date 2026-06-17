@@ -1,0 +1,234 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-17T22:22:08.031542+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 12,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.10857v1",
+      "source": "arxiv",
+      "title": "Embodiment-conditioned Generalist Control for Multirotor Aerial Robots",
+      "abstract": "We present a generalist position control policy capable of controlling arbitrary multirotor configurations of a certain rotor count (e.g., hexarotors or quadrotors) with a single set of network weights. The policy is conditioned on a physics-grounded embodiment descriptor: a mass and inertia-normalized control allocation matrix that captures how mass-normalized motor thrusts generate linear and angular accelerations in the body-frame. To train the policy, we sample from a broad distribution of arbitrary multirotor configurations, including non-planar and asymmetric systems, and optimize a single, compact network using Proximal Policy Optimization. Training requires only five minutes on an RTX 3090 GPU using a custom NVIDIA Warp-based dynamics simulator. Through extensive simulation experiments, we show that embodiment conditioning enables robust generalist control across arbitrary morphologies. We demonstrate zero-shot real-world transfer of this generalist policy on three diverse hexarotor systems, including a planar robot, a partially symmetric non-planar system, and a random asymmetric, non-planar configuration.",
+      "authors": [
+        "Orestis Konstantaropoulos",
+        "Welf Rehberg",
+        "Mihir Kulkarni",
+        "Kostas Alexis"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-06-09T13:36:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.10857v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multirotor control policy with RL",
+      "llm_evidence_cn": "多旋翼强化学习控制策略",
+      "llm_evidence": "多旋翼强化学习控制策略",
+      "canonical_evidence": "多旋翼强化学习控制策略",
+      "llm_tldr_en": "A generalist position control policy for arbitrary multirotor configurations trained with PPO in simulation, enabling unified control across diverse aerial platforms.",
+      "llm_tldr_cn": "本文针对多旋翼空中机器人提出了一种通用位置控制策略，能够通过单一网络控制任意构型的飞行器。该方法使用基于物理的机体描述子作为条件输入，结合近端策略优化在仿真中高效训练。实验表明仅需五分钟即可在GPU上完成训练，并成功迁移到多种非平面和非对称系统。该工作为空中机器人底层控制提供了通用且高效的解决方案。",
+      "llm_tldr": "本文针对多旋翼空中机器人提出了一种通用位置控制策略，能够通过单一网络控制任意构型的飞行器。该方法使用基于物理的机体描述子作为条件输入，结合近端策略优化在仿真中高效训练。实验表明仅需五分钟即可在GPU上完成训练，并成功迁移到多种非平面和非对称系统。该工作为空中机器人底层控制提供了通用且高效的解决方案。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "modeling and control of multirotor with onboard manipulator",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.10305v1",
+      "source": "arxiv",
+      "title": "SARM2: Multi-Task Stage Aware Reward Modeling for Self Improving Robotic Manipulation",
+      "abstract": "Fine-tuning vision-language-action (VLA) policies for long-horizon manipulation still relies heavily on behavior cloning, which requires costly high-quality demonstrations and keeps policies near the demonstration distribution. Reward models can reduce this dependence by reweighting demonstrations and providing dense supervision for on-robot reinforcement learning (RL), but they must be dense, accurate, and general. Existing methods fall short: task-specific stage-aware models are accurate but require per-task annotations, while general vision-language-model (VLM) reward models are broadly applicable but too coarse for fine-grained long-horizon progress. We introduce RM, a multi-task stage-aware reward model that combines an action-primitive-based stage estimator with a multi-gate Mixture-of-Experts (MMoE) value head to produce dense per-step rewards across manipulation tasks. Building on RM, we further propose SPIRAL (Self-Policy Improvement via Reward-Aligned Learning), an on-policy reward-guided framework that improves VLA policies from cheap autonomous rollouts. On a 10-task benchmark, RM reduces value-estimation MSE by 80% over the strongest baselines; when used in SPIRAL, it improves task success from around 50% to near-perfect performance on Folding Shorts (58% to 100%) and Cleaning Whiteboard (50% to 90%), showing that high-quality dense rewards are key to a stable robot data flywheel. Project website: https://qianzhong-chen.github.io/sarm2.github.io/.",
+      "authors": [
+        "Qianzhong Chen",
+        "Hau Zheng",
+        "Justin Yu",
+        "Suning Huang",
+        "Jiankai Sun",
+        "Ken Goldberg",
+        "Chuan Wen",
+        "Pieter Abbeel",
+        "Yide Shentu",
+        "Philipp Wu",
+        "Mac Schwager"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-09T01:46:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.10305v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-task stage-aware reward model for robotic manipulation reinforcement learning",
+      "llm_evidence_cn": "用于机器人操作强化学习的多任务阶段感知奖励模型",
+      "llm_evidence": "用于机器人操作强化学习的多任务阶段感知奖励模型",
+      "canonical_evidence": "用于机器人操作强化学习的多任务阶段感知奖励模型",
+      "llm_tldr_en": "Proposes a multi-task stage-aware reward model (RM) that combines action primitives to provide dense reward signals for fine-tuning VLA policies via RL, reducing dependence on costly demonstrations.",
+      "llm_tldr_cn": "针对视觉-语言-动作策略微调依赖昂贵演示的问题，提出多任务阶段感知奖励模型RM，结合动作原语提供密集奖励信号，使机器人能够通过强化学习自我改进。在多种操作任务上验证了有效性，为减少人工标注和提升泛化能力提供了新途径。",
+      "llm_tldr": "针对视觉-语言-动作策略微调依赖昂贵演示的问题，提出多任务阶段感知奖励模型RM，结合动作原语提供密集奖励信号，使机器人能够通过强化学习自我改进。在多种操作任务上验证了有效性，为减少人工标注和提升泛化能力提供了新途径。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.12890v1",
+      "source": "arxiv",
+      "title": "Learning to Adapt: Representation-Based Reinforcement Learning for Multi-Task Skill Transfer",
+      "abstract": "Reinforcement learning has achieved remarkable success in learning complex control policies, yet its applicability remains limited due to sample inefficiency and poor generalization across tasks. In this work, we propose RepMT-SAC, a framework for multi-task RL that enables efficient knowledge sharing and robust transfer to new tasks. RepMT-SAC uses spectral MDP decomposition to capture transferable dynamics, structuring the value function into a task-agnostic core with a minimal task-specific adjustment. This design allows for strong zero-shot performance on in-distribution tasks and rapid few-shot adaptation to out-of-distribution tasks. We evaluate RepMT-SAC on quadcopter trajectory-following tasks across in-distribution and out-of-distribution contexts, demonstrating that it outperforms baselines by up to 30%.",
+      "authors": [
+        "Aryan Naveen",
+        "Haitong Ma",
+        "Haldun Balim",
+        "Na Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-11T04:33:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.12890v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-task RL for quadcopter trajectory following, applicable to aerial manipulator tracking",
+      "llm_evidence_cn": "多任务强化学习用于四旋翼轨迹跟踪，可应用于空中机械臂轨迹跟踪",
+      "llm_evidence": "多任务强化学习用于四旋翼轨迹跟踪，可应用于空中机械臂轨迹跟踪",
+      "canonical_evidence": "多任务强化学习用于四旋翼轨迹跟踪，可应用于空中机械臂轨迹跟踪",
+      "llm_tldr_en": "Proposes RepMT-SAC, a multi-task RL framework using spectral MDP decomposition, achieving strong zero-shot and few-shot transfer on quadcopter trajectory-following tasks.",
+      "llm_tldr_cn": "针对强化学习的样本低效和泛化性差问题，提出RepMT-SAC框架，利用谱MDP分解捕获可迁移动态，将值函数分解为任务无关核心和任务特定调整。在四旋翼轨迹跟踪任务上实现了优异的零样本和少样本迁移性能，有望用于空中机械臂的轨迹控制。",
+      "llm_tldr": "针对强化学习的样本低效和泛化性差问题，提出RepMT-SAC框架，利用谱MDP分解捕获可迁移动态，将值函数分解为任务无关核心和任务特定调整。在四旋翼轨迹跟踪任务上实现了优异的零样本和少样本迁移性能，有望用于空中机械臂的轨迹控制。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "rotorcraft manipulator modeling and trajectory tracking",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.15148v2",
+      "source": "arxiv",
+      "title": "MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency",
+      "abstract": "Inverse kinematics (IK) remains a critical bottleneck for real-time robot manipulation. Classical numerical solvers achieve high geometric precision but often suffer from discontinuous branch switching and unstable behavior near kinematic singularities during closed-loop deployment. Meanwhile, learned IK approaches frequently struggle to balance spatial accuracy, motion smoothness, and real-time efficiency, particularly when trained on noisy human teleoperation data. We present \\textbf{MimicIK}, a real-time generative inverse kinematics framework that learns smooth and robust joint-space motion priors from teleoperation demonstrations through conditional flow matching. Given the current joint configuration and a target end-effector pose, MimicIK predicts continuous delta-joint commands using an efficient two-step iterative refinement process based on a Minimal Iterative Policy (MIP) backbone. To enforce physical consistency, we further introduce an FK consistency loss, a differentiable forward-kinematics regularization that penalizes task-space deviations from the target pose during training. We evaluate MimicIK on a real-world 6-DOF robot dataset containing 8,848 teleoperation demonstrations. MimicIK achieves a mean position error of 4.65 mm, a 10 mm success rate of 92.01\\%, and a trajectory spike rate of only 7.99\\%. Compared with a UNet diffusion baseline, our method improves both spatial accuracy and motion smoothness while reducing inference latency from 21.66 ms to 6.74 ms. Furthermore, unlike deterministic MLP baselines that catastrophically diverge under out-of-distribution deployment, MimicIK remains stable near singular configurations and enables robust 20 Hz real-time control on deployment hardware.",
+      "authors": [
+        "Jiahao Yang",
+        "Shenhao Yan",
+        "Fan Feng",
+        "Chengsi Yao",
+        "Ge Wang",
+        "Zhixin Mai",
+        "Yiming Zhao",
+        "Yatong Han"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-13T06:32:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.15148v2",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "real-time generative IK for robot manipulation, applicable to aerial manipulators",
+      "llm_evidence_cn": "实时生成式逆运动学，可应用于空中机械臂",
+      "llm_evidence": "实时生成式逆运动学，可应用于空中机械臂",
+      "canonical_evidence": "实时生成式逆运动学，可应用于空中机械臂",
+      "llm_tldr_en": "MimicIK learns smooth joint-space motion priors from teleoperation via conditional flow matching, enabling real-time IK with FK consistency, useful for aerial manipulator control.",
+      "llm_tldr_cn": "逆运动学是实时机器人操作的关键瓶颈。本文提出MimicIK，一种基于条件流匹配的实时生成式逆运动学框架，从遥操作演示中学习平滑的关节空间运动先验，并保持前向运动学一致性。该方法在多种机器人平台上实现了高精度、高平滑度的实时IK求解，为空中机械臂的稳定操作提供了基础工具。",
+      "llm_tldr": "逆运动学是实时机器人操作的关键瓶颈。本文提出MimicIK，一种基于条件流匹配的实时生成式逆运动学框架，从遥操作演示中学习平滑的关节空间运动先验，并保持前向运动学一致性。该方法在多种机器人平台上实现了高精度、高平滑度的实时IK求解，为空中机械臂的稳定操作提供了基础工具。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.16480v1",
+      "source": "arxiv",
+      "title": "HOLO-MPPI: Multi-Scenario Motion Planning via Hierarchical Policy Optimization",
+      "abstract": "Robots deployed in the real world must plan motions across diverse scenarios without per-scenario retuning. End-to-end reinforcement learning (RL) can generalize across scenarios but often becomes brittle under distribution shift, reward misspecification, and stochastic interactions. Model predictive path integral (MPPI) control enables strong real-time refinement without gradients, but its performance depends on a well-shaped sampling prior, while manually designing the priors does not scale to multi-scenario deployment. We present HOLO-MPPI (High-level Offline, Low-level Online MPPI), a multi-scenario motion planning framework that combines high-level policy learning with low-level stochastic optimal control. Offline, we learn a high-level policy that proposes scenario-robust plans in an abstract action space, with a learned world model for online rollout. Online, the policy serves as a data-driven prior generator that parameterizes MPPI's sampling distribution conditioned on the current observation and goal. MPPI then optimizes low-level control sequences around this prior in real time to adapt to local disturbances. We instantiate HOLO-MPPI in autonomous driving by designing an effective high-level action space and tailored model architectures. Our evaluation across diverse driving scenarios shows that HOLO-MPPI improves upon MPPI and end-to-end RL baselines while maintaining real-time control.",
+      "authors": [
+        "Youngjae Min",
+        "Jovin D'sa",
+        "Faizan M. Tariq",
+        "David Isele",
+        "Navid Azizan",
+        "Sangjae Bae"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "eess.SY"
+      ],
+      "published": "2026-06-15T09:49:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.16480v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical RL and MPPI for motion planning, suitable for aerial manipulator control",
+      "llm_evidence_cn": "分层强化学习与MPPI结合的运动规划，适用于空中机械臂控制",
+      "llm_evidence": "分层强化学习与MPPI结合的运动规划，适用于空中机械臂控制",
+      "canonical_evidence": "分层强化学习与MPPI结合的运动规划，适用于空中机械臂控制",
+      "llm_tldr_en": "HOLO-MPPI combines offline high-level policy learning with low-level MPPI for multi-scenario motion planning, using RL to shape sampling prior, relevant to aerial manipulator motion planning.",
+      "llm_tldr_cn": "现实世界中的机器人需要在不重新调参的情况下应对多种场景。端到端强化学习泛化能力强但易受分布偏移，MPPI需要良好采样先验。本文提出HOLO-MPPI，离线学习高层策略作为采样先验，在线MPPI进行实时优化。在多种机器人运动规划场景中验证了其泛化性和鲁棒性，其方法可直接应用于空中机械臂的运动规划和控制。",
+      "llm_tldr": "现实世界中的机器人需要在不重新调参的情况下应对多种场景。端到端强化学习泛化能力强但易受分布偏移，MPPI需要良好采样先验。本文提出HOLO-MPPI，离线学习高层策略作为采样先验，在线MPPI进行实时优化。在多种机器人运动规划场景中验证了其泛化性和鲁棒性，其方法可直接应用于空中机械臂的运动规划和控制。",
+      "llm_tags": [
+        "query:drone-arm:composite"
+      ],
+      "matched_query_tag": "query:drone-arm:composite",
+      "matched_query_text": "Papers central to 强化学习与无人机机械臂、过驱动无人机与机械臂相关论文, especially work that connects or combines: reinforcement learning for robot arm control; unmanned aerial vehicle with robotic arm; aerial manipulation using reinforcement learning; deep reinforcement learning for aerial manipulation; aerial manipulator dynamics and control; over-actuated drone control with manipulator; reinforcement learning for overactuated UAV manipulator; reinforcement learning for drone manipulator control; over actuated drones with robotic arms research; aerial manipulation using deep reinforcement learning methods.",
+      "matched_requirement_id": "req-composite-drone-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
