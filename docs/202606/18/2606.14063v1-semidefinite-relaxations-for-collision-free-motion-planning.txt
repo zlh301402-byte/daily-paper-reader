@@ -1,0 +1,1228 @@
+Title: Semidefinite Relaxations for Collision-Free Motion Planning
+
+URL Source: https://arxiv.org/pdf/2606.14063v1
+
+Published Time: Mon, 15 Jun 2026 00:29:38 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Semidefinite Relaxations for Collision-Free Motion Planning 
+
+Bernhard Paus Graesdal 1, Alexandre Amice 1, Pablo A. Parrilo 1, and Russ Tedrake 1
+
+Abstract — We study semidefinite relaxations for collision-free motion planning. We focus on a point robot moving from start to goal through spherical obstacles in Rn, subject to path continuity constraints and squared derivative costs; a setting that is conceptually simple yet captures the hardness of collision-free motion planning. We formulate this problem exactly as a nonconvex problem over polynomial curves, and present a natural semidefinite relaxation. We contribute two key theoretical insights; to our knowledge this is the first theoretical analysis of semidefinite relaxations for collision-free motion planning. First, we show that solving the convex relaxation is equivalent to solving, to global optimality, a related motion planning problem in a potentially higher-dimensional space. This geometric interpretation yields necessary and sufficient conditions for tightness, and a clear intuition for when the relaxation is loose. Second, we show that the relaxation admits a symmetry reduction that makes it significantly smaller than one might expect, with PSD cone sizes that scale linearly with the polynomial degree and are independent of the ambient dimension. The resulting relaxation is 10 to 100 times faster than direct nonlinear programming transcriptions solved with SNOPT and IPOPT, exhibits significantly lower variance in solve times, and reliably finds a locally optimal path for the original problem. We demonstrate its effectiveness as a convex steering function in an RRT planner for minimum-snap quadrotor planning with C4 continuous trajectories. 
+
+I. I NTRODUCTION 
+
+Collision-free motion planning – the problem of finding a smooth trajectory between two configurations that avoids a set of obstacles – is a fundamental challenge in robotics and autonomous systems. Even in simple settings, the problem is computationally difficult due to the nonconvexity of the obstacle avoidance constraints. In the case of a point robot navigating among sphere obstacles in R2, the minimum length path can be computed in polynomial time [1], but the problem becomes NP-hard in R3 for polyhedral obstacles [2], and the complexity for disjoint unit sphere obstacles in R3
+
+remains an open problem [3, Section 31.5]. In robotics, how-ever, minimum path length is rarely the only consideration; motion planning typically involves costs such as time, energy, or snap, subject to constraints such as boundary conditions, derivative bounds, and continuity constraints. For this more general problem setting, no efficient algorithm is known. Several approaches have been proposed to solve collision-free motion planning in practice. Optimization-based meth-ods parametrize the trajectory as a piecewise polynomial and naturally handle different costs and constraints. A popular ap-proach is to use trajectory optimization with Nonlinear Pro-           
+
+> 1Department of Electrical Engineering and Computer Science, Mas-sachusetts Institute of Technology, Cambridge, MA, USA. E-mail:
+> {graesdal, amice, parrilo, russt }@mit.edu
+
+Fig. 1: A collision-free, C4-continuous, minimum-snap quadrotor trajectory through a cluttered field of spherical obstacles, planned by an RRT that uses our semidefinite re-laxation as a convex steering function. Our relaxation consid-ers both obstacle-avoidance and other trajectory constraints, while being fast and reliable enough to make optimization a viable inner loop. The color coding of the trajectory indicates velocity (red is slow, green is fast). gramming (NLP) [4, 5, 6], but nonconvex optimization can be brittle and sensitive to the initial guess. Another approach sidesteps the nonconvexity of obstacle avoidance by precom-puting a convex decomposition of the free-space [7, 8, 9], which can itself be a hard problem, and then plan through the decomposition with convex optimization [10, 11, 12, 13, 14]. This has proven particularly effective for multiquery planning in a single environment. On the other hand, sampling-based planners are capable of global reasoning [15, 16, 17], but are unable to naturally reason about trajectory constraints. An alternative is to combine sampling-based planners with local trajectory optimization, either by post-processing a sampled geometric path [18], by precomputing motion primitives offline [19], or by embedding a local solver as a steering function within the sampler [20]. Geometric sampling with post-processing does not reason about dynamic feasibility during exploration, often making the sampled path a poor initialization for optimization [19]. Using optimization as the steering function addresses this, but jointly reasoning about obstacles and trajectory constraints is typically nonconvex, and the resulting NLP solves can be brittle with highly variable solve times, often making this impractical. In recent years, semidefinite relaxations have emerged 
+
+> arXiv:2606.14063v1 [cs.RO] 12 Jun 2026
+
+as a powerful tool for solving certain classes of noncon-vex optimization problems. Through the Sum-of-Squares (SOS)/moment hierarchy [21, 22], one can construct a se-quence of increasingly strong relaxations, at the cost of growing computational complexity. These relaxations use convex optimization, and therefore do not suffer from being brittle or relying on an initial guess. The application of semidefinite relaxations has seen success in estimation and perception problems such as point cloud registration [23], pose-graph SLAM [24] and range-aided SLAM [25], and has lately been applied to some motion planning problems, such as planning through contact [26, 27]. However, the behavior of semidefinite relaxations for collision-free motion planning is poorly understood, and to our knowledge no theoretical analysis of their properties in this setting has been given. In this paper, we study semidefinite relaxations for collision-free motion planning. In particular, we focus on the problem of a point robot navigating from a start to a goal in a field of spherical obstacles in Rn, minimizing a squared derivative cost (such as minimum energy or minimum snap) subject to path continuity constraints and boundary condi-tions. This setting is conceptually simple yet captures the hardness of motion planning. We formulate this problem for polynomial curves exactly as a nonconvex problem, and present a natural semidefinite relaxation of it. Our core contribution is a geometric interpretation of the relaxation: we show it is equivalent to solving, to global optimality, a related collision-free motion planning problem in a space of potentially higher dimension than the original ambient space 
+
+Rn. This yields necessary and sufficient conditions for when the relaxation is exact, and a clear intuition for when the relaxation is loose. Beyond the theoretical analysis, we show that the re-laxation provides a fast and reliable convex subroutine for motion planning. This is enabled by two properties of our formulation. First, we use a classical result from SOS to certify exactly when a polynomial curve avoids a spherical obstacle, without the need for discretization. The resulting Linear Matrix Inequality (LMI) condition takes a particularly nice form, with PSD constraints that scale linearly with the polynomial trajectory degree d and are independent of the ambient dimension n. Second, the LMI condition is noncon-vex in the trajectory coefficients, so we formulate a first-order semidefinite relaxation to obtain a convex program. A naive application of the well-known Shor relaxation [28] yields a large program, but we exploit symmetry to reduce the size of the PSD cone by a factor of n. Together, these properties yield a relaxation that is 10 to 100 times faster than direct nonlinear programming transcriptions solved with SNOPT [29] and IPOPT [30], exhibits significantly lower variance in solve times, and reliably finds a locally opti-mal path. We demonstrate the effectiveness of using our method as a convex and robust steering function in an RRT, planning C4 continuous, minimum-snap collision-free trajectories through highly cluttered environments. II. R ELATED WORKS 
+
+In this section, we review relevant works on semidefinite relaxations for motion planning and optimal control. As discussed in the introduction, there is also a substantial body of work on semidefinite relaxations for perception and estimation problems, which we do not review here. Several works apply semidefinite relaxations to motion planning and control problems and empirically observe tight relaxations, though without analyzing when or why they are tight. Teng et al. [31] formulate kinodynamic motion plan-ning for rigid body systems as exact polynomial optimization problems, using a variational integrator to discretize the dy-namics on Lie groups. They apply the moment hierarchy and empirically find that tight solutions are obtained at the second order of the hierarchy for most systems they consider. Simi-larly, H¨ aring et al. [32] study minimum-energy control of the unicycle model and empirically show that the second-order relaxation is tight. In [33], Vega et al. formulate spacecraft maneuver planning with a single spherical keep-out zone (analogous to considering a single spherical obstacle) as a Quadratically Constrained Quadratic Program (QCQP) with linearized dynamics, and apply the Shor relaxation to obtain empirically tight solutions. Recently, a setting similar to ours was considered by Mahajan et al. [34], who apply the Shor relaxation to collision-free MPC with spherical obstacles and discretized collision-avoidance constraints, focusing on developing a custom cached Riccati-based ADMM solver that enables real-time rates on embedded hardware. A related line of work applies semidefinite relaxations to time-scaled optimal control. Yang et al. [35] develop a tailored semidefinite relaxation for linear and piecewise-affine systems and combine it with convex decompositions of the free-space and Graph of Convex Sets (GCS) [36] to jointly optimize mode sequences and time-optimal collision-free trajectories. Dong et al. [37] apply a similar relaxation to jointly optimize trajectories and time allocations for optimal control problems with spatio-temporal constraints, such as a quadrotor required to pass through a sequence of known waypoints within specified time windows, and exploit the banded sparsity of the multiple shooting formulation. Semidefinite relaxations have also been applied to contact-rich planning. Graesdal et al. [26] relax the contact dynamics of planar pushing with the first-order semidefinite relaxation, strengthen the formulation with implied constraints, and use GCS to plan optimal contact mode sequences. Kang et al. [27] apply the moment hierarchy to a broader class of contact-rich planning problems, encoding the discrete mode sequence directly in the hierarchy rather than through GCS, and leverage problem-specific sparsity to obtain solutions at the second or third order of the hierarchy. Finally, Wei and D¨ umbgen [38] take a different approach: they sample trajectory rollouts and use KernelSOS, a global optimization technique that builds a nonparametric surrogate of the cost landscape and minimizes it using semidefinite optimization, to find promising regions of the search space that are then refined with a sampling-based local optimizer. In contrast to these works, which apply semidefinite re-laxations to various planning problems and observe tightness empirically, our goal is to understand when the relaxation is tight. We therefore study a deliberately simplified setting, rich enough to capture the core difficulty of collision-free planning yet simple enough to admit a precise analysis. This setting also reveals a symmetry that reduces the SDP to a size independent of the ambient dimension, which can be combined with the correlative sparsity exploited in prior work. III. M OTION PLANNING 
+
+In this section, we state the optimal collision-free motion planning problem exactly, as an optimization over curves where the entire curve must be collision-free. This problem is infinite-dimensional since the decision variable is a curve, and cannot be solved numerically as stated. To address this, we restrict the curves to polynomials and define the class of curve costs we consider. The result is a semi-infinite QCQP: the decision variables are finite-dimensional, but the obstacle-avoidance constraints must hold at every point along the curve. In the next section, we use SOS to reformulate the collision-avoidance constraint exactly as LMI conditions. 
+
+A. Problem Statement 
+
+We seek a collision-free path that minimizes the sum of the squared ℓ2-norm of its derivatives, such as velocity or snap, subject to boundary conditions and continuity constraints. Let the trajectory be represented as a curve q : [0 , 1] →
+
+Rn. We require the trajectory q to be η-times continuously differentiable, that is, q ∈ C η , and denote q(i) = ( di/ds i)q
+
+as the i-th derivative. We consider m spherical obstacles with centers cj ∈ Rn and radii rj > 0, for j = 1 , . . . , m .We formulate the motion planning problem as the following nonconvex optimization problem: 
+
+min 
+
+Z 10
+
+∥q(k)(s)∥22 ds (1a) 
+
+s. t. ∥q(s) − cj ∥22 − r2 
+
+> j
+
+≥ 0, ∀s ∈ [0 , 1] , (1b) 
+
+j = 1 , . . . , m, (1c) 
+
+q(i)(0) = q(i)0 , (1d) 
+
+q(i)(1) = q(i)1 , i = 0 , . . . , ℓ (1e) 
+
+q ∈ C η , (1f) where k ∈ N+ is the derivative order for the cost, and there are boundary conditions up to the ℓ-th derivative on the curve. For motion planning, common choices for k include 
+
+k = 1 (minimum energy), k = 2 (minimum acceleration), and k = 4 (minimum snap). The problem is nonconvex due to (1b). The problem is infinite-dimensional: the decision variable q is a function in Cη , and for each obstacle j,the avoidance condition (1b) represents a continuum of nonconvex constraints indexed by s ∈ [0 , 1] . As such, it is unclear how to solve problem (1) numerically. 
+
+B. Polynomial Curves 
+
+We parametrize the curve as a piecewise polynomial, where each segment is a polynomial curve γ : [0 , 1] → Rn
+
+of degree d:
+
+γ(s) = Γ bd(s), (2) where bd(s) : R → Rd+1 is a basis of polynomials of degree less than or equal to d in the variable s, and 
+
+Γ ∈ Rn×(d+1) is the corresponding coefficient matrix. With this parametrization, the decision variables for each segment reduce to the coefficient matrix Γ, and (1) becomes an optimization problem with a finite number of variables, albeit still with an infinite number of constraints. To keep the presentation clean, we develop all formula-tions for a single segment. This is not a restriction of the formulation, as the cost and collision-avoidance constraints in (1) decompose across the polynomial segments, which are coupled only through linear continuity constraints, so the extension to multiple segments is straightforward. We like-wise present these formulations in a basis-independent form, specializing to the Bernstein basis only for our numerical experiments and a few key results. 
+
+C. Curve Costs 
+
+For a polynomial curve γ of degree d as defined in (2), the squared L2 norm of the k-th derivative can be expressed as Z 10
+
+∥γ(k)(s)∥22 ds = tr( G(k) 
+
+> d
+
+ΓT Γ) , (3) where 
+
+G(k) 
+
+> d
+
+= DkGd−kDTk ∈ Sd+1 (4) is the k-th derivative Gram matrix of degree d, Dk ∈
+
+R(d+1) ×(d+1 −k) is the differentiation matrix defined by 
+
+b(k) 
+
+> d
+
+(s) = Dkbd−k(s), and 
+
+Gd =
+
+Z 10
+
+bd(s) bd(s)T ds (5) is the basis-dependent Gram matrix of degree d. Both Gd
+
+and G(k) 
+
+> d
+
+can be computed analytically for any choice of basis. To keep notation light, we write G and G(k) when the degree d is clear from context. See subsection D.1 for explicit expressions for polynomials represented as B´ ezier curves, i.e. with the Bernstein basis. The nullspace of G(k) 
+
+> d
+
+characterizes the zero-cost direc-tions of the polynomial trajectory, which we use in our theoretical analysis in Section VI. We present the following standard result on G(k) 
+
+> d
+
+without proof: 
+
+Lemma 1. G(k) 
+
+> d
+
+has rank d + 1 − k, and its nullspace is the space of polynomials of degree at most k − 1. That is, 
+
+G(k) 
+
+> d
+
+v = 0 if and only if vT bd(s) is a polynomial of degree at most k − 1.D. Semi-Infinite QCQP Reformulation 
+
+We reformulate the motion planning problem (1) in the polynomial coefficient matrix Γ ∈ Rn×(d+1) . The result is a semi-infinite QCQP, which has a finite number of decision variables, but obstacle avoidance must still hold point-wise for all s ∈ [0 , 1] .To keep notation light, we present the derivation for a single unit sphere centered at c ∈ Rn. The condition that γ avoids the sphere is equivalent to the polynomial nonnegativity condition: 
+
+p(s) := ∥γ(s) − c∥22 − 1 ≥ 0 ∀s ∈ [0 , 1] . (6) To write the nonnegativity condition (6) in terms of the coefficient matrix Γ, we first express the shifted curve 
+
+γ(s)−c in the polynomial basis bd(s). We introduce a vector 
+
+u ∈ Rd+1 satisfying uT bd(s) = 1 , so that γ(s) − c =Γbd(s) − c · 1 = (Γ − cu T )bd(s). Using this, together with 
+
+1·1 = bd(s)T uu T bd(s), (6) can be rewritten as the quadratic form 
+
+p(s) = bd(s)T  (Γ − cu T )T (Γ − cu T ) − uu T bd(s) (7) 
+
+≥ 0 ∀s ∈ [0 , 1] ,
+
+which is a univariate polynomial in s of degree 2d.Combining the cost, the obstacle condition (7), and the boundary conditions, the polynomial motion planning prob-lem is 
+
+min tr( G(k)ΓT Γ) (8) 
+
+s. t. bd(s)T  (Γ − cu T )T (Γ − cu T ) − uu T bd(s) ≥ 0
+
+∀s ∈ [0 , 1] ,
+
+ΓA = B, 
+
+where A and B encode the boundary conditions (1d) and (1e) on the first ℓ derivatives: 
+
+A = î
+
+bd(0) bd(1) . . . b(ℓ) 
+
+> d
+
+(0) b(ℓ) 
+
+> d
+
+(1) 
+
+ó ,B = î
+
+q0 q1 . . . q(ℓ)0 q(ℓ)1
+
+ó . (9) The problem is naturally written in matrix form. The cost and obstacle constraint are both quadratic in Γ, making the problem a semi-infinite QCQP. IV. C ERTIFYING COLLISION -A VOIDANCE 
+
+Condition (7) is the nonnegativity of a univariate poly-nomial over an interval, which we know how to rewrite exactly using SOS. In this section, we show that the resulting conditions take a particularly nice form that is independent of the ambient dimension n of the curve and scales linearly with the polynomial degree d. The conditions are quadratic in the polynomial coefficients Γ, so for a fixed trajectory, certifying collision-avoidance reduces to an SDP. When searching over trajectories, the conditions are nonconvex, which we address in the next section. We first derive the condition in a basis-free fashion, before presenting a concrete instance of it for the Bernstein basis. 
+
+A. Basis-Independent Derivation 
+
+The key tool is the following classical result from real algebraic geometry: 
+
+Theorem (Markov-Luk´ acs [39, §1.21]) . A univariate poly-nomial p ∈ R[s] of degree 2d is nonnegative over an interval 
+
+[a, b ] if and only if 
+
+p(s) = σ0(s) + ( s − a)( b − s)σ1(s), (10) 
+
+where σ0, σ 1 are SOS with deg (σ0) ≤ 2d and deg (σ1) ≤
+
+2d − 2.
+
+Applying this theorem to (7) immediately gives: 
+
+Lemma 2 (Collision avoidance for polynomial curves) . Apolynomial curve γ(s) = Γ bd(s) of degree d in s lies entirely outside a unit sphere centered at c if and only if there exist Gram matrices Q0 ∈ Sd+1 + and Q1 ∈ Sd 
+
+> +
+
+such that 
+
+L((Γ − cu T )T (Γ − cu T ), Q 0, Q 1) = 0 , (11) 
+
+where L is the linear map obtained by matching polynomial coefficients in the Markov-Luk´ acs decomposition, and u ∈
+
+Rd+1 satisfies uT bd(s) = 1 .Proof. By the Markov-Luk´ acs theorem, the nonnegativity condition (7) is equivalent to 
+
+p(s) − σ0(s) − s(1 − s)σ1(s) = 0 ,
+
+where σ0, σ 1 are SOS polynomials of degree at most 2d
+
+and 2d − 2, respectively. Writing the SOS multipliers as quadratic forms σ0(s) = bd(s)T Q0 bd(s) and σ1(s) =
+
+bd−1(s)T Q1 bd−1(s) with Q0 ⪰ 0 and Q1 ⪰ 0, and matching polynomial coefficients defines the linear map L.The condition is linear in (Γ −cu T )T (Γ −cu T ) ∈ Sd+1 + and therefore quadratic in Γ itself. The extension to ellipsoidal obstacles is straightforward: 
+
+Corollary 1 (Extension to ellipsoidal obstacles) . For a gen-eral ellipsoidal obstacle x ∈ Rn | (x − c)T E(x − c) ≤ 1
+
+where E is a positive semidefinite matrix, Lemma 2 extends to 
+
+L((Γ − cu T )T E(Γ − cu T ), Q 0, Q 1) = 0 , (12) 
+
+where L, Q0, and Q1 are as in Lemma 2. B. Collision-Avoidance with B´ ezier Curves 
+
+B´ ezier curves, which are polynomial curves expressed in the Bernstein basis [40], are a common choice in motion planning [11]. We instantiate the collision-avoidance condi-tions of Lemma 2 in the closely related scaled Bernstein basis, which drops the binomial coefficients and yields simpler expressions. Our implementation uses the standard Bernstein basis for its better numerical conditioning, with the corresponding expressions given in Subsection D.2. The i-th scaled Bernstein basis polynomial of degree d is defined as 
+
+Bdi (s) := si(1 − s)d−i, i = 0 , . . . , d, (13) for s ∈ [0 , 1] . Recall from Lemma 2 that we require a vector 
+
+u satisfying uT bd(s) = 1 . By the binomial theorem, 
+
+> d
+
+X
+
+> i=0
+
+Çdi
+
+å
+
+si(1 − s)d−i = 1 ,
+
+so we take ui =  di
+
+ for i = 0 , . . . , d .We now make the collision-avoidance condition from Lemma 2 explicit for the scaled Bernstein basis. The deriva-tion follows standard SOS coefficient matching, which takes a particularly simple form in this basis due to the key identity 
+
+Bdi (s) · Bdj (s) = B2di+j (s),
+
+which follows immediately from the definition of the scaled Bernstein basis polynomials. From this, a quadratic form in 
+
+bd(s) (like the one in (7)) can be expressed in the basis b2d(s)
+
+as 
+
+bd(s)T M b d(s) = X
+
+> i,j
+
+Mij Bdi (s)Bdj (s) = X
+
+> i,j
+
+Mij B2di+j (s)= Sd(M )T b2d(s),
+
+where Sd : Sd+1 → R2d+1 sums along the anti-diagonals of 
+
+M :
+
+[Sd(M )] k = X
+
+> i+j=k
+
+Mij . (14) Similarly, since 
+
+s(1 − s) · Bd−1 
+
+> i
+
+(s) · Bd−1 
+
+> j
+
+(s) = B2di+j+1 (s),
+
+the product s(1 − s) · bd−1(s)T M b d−1(s) can be expressed in the basis b2d(s) as 
+
+s(1 − s)bd−1(s)T M b d−1(s) = Td(M )T b2d(s),
+
+where Td : Sd → R2d+1 is a shifted version of Sd−1:
+
+[Td(M )] k =
+
+®[Sd−1(M )] k−1 if 1 ≤ k ≤ 2d − 1,
+
+0 otherwise . (15) Using these maps, we can write the collision-avoidance condition from Lemma 2 explicitly: 
+
+Lemma 3 (Collision avoidance in the scaled Bernstein basis) .
+
+A polynomial curve γ(s) = Γ bd(s) of degree d in the scaled Bernstein basis lies entirely outside a unit sphere centered at c if and only if there exist Q0 ∈ Sd+1 + and Q1 ∈ Sd 
+
+> +
+
+such that 
+
+Sd
+
+ (Γ − cu T )T (Γ − cu T ) − uu T − Q0
+
+ − T d(Q1) = 0 ,
+
+(16) 
+
+where Sd and Td are the linear maps defined in (14) and (15) .Proof. Apply Sd and Td to match coefficients in the basis 
+
+b2d(s) in the proof of Lemma 2. For B´ ezier curves (i.e., the standard Bernstein basis), the same condition holds with u = e, the vector of ones, and the corresponding maps Sd, Td given in Subsection D.2. 
+
+C. The Special Case of Line Segments 
+
+For line segments, the LMI condition reduces to a Rotated Second-Order Cone (RSOC) constraint, which is computa-tionally much cheaper. The natural parameterization of a line segment from γ0 to γ1,
+
+γ(s) = (1 − s)γ0 + sγ 1, s ∈ [0 , 1] , (17) is a B´ ezier curve of degree d = 1 , for which the scaled and standard Bernstein bases coincide with b1(s) = (1 − s, s )
+
+and Γ = γ0 γ1
+
+. Applying Lemma 3 with d = 1 gives: 
+
+Corollary 2 (Collision avoidance for line segments) . A line segment from γ0 to γ1 lies entirely outside an ellipsoidal obstacle x ∈ Rn | (x − c)T E(x − c) ≤ 1 if and only if there exists a scalar α ≥ 0 such that 
+
+ïγT
+
+> 0
+
+γT
+
+> 1
+
+ò
+
+E γ0 γ1
+
+ ⪰
+
+ï 1 1 + α
+
+1 + α 1
+
+ò
+
+, (18) 
+
+which is a 2 × 2 PSD constraint that can be encoded as a RSOC constraint. Proof. Direct computation from Lemma 3 with d = 1,eliminating Q0 and letting α = Q1.V. S EMIDEFINITE RELAXATION 
+
+Using the results of the previous section, we now rewrite the semi-infinite QCQP as a finite-dimensional nonconvex problem, before deriving a semidefinite relaxation of it. 
+
+A. Nonconvex Problem 
+
+Substituting the LMI condition of Lemma 2 for the continuum constraint in the semi-infinite QCQP (8) gives a finite-dimensional nonconvex problem: 
+
+min tr( G(k) ΓT Γ) (P) 
+
+s. t. L((Γ − cu T )T (Γ − cu T ), Q 0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+ΓA = B, 
+
+where the decision variables are Γ ∈ Rn×(d+1) , Q0 ∈ Sd+1 
+
+and Q1 ∈ Sd (the SOS Gram matrices from (11)). The first constraint in (P) is a quadratic equality constraint in the polynomial coefficients, and is therefore nonconvex. 
+
+B. Forming the Relaxation 
+
+The nonconvexity in (P) comes from the first argument to 
+
+L, which expands as 
+
+(Γ − cu T )T (Γ − cu T ) = Γ T Γ − (Γ T c)uT (19) 
+
+− u(Γ T c)T + ( cT c)uu T .
+
+We define the Gram matrix of the polynomial coefficients as X := Γ T Γ ∈ Sd+1 . Substituting into (19), the right-hand side becomes affine in X and Γ. Since L is a linear map, the constraint remains affine in the decision variables X, Γ,
+
+Q0, and Q1. The same substitution makes the cost linear in 
+
+X: tr( G(k)ΓT Γ) = tr( G(k)X).The only remaining nonconvexity is the constraint X =ΓT Γ, which we relax into the convex constraint X ⪰ ΓT Γ.Using the Schur complement, we can rewrite the condition as an LMI: 
+
+X ⪰ ΓT Γ ⇐⇒ 
+
+ï In ΓΓT X
+
+ò
+
+⪰ 0, (20) where In is the n-dimensional identity matrix. With this, the convex relaxation of (P) is: 
+
+min tr( G(k)X) (SDP) 
+
+s. t. L(X − (Γ T c)uT − u(Γ T c)T
+
++ ( cT c)uu T , Q 0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+ΓA = BXA = Γ T B
+
+ï In ΓΓT X
+
+ò
+
+⪰ 0.
+
+This is an SDP in the decision variables Γ, X, Q0, and Q1.The constraints XA = Γ T B are implied by ΓA = B when 
+
+X = Γ T Γ holds (left-multiply by ΓT ), so they are redundant for (P) but tighten the relaxation. 
+
+C. Strict Feasibility and Facial Reduction 
+
+Every feasible point of the SDP satisfies 
+
+≠ï B
+
+−A
+
+ò BT −AT  ,
+
+ï In ΓΓT X
+
+ò∑ 
+
+= 0 ,
+
+so the feasible set lies in a proper face of the PSD cone. As a result, the SDP is never strictly feasible, and solving it directly leads to numerical difficulties. In practice, we address this by eliminating the equality constraints before solving, which restricts the LMI to this face. This is a facial reduction [41] where the reducing certificate is available in closed form. Eliminating the equality constraints amounts to parameterizing the affine subspace defined by ΓA = B [42, Section 10.1.2], and for B´ ezier curves in the Bernstein basis, the boundary conditions admit a particularly simple parametrization. The derivatives at each endpoint depend in a triangular manner on the adjacent control points γ(0) = 
+
+γ0, γ′(0) depends on γ0 and γ1, γ′′ (0) on γ0, γ 1, γ 2, and so on (and similarly at s = 1, reading from the end). Prescribing derivatives up to ℓ at each endpoint therefore fixes the ℓ+1 adjacent control points as known constants, leaving the remaining d + 1 − 2( ℓ+1) control points free. We can therefore write Γ = BD fixed + Γ free Dfree , where 
+
+Γfree collects the free control points and Dfixed , D free are constant matrices that place the boundary data and the free columns into the corresponding columns of Γ. Defining the smaller Gram matrix Xfree := Γ T
+
+> free
+
+Γfree and relaxing it into Xfree ⪰ ΓT
+
+> free
+
+Γfree , the LMI (20) reduces in size from n + d + 1 to n + d + 1 − 2( ℓ+1) . The boundary and tightening constraints are then satisfied by construction, while the cost and collision-avoidance constraints remain linear in (Γ free , X free ).
+
+D. Extension to Multiple Segments 
+
+For N segments with polynomial coefficient matrices 
+
+Γ1, . . . , ΓN and Cη continuity, the relaxation is derived analogously. Specifically, it introduces per-segment Gram matrices Xi and cross-Gram matrices Xi,i +1 between con-secutive segments, relaxing the nonconvex constraint 
+
+ï Xi Xi,i +1 
+
+XTi,i +1 Xi+1 
+
+ò
+
+= Γi Γi+1 
+
+T Γi Γi+1 
+
+
+
+via an LMI analogous to (20): 
+
+ In Γi Γi+1 
+
+ΓTi Xi Xi,i +1 
+
+ΓTi+1 XTi,i +1 Xi+1 
+
+ ⪰ 0 (21) Boundary conditions remain unchanged, and Cη continuity between adjacent segments introduces additional linear con-straints on Γi of the form ΓiA1 = Γ i+1 A0, where A1, A 0 ∈
+
+R(d+1) ×(η+1) collect the endpoint values of the Bernstein basis derivatives at s = 1 and s = 0 respectively. Every such linear constraint implies additional tightening constraints on 
+
+Xi and Xi,i +1 , obtained by left-multiplying by ΓTi or ΓTi+1 .The facial reduction from the previous subsection extends directly to this setting: continuity contributes η+1 additional dependent columns to each pairwise LMI, reducing its size from n+2( d+1) to n+2( d+1) −(η+1) at interior junctions, with a further ℓ+1 removed at pairs containing a global endpoint. VI. T HEORETICAL RESULTS 
+
+We now present our main theoretical results. We first give a geometric interpretation of the relaxation: solving (SDP) is equivalent to solving, to global optimality, a planning problem in a higher-dimensional space. We then use this interpretation to characterize exactly when the relaxation is tight, and give geometric conditions under which the minimizer of the original nonconvex problem is recovered. Finally, we show that our relaxation is a symmetry-reduced version of the Shor relaxation of (P) under an O(n) symme-try. As the rest of the paper can be understood without this last result, we defer it to Subsection A. 
+
+A. Geometric Interpretation 
+
+Recall that (SDP) is obtained by an algebraic lift, replacing the nonconvex term ΓT Γ in (P) with the matrix variable 
+
+X ⪰ ΓT Γ. We now give this lift a geometric interpretation. We introduce a family of higher-dimensional, nonconvex problems (P ρ), ρ ∈ N, that allow the path ρ extra spatial dimensions beyond the original n ambient dimensions, while the obstacles and boundary conditions remain in Rn. We then show that (SDP) attains the optimal cost over this family, and that an optimal (n + ρ)-dimensional path can be recovered from any minimizer. Consider extending the problem (P) from Rn to Rn+ρ, for some ρ ∈ N, in the following sense: Let v(s) = V b d(s) ∈ Rρ
+
+be a polynomial curve in the extra ρ dimensions, with coeffi-cient matrix V ∈ Rρ×(d+1) so the full curve is (γ(s), v (s)) ∈
+
+Rn+ρ. Let the obstacle be a sphere in Rn+ρ centered at (c, 0) .The squared distance to the obstacle center then splits as 
+
+∥γ(s) − c∥2 + ∥v(s)∥2, so the quadratic form (7) extends with an additional V T V term. We require v and its first ℓ
+
+derivatives to vanish at the boundary: v(i)(0) = v(i)(1) = 0 
+
+for i = 0 , . . . , ℓ , or equivalently V A = 0 . The resulting problem, with Γ as in (P), is: 
+
+min tr( G(k)(Γ T Γ + V T V )) (P ρ)
+
+s. t. L((Γ − cu T )T (Γ − cu T ) + V T V, Q 0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+ΓA = B, V A = 0 .
+
+This is still a nonconvex problem, and (P ρ) reduces to (P) for ρ = 0 . Figure 2 (a) and figure 2 (b) show two different examples with (P) (left) and (P ρ=1 ) (right). We now present three results connecting (SDP) to the lifted problems (P ρ). First, the optimal cost of (P ρ) is monotonically nonincreasing in ρ. Second, (SDP) lower-bounds the optimal cost of every (P ρ). Third, this lower bound is attained: from any minimizer of (SDP), we can construct a ρ and a pair (Γ , V ) that minimizes (P ρ). Let 
+
+c∗
+
+> P
+
+, c∗ 
+
+> Pρ
+
+, and c∗ 
+
+> SDP
+
+denote the optimal costs of (P), (P ρ), and (SDP). The SOS certificates Q0, Q 1 appear identically in all three programs, so we omit them from feasible points to keep notation light. Our first result formalizes the intuition that (P ρ) gets easier as ρ increases, since every path feasible for (P ρ) remains feasible for (P ρ+1 ): 
+
+Theorem 1. The optimal costs of (P ρ) are monotonically nonincreasing: c∗ 
+
+> Pρ
+
+≥ c∗ 
+
+> Pρ+1
+
+for all ρ ∈ N.
+
+However, these costs cannot decrease indefinitely, as (SDP) lower-bounds the entire family: 
+
+Theorem 2. For all ρ ∈ N, c∗ 
+
+> Pρ
+
+≥ c∗
+
+> SDP
+
+.
+
+Our third result shows that this lower bound is attained at a finite ρ, constructed from any minimizer of (SDP): 
+
+Theorem 3. Let (Γ ∗, X ∗) be optimal for (SDP) and let 
+
+ρ = rank( X∗ − (Γ ∗)T Γ∗). Then for any V ∗ satisfying 
+
+(V ∗)T V ∗ = X∗ − (Γ ∗)T Γ∗, the pair (Γ ∗, V ∗) is optimal for (P ρ), and c∗ 
+
+> Pρ
+
+= c∗
+
+> SDP
+
+.
+
+Together, Theorems 1 to 3 give a clean geometric inter-pretation of the relaxation: (SDP) solves the easiest problem in the family of higher-dimensional problems, in the sense that it attains the lowest optimal cost, c∗ 
+
+> SDP
+
+= min ρ∈N c∗ 
+
+> Pρ
+
+. A numerical example for R2 is shown in Figure 2. While the number of extra dimensions used by the lifted problem, ρ = rank( X − ΓT Γ) , is already bounded by d + 1 
+
+since X − ΓT Γ ∈ Sd+1 , the boundary conditions give a tighter bound: 
+
+Lemma 4. The dimension ρ in Theorem 3 satisfies ρ ≤
+
+(d + 1) − 2( ℓ + 1) , the number of free control points. 
+
+In practice, we find ρ to be smaller. In section VII, we show that across experiments in R2, R3, and R5, we never observe ρ > 1, suggesting that, for the random instances we solve, a single extra dimension already attains the lowest cost in the family. 
+
+B. When is the Relaxation Tight? 
+
+We now present a necessary and sufficient condition for tightness, which follows immediately from the geometric interpretation: since (SDP) attains the minimum cost over the higher-dimensional problems (P ρ), ρ ∈ N, it is tight exactly when this minimum equals the cost of (P). 
+
+Theorem 4. The optimal cost of the relaxation equals the true optimal cost, c∗ 
+
+> SDP
+
+= c∗
+
+> P
+
+, if and only if c∗ 
+
+> P
+
+= c∗ 
+
+> Pρ
+
+for all 
+
+ρ ∈ N.
+
+In other words, the relaxation is tight exactly when extend-ing the original problem (P) to a higher dimension cannot produce a cheaper collision-free path. 
+
+C. Recovering a Minimizer 
+
+Theorem 4 characterizes when the relaxation achieves the correct optimal cost, but does not say anything about the minimizer returned by the relaxation. The next result says that when a unique trajectory is optimal for all the higher-dimensional problems (P ρ), the relaxation recovers it exactly: 
+
+Theorem 5. If for all ρ ∈ N, every minimizer of (P ρ) has 
+
+Γ = Γ ∗ and V = 0 , then every minimizer of (SDP) has 
+
+Γ = Γ ∗ and X = (Γ ∗)T Γ∗.
+
+The hypothesis implies c∗ 
+
+> Pρ
+
+= c∗ 
+
+> P
+
+for all ρ, i.e., the relaxation is tight by Theorem 4. The uniqueness assumption is stronger but additionally guarantees recovery of the correct minimizer. It requires uniqueness only in Γ and V , and Q0
+
+and Q1 need not be unique. The hypothesis of Theorem 5 can fail even when the relaxation is tight. We identify two sufficient conditions for non-uniqueness of (P ρ). The first is that the obstacle-free problem has multiple minimizers. Without obstacle con-straints, (P ρ) reduces to a convex QP over Γ (since V = 0 is then optimal), whose cost has zero-cost directions, which by Lemma 1 are the polynomials of degree below k. The QP has a unique minimizer when the boundary conditions eliminate these directions, which holds when k ≤ 2( ℓ + 1) . This is a standard result in polynomial trajectory optimization, and follows from the uniqueness condition for convex QPs [42, Section 10.1.1] and the Hermite interpolation theorem [43, Section 2.1.5]. The second is the obstacle geometry: even when the obstacle-free problem has a unique minimizer, the nonconvex collision-avoidance constraints can create multiple isolated optima, such as symmetric paths around an obstacle. In practice, a small random perturbation to the problem geometry typically breaks this symmetry. VII. E MPIRICAL ANALYSIS 
+
+We empirically evaluate the tightness and computational cost of the relaxation. We compare against multiple NLP baselines, e.g. direct transcriptions of the same nonconvex problem solved with local nonlinear solvers, and generally find that the relaxation is 1–2 orders of magnitude faster (a) Tight example. (b) Not tight example. 
+
+Fig. 2: Geometric interpretation of the relaxation for two examples in R2. Each example shows the trajectory defined by the polynomial coefficients Γ from the solution to the relaxation in the original ambient space R2 (left), and the lifted trajectory defined by (Γ , V ) recovered from any factorization V T V = X − ΓT Γ, following Theorem 3 (right). (a) Tight: X = Γ T Γ,so V = 0 and the lifted trajectory coincides with the optimal R2 trajectory. (b) Not tight: ρ = rank( X − ΓT Γ) = 1 ,so V ∈ R1×(d+1) is nonzero and the lifted trajectory uses the extra dimension to find a lower-cost trajectory that, when projected back to R2, passes through the obstacles. The two trajectories shown are the two factorizations ±V of X − ΓT Γ.
+
+Fig. 3: Numerical evaluation of where the relaxation is tight and where it is loose for some representative obstacle configurations. The green region shows the set of reachable positions from the dark dot for which the relaxation is tight, and the red region shows where it is loose. The green lines show the trajectories obtained from solving the relaxation. Results are shown for minimum-energy cost with degree 3 polynomial trajectories. with 2–3 orders of magnitude lower variance in solve times. Further, when the strongest NLP baseline succeeds the relax-ation is typically also tight, suggesting it captures primarily local information. We compare against SNOPT [29] and IPOPT [30] using two strategies for enforcing that each polynomial segment is collision-free. The discretization approach enforces eq. (6) at 20 uniformly spaced values of s ∈ [0 , 1] per segment, yielding a nonconvex quadratic constraint at each sample. The exact approach uses the exact condition in eq. (11). For the latter approach we enforce M ⪰ 0 through the factorization M = LL T for a lower triangular matrix L,as neither of the solvers support PSD constraints. We compare across the problem configurations in Table I, matching the classical setup of [44]. We evaluate the methods on 100 randomly generated instances in R3 (15 obstacles) and R5 (30 obstacles), with obstacle radii in [0 .3, 1.0] placed in the box [−2, 2] n. We apply the procedure in subsection V-C to similarly reduce the number of free variables for both the relaxation, SNOPT, and IPOPT. We initialize SNOPT and IPOPT with a straight-line initial guess, reduce their feasibility tolerance to 10 −4, and enforce a timeout of 30 
+
+seconds.                         
+
+> Degree Cost Continuity BC Segments 1velocity ( k= 1 )C0012 3acceleration ( k= 2 )C2265jerk ( k= 3 )C3347snap ( k= 4 )C443
+
+TABLE I: B´ ezier curve configurations. Cost minimizes R ∥γ(k)(t)∥2 dt , polynomial degree is 2k − 1, continuity is 
+
+Ck (C0 for k = 1 to avoid overconstraining the problem), and BC order is the highest derivative fixed to zero at the endpoints. 
+
+A. Computational Cost 
+
+We now compare solve times between the methods. Against the discretization approach, the relaxation is 1–2 10 2                  
+
+> 10 1
+> 10 0
+> 10 1
+> 0.02
+> 0.03 0.03 0.03
+> 0.26
+> 0.27 0.46
+> 0.62
+> 1.5 0.98 1.9
+> 1.0
+> 0.69
+> 30.0
+> 0.23
+> 0.66
+> 2.3
+> 6.5
+> timeout (30 s)
+> Solve Times Comparison ( 3top, 5bottom)
+> 1357
+> Polynomial degree ( d)
+> 10 1
+> 10 0
+> 10 1
+> 0.02
+> 0.06 0.06 0.06
+> 0.74 0.96
+> 1.6
+> 1.9
+> 3.7 3.8
+> 7.4
+> 3.9
+> 3.7
+> 0.77
+> 1.8
+> 6.9
+> 23.7 timeout (30 s)
+> Solve time (s)
+> SDP
+> (ours)
+> disc.
+> exact
+> SNOPT
+> IPOPT
+
+(a) 
+
+Median speedup over baseline (R3, R5)Baseline d=1 d=3 d=5 d=7 
+
+SNOPT (disc.) 15, 31 10, 15 14, 26 19, 28 SNOPT (exact) 39, 159 440, N/A N/A N/A IPOPT (disc.) 84, 156 33, 61 57, 126 34, 70 IPOPT (exact) 14, 32 23, 30 71, 117 212, 397 (b) Both succeed,      
+
+> costs match
+> Both succeed,
+> NLP suboptimal
+> Only SDP
+> succeeds
+> Only NLP
+> succeeds
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> Fraction of instances (%)
+> 91%
+> 3% 2% 5%
+> 64%
+> 28%
+> 2% 6%
+> 23%
+> 2%
+> 74%
+> 1%
+> 60%
+> 31%
+> 3% 6%
+> Relaxation vs. Local Solver
+> disc.
+> exact
+> SNOPT
+> IPOPT
+> = 0 = 1
+> 88%
+> 12%
+> 100%
+> 0%
+> Relaxation Tightness
+> 3
+> 5
+
+(c) 
+
+Fig. 4: Empirical comparison of the relaxation against SNOPT and IPOPT across random problem instances (see subsec-tion VII-A). (a) Solve times (log scale); grey bars indicate all instances timed out. (b) Median speedup over each baseline, reported as (R3, R5). (c) Outcome breakdown against each baseline (left) and the distribution of the relaxation tightness (measured by ρ = rank( X − ΓT Γ) , see section VI) (right). The relaxation is 1–2 orders of magnitude faster than the local solvers with 1–3 orders of magnitude smaller variance. orders of magnitude faster across all polynomial degrees and both dimensions. Against the exact approach, the gap is even larger: for d ≥ 3, SNOPT times out on nearly all instances, and IPOPT solves with median solve times that grow steeply with the degree (reaching tens of seconds), while the relaxation solves with medians of 17–33 ms in 
+
+R3 and 24–63 ms in R5. The SDP relaxation also has a far smaller interquartile range: 1–4 ms in R3 and 1–12 ms in R5, 1–3 orders of magnitude smaller than the local solvers, whose interquartile ranges span 0.1–4.4 s for the discretization approach and 0.07–6.9 s for the exact approach (instances that reached the time limit excluded). 
+
+B. Empirical Tightness 
+
+Figure 3 gives geometric intuition for when the relaxation is tight, showing the regions of tightness and looseness for a single start position across the workspace under different obstacle configurations. Further, there is a strong correlation between when the relaxation is tight and when the strongest NLP baseline succeeds. In figure 4 (c), we show an outcome breakdown comparing the relaxation with each baseline, considering only instances where the relaxation is tight or the baseline succeeds. Against the strongest baseline, both methods succeed with matching costs on 91% of instances. On the remaining instances, either only one of the two methods succeeds, or both succeed but the relaxation reaches the global optimum while the baseline finds a suboptimal local solution. Against the other baselines, this gap widens. On a growing fraction of instances the relaxation finds the global optimum where the baseline returns only a local one, or succeeds where the baseline fails or times out. By Theorem 4, the relaxation is tight when extending the problem to higher dimensions does not reduce the cost, which empirically seems to approximately coincide with cases where local reasoning suffices to find the globally optimal path. Further, we empirically observe values of ρ =rank( X − ΓT Γ) of only 0 (tight) or 1 (not tight) and never higher, suggesting that the original nonconvex problems in both R3 and R5 do not get any easier after extending them by one extra dimension (in the sense defined in section VI, e.g. (P ρ=1 ) might have lower cost than (P), but the problems (P ρ≥1) all have the same cost). VIII. K INODYNAMIC MOTION PLANNING 
+
+We illustrate how the relaxation can serve as a convex subroutine within a higher-level planner. Specifically, we use it as the local steering procedure in the E XTEND step of RRT [15], applied to minimum-snap quadrotor planning with degree 9, C4-continuous trajectories. We show that the semidefinite relaxation is well-suited as the steering function in an RRT. By default, RRT uses straight-line steering that ignores the smoothness and dy-namic constraints that motion planning typically requires. A solution to this is to solve the two-point Boundary Value Problem (BVP) analytically [45, 46], but this applies only to certain systems and costs, and ignores state and input constraints. Another approach plans collision-free waypoints and smooths them [18], or uses a local nonlinear solver as the steering function, but these inherit the brittleness of local solvers: reliance on an initial guess, high solve-time variance, and discretized collision avoidance. On the other hand, the relaxation finds a collision-free, cost-optimal trajectory in Fig. 5: Minimum-snap trajectories ( C4 continuous, degree 9 polynomials) found on 10 randomly generated R2 environments with 40 obstacles, by our RRT implementation that uses the SDP relaxation as the steering procedure in the E XTEND step and post-processes with a small convex program. Each subplot title reports the total planning time. Trajectories are colored by speed, from green (fast) to red (slow). a single convex solve, enforces collision avoidance exactly along the entire trajectory, requires no initial guess, has fast and consistent solve times, and naturally handles state and input constraints such as velocity and acceleration limits. 
+
+A. RRT Implementation 
+
+We compare three methods, which we refer to as 
+
+SDP-RRT , NLP-RRT , and Geometric RRT . SDP-RRT uses the relaxation as the steering function, enforcing collision avoidance exactly along the entire trajectory. NLP-RRT is an otherwise identical RRT that uses an optimized NLP trajectory optimizer as its steering function. We enforce collision avoidance with Drake’s [47] 
+
+MinimumDistanceLowerBoundConstraint (a smoothed signed-distance formulation), and apply several optimizations: inflate the obstacles to reduce the number of collision samples, loosen the tolerances, and switch between SNOPT and IPOPT depending on problem size. Geometric RRT first uses straight-line geometric RRT to find collision-free waypoints, then smooths them with the same NLP trajectory optimizer. We sample only in the space of positions, and thus for SDP-RRT and NLP-RRT we implement a partial-state RRT [48] that leaves the derivatives free. These derivatives can grow rapidly as the tree deepens, and point-to-point steering functions cannot re-optimize across waypoints to control them, relying instead on heuristics such as terminal penalties [48]. As a convex program, our SDP steering function instead optimizes directly over the free derivatives across multiple waypoints, removing the need for such heuristics. In practice we re-optimize only the last two segments on each extension, which we find produces near-identical trajectories to re-optimizing the entire path back to the root, at much lower cost. When connecting to the goal, the derivatives are fixed to enforce the boundary conditions. 
+
+B. Trajectory Post-Processing 
+
+After the RRT planners find a path, we post-process it to reduce cost. For Geometric RRT and NLP-RRT, the path initializes a nonlinear program over the full trajectory. For SDP-RRT, we use a cutting-plane procedure motivated by the geometric interpretation of the relaxation: since the relaxation finds the cheapest trajectory across a family of higher-dimensional problems, we add linear cuts that force this trajectory into the original subspace. We sample points along the trajectory, add separating cuts between them and the obstacles, re-optimize, and repeat until the solution is collision-free, then resample to reduce cost further. Because dense cuts leave the LMI obstacle constraints rarely active, we drop them, reducing each iteration to a convex Quadratic Program (QP) that solves in a few milliseconds. This is a heuristic post-processing step, and the method recently proposed in [49] provides a more principled approach to a similar idea. 
+
+C. Numerical Results 
+
+Figure 1 shows a collision-free quadrotor trajectory in R3.We evaluate the full pipeline on 100 randomly generated 
+
+R2 environments, each with 40 spherical obstacles of radius 
+
+1 m in a 15 × 15 m square, comparing all three methods on pipeline success rate, total solve time (including refinement), steer time, and trajectory cost. A run is successful if it produces a feasible, collision-free trajectory. For Geometric RRT this requires the NLP refinement to succeed, while Geometric  
+
+> RRT
+> (n=100)
+> NLP-RRT
+> (n=100)
+> SDP-RRT
+> (n=100)
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> 83%
+> 96% 100%
+> Pipeline success rate
+> Geometric
+> RRT
+> (n=83)
+> NLP-RRT
+> (n=96)
+> SDP-RRT
+> (n=100)
+> 10 3
+> 10 4
+> 10 5
+> 10 6
+> 9.91 × 10 2
+> 4.55 × 10 5
+> 6.20 × 10 2
+> Trajectory cost
+> NLP-RRT
+> (n=96)
+> SDP-RRT
+> (n=100)
+> 0
+> 10
+> 20
+> 30
+> 40
+> Solve time (s)
+> 21.2s
+> 1.8s
+> Total RRT steer time
+> Geometric
+> RRT
+> (n=83)
+> NLP-RRT
+> (n=96)
+> SDP-RRT
+> (n=100)
+> 2.7s
+> 22.9s
+> 1.9s
+> Full pipeline solve time
+
+Fig. 6: Aggregate statistics showing median and interquartile ranges over 100 random environments for Geometric RRT, NLP-RRT, and SDP-RRT (ours), with costs and solve times reported over successful runs ( n per bar). SDP-RRT sub-stantially outperforms NLP-RRT, and performs similar to Geometric RRT (with slightly higher success rate), which importantly, unlike our method, cannot incorporate additional constraints such as dynamics or input limits. NLP-RRT and SDP-RRT have a feasible trajectory once the RRT finds a path. Steer time is the cumulative optimization time, excluding program construction overhead, which can be eliminated by pre-compiling the convex optimization programs with a tool such as CVXGEN [50]. As shown in figure 6, with example trajectories in figure 5, SDP-RRT achieves the best performance across all metrics. NLP-RRT shares our ability to reason about additional trajectory constraints, but its nonconvex steering is slow and brittle: it is over an order of magnitude slower, less reliable, and often falls back to the unrefined RRT path, yielding far higher-cost trajectories. Geometric RRT, in contrast, is fast and reliable on this benchmark, which has no dynamic or input constraints, and SDP-RRT matches its solve time at a slightly higher success rate and comparable cost. Crucially however, Geometric RRT decouples geometric planning from trajectory optimization and cannot incorporate constraints such as dynamics or input limits, whereas our convex steering can enforce additional convex constraints during exploration. IX. C ONCLUSION 
+
+While the relaxation is fast and reliable, our empirical analysis shows that it captures primarily local information and can be loose on instances where global reasoning is required. A potentially interesting direction of research is to develop higher-order relaxations from the moment-SOS hierarchy [22, 21] that can tighten the relaxation on such instances, and whether the symmetry reduction extends nat-urally to higher levels of the hierarchy. Relatedly, since we never observe ρ > 1 in our experiments, an open question is to prove tighter bounds on ρ. Another direction is to extend the framework and analysis to richer obstacle and robot geometries described by polynomials. Further, since the relaxation is convex, it readily accommodates other convex constraints, extending the method to systems with linear dynamics and state or input constraints. Finally, another promising direction is to develop a custom solver that exploits the highly structured nature of our formulation, which could potentially speed up the relaxation further. APPENDIX 
+
+A. Connection To the Shor Relaxation 
+
+In this section, we show that our relaxation (SDP) is mathematically equivalent to the Shor relaxation [28], i.e. the first level of the moment hierarchy, of (P). The Shor relaxation lifts the full vector of decision variables y ∈
+
+Rn(d+1) to a symmetric matrix Y ∈ Sn(d+1) that replaces the outer product yy T , rendering each (potentially nonconvex) quadratic term linear, yT Hy = ⟨H, Y ⟩, and relaxes the nonconvex lifting equality Y = yy T to the convex constraint 
+
+Y ⪰ yy T . Our relaxation (SDP) follows the same recipe, but instead lifts to the smaller Gram matrix X = Γ T Γ ∈ Sd+1 .Specifically, we show that (SDP) is a symmetry-reduced version of the Shor relaxation, where we exploit an O(n)
+
+symmetry inherent to (P) to reformulate the problem over a PSD cone that is smaller by a factor of n, the ambient dimension. We derive the Shor relaxation in vectorized form to match the existing literature, but note that since (P) is a matrix problem, one could equivalently derive it directly in matrix form. All proofs are in subsection C. The first step to deriving the Shor relaxation of (P) is to rewrite (P) in a vectorized form. Define y = vec(Γ) = (γ0, . . . , γ d) ∈ Rn(d+1) as the vector of vertically stacked polynomial coefficients. Using the Kronecker product ⊗,we rewrite the linear constraints directly in terms of y.Applying the vectorization identity for Kronecker products, 
+
+vec( LM N ) = ( N T ⊗ L)vec( M ), the boundary conditions 
+
+ΓA = B become (AT ⊗ In)y = vec( B).Next, we rewrite the cost and the arguments to L in terms of yy T and y. Define the partial trace tr n : Sn(d+1) → Sd+1 
+
+by [tr n(M )] ij = tr( Mij ), where Mij ∈ Rn×n is the (i, j )
+
+block of M . The partial trace will let us translate between the outer products that arise from vectorization and the Gram matrices that appear in (P). Specifically, a direct computation shows that for any M, N ∈ Rn×(d+1) ,
+
+M T N = tr n(vec( M )vec( N )T ). (22) Applying (22) to the arguments of L in (P) gives all the sub-stitutions we need to vectorize the problem. Setting (M, N )
+
+to (Γ , Γ) , (Γ , cu T ), and (cu T , cu T ) yields ΓT Γ = tr n(yy T ),
+
+ΓT cu T = tr n(y(u ⊗ c)T ), and (cT c) uu T = tr n(( uu T ) ⊗
+
+(cc T )) , respectively, where we used vec( cu T ) = u ⊗ c and the Kronecker mixed-product rule. The vectorized form of (P) is then 
+
+min tr( G(k) tr n(yy T )) s. t. L(tr n(yy T − (u ⊗ c) yT − y (u ⊗ c)T
+
++ ( uu T ) ⊗ (cc T )) , Q 0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+(AT ⊗ In) y = vec( B),
+
+with y ∈ Rn(d+1) and Q0, Q 1 unchanged from (P). The Shor relaxation is then formed by introducing Y ∈
+
+Sn(d+1) with the constraint Y = yy T , and relaxing this nonconvex equality into Y ⪰ yy T . The resulting relaxation is: 
+
+min tr( G(k) tr n(Y )) (Shor) 
+
+s. t. L(tr n(Y − (u ⊗ c)yT − y(u ⊗ c)T
+
++ ( uu T ) ⊗ (cc T )) , Q 0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+(AT ⊗ In)y = vec( B),
+
+(AT ⊗ In)Y = vec( B) yT ,
+
+ï1 yT
+
+y Y
+
+ò
+
+⪰ 0.
+
+We have included the implied constraint (AT ⊗ In)Y =vec( B) yT , which is redundant when Y = yy T but tightens the relaxation, analogously to XA = Γ T B in (SDP). The PSD variables of the two relaxations are related by tr n(Y ) = 
+
+X.We now show how (SDP) is a symmetry-reduced version of (Shor). To expose the symmetry, we decompose Y =
+
+yy T + S, where S ⪰ 0 is a positive semidefinite slack variable. Since (AT ⊗ In)y = vec( B), the implied constraint reduces to (AT ⊗ In)S = 0 . With this substitution, (Shor) becomes 
+
+min tr( G(k) tr n(yy T + S)) (Shor ′)
+
+s. t. L(tr n(yy T + S − (u ⊗ c)yT
+
+− y(u ⊗ c)T + ( uu T ) ⊗ (cc T )) ,Q0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+(AT ⊗ In)y = vec( B),
+
+(AT ⊗ In)S = 0 ,S ⪰ 0.
+
+The key observation to see the symmetry in the problem is that both the cost and the linear map constraint depend on 
+
+S only through tr n(S) ∈ Sd+1 , a much smaller matrix than 
+
+S ∈ Sn(d+1) . Let O(n) := {Q ∈ Rn×n | QT Q = In} denote the orthogonal group. 
+
+Lemma 5. (Shor ′) is invariant under the transformation 
+
+TQ(S) = ( Id+1 ⊗ QT ) S (Id+1 ⊗ Q) (23) 
+
+for any Q ∈ O(n). That is, if (y, S ) is feasible, then so is 
+
+(y, T Q(S)) with the same cost. 
+
+Since (Shor ′) is invariant under the action of O(n) on 
+
+S, and the feasible set is convex in S for any fixed y,we can restrict S to the fixed-point subspace defined as 
+
+{S : TQ(S) = S for all Q ∈ O(n)} without loss of optimal-ity. This follows from the standard averaging argument for symmetry reduction of semidefinite programs; see, e.g., [51] for details. 
+
+Lemma 6. The fixed-point subspace of the transforma-tion (23) is 
+
+¯S = 1
+
+n Λ ⊗ In, Λ ∈ Sd+1 , (24) 
+
+i.e., the set of matrices satisfying TQ(S) = S for all Q ∈
+
+O(n).
+
+Theorem 6. (SDP) is the symmetry-reduced version of 
+
+(Shor) . Specifically, restricting S in (Shor ′) to the fixed-point subspace (24) recovers (SDP) .
+
+The symmetry reduction thus replaces the PSD variable 
+
+S ∈ Sn(d+1) with Λ ∈ Sd+1 , reducing the size of the PSD cone by a factor of n.
+
+B. Proofs for the Theoretical Results 
+
+In the proofs below, Q0 and Q1 are carried over unchanged between the programs, so we omit them from feasible points. 
+
+Proof of Theorem 1. Start by noticing that the cost in (P ρ) is unchanged by ρ, and thus all (P ρ) share the same cost (to see this, consider introducing X = Γ T Γ+ V T V ). Let FPρ be the feasible set of (P ρ), and let Πρ be the operator that projects a set onto the variables from (P ρ). As the cost is shared across (P ρ), it is enough to show FPρ ⊆ Πρ(FPρ+1 ) to show that the cost is monotonically decreasing as we increase ρ. Let 
+
+(Γ ′, V ′) be any feasible point to (P ρ), where V ′ ∈ Rρ×(d+1) .Then (Γ ′, (V ′, 0)) is feasible for (Pρ+1 ), where (V ′, 0) ∈
+
+R(ρ+1) ×(d+1) .
+
+Proof of Theorem 2. Start by defining a semidefinite relax-ation for the lifted program (P ρ) for each ρ ∈ N (by following the same procedure in section V), but with X = Γ T Γ+ V T V ,as: 
+
+min tr( G(k) X) (SDP ρ)
+
+s. t. L(X − (Γ T c)uT − u(Γ T c)T
+
++ ( cT c)uu T , Q 0, Q 1) = 0 ,Q0 ⪰ 0, Q 1 ⪰ 0,
+
+ΓA = B, V A = 0 
+
+X ⪰ ΓT Γ + V T V. 
+
+The collision avoidance constraint in (SDP ρ) is identical to the one in (SDP), and the last constraint can equivalently be expressed as an LMI via the Schur complement, as in (20). Because (SDP ρ) is a convex relaxation of (P ρ)we immediately have c∗ 
+
+> SDP ρ
+
+≤ c∗ 
+
+> Pρ
+
+. It remains to show 
+
+c∗ 
+
+> SDP ρ
+
+= c∗ 
+
+> SDP
+
+for all ρ. Let FSDP ρ be the feasible set of (SDP ρ) and Π( FSDP ρ ) its projection onto the variables from (SDP). The cost for (SDP) and (SDP ρ) is the same, so we will show that FSDP = Π( FSDP ρ ). First, let (Γ ′, X ′)
+
+be any feasible point to (SDP). Then (Γ ′, V ′ = 0 , X ′) is feasible to (SDP ρ): the collision avoidance, tightening, and boundary constraints for Γ carry over directly, V ′A = 0 is trivially satisfied, and X′ ⪰ (Γ ′)T Γ′ = (Γ ′)T Γ′ + 0 satisfies the last constraint in (SDP ρ). For the other direction, let 
+
+(Γ ′, V ′, X ′) be feasible to (SDP ρ), where Γ′ ∈ Rn×(d+1) 
+
+and V ′ ∈ Rρ×(d+1) . We show that (Γ ′, X ′) is feasible to (SDP). The boundary constraint Γ′A = B and tightening constraint X′A = (Γ ′)T B carry over directly from (SDP ρ). Finally, from the Schur complement of the LMI in (SDP ρ), we have X′ ⪰ (Γ ′)T Γ′ +( V ′)T V ′ ⪰ (Γ ′)T Γ′, which satisfies the constraint in (SDP). 
+
+Proof of Theorem 3. Let (Γ ∗, X ∗) be an optimal solution to (SDP), and let ρ = rank (X∗ − (Γ ∗)T Γ∗). First, consider the case when ρ = 0 , i.e. X∗ = (Γ ∗)T Γ∗. In this case, Γ∗
+
+is immediately feasible for (P), and since c∗ 
+
+> SDP
+
+provides a lower bound that is attained by this feasible point, it must be optimal. Next, consider the case when ρ > 0. From (20) we have X∗ − (Γ ∗)T Γ∗ ⪰ 0, so we can factorize 
+
+X∗ − (Γ ∗)T Γ∗ = ( V ∗)T V ∗
+
+where V ∗ ∈ Rρ×(d+1) , V ∗̸ = 0. By construction, 
+
+(Γ ∗, V ∗)T (Γ ∗, V ∗) = (Γ ∗)T Γ∗ + ( V ∗)T V ∗ = X∗. We now show that (Γ ∗, V ∗) is optimal for (Pρ). First, we show feasibility. The collision avoidance constraint in (Pρ) is satisfied because (Γ ∗, V ∗)T (Γ ∗, V ∗) = X∗ so the constraint reduces to the one in (SDP). For the boundary constraint, we have from (SDP) that Γ∗A = B and X∗A = (Γ ∗)T B,which gives 
+
+(Γ ∗)T B = X∗A
+
+= (Γ ∗)T Γ∗A + ( V ∗)T V ∗A
+
+= (Γ ∗)T B + ( V ∗)T V ∗A, 
+
+so (V ∗)T V ∗A = 0 , implying V ∗A = 0 . This shows that the tightening constraints X∗A = (Γ ∗)T B in (SDP) are necessary to ensure that V ∗ satisfies the boundary condi-tions V ∗A = 0 in (P ρ). Finally, we show optimality. By Theorem 2, we have c∗ 
+
+> SDP
+
+≤ c∗ 
+
+> Pρ
+
+. By construction, c∗ 
+
+> SDP
+
+=tr( G(k)X∗) = tr( G(k)((Γ ∗)T Γ∗ + ( V ∗)T V ∗)) . As (Γ ∗, V ∗)
+
+is feasible for (Pρ) and attains the lower bound, it must be optimal. 
+
+Proof of Lemma 4. Let M = X − ΓT Γ for an optimal 
+
+(Γ , X ), so ρ = rank( M ). By the boundary constraint 
+
+ΓA = B and the tightening constraint XA = Γ T B, we have M A = XA − ΓT ΓA = 0, so col( A) ⊆ ker M
+
+and ρ ≤ (d + 1) − rank( A) = ( d + 1) − 2( ℓ + 1) , as 
+
+rank( A) = 2( ℓ + 1) since the boundary conditions are independent Hermite interpolation conditions [43]. 
+
+Proof of Theorem 4. We start by showing necessity. Sup-pose c∗ 
+
+> P
+
+= c∗ 
+
+> Pρ
+
+for all ρ ∈ N. Then Theorem 3 immediately gives us a ρ such that c∗ 
+
+> SDP
+
+= c∗ 
+
+> Pρ
+
+= c∗
+
+> P
+
+. Next, we show sufficiency. Suppose c∗ 
+
+> SDP
+
+= c∗
+
+> P
+
+. Theorem 2 gives c∗ 
+
+> P
+
+=
+
+c∗ 
+
+> SDP
+
+≤ c∗ 
+
+> Pρ
+
+for all ρ ∈ N. The reverse inequality follows immediately from Theorem 1, and equality must hold. 
+
+Proof of Theorem 5. Let (Γ , X ) be any optimal solution to (SDP). We consider two cases. First, suppose X = Γ T Γ.Then Γ is feasible for (P) with cost tr( G(k)ΓT Γ) = c∗ 
+
+> SDP
+
+=
+
+c∗
+
+> P
+
+, so Γ achieves the lower bound of the relaxation and must therefore also be optimal for (P). By the uniqueness assump-tion (with ρ = 0 ), Γ = Γ ∗, and therefore X = (Γ ∗)T Γ∗.Second, suppose X̸ = Γ T Γ. Let ρ = rank( X − ΓT Γ) > 0
+
+and factor V T V = X − ΓT Γ, where V̸ = 0 due to 
+
+ρ > 0. By Theorem 3, (Γ , V ) is optimal for (P ρ). By the uniqueness assumption, (Γ , V ) = (Γ ∗, 0) , which contradicts 
+
+V̸ = 0 . Therefore, every optimal solution to (SDP) equals 
+
+(Γ ∗, (Γ ∗)T Γ∗).
+
+C. Proofs for Symmetry Reduction Proof of Lemma 5. Let ˜S = (Id+1 ⊗ QT )S(Id+1 ⊗ Q).Writing S in terms of its n×n blocks Sij , the transformation acts as Sij 7 → QT Sij Q. By the cyclic property of the trace, 
+
+tr( QT Sij Q) = tr( Sij ), so the partial trace is invariant under this transformation, tr n( ˜S) = tr n(S), and the cost and linear map constraint are preserved. For the boundary constraint, the mixed-product property of Kronecker products gives 
+
+(AT ⊗ In)( Id+1 ⊗ QT ) = AT ⊗ QT = ( I ⊗ QT )( AT ⊗ In)
+
+, so (AT ⊗ In) ˜S = ( Ip ⊗ QT )( AT ⊗ In)S(Id+1 ⊗ Q) = 0 
+
+(by the implied boundary constraint). Finally, ˜S ⪰ 0 since it is a congruence of S ⪰ 0.
+
+Proof of Lemma 6. The transformation acts independently on each n×n block as ¯Sij 7 → QT ¯Sij Q, so invariance requires 
+
+QT ¯Sij Q = ¯Sij for all Q ∈ O(n). It is a standard result that this implies ¯Sij = (1 /n )λij In for some λij ∈ R. Collecting these scalars into Λ = [ λij ] ∈ Sd+1 gives ¯S = 1 
+
+> n
+
+Λ ⊗ In.
+
+Proof of Theorem 6. We substitute S = 1 
+
+> n
+
+Λ⊗In into (Shor ′)and define X = Γ T Γ+Λ . Since tr n(S) = Λ and tr n(yy T ) = ΓT Γ, we have tr n(yy T + S) = X, recovering the cost and linear map constraint of (SDP). The boundary condition 
+
+ΓA = B is unchanged, and (AT ⊗ In)S = 0 becomes 
+
+ΛA = 0 , so XA = (Γ T Γ + Λ) A = Γ T B. Finally, S ⪰ 0 if and only if Λ ⪰ 0, since the eigenvalues of Λ⊗In are exactly those of Λ, each with multiplicity n, which is equivalent to 
+
+X ⪰ ΓT Γ, i.e., 
+
+ï In ΓΓT X
+
+ò
+
+⪰ 0.
+
+D. B´ ezier Curves and the Bernstein Basis 
+
+In our implementation, we use the standard Bernstein basis, which differs from the scaled Bernstein basis used in the main text by a binomial scaling. The i-th standard Bernstein basis polynomial of degree d is defined as 
+
+Bdi (s) := 
+
+Çdi
+
+å
+
+si(1 − s)d−i, (25) for i = 0, . . . , d and s ∈ [0 , 1] . We use the following identities, which follow from the basis definition: 
+
+s(1 − s)Bdi (s) = (d + 1 − i)( i + 1) (d + 1)( d + 2) Bd+2  
+
+> i+1
+
+(s), (26) 
+
+Bdi (s)Bdj (s) = 
+
+ di
+
+  dj
+
+  2di+j
+
+ B2di+j (s). (27) 
+
+1) Curve Costs for B´ ezier Curves: Derivatives of B´ ezier curves are B´ ezier curves of reduced degree: 
+
+γ(k)(s) = d!(d − k)! ΓD(k) 
+
+> d
+
+bd−k(s), (28) where D(k) 
+
+> d
+
+:= DdDd−1 · · · Dd−k+1 ∈ R(d+1) ×(d−k+1) and 
+
+Dd ∈ R(d+1) ×d is the forward difference matrix with −1 on the diagonal and 1 on the subdiagonal. The Gram matrix Gd
+
+from (5) has entries 
+
+[Gd]ij = 12d + 1 
+
+ di
+
+  dj
+
+  2di+j
+
+ , (29) which follows from the product rule (27) and R 10 Bdi (s) ds =1/(d + 1) . Substituting (28) into the cost integral gives R 10 ∥γ(k)(s)∥22 ds = tr( G(k)ΓT Γ) , where 
+
+G(k) := 
+
+Å d!(d − k)! 
+
+ã2
+
+D(k) 
+
+> d
+
+Gd−k (D(k) 
+
+> d
+
+)T . (30) 
+
+2) Collision Avoidance for B´ ezier Curves: We now write the collision-avoidance condition from Lemma 3 for B´ ezier curves, i.e., in the standard Bernstein basis. The derivation follows exactly as in the main body, with the standard Bernstein basis replacing the scaled one. The partition of unity property of the standard Bernstein basis immediately gives u = e:
+
+> d
+
+X
+
+> i=0
+
+Bdi (s) = eT bd(s) = 1 . (31) From the product rule (27), the map Sd : Sd+1 → R2d+1 is given by: 
+
+[Sd(M )] k = X
+
+> i+j=k
+
+ di
+
+  dj
+
+ 2dk
+
+ Mij . (32) Similarly, using (26), Td : Sd → R2d+1 is given by: 
+
+[Td(M )] k =
+
+® k(2 d−k)2d(2 d−1) [Sd−1(M )] k−1 if 1 ≤ k ≤ 2d − 1,
+
+0 otherwise .
+
+(33) ACKNOWLEDGEMENT 
+
+This material is based upon work supported by the Na-tional Science Foundation under “Center: NSF Engineering Research Center for Human AugmentatioN via Dexterity (HAND)”. This work was also supported by Amazon Inc., under Awards #2D-19158851, #2D-19158853, and #2D-15694048, and by the Aker Scholarship. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the funding agencies. REFERENCES 
+
+[1] E.-C. Chang, S. W. Choi, D. Kwon, H. Park, and C. K. Yap, “Shortest path amidst disc obstacles is computable,” in Proceedings of the Twenty-First Annual Symposium on Computational Geometry , 2005, pp. 116–125. [2] J. Canny and J. Reif, “New lower bound techniques for robot motion planning problems,” in 28th Annual Symposium on Foundations of Computer Science (SFCS 1987) . IEEE, 1987, pp. 49–60. [3] C. D. Toth, J. O’Rourke, and J. E. Goodman, Handbook of discrete and computational geometry . CRC Press, 2017. [4] C. R. Hargraves and S. W. Paris, “Direct trajectory optimization using nonlinear programming and collo-cation,” Journal of Guidance, Control, and Dynamics ,vol. 10, no. 4, pp. 338–342, 1987. [5] M. Zucker, N. Ratliff, A. D. Dragan, M. Pivtoraiko, M. Klingensmith, C. M. Dellin, J. A. Bagnell, and S. S. Srinivasa, “CHOMP: Covariant Hamiltonian optimiza-tion for motion planning,” The International Journal of Robotics Research , vol. 32, no. 9-10, pp. 1164–1193, 2013. [6] K. Tracy, T. A. Howell, and Z. Manchester, “Differen-tiable collision detection for a set of convex primitives,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2023, pp. 3663–3670. [7] H. Dai, A. Amice, P. Werner, A. Zhang, and R. Tedrake, “Certified polyhedral decompositions of collision-free configuration space,” The International Journal of Robotics Research , vol. 43, no. 9, pp. 1322–1341, 2024. [8] P. Werner, T. Cohn, R. H. Jiang, T. Seyde, M. Sim-chowitz, R. Tedrake, and D. Rus, “Faster algorithms for growing collision-free convex polytopes in robot configuration space,” arXiv preprint arXiv:2410.12649 ,2024. [9] R. Deits and R. Tedrake, “Computing large convex regions of obstacle-free space through semidefinite pro-gramming,” in Algorithmic Foundations of Robotics XI: Selected Contributions of the Eleventh International Workshop on the Algorithmic Foundations of Robotics .Springer, 2015, pp. 109–124. [10] ——, “Efficient mixed-integer planning for UAVs in cluttered environments,” in 2015 IEEE Interna-tional Conference on Robotics and Automation (ICRA) .IEEE, 2015, pp. 42–49. [11] T. Marcucci, M. Petersen, D. Von Wrangel, and R. Tedrake, “Motion planning around obstacles with convex optimization,” Science Robotics , vol. 8, no. 84, p. eadf7843, 2023. [12] T. Marcucci, M. Halm, W. Yang, D. Lee, and A. D. Marchese, “A biconvex method for minimum-time mo-tion planning through sequences of convex sets,” arXiv preprint arXiv:2504.18978 , 2025. [13] P. Werner, R. Cheng, T. Stewart, R. Tedrake, and D. Rus, “Superfast configuration-space convex set com-putation on GPUs for online motion planning,” arXiv preprint arXiv:2504.10783 , 2025. [14] K. Kondo, Y. Wu, V. Kumar, and J. P. How, “MIGHTY: Hermite spline-based efficient trajectory planning,” 
+
+IEEE Robotics and Automation Letters , vol. 11, no. 6, pp. 6664–6671, 2026. [15] S. LaValle, “Rapidly-exploring random trees: A new tool for path planning,” Research Report 9811 , 1998. [16] L. E. Kavraki, P. Svestka, J.-C. Latombe, and M. H. Overmars, “Probabilistic roadmaps for path planning in high-dimensional configuration spaces,” IEEE Transac-tions on Robotics and Automation , vol. 12, no. 4, pp. 566–580, 2002. [17] S. Karaman and E. Frazzoli, “Sampling-based algo-rithms for optimal motion planning,” The International Journal of Robotics Research , vol. 30, no. 7, pp. 846– 894, 2011. [18] C. Richter, A. Bry, and N. Roy, “Polynomial trajec-tory planning for aggressive quadrotor flight in dense indoor environments,” in Robotics Research: The 16th International Symposium ISRR . Springer, 2016, pp. 649–666. [19] J. Ortiz-Haro, W. H¨ onig, V. N. Hartmann, M. Toussaint, and L. Righetti, “iDb-RRT: Sampling-based kinody-namic motion planning with motion primitives and tra-jectory optimization,” in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) .IEEE, 2024, pp. 10 702–10 709. [20] S. Stoneman and R. Lampariello, “Embedding non-linear optimization in RRT* for optimal kinodynamic planning,” in 53rd IEEE Conference on Decision and Control . IEEE, 2014, pp. 3737–3744. [21] P. A. Parrilo, “Semidefinite programming relaxations for semialgebraic problems,” Mathematical Program-ming , vol. 96, no. 2, pp. 293–320, 2003. [22] J. B. Lasserre, “Global optimization with polynomials and the problem of moments,” SIAM Journal on Opti-mization , vol. 11, no. 3, pp. 796–817, 2001. [23] H. Yang, J. Shi, and L. Carlone, “TEASER: Fast and certifiable point cloud registration,” IEEE Transactions on Robotics , vol. 37, no. 2, pp. 314–333, 2020. [24] D. M. Rosen, L. Carlone, A. S. Bandeira, and J. J. Leonard, “SE-Sync: A certifiably correct algorithm for synchronization over the special Euclidean group,” The International Journal of Robotics Research , vol. 38, no. 2-3, pp. 95–125, 2019. [25] A. Papalia, A. Fishberg, B. W. O’Neill, J. P. How, D. M. Rosen, and J. J. Leonard, “Certifiably correct range-aided SLAM,” IEEE Transactions on Robotics , vol. 40, pp. 4265–4283, 2024. [26] B. P. Graesdal, S. Y. C. Chia, T. Marcucci, S. Morozov, A. Amice, P. A. Parrilo, and R. Tedrake, “Towards tight convex relaxations for contact-rich manipulation,” 
+
+arXiv preprint arXiv:2402.10312 , 2024. [27] S. Kang, G. Liu, and H. Yang, “Global contact-rich planning with sparsity-rich semidefinite relaxations,” 
+
+arXiv preprint arXiv:2502.02829 , 2025. [28] N. Z. Shor, “Quadratic optimization problems,” Soviet Journal of Computer and Systems Sciences , vol. 25, pp. 1–11, 1987. [29] P. E. Gill, W. Murray, and M. A. Saunders, “SNOPT: An SQP algorithm for large-scale constrained optimiza-tion,” SIAM Review , vol. 47, no. 1, pp. 99–131, 2005. [30] A. W¨ achter and L. T. Biegler, “On the implementation of an interior-point filter line-search algorithm for large-scale nonlinear programming,” Mathematical Program-ming , vol. 106, no. 1, pp. 25–57, 2006. [31] S. Teng, A. Jasour, R. Vasudevan, and M. Ghaffari, “Convex geometric motion planning on Lie groups via moment relaxation,” arXiv preprint arXiv:2305.13565 ,2023. [32] H. H¨ aring, D. Gramlich, C. Ebenbauer, and C. W. Scherer, “Trajectory generation for the unicycle model using semidefinite relaxations,” European Journal of Control , vol. 80, p. 101063, 2024. [33] F. Vega, J. Arrizabalaga, R. Watson, and Z. Manchester, “Convex maneuver planning for spacecraft collision avoidance,” arXiv preprint arXiv:2510.19058 , 2025. [34] I. Mahajan, J. Arrizabalaga, A. Grillo, F. Vega, J. An-derson, Z. Manchester, and B. Plancher, “Tinysdp: Real time semidefinite optimization for certifiable and agile edge robotics,” arXiv preprint arXiv:2605.13748 , 2026. [35] L. Yang, T. Marcucci, P. A. Parrilo, and R. Tedrake, “A new semidefinite relaxation for linear and piecewise-affine optimal control with time scaling,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2025, pp. 9228–9235. [36] T. Marcucci, J. Umenberger, P. A. Parrilo, and R. Tedrake, “Shortest paths in graphs of convex sets,” 
+
+SIAM Journal on Optimization , vol. 34, no. 1, pp. 507– 532, 2024. [37] S. Dong, Z. Shen, R. Reiter, H. Huang, B. Gao, H. Chen, and W.-H. Chen, “A fast semidefi-nite convex relaxation for optimal control prob-lems with spatio-temporal constraints,” arXiv preprint arXiv:2601.03055 , 2026. [38] Z. Wei and F. D¨ umbgen, “Global sampling-based tra-jectory optimization for contact-rich manipulation via KernelSOS,” arXiv preprint arXiv:2604.27175 , 2026. [39] G. Szeg˝ o, Orthogonal polynomials . American Math-ematical Society, 1939, vol. 23. [40] R. T. Farouki and V. T. Rajan, “Algorithms for polyno-mials in Bernstein form,” Computer Aided Geometric Design , vol. 5, no. 1, pp. 1–26, 1988. [41] F. N. Permenter, “Reduction methods in semidefi-nite and conic optimization,” Ph.D. dissertation, Mas-sachusetts Institute of Technology, 2017. [42] S. Boyd and L. Vandenberghe, Convex Optimization .Cambridge University Press, 2004. [43] J. Stoer and R. Bulirsch, Introduction to Numerical Analysis , 3rd ed., ser. Texts in Applied Mathematics. Springer, 2002, vol. 12. [44] D. Mellinger and V. Kumar, “Minimum snap trajec-tory generation and control for quadrotors,” in IEEE International Conference on Robotics and Automation ,2011, pp. 2520–2525. [45] D. J. Webb and J. Van Den Berg, “Kinodynamic RRT*: Asymptotically optimal motion planning for robots with linear dynamics,” in 2013 IEEE International Confer-ence on Robotics and Automation . IEEE, 2013, pp. 5054–5061. [46] A. Perez, R. Platt, G. Konidaris, L. Kaelbling, and T. Lozano-Perez, “LQR-RRT*: Optimal sampling-based motion planning with automatically derived ex-tension heuristics,” in 2012 IEEE International Confer-ence on Robotics and Automation . IEEE, 2012, pp. 2537–2542. [47] R. Tedrake and the Drake Development Team, “Drake: Model-based design and verification for robotics,” 2019. [Online]. Available: https://drake.mit.edu [48] D. Zheng and P. Tsiotras, “Accelerating kinody-namic RRT* through dimensionality reduction,” in 
+
+2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2021, pp. 3674– 3680. [49] P. Werner, T. Marcucci, and D. Rus, “Biconvex opti-mization for smooth minimum-time trajectories around convex obstacles,” 2026, manuscript in preparation. [50] J. Mattingley and S. Boyd, “CVXGEN: A code gener-ator for embedded convex optimization,” Optimization and Engineering , vol. 13, no. 1, pp. 1–27, 2012. [51] K. Gatermann and P. A. Parrilo, “Symmetry groups, semidefinite programs, and sums of squares,” Journal of Pure and Applied Algebra , vol. 192, no. 1–3, pp. 95–128, 2004.

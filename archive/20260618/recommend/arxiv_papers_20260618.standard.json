@@ -1,0 +1,232 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-18T22:30:21.039633+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 1,
+    "deep_cap": 7,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 12,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.18594v1",
+      "source": "arxiv",
+      "title": "Benchmarking Action Spaces in Reinforcement Learning for Vision-based Robotic Manipulation",
+      "abstract": "In real-world reinforcement learning (RL), the choice of action space can play a key role in shaping motion smoothness, safety, and overall task performance. In this study, we evaluate pose increment, pose velocity, joint position increment, and joint velocity across two vision-based manipulation tasks: object picking and pushing. We train policies in simulation and deploy them to the real world using sim-to-real transfer. We find that action-space representation indeed significantly affects sim-to-real performance. In particular, we find that the joint velocity action space is best for the vision-based picking and pushing tasks in terms of smoothness and final task performance. We also provide practical guidance for RL practitioners in choosing action spaces for both simulation and real-world experiments.",
+      "authors": [
+        "Seyed Alireza Azimi",
+        "Homayoon Farrahi",
+        "Abhishek Naik",
+        "Colin Bellinger",
+        "A. Rupam Mahmood"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-17T01:45:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.18594v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmarks action spaces for vision-based robotic manipulation using RL",
+      "llm_evidence_cn": "使用强化学习对基于视觉的机器人操作动作空间进行基准测试",
+      "llm_evidence": "使用强化学习对基于视觉的机器人操作动作空间进行基准测试",
+      "canonical_evidence": "使用强化学习对基于视觉的机器人操作动作空间进行基准测试",
+      "llm_tldr_en": "Evaluates different action spaces for RL-based vision manipulation, finding joint velocity best for sim-to-real transfer.",
+      "llm_tldr_cn": "针对基于视觉的机器人操作任务中强化学习的动作空间选择问题，系统比较了位姿增量、位姿速度、关节位置增量和关节速度四种表示。在仿真中训练策略并迁移到真实世界，发现关节速度动作空间在平滑性和任务性能上最优，为实践者提供了实用指导。",
+      "llm_tldr": "针对基于视觉的机器人操作任务中强化学习的动作空间选择问题，系统比较了位姿增量、位姿速度、关节位置增量和关节速度四种表示。在仿真中训练策略并迁移到真实世界，发现关节速度动作空间在平滑性和任务性能上最优，为实践者提供了实用指导。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.16572v1",
+      "source": "arxiv",
+      "title": "Steering Generative Reinforcement Learning into Stable Robotic Controller",
+      "abstract": "Diffusion and flow-based generative policies provide a powerful policy class for reinforcement learning by inducing rich stochastic exploration through iterative action generation. However, the stochasticity of diffusion policies is not suitable for stable and precise control in high-dimensional robotic systems, where small action variations can accumulate into inconsistent motion and reduced robustness. To address this issue, we propose SteerGenPO, a latent-space reinforcement learning framework that steers a trained generative policy into a robust deterministic robotic controller. The key idea is to replace stochastic latent sampling of the trained generative policy with a learned latent actor that predicts a state-dependent latent input for the generative policies. This separates exploration and control: stochastic generative sampling provides diverse action proposals during policy learning, while deterministic latent steering provides stable and adaptive control at deployment. We evaluate SteerGenPO on six Isaac Lab benchmarks and a Unitree G1 locomotion task. The results show SteerGenPO improves over both classical RL and generative RL baselines, while its deterministic latent steering produces more stable inference-time behaviors and more reliable command responses.",
+      "authors": [
+        "Yixuan Wang",
+        "Shutong Ding",
+        "Ke Hu",
+        "Tianxiang Gui",
+        "Jingya Wang",
+        "Ye Shi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-15T11:16:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.16572v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generative RL to stable robot controller",
+      "llm_evidence_cn": "生成式强化学习转化为稳定机器人控制器",
+      "llm_evidence": "生成式强化学习转化为稳定机器人控制器",
+      "canonical_evidence": "生成式强化学习转化为稳定机器人控制器",
+      "llm_tldr_en": "SteerGenPO converts diffusion-based generative policies into robust deterministic controllers via a learned latent actor, improving stability for high-dimensional robotic systems.",
+      "llm_tldr_cn": "扩散模型等生成式策略在强化学习中因随机性导致高维机器人系统控制不稳定。本文提出SteerGenPO框架，在潜空间学习一个状态相关的潜在动作，将生成式策略转化为确定性控制器，从而在保持探索能力的同时提升控制的稳定性和鲁棒性。实验验证了其在多种机器人任务上的有效性。",
+      "llm_tldr": "扩散模型等生成式策略在强化学习中因随机性导致高维机器人系统控制不稳定。本文提出SteerGenPO框架，在潜空间学习一个状态相关的潜在动作，将生成式策略转化为确定性控制器，从而在保持探索能力的同时提升控制的稳定性和鲁棒性。实验验证了其在多种机器人任务上的有效性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14063v1",
+      "source": "arxiv",
+      "title": "Semidefinite Relaxations for Collision-Free Motion Planning",
+      "abstract": "We study semidefinite relaxations for collision-free motion planning. We focus on a point robot moving from start to goal through spherical obstacles in $\\mathbb{R}^n$, subject to path continuity constraints and squared derivative costs; a setting that is conceptually simple yet captures the hardness of collision-free motion planning. We formulate this problem exactly as a nonconvex problem over polynomial curves, and present a natural semidefinite relaxation. We contribute two key theoretical insights; to our knowledge this is the first theoretical analysis of semidefinite relaxations for collision-free motion planning. First, we show that solving the convex relaxation is equivalent to solving, to global optimality, a related motion planning problem in a potentially higher-dimensional space. This geometric interpretation yields necessary and sufficient conditions for tightness, and a clear intuition for when the relaxation is loose. Second, we show that the relaxation admits a symmetry reduction that makes it significantly smaller than one might expect, with positive semidefinite cone sizes that scale linearly with the polynomial degree and are independent of the ambient dimension. The resulting relaxation is 10 to 100 times faster than direct nonlinear programming transcriptions solved with SNOPT and IPOPT, exhibits significantly lower variance in solve times, and reliably finds a locally optimal path for the original problem. We demonstrate its effectiveness as a convex steering function in an RRT planner for minimum-snap quadrotor planning with $C^4$ continuous trajectories.",
+      "authors": [
+        "Bernhard Paus Graesdal",
+        "Alexandre Amice",
+        "Pablo A. Parrilo",
+        "Russ Tedrake"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-12T03:18:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.14063v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "collision-free motion planning: directly applicable to aerial manipulator motion planning",
+      "llm_evidence_cn": "无碰撞运动规划可直接用于空中机械臂的运动规划",
+      "llm_evidence": "无碰撞运动规划可直接用于空中机械臂的运动规划",
+      "canonical_evidence": "无碰撞运动规划可直接用于空中机械臂的运动规划",
+      "llm_tldr_en": "This paper provides the first theoretical analysis of semidefinite relaxations for collision-free motion planning, showing equivalence to a potential field problem and providing a practical convex optimization formulation for path planning with obstacles.",
+      "llm_tldr_cn": "无碰撞运动规划是空中机械臂控制的关键问题。本文首次对基于半定松弛的无碰撞运动规划进行理论分析，证明凸松弛等价于一个势场中的运动规划问题，并给出凸优化公式。该方法为包含球形障碍物的点机器人路径规划提供了全局最优解的理论保证，对于空中机械臂的运动规划具有重要启发意义。",
+      "llm_tldr": "无碰撞运动规划是空中机械臂控制的关键问题。本文首次对基于半定松弛的无碰撞运动规划进行理论分析，证明凸松弛等价于一个势场中的运动规划问题，并给出凸优化公式。该方法为包含球形障碍物的点机器人路径规划提供了全局最优解的理论保证，对于空中机械臂的运动规划具有重要启发意义。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.15148v1",
+      "source": "arxiv",
+      "title": "MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency",
+      "abstract": "Inverse kinematics (IK) remains a critical bottleneck for real-time robot manipulation. Classical numerical solvers achieve high geometric precision but often suffer from discontinuous branch switching and unstable behavior near kinematic singularities during closed-loop deployment. Meanwhile, learned IK approaches frequently struggle to balance spatial accuracy, motion smoothness, and real-time efficiency, particularly when trained on noisy human teleoperation data. We present \\textbf{MimicIK}, a real-time generative inverse kinematics framework that learns smooth and robust joint-space motion priors from teleoperation demonstrations through conditional flow matching. Given the current joint configuration and a target end-effector pose, MimicIK predicts continuous delta-joint commands using an efficient two-step iterative refinement process based on a Minimal Iterative Policy (MIP) backbone. To enforce physical consistency, we further introduce an FK consistency loss, a differentiable forward-kinematics regularization that penalizes task-space deviations from the target pose during training. We evaluate MimicIK on a real-world 6-DOF robot dataset containing 8,848 teleoperation demonstrations. MimicIK achieves a mean position error of 4.65 mm, a 10 mm success rate of 92.01\\%, and a trajectory spike rate of only 7.99\\%. Compared with a UNet diffusion baseline, our method improves both spatial accuracy and motion smoothness while reducing inference latency from 21.66 ms to 6.74 ms. Furthermore, unlike deterministic MLP baselines that catastrophically diverge under out-of-distribution deployment, MimicIK remains stable near singular configurations and enables robust 20 Hz real-time control on deployment hardware.",
+      "authors": [
+        "Jiahao Yang",
+        "Shenhao Yan",
+        "Fan Feng",
+        "Chengsi Yao",
+        "Ge Wang",
+        "Zhixin Mai",
+        "Yiming Zhao",
+        "Yatong Han"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-13T06:32:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.15148v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "inverse kinematics for manipulation: supports grasping and manipulation",
+      "llm_evidence_cn": "逆运动学支持抓取与操作",
+      "llm_evidence": "逆运动学支持抓取与操作",
+      "canonical_evidence": "逆运动学支持抓取与操作",
+      "llm_tldr_en": "MimicIK proposes a real-time generative inverse kinematics framework using conditional flow matching from teleoperation data, addressing discontinuities and instability of classical solvers while maintaining geometric accuracy and smoothness for robot manipulation tasks.",
+      "llm_tldr_cn": "遥操作数据噪声大，经典逆运动学求解器存在分支切换不连续和奇异点附近不稳定的问题。本文提出MimicIK，基于条件流匹配从遥操作演示中学习平滑鲁棒的关节空间运动先验，实现实时生成逆运动学。该方法平衡了空间精度、运动平滑性和实时效率，在多种机器人操作任务中表现优于现有方法。该框架为机械臂抓取与操作提供了关键技术支撑。",
+      "llm_tldr": "遥操作数据噪声大，经典逆运动学求解器存在分支切换不连续和奇异点附近不稳定的问题。本文提出MimicIK，基于条件流匹配从遥操作演示中学习平滑鲁棒的关节空间运动先验，实现实时生成逆运动学。该方法平衡了空间精度、运动平滑性和实时效率，在多种机器人操作任务中表现优于现有方法。该框架为机械臂抓取与操作提供了关键技术支撑。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.15148v2",
+      "source": "arxiv",
+      "title": "MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency",
+      "abstract": "Inverse kinematics (IK) remains a critical bottleneck for real-time robot manipulation. Classical numerical solvers achieve high geometric precision but often suffer from discontinuous branch switching and unstable behavior near kinematic singularities during closed-loop deployment. Meanwhile, learned IK approaches frequently struggle to balance spatial accuracy, motion smoothness, and real-time efficiency, particularly when trained on noisy human teleoperation data. We present \\textbf{MimicIK}, a real-time generative inverse kinematics framework that learns smooth and robust joint-space motion priors from teleoperation demonstrations through conditional flow matching. Given the current joint configuration and a target end-effector pose, MimicIK predicts continuous delta-joint commands using an efficient two-step iterative refinement process based on a Minimal Iterative Policy (MIP) backbone. To enforce physical consistency, we further introduce an FK consistency loss, a differentiable forward-kinematics regularization that penalizes task-space deviations from the target pose during training. We evaluate MimicIK on a real-world 6-DOF robot dataset containing 8,848 teleoperation demonstrations. MimicIK achieves a mean position error of 4.65 mm, a 10 mm success rate of 92.01\\%, and a trajectory spike rate of only 7.99\\%. Compared with a UNet diffusion baseline, our method improves both spatial accuracy and motion smoothness while reducing inference latency from 21.66 ms to 6.74 ms. Furthermore, unlike deterministic MLP baselines that catastrophically diverge under out-of-distribution deployment, MimicIK remains stable near singular configurations and enables robust 20 Hz real-time control on deployment hardware.",
+      "authors": [
+        "Jiahao Yang",
+        "Shenhao Yan",
+        "Fan Feng",
+        "Chengsi Yao",
+        "Ge Wang",
+        "Zhixin Mai",
+        "Yiming Zhao",
+        "Yatong Han"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-13T06:32:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.15148v2",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "inverse kinematics for manipulation: supports grasping and manipulation",
+      "llm_evidence_cn": "逆运动学支持抓取与操作",
+      "llm_evidence": "逆运动学支持抓取与操作",
+      "canonical_evidence": "逆运动学支持抓取与操作",
+      "llm_tldr_en": "MimicIK proposes a real-time generative inverse kinematics framework using conditional flow matching from teleoperation data, addressing discontinuities and instability of classical solvers while maintaining geometric accuracy and smoothness for robot manipulation tasks.",
+      "llm_tldr_cn": "遥操作数据噪声大，经典逆运动学求解器存在分支切换不连续和奇异点附近不稳定的问题。本文提出MimicIK，基于条件流匹配从遥操作演示中学习平滑鲁棒的关节空间运动先验，实现实时生成逆运动学。该方法平衡了空间精度、运动平滑性和实时效率，在多种机器人操作任务中表现优于现有方法。该框架为机械臂抓取与操作提供了关键技术支撑。",
+      "llm_tldr": "遥操作数据噪声大，经典逆运动学求解器存在分支切换不连续和奇异点附近不稳定的问题。本文提出MimicIK，基于条件流匹配从遥操作演示中学习平滑鲁棒的关节空间运动先验，实现实时生成逆运动学。该方法平衡了空间精度、运动平滑性和实时效率，在多种机器人操作任务中表现优于现有方法。该框架为机械臂抓取与操作提供了关键技术支撑。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

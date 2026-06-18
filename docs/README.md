@@ -6,38 +6,39 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-17
-- 运行时间：2026-06-17 22:24:39 UTC
+- 最新运行日期：2026-06-18
+- 运行时间：2026-06-18 22:33:30 UTC
 - 运行状态：成功
 - 本次总论文数：5
-- 精读区：0
-- 速读区：5
+- 精读区：1
+- 速读区：4
 
 ### 今日简报（AI）
-今天聚焦多旋翼无人机通用控制、机器人操作奖励建模及多任务技能迁移，共推送5篇论文。  
-最值得关注的是多旋翼无人机的具身条件通用控制（评分7.0）和机器人多任务阶段感知奖励建模（SARM2）。  
-建议优先阅读评分最高的《Embodiment-conditioned Generalist Control for Multirotor Aerial Robots》，了解无人机控制新范式。
-- 详情：[/202606/17/README](/202606/17/README)
+今日共推荐5篇机器人相关论文，其中1篇精读、4篇速读。
+
+最值得关注的论文是《Benchmarking Action Spaces in Reinforcement Learning for Vision-based Robotic Manipulation》（8.0分），系统评估了不同动作空间对视觉机器人操作的影响；此外《Steering Generative Reinforcement Learning into Stable Robotic Controller》（7.0分）提出了生成式强化学习与稳定控制器的融合方法。
+
+建议优先精读动作空间基准论文，同时关注生成式强化学习与运动规划（如《Semidefinite Relaxations...》）的交叉应用，以把握当前机器人学习与控制的前沿趋势。
+- 详情：[/202606/18/README](/202606/18/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Benchmarking Action Spaces in Reinforcement Learning for Vision-based Robotic Manipulation](/202606/18/2606.18594v1-benchmarking-action-spaces-in-reinforcement-learning-for-vision-based-robotic-manipulation)  
+   标签：评分：8.0/10、query:drone-arm
+   evidence：使用强化学习对基于视觉的机器人操作动作空间进行基准测试
 
 ### 速读区论文标签
-1. [Embodiment-conditioned Generalist Control for Multirotor Aerial Robots](/202606/17/2606.10857v1-embodiment-conditioned-generalist-control-for-multirotor-aerial-robots)  
-   标签：评分：7.0/10、query:aerial-arm
-   evidence：多旋翼强化学习控制策略
-2. [SARM2: Multi-Task Stage Aware Reward Modeling for Self Improving Robotic Manipulation](/202606/17/2606.10305v1-sarm2-multi-task-stage-aware-reward-modeling-for-self-improving-robotic-manipulation)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：用于机器人操作强化学习的多任务阶段感知奖励模型
-3. [Learning to Adapt: Representation-Based Reinforcement Learning for Multi-Task Skill Transfer](/202606/17/2606.12890v1-learning-to-adapt-representation-based-reinforcement-learning-for-multi-task-skill-transfer)  
+1. [Steering Generative Reinforcement Learning into Stable Robotic Controller](/202606/18/2606.16572v1-steering-generative-reinforcement-learning-into-stable-robotic-controller)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：生成式强化学习转化为稳定机器人控制器
+2. [Semidefinite Relaxations for Collision-Free Motion Planning](/202606/18/2606.14063v1-semidefinite-relaxations-for-collision-free-motion-planning)  
    标签：评分：6.0/10、query:aerial-arm
-   evidence：多任务强化学习用于四旋翼轨迹跟踪，可应用于空中机械臂轨迹跟踪
-4. [MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency](/202606/17/2606.15148v2-mimicik-real-time-generative-inverse-kinematics-from-teleoperation-with-fk-consistency)  
+   evidence：无碰撞运动规划可直接用于空中机械臂的运动规划
+3. [MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency](/202606/18/2606.15148v1-mimicik-real-time-generative-inverse-kinematics-from-teleoperation-with-fk-consistency)  
    标签：评分：6.0/10、query:aerial-arm
-   evidence：实时生成式逆运动学，可应用于空中机械臂
-5. [HOLO-MPPI: Multi-Scenario Motion Planning via Hierarchical Policy Optimization](/202606/17/2606.16480v1-holo-mppi-multi-scenario-motion-planning-via-hierarchical-policy-optimization)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：分层强化学习与MPPI结合的运动规划，适用于空中机械臂控制
+   evidence：逆运动学支持抓取与操作
+4. [MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency](/202606/18/2606.15148v2-mimicik-real-time-generative-inverse-kinematics-from-teleoperation-with-fk-consistency)  
+   标签：评分：6.0/10、query:aerial-arm
+   evidence：逆运动学支持抓取与操作
 
 
 <div class="dpr-home-promo-card">
