@@ -1,0 +1,69 @@
+{
+  "label": "2026-06-19",
+  "date": "2026-06-19",
+  "generated_at": "2026-06-19T22:05:36",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202606/19/2606.13794v2-an-integrated-interpretable-control-effectiveness-learning-and-nonlinear-control-allocation-methodology-for-overactuated-aircrafts",
+      "section": "deep",
+      "title_en": "An integrated interpretable control effectiveness learning and nonlinear control allocation methodology for overactuated aircrafts",
+      "authors": "Umut Demir, Aamir Ahmad, Walter Fichter",
+      "date": "2026-06-11",
+      "pdf": "https://arxiv.org/pdf/2606.13794v2",
+      "score": "8.0",
+      "evidence": "过驱动飞行器控制分配方法可迁移至过驱动空中机械臂",
+      "tldr": "过驱动飞机在非线性飞行阶段，传统线性控制分配因模型失配导致性能下降。本文利用稀疏辨识学习物理约束的控制效能解析模型，兼具紧凑性和可解释性，并支持在线自适应重构。在基准飞机上的测试表明，该方法精度媲美全非线性模型，计算成本大幅降低。该工作为实现可解释、高效的非线性控制分配提供了新途径。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Nonlinear dynamics and the strong couplings that arise between multiple effectors undermine the assumptions behind conventional, linear control allocation techniques. When flight enters regimes where nonlinear effects dominate, linear allocators exhibit reduced accuracy due to increased model mismatch, which subsequently degrades performance and robustness of the flight control system. High fidelity onboard models and black box data driven approaches can recover accuracy across the flight envelope, but respectively impose computational burdens prohibitive for real time allocation and sacrifice the interpretability required for verification and fault diagnosis. This paper addresses these limitations by learning an explicit, physics constrained analytical model of the control effectiveness mapping from representative flight data using Sparse Identification of Nonlinear Dynamics. The resulting mapping is compact, interpretable, and admits analytical derivatives, enabling efficient computation within nonlinear solvers that additionally incorporate actuator dynamics, without requiring an onboard model. An online adaptation mechanism monitors prediction residuals and refreshes the model when significant plant changes are detected, providing graceful reconfiguration under actuator failures and varying operating conditions. The methodology is evaluated on a high fidelity nonlinear benchmark aircraft across a range of aggressive maneuvers, achieving accuracy comparable to a full nonlinear onboard model while substantially reducing computational cost relative to established baselines.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/19/2606.20127v1-contraction-based-neural-control-for-cooperative-aerial-payload-transportation-with-variable-length-cables",
+      "section": "quick",
+      "title_en": "Contraction-based Neural Control for Cooperative Aerial Payload Transportation with Variable-length Cables",
+      "authors": "Yi Lok Lo, Longhao Qian, Hugh H. T. Liu",
+      "date": "2026-06-18",
+      "pdf": "https://arxiv.org/pdf/2606.20127v1",
+      "score": "7.0",
+      "evidence": "变长缆绳协作空中载荷运输",
+      "tldr": "针对可变长度缆绳的多无人机吊挂刚体负载系统，提出神经非线性控制框架。通过解耦运动方程为有效载荷和缆绳长度独立通道，实现模块化控制器设计。联合训练神经控制收缩度量控制器和神经反馈控制器强制收缩条件，并设计缆绳控制律用于避障。仿真验证了刚体负载轨迹跟踪和系统穿越门的能力。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "This paper presents a novel neural nonlinear control framework for a multi-drone slung payload system with variable-length cables and a rigid-body payload. The equations of motion are formulated into a decoupled structure, where the payload and cable length dynamics are governed by independent control channels, facilitating modularized controller design on reduced-order subsystems. A neural control contraction metric (CCM) controller and a neural feedback controller are jointly trained to enforce contraction conditions for the payload subsystem. Separately, a cable length control law is derived that exploits the variable-length degree of freedom for obstacle avoidance. Numerical simulations demonstrate trajectory tracking of a rigid-body payload and gate traversal capabilities of the overall system under the proposed control framework.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/19/2606.13886v1-physvla-towards-physically-grounded-vla-for-embodied-robotic-manipulation",
+      "section": "quick",
+      "title_en": "PhysVLA: Towards Physically-Grounded VLA for Embodied Robotic Manipulation",
+      "authors": "Namai Chandra, Shriram Damodaran, Lin Wang",
+      "date": "2026-06-11",
+      "pdf": "https://arxiv.org/pdf/2606.13886v1",
+      "score": "6.0",
+      "evidence": "物理基础的机器人操纵控制可应用于空中机械臂",
+      "tldr": "现有的VLA模型缺乏物理约束，导致轨迹不稳定和失败。PhysVLA作为即插即用的推理时框架，无需重新训练即可对任意冻结的VLA骨干施加物理校正，通过相位感知有限状态机和选择性Euler-Lagrange门处理动力学不一致。在多个VLA骨干和基准上，成功率提升高达17%，稳定性提升19%，轨迹效率提升15%，jerk鲁棒性提升10倍，并成功移植到真实机器人。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Vision-Language-Action (VLA) models excel at mapping visual inputs and natural language instructions directly to robotic control policies. However, because they are trained primarily to fit behavioural demonstration data, they do not explicitly enforce fundamental physical principles such as rigid-body dynamics or contact constraints. This exposes a critical physics gap: standard temporal smoothing applied on top of single-step or chunked VLAs trades trajectory quality for added failures that short-term memory cannot resolve. To bridge this gap, we introduce PhysVLA (Physics-VLA), a plug-and-play, inference-time framework designed to wrap any frozen VLA backbone without retraining, fine-tuning, or weight access, with less than 1 ms of overhead per control step. PhysVLA intercepts the predicted control action, captures only the simulator or system state, and applies a dual-layered correction: (i) a phase-aware finite-state machine that structures discrete task segments (approach, grasp, transport, and place), and (ii) a selective Euler-Lagrange gate that activates only when a dynamics oracle detects kinodynamic inconsistency. Evaluated across OpenVLA, OpenVLA-OFT, Force-VLA, and Generalist-VLA on LIBERO-Spatial with a 7-DoF Franka Panda, the framework delivers absolute success rate increases of up to 17% and stability increases of up to 19% with no per-task regressions, improves trajectory efficiency by up to 15% across all four backbones, and shows up to a 10x improvement in trajectory jerk robustness on a Robosuite Lift cross-simulator sweep. We further validate the framework on a real Agilex Piper arm with a pick-and-place task, confirming that PhysVLA transfers to physical hardware without retraining, with success-rate improvements of up to 50%, establishing physical awareness as a composable, backbone-agnostic runtime module.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/19/2606.19340v1-zero-shot-long-horizon-dexterous-manipulation-via-multi-view-3d-grounded-vlm-reasoning",
+      "section": "quick",
+      "title_en": "Zero-Shot Long-Horizon Dexterous Manipulation via Multi-View 3D-Grounded VLM Reasoning",
+      "authors": "Jisoo Kim, Sangwon Baik, Taeksoo Kim, Sungjoo Kim, Junyoung Lee, Mingi Choi, Hanbyul Joo",
+      "date": "2026-06-17",
+      "pdf": "https://arxiv.org/pdf/2606.19340v1",
+      "score": "6.0",
+      "evidence": "零样本灵巧操纵方法可应用于空中抓取",
+      "tldr": "针对长期灵巧操作中的零样本问题，本文提出基于多视角3D定位的VLM推理框架。通过融合多视图VLMs的2D关键点与射线投票，将语言指令转化为3D任务计划。实验证明该方法在3D定位精度和执行可靠性上优于单视角RGB-D基线和微调VLA方法，并在未见物体和工具使用任务中实现零样本长期操作。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "We present a zero-shot framework for long-horizon dexterous manipulation that grounds language instructions into executable 3D task plans from calibrated multi-view RGB images. Rather than training an end-to-end policy, our system uses a vision-language model (VLM) to produce reference-frame task grounding and primitive-level 2D keypoints, then lifts them into 3D via multi-view fusion. This lifting combines triangulation of view-wise VLM groundings with reference-view ray voting, which searches along a semantic camera ray for geometrically consistent candidates across neighboring views. The resulting 3D keypoints support both pick-and-place and tool-use: for tool-use, we retrieve an object-centric atomic action corresponding to the inferred skill category and align its stored 6D tool trajectory to the scene; for dexterous execution, we expand the lifted grasp keypoint into a task-conditioned grasp affordance region and generate feasible grasp-motion pairs with an arm-hand motion generator. Real-world experiments show improved 3D grounding accuracy and execution reliability over single-view RGB-D grounding and fine-tuned VLA baselines. We further demonstrate long-horizon manipulation through closed-loop status verification and replan, enabling zero-shot execution on unseen objects and tool-use tasks in novel scenes.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
