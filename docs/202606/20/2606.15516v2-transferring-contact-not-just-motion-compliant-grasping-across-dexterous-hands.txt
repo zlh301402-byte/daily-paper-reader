@@ -1,0 +1,575 @@
+Title: Transferring Contact, Not Just Motion: Compliant Grasping Across Dexterous Hands
+
+URL Source: https://arxiv.org/pdf/2606.15516v2
+
+Published Time: Fri, 19 Jun 2026 00:15:14 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+# Transferring Contact, Not Just Motion: Compliant Grasping Across Dexterous Hands 
+
+Soofiyan Atar ∗ Yao-Ting Huang ∗ Michael Yip 
+
+Department of Electrical and Computer Engineering University of California San Diego, United States 
+
+Figure 1: Overview. We propose a unified force–position encoding for dexterous hands that transfers across embodiments. A VLM grounds language instructions into task keypoints, and a state machine dispatches each phase to an optimization-based primitive, enabling stable long-horizon grasping without an end-to-end policy. The bottom row shows primitive actions across embodiments on compliant and rigid objects. 
+
+Abstract: Dexterous grasping depends on contact regulation, not motion alone. Stable manipulation requires fingers to maintain appropriate object loading as contacts slip, deform, or become visually occluded. Existing cross-embodiment dexterous policies unify motion through retargeted hand poses or latent actions, but force feedback remains tied to each hand’s sensing and actuation, limiting transfer. This work introduces a cross-embodiment force–position interface for contact-aware manipulation across heterogeneous dexterous hands. Motion intent is represented in a shared hand-pose latent, while each hand’s effort signal is calibrated through system identification into physical joint torque in N·m. These torques are mapped to fingertip forces and compact per-finger load descriptors, giving the policy comparable observations of where the hand should move and how 
+
+the object is loaded. Using this interface, a flow-matching visuomotor policy is trained on vision, proprioception, and calibrated contact, with structured visual masking that encourages reliance on force under grasp-relevant occlusion. The same calibrated signal drives a hybrid force–position controller for demonstration collection and execution, keeping force targets consistent across training and deployment. Experiments across structurally different hands show that calibrated contact feedback enables transferable compliant grasping, with learned primitives reusable in long-horizon manipulation pipelines. 
+
+Keywords: Cross-embodiment dexterous manipulation, Compliant manipulation, Contact-aware imitation learning, Force–position control 
+
+## 1 Introduction 
+
+Grasping a fragile object, carrying it, and handing it to a person requires a robot hand not only to reach the right configuration, but also to regulate how strongly each fingertip loads the object as it slips, 
+
+> ∗
+
+Equal contribution. 
+
+> arXiv:2606.15516v2 [cs.RO] 17 Jun 2026
+
+deforms, or becomes occluded by the hand itself. A policy that predicts only finger motion [ 1, 2] can close on a plausible pose while remaining blind to whether the object is supported, over-constrained, or about to be dropped. Stable, compliant manipulation [ 3 ] therefore requires feedback on interaction force, not only on joint position. Robotic hands frustrate this requirement because they differ in joint dimensionality, kinematic layout, actuation, and sensing, so behavior learned in one hand’s native state–action space rarely transfers directly to another. Existing cross-embodiment methods reduce this gap by aligning motion through retargeting, contact maps, morphology embeddings, or latent action spaces, giving different hands a common command interface [ 1, 4, 5]. However, this unifies where fingers move, not how contact is loaded. The feedback that describes loading remains tied to hand-specific effort or tactile proxies, and vision alone provides weak recovery cues when contacts are self-occluded [6, 7]. We make the contact itself transferable. Hand intent is represented through a shared pose latent, while each non-backdrivable or self-locking actuator’s hand effort sensing is calibrated through system identification into physical joint torque, from which we derive fingertip forces and compact load descriptors. Unlike raw effort, torque and fingertip force express the interaction in physical coordinates that can be compared across hands. This yields a unified force–position interface in which both finger motion and grasp loading are expressed in a common set of transferable coordinates. Using this unified interface, the dexterous hand is driven by a hybrid force–position controller [ 8]used for teleoperation and autonomous rollout. Built on this interface, we introduce MARC, a Mask-Aware Reactive Compliant flow-matching policy [ 9] conditioned on vision, proprioception, and calibrated contact feedback. MARC uses structured visual masking during training so that the policy learns to rely on force and proprioception when grasp-relevant visual evidence is occluded. For long-horizon execution, MARC handles the contact-sensitive reach-and-lift phase, while model-based force controllers maintain the grasp during transport and release the object at handover. A high-level planner supplies task keypoints, but dexterous execution remains hand-agnostic and contact-driven. The main contributions of this work are: 1. a transferable contact representation that converts hand-specific effort and sensing proxies into calibrated joint torques, fingertip forces, and compact load descriptors, making contact feedback comparable across dexterous hands; 2. a unified force–position interface that combines shared hand-pose intent with calibrated contact feedback, enabling transferable compliant control across heterogeneous dexterous hands; 3. MARC , a mask-aware flow-matching policy trained on vision, proprioception, and calibrated contact, and a long-horizon execution pipeline that composes learned reach-and-lift behavior with model-based force controllers for transport and handover. Together, as shown in Fig. 1, these components enable contact-rich manipulation skills to transfer across structurally different dexterous hands while maintaining stable, compliant interaction over long-horizon tasks. 
+
+## 2 Related Work 
+
+Cross-embodiment dexterous manipulation transfers skills across hands of different morphology using eigengrasp bases, contact maps, morphology embeddings, and latent action embeddings [ 1, 10 ,4 , 11 , 5]. These reduce morphology gaps by aligning pose or action spaces, but do not make force feedback comparable in physical units. The closest learned-latent methods, XL-VLA and CrossDex [ 2,1], fit a separate per-hand encoder/decoder from millions of teleoperated state–action pairs, repeated for every new hand. We instead use a single MANO-based [ 12 ] hand-pose latent—where MANO is a parametric model of the human hand that encodes pose as a low-dimensional vector—learned once from roughly ten minutes of Manus glove [ 13 ] motion rather than task demonstrations; retargeting maps it onto any hand, so no per-hand model is needed, resolving the kinematic pose mismatch and 2compressing the 63 -dimensional hand-pose input into a compact code. Our main departure is the contact channel: each hand’s effort signals are calibrated into physical torque, yielding force features shared across embodiments. 
+
+Scaling dexterous data. A complementary line scales dexterous manipulation data through retarget-ing, human demonstration, and interaction capture, including DexMimicGen, DexWild, DexUMI, DEXOP, and DexFlyWheel [ 14 , 15 , 16 , 17 , 18 , 19 ]. Our work is orthogonal: we focus not on how demonstrations are collected, but on the representation in which they are expressed. Compliant dex-terous control is well studied, yet many methods assume backdrivable or torque-controllable hands and are less applicable to non-backdrivable or self-locking actuators [ 20 ]. Contact-rich dexterity has also used compliant grasp synthesis, tactile skins, and force- or touch-informed demonstra-tions [ 21 , 6, 22 , 7, 23 , 24 ]. These methods usually encode contact as a sensor-specific modality. We instead use calibrated fingertip forces and torque-derived load descriptors as a unified contact repre-sentation, condition a Diffusion Transformer (DiT) [ 25 ] flow-matching policy on this force–position interface, and deploy it through a hybrid force/position controller with structured visual masking for self-occlusion. 
+
+Robot foundation models train generalist policies across heterogeneous robot datasets, language goals, and action spaces, including Open X-Embodiment, Octo, OpenVLA, π0, RDT-1B, and DexVLA [ 26 , 27 , 28 , 29 , 30 , 31 ]. A related line uses VLMs for task planning, object grounding, and skill selection [ 32 , 33 , 34 ]. These improve semantic generalization but only align observations, language, and action formats, not a physically calibrated contact representation for transferring force feedback across hands. We therefore use VLMs only for high-level grounding and task decomposition, while execution is handled by a contact-aware policy in a shared hand-pose and calibrated force space. 
+
+## 3 Preliminary 
+
+Problem Formulation. We address compliant cross-embodiment dexterous manipulation from visual and contact observations. Let H be a set of hands, where each hand h ∈ H has dh actuated joints with native command q(h) ∈ Rdh , and differs in kinematics, actuation, and sensing. We remove this embodiment dependence through a unified command–contact interface. Commands are expressed in a shared MANO-pose latent ψ ∈ Rdψ and mapped to native joints by a hand-specific retargeting map Rh : ψ 7 → q(h). Contact is expressed in physical units: a hand-specific predictor Gh
+
+maps raw effort proxies ˜τ (h) and proprioceptive histories to joint torques τ (h) ∈ Rdh in N·m, from which the Jacobian gives fingertip forces ft and spatial torque descriptors γt.The policy state is the unified tuple st = [ xt, pt, ft, γt, ψt], where xt ∈ SE (3) is the end-effector pose, pt are fingertip positions, ft the calibrated fingertip forces, and γt = [ c, ρ, ℓ ] the spatial torque descriptors encoding where contact loads each finger. Given an n-step history of states and RGB-D observations with object-template crops, the policy predicts an H-step action chunk 
+
+at:t+H ∼ πθ (· | Ot−n+1: t, st−n+1: t) in the shared command space, executing na ≤ H steps before replanning. Hand identity selects only Gh and Rh; it is never given to πθ .
+
+## 4 Method 
+
+4.1 Cross-Embodiment Interface 
+
+The interface has two components, a shared command space and a calibrated contact channel, both supplied to the policy and the controller. The command space is a MANO pose latent shared across hands. Following CrossDex [ 1], we encode the 63 -dim MANO [ 35 ] hand-pose vector θm ∈ R63 (the stacked 3-D keypoints) with a nonlinear autoencoder, fit once to ten minutes of glove motion, into a latent ψ ∈ Rdψ (dψ = 15 ) in which the policy acts, replacing the original PCA basis. The dimensionality dψ = 15 was chosen to balance reconstruction accuracy against compactness. The retargeting map Rh realizes ψ on hand h by 3decoding ˆθm = D(ψ) through the decoder D and solving a modified DexPilot retargeting [ 36 , 37 ]for the joint configuration q(h),
+
+q(h) = arg min 
+
+> q
+
+X
+
+> i
+
+αiLtip  
+
+> i
+
++ (1 − αi)Lfull 
+
+> i
+
+ + λ∥q − qprev ∥2. (1) We modify DexPilot’s key-vector objective into a blend of two Huber error terms. Ltip  
+
+> i
+
+measures the gap at finger i’s tip in both position and pointing direction, capturing precise pinches. Lfull  
+
+> i
+
+measures the same gap at three keypoints along finger i (PIP, DIP, TIP), preserving overall finger shape. A per-finger weight αi ∈ [0 , 0.7] rises under detected pinch and blends the two, while λ∥q − qprev ∥2
+
+regularizes for temporal smoothness. The embodiment-specific map is confined to Rh, so a new hand is added from only its URDF, and decoded fingertip positions pt also enter the policy state.  
+
+> Figure 2: Calibration setup. Fingertip tethered through a string and spring to a six-axis load cell for per-hand torque calibration.
+
+The contact channel calibrates the per-hand torque predictor Gh against a physical reference (Fig. 2). Each hand is mounted on a Franka at known poses with one fingertip tethered to an ATI Axia80 six-axis sensor by an inextensible string, so the transmitted load is a pure force F ∈ R3 and the ground-truth torque of that finger’s nj joints follows from its trans-lational Jacobian Jlin ∈ R3×nj as τ = J⊤
+
+> lin
+
+F, with no moment term; these labels supervise Gh. From the predicted torque τ (h) we read two per-finger quan-tities that stack over fingers into the state entries ft
+
+and γt. Writing τ ∈ Rnj for a finger’s entries of 
+
+τ (h), its fingertip force is the least-squares inverse of 
+
+τ = J⊤
+
+> lin
+
+F,
+
+f =  Jlin J⊤
+
+> lin
+
+−1Jlin τ , (2) which is well defined whenever Jlin has full row rank, but returns a single net force at the tip and cannot localize where on the finger the contact occurred. The joint-torque vector preserves this localization, since each joint receives torque only from contacts distal to it along the chain. A contact on the proximal phalanx therefore loads only the base joint, a contact at the fingertip loads every joint, and the distribution of |τj | across the finger encodes the contact location. We summarize this distribution with three scalars normalized by the total absolute torque s = P 
+
+> j
+
+|τj | + ε,
+
+c =
+
+P 
+
+> j
+
+j |τj |
+
+s , ρ = s2
+
+P 
+
+> j
+
+τ 2 
+
+> j
+
++ ε , ℓ = |τlat |
+
+s , (3) the distal centroid c (the torque-weighted mean joint index with j ordered proximal to distal), the participation ratio ρ ∈ [1 , n j ] (measuring how many joints share the load), and the lateral share ℓ (the fraction carried by the abduction-axis torque τlat rather than flexion). Being model-free and location-agnostic, (3) stays valid under non-fingertip contact, unlike (2) . Together, ft and γt = [ c, ρ, ℓ ] form the contact channel in physical, cross-hand-comparable units, giving the policy a compact spatial torque description of both the magnitude of fingertip loading and where along the finger that load concentrates. 
+
+4.2 Compliant Dexterous-Hand Controller 
+
+The calibrated torque channel is not only a policy input but also the feedback for low-level execution. We wrap each hand command in a force-limited position controller that tracks the commanded pose under light load and retreats only the loaded joints once contact exceeds a target, applied identically during teleoperated demonstration and autonomous rollout. The controller takes a position reference qref ∈ Rdh from Rh or from the policy and corrects it with a one-sided retreat derived from the calibrated torque τ (h). An embodiment-invariant fingertip force 4Figure 3: Model pipeline. MARC is a DiT flow-matching policy [ 9 ] conditioned on a unified force–position state. The environment states (unified tuple st) are as described in Sec. 3. Structured masking is applied to visual patch tokens or entire camera streams during training, forcing the policy to act on force and proprioception under occlusion. MANO latent decoders are frozen, the DiT is trained from scratch, and the visual encoders are finetuned. At deployment, predicted actions are retargeted to each embodiment via its URDF. 
+
+target fd maps to per-joint torque targets through the translational Jacobian as τ des = J⊤
+
+> lin
+
+fd, giving consistent contact across kinematics. With gains kp, k i, k d, retreat limit omax , and the convention that increasing qj closes joint j, the per-joint update is 
+
+ej = |τj | − τdes ,j , Ij ← clip  Ij + ej ∆t, 0, o max /k i
+
+, (4) 
+
+rj = kp max( ej , 0) + kiIj + kd ˙ej , qcmd ,j = qref ,j − clip( rj , 0, o max ). (5) The correction is restricted to an opening motion because the proportional term acts only on overshoot, the integrator is floored at zero so that compliance relaxes when contact drops but never winds toward closure, and the output clip to [0 , o max ] keeps every correction non-closing regardless of the derivative sign, while the omax /k i limit prevents integral windup. The command therefore stays within omax 
+
+of the reference, treats the reference as an upper bound on closure, leaves a lightly loaded grasp untouched, and settles where the measured torque equals its target. Unlike a joint-space admittance law, whose bidirectional response can drive the hand deeper into the object, this controller can only release load. It leaves the policy commanding motion in the shared pose space while contact is regulated in calibrated torque, which is the action space of the flow-matching policy that follows. 
+
+4.3 MARC: Mask-Aware Flow-Matching Policy 
+
+MARC realizes πθ as a DiT-style flow-matching policy that predicts the H-step action chunk at:t+H
+
+from vision, proprioception, and calibrated contact observations as shown in Fig. 3. Its key design is mask-aware conditioning: during training, visual patch tokens and entire camera streams are randomly replaced with learned mask embeddings, forcing the policy to rely on force and proprioceptive cues when visual evidence is missing or unreliable. Each RGB, depth, and template stream is encoded by an ImageNet-initialized ResNet-18 [ 38 ]with SpatialSoftmax pooling and projected into patch tokens. Masked visual tokens, together with the proprioceptive state (xt, pt), contact features (ft, γt), and previous latent state ψt−1, are concatenated into a conditioning vector st. Given a demonstration action chunk a1 = at:t+H (the target), Gaussian noise a0 (the source), and flow time u ∈ [0 , 1] , MARC trains a velocity predictor vθ
+
+on the linear flow 
+
+au = (1 − u)a0 + u a1, v⋆ = a1 − a0, (6) 5where v⋆ is the ground-truth velocity transporting source to target, with objective 
+
+LFM = Eu, a0,a1
+
+∥vθ (au, u, st) − v⋆∥22
+
+. (7) The action tokens are processed by DiT blocks whose normalization is modulated by flow-time and conditioning embeddings. At inference, an action chunk is generated by Euler integration of vθ
+
+from Gaussian noise to u = 1 . When a camera is occluded or unavailable, its tokens are replaced with the same learned mask embeddings used during training, providing MARC with a unified sensor-availability interface rather than a separate failure-handling module. 
+
+4.4 Long-Horizon Task Composition     
+
+> Figure 4: Handover. Wrist forces experienced during object handover.
+> Figure 5: Steady grasping. Wrist force, fingertip force, and fdduring steady grasping for a compliant/rigid ob-ject.
+
+We compose long-horizon manipulation from reusable contact-aware primitives rather than a single end-to-end policy. A vision-language model proposes task keypoints from the scene image and provides only high-level spatial grounding instructions; it does not condition 
+
+πθ . A deterministic state machine dispatches each phase to one of three primitives that share the command space of Sec. 4.1 but draw contact feedback from different sources. 
+
+Reach-and-lift is executed by MARC, which per-forms the contact-sensitive grasp and initial lift toward the proposed keypoint. Transport is han-dled by the steady-grasp regulator, which holds a minimal stable grip and increases closure as transport load registers in the calibrated hand torque τ (h). Handover is handled by an end-effector admittance controller [ 39 ] that yields the arm and opens the hand in proportion to the external wrench at the end effector. Transitions are gated by the calibrated contact, end-effector tolerance to the active keypoint, and handover progress. The same learned policy and model-based primitives thus cover lift, place, and han-dover without task-specific training. 
+
+4.5 Optimization-Based Grasp and Handover Primitives 
+
+Two phases are handled by a continuous, model-based controller rather than the learned policy: holding the object during transport, and handover to a human or other arm in a bimanual setup. Both use only arm-joint proprioception and the calibrated contact signal shown in Fig. 4 and Fig. 5. 
+
+Steady grasp. During transport, the hand closes from the grasp pose qg toward an adaptive grip target 
+
+τ ⋆ + ka∥a∥ that rises with arm acceleration ∥a∥, so the grip self-tightens exactly when transport loads the object: 
+
+qi+1 cmd = qg + clip [0 , ∆q+]
+
+
+
+(qi 
+
+> cmd
+
+− qg ) + κ τ ⋆ + ka∥a∥ − τ i
+
+
+
+, (8) where τ i is the measured finger torque at step i, κ > 0 the gain, and τ ⋆ the resting grip. The clip to [0 , ∆q+] prevents loosening past the grasp and over-closure past the crush bound ∆q+. The arm carries the hand toward the goal via end-effector inverse kinematics. 
+
+Handover. A scalar progress state β(t) ∈ [0 , 1] is integrated from the baseline-corrected wrist wrench 
+
+F∆ ∈ R3, ˙β(t) = K  ∥F∆(t)∥2 − F 2d
+
+
+
+> +
+
+ 1 − β(t), β(0) = 0 , (9) 6where K > 0 is the handover gain and Fd ≥ 0 a force deadband suppressing integration under noise or light incidental contact. The state β simultaneously drives a finger release qf = (1 − β)qg + β qopen 
+
+and gates a Cartesian admittance along the pull direction, 
+
+Ma ¨xe + Da ˙xe = β F∆, xcmd = x0 + xe, (10) where xe is the end-effector offset from the nominal pose x0 and (Ma, D a) are the Cartesian inertia and damping. The release time-constant is thus set by the magnitude of the external wrench rather than by a fixed schedule. Full parameter listings are given in the Appendix. 
+
+## 5 Experiments Table 1: Dexterous hand comparison.             
+
+> Hand #Fingers #DoF Mode
+> Wuji 520 full actuation Wuji 12 312 2 fingers disabled Inspire 512 (6) mimic coupling
+
+Tasks and data. We evaluate on ten reach-and-lift tasks covering six rigid and four compliant or deformable objects. The rigid set comprises three toy fruits (mango, starfruit, guava), an ice-cream scooper, a pair of tongs, and a marker, while the compliant set comprises soft-dough cookies, brioche buns, stacked cups, and an egg. For each hand, we collect 50 teleoperated demonstrations, using Manus gloves for hand motion, a Vive Tracker for end-effector pose, and a foot pedal for clutching. 
+
+Hardware. All experiments run on a Unitree G1 humanoid fitted with three dexterous hands (Table 1); the same robot body and the same three embodiments are used across every task. 
+
+Training and deployment. Every model is trained on a single NVIDIA RTX 4090 for 60K steps at batch size 64. At deployment, policy inference runs on a laptop with an RTX 4070, with the VLM accessed via a cloud API and all low-level control and hand execution running locally on the same laptop. Unless otherwise stated, the training schedule, batch size, and inference pipeline are identical across all hand embodiments. 
+
+5.1 Results 
+
+We answer three questions about this pipeline: (1) Does mask-aware conditioning on calibrated contact improve cross-embodiment reach-and-lift over a standard flow-matching policy? (2) Is the calibrated force channel responsible for the gain? (3) Does MARC generalize to an unseen hand configuration? The evaluated objects span tools (ice-cream scoop, tongs), rigid items (toy fruits, marker), slippery and delicate compliant items (egg, brioche bun, soft-dough cookie), and a stability-critical compliant task (stacked cups), covering variation in grip type, friction, fragility, and required compliance. Two Wuji 12 cells warrant a note. The brioche-bun data collection was not done on Wuji 12 because its greasy surface demands a high-friction glove that the Wuji platform does not use, and Wuji 12 ’s two disabled fingers leave too little contact for a stable grasp. We kept the hand and gloves fixed across experiments to make every comparison apples-to-apples. The cookie scores zero for both policies on Wuji 12 because three fingers crumble its edges before stabilizing it, a precision regime that the 50-demonstration budget is too small to cover. 
+
+Cross-hand comparison. Table 2 shows flow matching policy with DiT backbone (sDiT) [ 40 , 41 ]averaging 0.44 across hands and tasks, dropping to 0.1 on the Marker with Wuji. MARC lifts the overall mean to 0.71 (+0 .27 ) and improves every embodiment: Inspire 0.54 → 0.84 , Wuji 
+
+0.48 → 0.79 , Wuji 12 0.29 → 0.51 —with the smallest gain on the reduced embodiment whose two disabled fingers shrink the available contact area. The slim, contact-critical Marker improves the most (Inspire 0.2 → 1.0, Wuji 0.1 → 0.9), exactly the regime calibrated force feedback with visual masks was meant to address, given that occlusion relies more on force states. On deformables, the cross-hand mean rises from 0.43 to 0.83 for stacked cups and from 0.65 to 0.90 for brioche buns—objects whose acceptable grip window is narrow enough that a pose-only policy has no signal to regulate force below the crushing threshold. A subset comparison against Latent Action Diffusion [ 5 ] (Table 3) isolates the 7Table 2: Reach-and-lift success rate over 10 trials per object–hand pair: MARC vs. the DiT-flow baseline (sDiT). Avg : per-row mean over all evaluated objects. Mean : cross-hand mean over hands with data. ∆ Mean :MARC − sDiT. “—” denotes not evaluated; bold marks the better method per cell. 
+
+Rigid Compliant / Deformable Method Hand Fruit Marker Ice scoop Tongs Cups Cookie Bun Egg Avg 
+
+sDiT Inspire 0.9 0.2 0.6 0.4 0.8 0.2 0.6 0.6 0.54 Wuji 12 0.3 0.3 0.4 0.5 0.1 0.0 — 0.4 0.29 Wuji 0.4 0.1 0.7 0.7 0.4 0.3 0.7 0.5 0.48 
+
+Mean 0.53 0.20 0.57 0.53 0.43 0.17 0.65 0.50 0.44 
+
+MARC 
+
+Inspire 1.0 1.0 0.8 0.8 0.9 0.4 1.0 0.8 0.84 
+
+Wuji 12 0.6 0.3 0.5 0.7 0.8 0.0 — 0.7 0.51 
+
+Wuji 0.7 0.9 0.8 0.9 0.8 0.7 0.8 0.7 0.79 
+
+Mean 0.77 0.73 0.70 0.80 0.83 0.37 0.90 0.73 0.71 
+
+∆ Mean ↑ +0.24 ↑ +0.53 ↑ +0.13 ↑ +0.27 ↑ +0.40 ↑ +0.20 ↑ +0.25 ↑ +0.23 ↑ +0.27 
+
+Table 3: Per-hand success rates: MARC vs. Latent Action Diffusion. Under matched observations and a shared latent/action interface, we report success over 10 rollouts per object–hand pair for three hands. 
+
+MARC Latent Action Diffusion Object Inspire Wuji-12 Wuji Inspire Wuji-12 Wuji Fruit 1.00 0.60 0.70 0.30 0.30 0.30 Marker 1.00 0.30 0.90 0.10 0.00 0.20 Ice scoop 0.80 0.50 0.80 0.40 0.10 0.20 Tongs 0.80 0.70 0.90 0.30 0.30 0.20 Cups 0.90 0.80 0.80 0.00 0.00 0.00 Egg 0.80 0.70 0.70 0.40 0.20 0.10 
+
+Mean 0.88 0.60 0.80 0.25 0.15 0.17 
+
+effect of MARC’s contact-aware conditioning, since both methods share identical observation inputs and latent/action interfaces. MARC raises mean success from 0.19 to 0.76 (+0 .57 ) and is strongest in every object–hand cell and per-hand mean, showing the gap is consistent across embodiments rather than driven by a single hand. The largest gain is on stacked cups ( 0.00 → 0.83 ), where stability depends on force regulation rather than pose prediction alone. 
+
+Effect of calibrated force. Ablating the contact channel and retraining on rigid objects (Appendix) collapses the rigid mean from 0.75 back to 0.48 , essentially the sDiT baseline. The gain, therefore, comes from the calibrated force channel and not from architecture or masking alone. Cup Bun Fruit Ice scoop      
+
+> Object
+> Success rate (%)
+> 90
+> 100 100
+> 80 80
+> 0
+> 60
+> 50
+> 80 80
+> 70
+> 80 80
+> 10
+> 30
+> 60
+> Inspire (92.5%) Wuji12 (47.5%) Wuji (77.5%) Wuji15 (45.0%)
+
+Figure 6: Success rates for seen and unseen robotic hands across objects. Bars show per-object success over 10 trials on MARC; legend values indicate mean success. 
+
+Unseen-hand generalization. To test transfer beyond the training set (Fig. 6), we evaluate MARC on Wuji 15 , a 15-DoF configuration not seen during training. Without retraining, success reaches 0.7 on the ice-cream scoop, 0.6 on the toy fruits, and 0.7 on stacked cups, within 0.1 of the in-distribution Wuji numbers, indicating that the shared MANO latent and the calibrated con-tact channel transfer across hand configurations rather than memorize a single configuration. 
+
+## 6 Limitations and Future Work 
+
+Our framework’s transferability is bounded by the fidelity of the calibrated contact interface: every new hand requires per-finger system identification to recover joint torque from native effort, and 8residual calibration error propagates into both the controller’s torque target and MARC’s contact conditioning. Evaluation is confined to rigid and deformable tabletop objects; articulated objects, whose contact geometry and load distribution evolve under joint motion, remain untested. Finally, compliance gains (kp, k i, k d, o max ) are still hand- and task-specific, leaving automatic adaptation across objects and embodiments as future work. 
+
+## 7 Conclusion 
+
+We presented a cross-embodiment force–position interface that calibrates per-hand effort into joint torques, fingertip forces, and compact load descriptors, paired with a shared MANO-pose latent so that motion intent and grasp loading share transferable coordinates. Built on this interface, MARC is a mask-aware flow-matching policy conditioned on calibrated contact, executed through a hybrid force–position controller and composed with model-based steady-grasp and handover primitives. Across three structurally different hands and ten objects, MARC raises mean reach-and-lift success from 0.44 to 0.71 and transfers zero-shot to an unseen 15-DoF configuration, supporting calibrated contact as a practical axis of cross-embodiment transfer. 
+
+## References 
+
+[1] H. Yuan, B. Zhou, Y. Fu, and Z. Lu. Cross-embodiment dexterous grasping with reinforcement learning, 2024. URL https://arxiv.org/abs/2410.02479 .[2] G. Jiang, Y. Liang, J. Ye, J.-Y. Huang, C. Jing, R. Duan, P. Abbeel, X. Wang, and X. Zou. Cross-hand latent representation for vision-language-action models, 2026. URL https:// arxiv.org/abs/2603.10158 .[3] N. Hogan. Impedance control: An approach to manipulation: Part II—implementation. Journal of Dynamic Systems, Measurement, and Control , 107(1):8, 1985. doi:10.1115/1.3140713. URL 
+
+https://doi.org/10.1115%2F1.3140713 .[4] Z. Wu, R. A. Potamias, X. Zhang, Z. Zhang, J. Deng, and S. Luo. Cedex: Cross-embodiment dexterous grasp generation at scale from human-like contact representations, 2025. URL 
+
+https://arxiv.org/abs/2509.24661 .[5] E. Bauer, E. Nava, and R. K. Katzschmann. Latent action diffusion for cross-embodiment manipulation, 2026. URL https://arxiv.org/abs/2506.14608 .[6] R. Bhirangi, V. Pattabiraman, E. Erciyes, Y. Cao, T. Hellebrekers, and L. Pinto. Anyskin: Plug-and-play skin sensing for robotic touch, 2024. URL https://arxiv.org/abs/2409.08276 .[7] D. Zhang, C. Yuan, C. Wen, H. Zhang, J. Zhao, and Y. Gao. Kinedex: Learning tactile-informed visuomotor policies via kinesthetic teaching for dexterous manipulation, 2025. URL 
+
+https://arxiv.org/abs/2505.01974 .[8] H. Seraji. Adaptive hybrid control of manipulators. In Proceedings of the Workshop on Space Telerobotics, Volume 3 , 1987. [9] D. McAllister, S. Ge, B. Yi, C. M. Kim, E. Weber, H. Choi, H. Feng, and A. Kanazawa. Flow matching policy gradients, 2025. URL https://arxiv.org/abs/2507.21053 .[10] X. Fei, Z. Xu, H. Fang, T. Zhang, and L. Shao. T(r,o) grasp: Efficient graph diffusion of robot-object spatial transformation for cross-embodiment dexterous grasping, 2025. URL 
+
+https://arxiv.org/abs/2510.12724 .[11] H. Zhang, K. Y. Ma, M. Z. Shou, W. Lin, and Y. Wu. Machagrasp: Morphology-aware cross-embodiment dexterous hand articulation generation for grasping, 2026. URL https: //arxiv.org/abs/2510.06068 .9[12] J. Romero, D. Tzionas, and M. J. Black. Embodied hands: modeling and capturing hands and bodies together. ACM Transactions on Graphics , 36(6):1–17, Nov. 2017. ISSN 1557-7368. doi:10.1145/3130800.3130883. URL http://dx.doi.org/10.1145/3130800.3130883 .[13] MANUS Technology Group. High-precision hand tracking & mocap gloves — manus. https: //www.manus-meta.com/ , 2025. Accessed: 2025-09-13. [14] Z. Jiang, Y. Xie, K. Lin, Z. Xu, W. Wan, A. Mandlekar, L. Fan, and Y. Zhu. Dexmimicgen: Automated data generation for bimanual dexterous manipulation via imitation learning, 2025. URL https://arxiv.org/abs/2410.24185 .[15] T. Tao, M. K. Srirama, J. J. Liu, K. Shaw, and D. Pathak. Dexwild: Dexterous human interactions for in-the-wild robot policies, 2026. URL https://arxiv.org/abs/2505.07813 .[16] M. Xu, H. Zhang, Y. Hou, Z. Xu, L. Fan, M. Veloso, and S. Song. Dexumi: Using human hand as the universal manipulation interface for dexterous manipulation, 2025. URL https: //arxiv.org/abs/2505.21864 .[17] H.-S. Fang, B. Romero, Y. Xie, A. Hu, B.-R. Huang, J. Alvarez, M. Kim, G. Margolis, K. An-barasu, M. Tomizuka, E. Adelson, and P. Agrawal. Dexop: A device for robotic transfer of dexterous human manipulation, 2025. URL https://arxiv.org/abs/2509.04441 .[18] K. Zhu, F. Bai, Y. Xiang, Y. Cai, X. Chen, R. Li, X. Wang, H. Dong, Y. Yang, X. Fan, and Y. Chen. Dexflywheel: A scalable and self-improving data generation framework for dexterous manipulation, 2025. URL https://arxiv.org/abs/2509.23829 .[19] S. Atar, D. Huang, F. Richter, and M. Yip. In-hand manipulation of articulated tools with dexterous robot hands with sim-to-real transfer, 2026. URL https://arxiv.org/abs/2509. 23075 .[20] H. Shi, S. Hu, Y. Hou, W. Wang, K. Liu, and S. Song. Minimalist compliance control, 2026. URL https://arxiv.org/abs/2603.00913 .[21] S. Chen, J. Bohg, and C. K. Liu. Springgrasp: An optimization pipeline for robust and compliant dexterous pre-grasp synthesis, 2024. [22] R. Chen, M. Mukadam, M. Kaess, T. Wu, F. R. Hogan, J. Malik, and A. Sharma. Ptld: Sim-to-real privileged tactile latent distillation for dexterous manipulation, 2026. URL https: //arxiv.org/abs/2603.04531 .[23] C. Higuera, A. Sharma, C. K. Bodduluri, T. Fan, P. Lancaster, M. Kalakrishnan, M. Kaess, B. Boots, M. Lambeta, T. Wu, and M. Mukadam. Sparsh: Self-supervised touch representations for vision-based tactile sensing, 2024. URL https://arxiv.org/abs/2410.24090 .[24] X. Chen, Y. Pan, M. Li, and X. Ding. Dexvitac: Collecting human visuo-tactile-kinematic demonstrations for contact-rich dexterous manipulation, 2026. URL https://arxiv.org/ abs/2603.17851 .[25] W. Peebles and S. Xie. Scalable diffusion models with transformers, 2023. URL https: //arxiv.org/abs/2212.09748 .[26] E. Collaboration, A. O’Neill, A. Rehman, A. Gupta, A. Maddukuri, A. Gupta, et al. Open x-embodiment: Robotic learning datasets and rt-x models, 2025. URL https://arxiv.org/ abs/2310.08864 .[27] O. M. Team, D. Ghosh, H. Walke, K. Pertsch, K. Black, O. Mees, S. Dasari, J. Hejna, T. Kreiman, C. Xu, J. Luo, Y. L. Tan, L. Y. Chen, P. Sanketi, Q. Vuong, T. Xiao, D. Sadigh, C. Finn, and S. Levine. Octo: An open-source generalist robot policy, 2024. URL https://arxiv.org/ abs/2405.12213 .10 [28] M. J. Kim, K. Pertsch, S. Karamcheti, T. Xiao, A. Balakrishna, S. Nair, R. Rafailov, E. Foster, G. Lam, P. Sanketi, Q. Vuong, T. Kollar, B. Burchfiel, R. Tedrake, D. Sadigh, S. Levine, P. Liang, and C. Finn. Openvla: An open-source vision-language-action model, 2024. URL 
+
+https://arxiv.org/abs/2406.09246 .[29] K. Black, N. Brown, D. Driess, A. Esmail, M. Equi, C. Finn, et al. π0: A vision-language-action flow model for general robot control, 2026. URL https://arxiv.org/abs/2410.24164 .[30] S. Liu, L. Wu, B. Li, H. Tan, H. Chen, Z. Wang, K. Xu, H. Su, and J. Zhu. Rdt-1b: a diffusion foundation model for bimanual manipulation, 2025. URL https://arxiv.org/abs/2410. 07864 .[31] J. Wen, Y. Zhu, J. Li, Z. Tang, C. Shen, and F. Feng. Dexvla: Vision-language model with plug-in diffusion expert for general robot control, 2025. URL https://arxiv.org/abs/ 2502.05855 .[32] H. Liu, S. Guo, P. Mai, J. Cao, H. Li, and J. Ma. Robodexvlm: Visual language model-enabled task planning and motion control for dexterous robot manipulation, 2025. URL 
+
+https://arxiv.org/abs/2503.01616 .[33] Y. Zhong, X. Huang, R. Li, C. Zhang, Z. Chen, T. Guan, F. Zeng, K. N. Lui, Y. Ye, Y. Liang, Y. Yang, and Y. Chen. Dexgraspvla: A vision-language-action framework towards general dexterous grasping, 2025. URL https://arxiv.org/abs/2502.20900 .[34] V. de Bakker, J. Hejna, T. G. W. Lum, O. Celik, A. Taranovic, D. Blessing, G. Neumann, J. Bohg, and D. Sadigh. Scaffolding dexterous manipulation with vision-language models, 2026. URL https://arxiv.org/abs/2506.19212 .[35] J. Romero, D. Tzionas, and M. J. Black. Embodied hands: Modeling and capturing hands and bodies together. ACM Transactions on Graphics, (Proc. SIGGRAPH Asia) , 36(6), Nov. 2017. [36] A. Handa, K. V. Wyk, W. Yang, J. Liang, Y.-W. Chao, Q. Wan, S. Birchfield, N. Ratliff, and D. Fox. Dexpilot: Vision based teleoperation of dexterous robotic hand-arm system, 2019. URL 
+
+https://arxiv.org/abs/1910.03135 .[37] G. He and W. Zhang. Wujihand retargeting, 2026. URL https://github.com/ wuji-technology/wuji-retargeting . * Equal contribution. [38] K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition, 2015. URL 
+
+https://arxiv.org/abs/1512.03385 .[39] C. Ott, R. Mukherjee, and Y. Nakamura. Unified impedance and admittance control. In 2010 IEEE international conference on robotics and automation , pages 554–561. IEEE, 2010. [40] G. Yan, J. Zhu, Y. Deng, S. Yang, R.-Z. Qiu, X. Cheng, M. Memmel, R. Krishna, A. Goyal, X. Wang, and D. Fox. Maniflow: A dexterous manipulation policy via flow matching. arXiv preprint arXiv: , 2025. [41] T. L. Team, B. Burchfiel, H. Kress-Gazit, S. Feng, S. Ford, R. Tedrake, et al. A careful examination of large behavior models for multitask dexterous manipulation, 2025. URL 
+
+https://arxiv.org/abs/2507.05331 .11 Figure S1: Spatial torque descriptor 
+
+## Appendix S1 System Identification Details 
+
+Mechanical setup. A Franka Emika Panda arm holds the dexterous hand at a fixed, precomputed pose. At the same time, an inextensible string connects the active finger’s distal link to an ATI Axia80 six-axis F/T sensor mounted on a rigid load cell. Because the string transmits only a tensile force, the wrench at the sensor reduces to Ft ∈ R3; moment components are discarded. All remaining fingers are held stationary throughout each trial. 
+
+Excitation waveforms. The active joint is driven through a randomly concatenated sequence of 
+
+10 s primitives, each at a uniformly sampled intensity and clamped to [qmin , q max ]:
+
+s(t) ∈
+
+n
+
+at + b
+
+| {z } 
+
+> linear
+
+, A sin(2 πf t + φ)
+
+| {z }
+
+> sinusoid
+
+, RW( σ)
+
+| {z }
+
+> random walk
+
+, saw( f )
+
+| {z } 
+
+> sawtooth
+
+, stutter(∆ , p )
+
+| {z }
+
+> stutter
+
+, Ae αt 
+
+| {z } 
+
+> exp. sweep
+
+o
+
+. (S1) 
+
+Angular grid and logging. Trials are collected at equilibrium angles spaced 10 ◦ apart across each joint’s full range, with ten independent trials per grid point ( ≈ 100 trials per 90 ◦-range joint). The thumb uses a two-dimensional grid over its flexion and adduction–abduction axes jointly. The control loop runs at 20 Hz , synchronously recording 
+
+Dt =
+
+
+
+qt, ˙qt, ˜τ (h) 
+
+> t
+
+, F(ATI)  
+
+> t
+
+, τ (h)
+
+> t
+
+
+
+, (S2) where ˜τ (h) 
+
+> t
+
+are the native uncalibrated effort proxies and τ (h) 
+
+> t
+
+= J⊤
+
+> lin
+
+F(ATI)  
+
+> t
+
+the ground-truth torque labels. No-load trials (string absent) are merged into the training set to anchor the regressor’s zero baseline. 
+
+## S2 Torque Regressor: Architecture Selection 
+
+Finger grouping and data pooling. Rather than training one regressor per finger, we exploit kinematic symmetry to pool data and share models within each motor group. For Inspire , the four non-thumb fingers are identical, so their data are merged, and one model predicts a single 12 torque ( dout =1 ); the two-DoF thumb is a separate group whose model predicts both joint torques simultaneously ( dout =2 ). For Wuji , joints j3/j4 use the same actuator across all fingers (including thumb), so their data are pooled into one model ( dout =1 per query joint); joints j1/j2 form a second group whose model ingests the concatenated feature sequences of both joints and outputs two torques (dout =2 ). 
+
+Ablation summary. We ablate history length n, model type, and input features on both hands (80/10/10 split); key findings are reported in Tables S1 and S2. Three results drive the final design choices. (i) For Wuji, an LSTM achieves 2.8× lower MSE than a size-matched MLP ( 0.021 vs. 
+
+0.060 ) because Wuji’s non-backdrivable actuation imprints temporal dynamics that a flat model cannot capture; n=25 balances accuracy and latency. MSE continues to improve beyond n=7 but extending further risks estimation delays incompatible with the 20 Hz control rate. (ii) For Inspire, MLP, LSTM, and CNN reach identical MSE at every size tested, so the smallest MLP is used; n=7 
+
+is adopted (optimum at n=4 , but n=7 shows no degradation and better suppresses low-frequency noise). (iii) On both hands, the effort proxy ˜τ (h) is the dominant feature where adding velocity without effort increases error; so [q, ˙q, ˜τ (h)] is used for both hands Final configurations are given in Table S3 and qualitative analysis of these final configuration are shown in Fig. S2.        
+
+> Table S1: Wuji ablations (non-thumb fingers pooled). Left : history length (MLP-large, [q, ˙q, ˜τ(h)]). Right :model type ( n=7 , small size). Normalized test MSE.
+
+History length Model type 
+
+n MSE ↓ Type Params MSE ↓
+
+1 0.117 MLP 7,652 0.060 5 0.038 CNN 16,516 0.034 7 0.031 LSTM 53,508 0.021 
+
+15 0.024 
+
+25 0.018 
+
+40 0.017        
+
+> Table S2: Inspire ablations (non-thumb fingers pooled). Left : history length (MLP-large, [q, ˙q, ˜τ(h)]). Right :model type ( n=7 , small size). Normalized test MSE.
+
+History length Model type 
+
+n MSE ↓ Type Params MSE ↓
+
+1 0.051 MLP ≈2,200 0.022 3 0.027 CNN ≈2,200 0.022 4 0.021 LSTM ≈2,200 0.022 
+
+7 0.021 
+
+10 0.023     
+
+> Table S3: Final torque-regressor configurations. All groups pool data across fingers sharing the same actuator type. n: history length; din : features per step (LSTM) or total flat input (MLP); dout : predicted torques.
+
+Hand Group Architecture n din dout 
+
+Wuji j3/j4, all fingers LSTM h=64 , L=2 25 3 (seq) 1Wuji j1+j2 LSTM h=64 , L=2 25 6 (seq) 2Inspire non-thumb (4 fingers) MLP [64 →32 →1] 7 21 (flat) 1Inspire thumb MLP [256 →128 →64 →2] 7 42 (flat) 213 Figure S2: Qualitative torque estimation on the Inspire (left) and Wuji (right) hands. Predicted torques from         
+
+> Ghare overlaid against ground-truth labels across a representative trial, showing tracking fidelity under natural finger motion.
+> Table S4: Configuration differences between sDiT and MARC. All other hyperparameters are identical: batch size 64, 60k training steps, H=150 action horizon, 149 executed steps, 16 inference steps, 240 ×320 resize /
+> 216 ×288 crop, ImageNet-1K backbone, Beta noise sampling, lr 1.4×10 −4.
+
+Parameter sDiT MARC Image latent masking No Yes Patch dropout prob. 0.00 0.1 Full-camera dropout prob. 0.00 0.05 
+
+## S3 MARC vs SDiT 
+
+Both policies share the hyperparameters listed in Tab. S5. The sole architectural difference is MARC’s structured visual masking Tab. S4. Ablation study on MARC as shown in Tab. S6. Removing fingertip force results in the largest performance drop (83.3% to 39.0%), confirming that calibrated contact feedback is the most critical input modality, whereas removing fingertip position has a milder effect (66.7%). Reducing the action horizon from 150 to 48 steps also significantly degrades performance (44.3%), suggesting that longer action chunks are better suited for contact-rich manipulation. Vi-sual masking probability requires careful tuning: moderate masking (patch 0.15 & camera 0.1) preserves reasonable performance (66.7%), whereas aggressive masking (patch 0.3 & camera 0.1) over-suppresses visual cues and collapses to 33.3%.  
+
+> Table S5: Shared training and architecture hyperparameters for both policies.
+
+Hyperparameter Value 
+
+Observations RGB, depth, template Observation steps 2Action horizon H 150 Executed steps per chunk 149 Inference steps 16 Training steps 60,000 Batch size 64 Learning rate 1.4 × 10 −4
+
+Noise sampling Beta Backbone weights ImageNet-1K Backbone normalization Group normalization RGB encoders Separate per camera Input resolution 240 × 320 → 216 × 288 (resize-crop) Proprioceptive state dim 69 14 Table S6: Ablation study of MARC. We vary the action horizon, input modalities (fingertip position and force), and per-patch and per-camera visual masking probabilities. Success rate (%) is averaged over six rollouts per hand. 
+
+Variant Inspire Wuji 12 Wuji Avg MARC 1.0 0.83 0.83 0.89 
+
+Prediction horizon 
+
+horizon 48 0.33 0.33 0.67 0.44 
+
+Input modality 
+
+w/o fingertip position 0.5 0.83 0.67 0.67 w/o fingertip force and spatial torque descriptor 0.67 0.33 0.17 0.39 
+
+Visual augmentation (patch / camera noise) 
+
+patch 0.15, camera 0.1 1.0 0.5 0.5 0.67 patch 0.3, camera 0.2 1.0 0.5 0.17 0.56 patch 0.3, camera 0.1 0.5 0.17 0.33 0.33 
+
+## S4 Controller Parameters and Stability 
+
+Steady-grasp regulator. The grip target τ ⋆ +ka∥a∥ in Eq. (8) is capped at τmax to prevent crushing under acceleration spikes: τtgt = min( τ ⋆ + ka∥a∥, τ max ). The projection clip [0 ,∆q+] enforces two hard constraints: the lower bound prevents the command from retreating past qg , and ∆q+ is a per-hand crush margin set at calibration. Outside the projection boundary, the torque error τtgt − | τ i|
+
+contracts geometrically at rate (1 − κ) per step, so the unique fixed point |τ | = τtgt is asymptotically stable; inside the boundary, the clip provides a hard safety guarantee independent of gain. 
+
+Handover progress ODE. Let V (β) = (1 − β)2. Then 
+
+˙V = −2K∥F∆∥2 − F 2
+
+> d
+
+
+
+> +
+
+V ≤ 0, (S3) so [0 , 1] is forward-invariant and β → 1 exponentially under any sustained pull with ∥F∆∥2 > F 2 
+
+> d
+
+.Under constant input the solution of Eq. (9) is β(t) = 1 − exp  −K(∥F∆∥2 − F 2 
+
+> d
+
+) t, giving time-constant T = [ K(∥F∆∥2 − F 2 
+
+> d
+
+)] −1 set by pull magnitude. A startup grace period Tgrace forces 
+
+˙β = 0 to absorb the phase-transition wrench transient. Termination requires β > β ⋆ sustained for debounce window Td.
+
+Table S7: Steady grasp parameters used for stacked cups, cookie, and egg. Handover parameters used for all parameters Symbol Description Value Unit 
+
+Steady-grasp 
+
+τ ⋆ Resting grip target 0.10 N·m
+
+τmax Grip ceiling 0.15 N·m
+
+ka Acceleration boost gain 0.05 N·m s 2/m 
+
+κ Integrator gain 0.05 rad/(N ·m) 
+
+∆q+ Crush margin 0.05 rad 
+
+Handover 
+
+K Progress gain 0.02 (N 2 s) −1
+
+Fd Force deadband 8.0 N
+
+β⋆ Termination threshold 0.98 –
+
+Td Debounce window 0.25 s
+
+Tgrace Startup grace period 0.50 s
+
+δ Open-offset fraction 0.60 –
+
+15 Figure S3: Teleoperation setup using Inspire and Wuji hands, with Vive trackers for end-effector tracking, Manus gloves for dexterous finger motion capture, and a foot pedal as a clutch for operator repositioning. 
+
+## S5 Long horizon tasks 
+
+S5.1 Few examples of VLM Prompt Templates and Outputs 
+
+> Place star fruit — VLM prompt & output
+> Prompt
+
+Detect the starfruit and the basket in the image. Label ’0’: The bounding box of the starfruit to pick, as [u_min, v_min, u_max, v_max] in pixel coordinates. Label ’1’: The bounding box of the basket, as [u_min, v_min, u_max, v_max] in pixel coordinates. The answer should strictly follow the JSON format: [{"point": [u_min, v_min, u_max, v_max], "label": "0", "type": " bounding_mask"}, {"point": [u_min, v_min, u_max, v_max], "label": "1", "type": " bounding_mask"} ]Note: All values are raw numerical floats in pixel coordinates (origin top-left, u = horizontal right, v = vertical down). Do not use string equations in the arrays. 
+
+> Output
+
+[{"point": [613, 449, 726, 696], "label": "0", "type": "bounding_mask "}, {"point": [0, 361, 314, 995], "label": "1", "type": "bounding_mask"} ]
+
+> Handover Bun — VLM prompt & output
+> Prompt
+
+Detect the top bun and the plate in the image. 
+
+16 Label ’0’: The bounding box of the top bun to pick, as [u_min, v_min, u_max, v_max] in pixel coordinates. Label ’1’: The bounding box of the plate to place the top bun on, as [ u_min, v_min, u_max, v_max] in pixel coordinates. The answer should strictly follow the JSON format: [{"point": [u_min, v_min, u_max, v_max], "label": "0", "type": " bounding_mask"}, {"point": [u_min, v_min, u_max, v_max], "label": "1", "type": " bounding_mask"} ]Note: All values are raw numerical floats in pixel coordinates (origin top-left, u = horizontal right, v = vertical down). Do not use string equations in the arrays. 
+
+> Output
+
+[{"point": [477, 345, 630, 567], "label": "0", "type": "bounding_mask "}, {"point": [657, 32, 932, 300], "label": "1", "type": "bounding_mask"} ]
+
+> 3-cup pyramid — VLM prompt & output
+> Prompt
+
+First, detect the initial pile of cups and provide its absolute 3D starting coordinate. Then, provide the exact 3D displacements needed for the next two placements to construct a 3-cup pyramid. Label ’0’: absolute starting 2D coordinate [u, v] of the initial pile. Label ’1’: relative displacement [dx, dy, dz], next cup to the left. Label ’2’: relative displacement [dx, dy, dz], final cup on top. Format: raw numerical floats. Convention: right-hand rule, x forward, y left, z up. 
+
+> Output
+
+[{"point": [504, 503], "label": "0", "type": "absolute"}, {"point": [0.0, 0.12, 0.0], "label": "1", "type": " relative_displacement"}, {"point": [0.0, 0.06, 0.15], "label": "2", "type": " relative_displacement"} ]
+
+17

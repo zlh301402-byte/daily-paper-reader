@@ -1,0 +1,398 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-20T21:27:19.462602+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 9,
+    "quick_skim_target": 12,
+    "quick_selected": 9
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.14617v1",
+      "source": "arxiv",
+      "title": "Whole-Body Impedance Model Predictive Control for Safe Physical Human--Robot Interaction on Floating-Base Platforms",
+      "abstract": "Floating-base robots must balance under rigid contact constraints while interacting safely with humans. Existing whole-body control~(WBC) frameworks allocate the full joint space to locomotion or rely on fixed-gain impedance feedback that accumulates steady-state error under sustained physical human--robot interaction~(pHRI) forces. This paper extends the authors' fixed-base two-layer Impedance MPC to floating-base platforms through a three-level architecture: a centroidal MPC plans contact forces over a 500\\,ms horizon; a priority-driven WBC layer resolves balance into joint torques through contact-consistent null-space projection; and the residual null space is governed by a receding-horizon quadratic program~(QP) that predicts and rejects pHRI disturbances using a Kalman-augmented state. A contact-consistent feedback linearization reduces the arm end-effector plant to a double integrator with a \\emph{constant} state matrix within each contact mode, enabling offline precomputation of the QP cost and ${\\geq}1$\\,kHz operation. A covariance-inflation protocol preserves the disturbance estimate across contact-mode switches, guaranteeing zero steady-state error under bounded constant pHRI loads, and an Impedance Equivalence Theorem shows the infinite-horizon limit recovers a classical task-space impedance law whose effective mass, damping, and stiffness adapt to posture and contact configuration. Simulations on a 17-DOF biped and the Unitree G1 humanoid validate the design.",
+      "authors": [
+        "Yongyan Cao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-12T16:41:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.14617v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "whole-body impedance MPC for floating-base platforms applicable to aerial robot physical interaction",
+      "llm_evidence_cn": "适用于空中机器人物理交互的浮基平台全身阻抗MPC",
+      "llm_evidence": "适用于空中机器人物理交互的浮基平台全身阻抗MPC",
+      "canonical_evidence": "适用于空中机器人物理交互的浮基平台全身阻抗MPC",
+      "llm_tldr_en": "A three-level architecture combining centroidal MPC, whole-body control, and receding-horizon impedance optimization enables safe physical interaction on floating-base platforms, applicable to aerial manipulators.",
+      "llm_tldr_cn": "浮基机器人在与人类物理交互时需平衡与接触约束。本文提出三层架构：质心MPC规划接触力、优先级全身控制解析平衡力矩、剩余零空间由阻抗MPC调节。该方法在保证平衡的同时实现柔顺交互，可迁移至空中机械臂的物理交互场景。实验结果验证了安全交互能力。",
+      "llm_tldr": "浮基机器人在与人类物理交互时需平衡与接触约束。本文提出三层架构：质心MPC规划接触力、优先级全身控制解析平衡力矩、剩余零空间由阻抗MPC调节。该方法在保证平衡的同时实现柔顺交互，可迁移至空中机械臂的物理交互场景。实验结果验证了安全交互能力。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14536v1",
+      "source": "arxiv",
+      "title": "Provably Safe, Yet Scalable Reinforcement Learning",
+      "abstract": "Safe reinforcement learning (RL) aims to learn policies that optimize rewards while satisfying constraints. Predominant approaches rely on soft-constrained policy optimization, which has achieved empirical success but does not provide formal safety guarantees for the learned policy. In contrast, methods with strict guarantees typically rely on explicit certificate functions, whose construction requires the direct synthesis and verification of control-invariant sets, a process that scales poorly with state dimension and often yields overly conservative behavior. In this paper, we present the Provably Safe, yet Scalable RL (PS2-RL) framework, a novel two-phase architecture for learning provably safe policies in a scalable manner, designed to overcome the key bottlenecks of prior methods. Rather than explicitly computing invariant sets, PS2-RL leverages a learned backup policy to forward-integrate the system dynamics, generating an implicit control-invariant set online. In the first phase, the backup policy is trained with our proposed safe-arrival value function, which characterizes the optimal backup policy for invariant-set construction. In the second phase, an RL policy is trained end-to-end through a differentiable projection layer that strictly enforces the safety guarantees induced by the learned backup policy. By maximizing the volume of the implicit control-invariant set in the first phase, the resulting PS2 policy from the second phase is performant and scalable, while maintaining provable safety. Crucially, PS2-RL imposes no restrictions on the underlying RL algorithm and can be plugged into any existing training pipeline. We establish theoretical guarantees for the proposed framework and evaluate it on robotic control tasks with state dimensions up to 10, a regime in which prior provably safe RL methods struggle or become impractical.",
+      "authors": [
+        "Kai S. Yun",
+        "Zeyang Li",
+        "Navid Azizan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-12T15:13:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.14536v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "safe RL framework scalable to aerial manipulators",
+      "llm_evidence_cn": "可扩展至空中机械臂的安全强化学习框架",
+      "llm_evidence": "可扩展至空中机械臂的安全强化学习框架",
+      "canonical_evidence": "可扩展至空中机械臂的安全强化学习框架",
+      "llm_tldr_en": "Proposes PS2-RL, a two-phase safe RL framework that overcomes bottlenecks of certificate-based methods via scalable certificate learning.",
+      "llm_tldr_cn": "现有安全强化学习方法要么缺乏形式化保证，要么依赖不可扩展的证书函数。本文提出PS2-RL框架，通过两阶段架构学习可扩展的证书，在实现形式化安全保证的同时避免维度灾难和保守行为。该方法可应用于空中机械臂等复杂系统的安全控制，具有较好的可扩展性和性能保障。",
+      "llm_tldr": "现有安全强化学习方法要么缺乏形式化保证，要么依赖不可扩展的证书函数。本文提出PS2-RL框架，通过两阶段架构学习可扩展的证书，在实现形式化安全保证的同时避免维度灾难和保守行为。该方法可应用于空中机械臂等复杂系统的安全控制，具有较好的可扩展性和性能保障。",
+      "llm_tags": [
+        "query:drone-arm:composite"
+      ],
+      "matched_query_tag": "query:drone-arm:composite",
+      "matched_query_text": "Papers central to 强化学习与无人机机械臂、过驱动无人机与机械臂相关论文, especially work that connects or combines: reinforcement learning for robot arm control; unmanned aerial vehicle with robotic arm; aerial manipulation using reinforcement learning; deep reinforcement learning for aerial manipulation; aerial manipulator dynamics and control; over-actuated drone control with manipulator; reinforcement learning for overactuated UAV manipulator; reinforcement learning for drone manipulator control; over actuated drones with robotic arms research; aerial manipulation using deep reinforcement learning methods.",
+      "matched_requirement_id": "req-composite-drone-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18556v1",
+      "source": "arxiv",
+      "title": "Wind-Resilient Trajectory Optimization for UAV-BS Networks: TD3 for Continuous Service Availability",
+      "abstract": "Unmanned aerial vehicle (UAV)-mounted base stations are highly susceptible to wind disturbances such as gusts and turbulence, which induce positional drift and degrade communication link quality, particularly in emergency scenarios. To address this challenge, we propose a DRL-based framework for wind-resilient trajectory adjustment and positioning based on the Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm. The method models wind as a stochastic kinematic perturbation, avoiding complex aerodynamic modeling, thereby enabling the TD3 agent to learn adaptive control policies that maintain optimal coverage footprints. By prioritizing user-centric performance metrics under turbulent conditions, the proposed architecture ensures continuous service availability despite external disruptions. Simulation results demonstrate that the TD3-based approach effectively compensates for wind-induced displacements and outperforms benchmark methods, including Proximal Policy Optimization (PPO), in terms of throughput stability and robustness in windy environments.",
+      "authors": [
+        "Azim Akhtarshenas German Svistunov",
+        "Kuangyu Zheng",
+        "David Lopez-Perez"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "eess.SP"
+      ],
+      "published": "2026-06-17T00:12:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.18556v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "DRL-based wind-resilient trajectory optimization for UAVs",
+      "llm_evidence_cn": "基于深度强化学习的无人机抗风轨迹优化",
+      "llm_evidence": "基于深度强化学习的无人机抗风轨迹优化",
+      "canonical_evidence": "基于深度强化学习的无人机抗风轨迹优化",
+      "llm_tldr_en": "Uses TD3 to learn adaptive trajectory policies for UAV-mounted base stations under wind disturbances.",
+      "llm_tldr_cn": "无人机基站受风扰动后通信质量下降。本文将风建模为随机运动扰动，利用TD3算法学习自适应轨迹调整策略，避免复杂空气动力学建模。该方法优先保证用户覆盖性能，在湍流条件下仍维持服务可用性。虽然未涉及机械臂，但为无人机抗扰控制提供了RL解决方案。",
+      "llm_tldr": "无人机基站受风扰动后通信质量下降。本文将风建模为随机运动扰动，利用TD3算法学习自适应轨迹调整策略，避免复杂空气动力学建模。该方法优先保证用户覆盖性能，在湍流条件下仍维持服务可用性。虽然未涉及机械臂，但为无人机抗扰控制提供了RL解决方案。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.15516v2",
+      "source": "arxiv",
+      "title": "Transferring Contact, Not Just Motion: Compliant Grasping Across Dexterous Hands",
+      "abstract": "Dexterous grasping depends on contact regulation, not motion alone. Stable manipulation requires fingers to maintain appropriate object loading as contacts slip, deform, or become visually occluded. Existing cross-embodiment dexterous policies unify motion through retargeted hand poses or latent actions, but force feedback remains tied to each hand's sensing and actuation, limiting transfer. This work introduces a cross-embodiment force-position interface for contact-aware manipulation across heterogeneous dexterous hands. Motion intent is represented in a shared hand-pose latent, while each hand's effort signal is calibrated through system identification into physical joint torque in N.m. These torques are mapped to fingertip forces and compact per-finger load descriptors, giving the policy comparable observations of where the hand should move and how the object is loaded. Using this interface, a flow-matching visuomotor policy is trained on vision, proprioception, and calibrated contact, with structured visual masking that encourages reliance on force under grasp-relevant occlusion. The same calibrated signal drives a hybrid force-position controller for demonstration collection and execution, keeping force targets consistent across training and deployment. Experiments across structurally different hands show that calibrated contact feedback enables transferable compliant grasping, with learned primitives reusable in long-horizon manipulation pipelines.",
+      "authors": [
+        "Soofiyan Atar",
+        "Yao-Ting Huang",
+        "Michael Yip"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-14T00:01:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.15516v2",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "cross-embodiment compliant grasping with force feedback",
+      "llm_evidence_cn": "跨形态的力反馈顺从抓取",
+      "llm_evidence": "跨形态的力反馈顺从抓取",
+      "canonical_evidence": "跨形态的力反馈顺从抓取",
+      "llm_tldr_en": "Proposes a force-position interface for contact-aware dexterous grasping across heterogeneous hands.",
+      "llm_tldr_cn": "灵巧抓取依赖接触力调节，但现有跨形态策略仅迁移运动，忽略力反馈差异。本文提出跨形态力-位置接口，通过共享手姿态潜变量表示运动意图，并利用系统辨识将各手的力矩信号校准为物理关节扭矩，最终映射为指尖力。该方法使抓取策略可直接迁移至不同灵巧手，对空中抓取具有参考价值。",
+      "llm_tldr": "灵巧抓取依赖接触力调节，但现有跨形态策略仅迁移运动，忽略力反馈差异。本文提出跨形态力-位置接口，通过共享手姿态潜变量表示运动意图，并利用系统辨识将各手的力矩信号校准为物理关节扭矩，最终映射为指尖力。该方法使抓取策略可直接迁移至不同灵巧手，对空中抓取具有参考价值。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.17046v1",
+      "source": "arxiv",
+      "title": "Geometric Action Model for Robot Policy Learning",
+      "abstract": "Generalist robot policies must follow user instructions while reasoning about how objects, cameras, and robot actions interact in the 3D physical world. Recent vision-language-action models (VLAs) and video world-action models (WAMs) inherit strong semantic or temporal priors from large-scale foundation models, but they still operate primarily on 2D image frames or 2D-derived latent spaces, leaving implicit the 3D geometry required for contact-rich manipulation. We propose the Geometric Action Model (GAM), a language-conditioned manipulation policy that directly repurposes a pretrained geometric foundation model (GFM) as a shared substrate for perception, temporal prediction, and action decoding. GAM splits the GFM at an intermediate layer: the shallow layers serve as an observation encoder, and a causal future predictor inserted at the split layer forecasts future latent tokens conditioned on language, proprioception, and action history. The predicted future tokens are then routed through the remaining GFM blocks for feature propagation and decoding, allowing a single backbone to produce both future geometry and actions. This design equips the GFM with language-conditioned temporal world modeling through minimal architectural modification while preserving its rich geometric priors. Across a broad suite of simulation and real-robot manipulation benchmarks, GAM is more accurate, more robust, faster, and lighter than current foundation-model-scale baselines.",
+      "authors": [
+        "Jisang Han",
+        "Seonghu Jeon",
+        "Jaewoo Jung",
+        "René Zurbrügg",
+        "Honggyu An",
+        "Tifanny Portela",
+        "Marco Hutter",
+        "Marc Pollefeys",
+        "Seungryong Kim",
+        "Sunghwan Hong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-15T17:58:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.17046v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "geometric action model for robot manipulation policies",
+      "llm_evidence_cn": "用于机器人操作策略的几何动作模型",
+      "llm_evidence": "用于机器人操作策略的几何动作模型",
+      "canonical_evidence": "用于机器人操作策略的几何动作模型",
+      "llm_tldr_en": "GAM repurposes a geometric foundation model for perception, temporal prediction, and action decoding in manipulation.",
+      "llm_tldr_cn": "现有视觉-语言-动作模型依赖于2D特征，缺乏对接触丰富的操作所需的3D几何理解。本文提出几何动作模型（GAM），直接利用预训练几何基础模型作为共享表示，分割浅层作为感知编码器，深层生成动作，实现了语言引导的3D操作策略。该方法可迁移至空中机械臂的抓取和操控任务。",
+      "llm_tldr": "现有视觉-语言-动作模型依赖于2D特征，缺乏对接触丰富的操作所需的3D几何理解。本文提出几何动作模型（GAM），直接利用预训练几何基础模型作为共享表示，分割浅层作为感知编码器，深层生成动作，实现了语言引导的3D操作策略。该方法可迁移至空中机械臂的抓取和操控任务。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18308v1",
+      "source": "arxiv",
+      "title": "TRIDENT: Breaking the Hybrid-Safety-Physics Coupling for Provably Safe Multi-Agent Reinforcement Learning",
+      "abstract": "Safe coordination in networked cyber-physical systems forces learning algorithms to simultaneously handle hybrid discrete-continuous actions, hard training-time safety constraints, and physics-governed dynamics. We show that these three features form a directed cycle of biases that defeats any naive composition of off-the-shelf modules, and formalize this as a three-way coupling lemma. We then introduce TRIDENT, the first MARL framework whose three components are co-designed to cancel each leak: a Richardson-Romberg gradient correction reducing Gumbel-Softmax bias from O(tau) to O(tau^2), a Lyapunov-constrained sequential trust-region update enforcing per-iterate feasibility, and a physics-informed residual critic that decomposes value rather than reward. We prove an O~(1/sqrt(K)) convergence rate to a constrained Nash equilibrium and an O(sqrt(K)) cumulative-violation bound. On multi-UAV mobile-edge computing, autonomous intersection management, and a hybrid SMAC variant, TRIDENT cuts training-time violations by 95.5% over MADDPG and 76.3% over MACPO, while improving reward by 13.5% over the strongest unconstrained baseline.",
+      "authors": [
+        "Zijie Meng",
+        "Ziwei Li",
+        "Yufei Liu",
+        "Zhiyu Li",
+        "Jiyuan Liu",
+        "Wenhua Nie",
+        "Bingcai Wei",
+        "Miao Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-16T07:41:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.18308v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-agent safe RL with hybrid actions and physics dynamics",
+      "llm_evidence_cn": "面向混合动作和物理动力学的多智能体安全强化学习",
+      "llm_evidence": "面向混合动作和物理动力学的多智能体安全强化学习",
+      "canonical_evidence": "面向混合动作和物理动力学的多智能体安全强化学习",
+      "llm_tldr_en": "TRIDENT resolves the coupling of hybrid actions, safety constraints, and physics dynamics via co-designed components.",
+      "llm_tldr_cn": "多智能体安全强化学习面临混合离散-连续动作、硬约束和物理动力学的耦合挑战。本文提出TRIDENT框架，通过Richardson-Romberg梯度校正、Lyapunov约束序贯信任域更新和物理信息残差评论家三组件协同设计，打破偏差循环，实现可证明的安全性和可扩展性。可应用于无人机机械臂等复杂系统。",
+      "llm_tldr": "多智能体安全强化学习面临混合离散-连续动作、硬约束和物理动力学的耦合挑战。本文提出TRIDENT框架，通过Richardson-Romberg梯度校正、Lyapunov约束序贯信任域更新和物理信息残差评论家三组件协同设计，打破偏差循环，实现可证明的安全性和可扩展性。可应用于无人机机械臂等复杂系统。",
+      "llm_tags": [
+        "query:drone-arm:composite"
+      ],
+      "matched_query_tag": "query:drone-arm:composite",
+      "matched_query_text": "Papers central to 强化学习与无人机机械臂、过驱动无人机与机械臂相关论文, especially work that connects or combines: reinforcement learning for robot arm control; unmanned aerial vehicle with robotic arm; aerial manipulation using reinforcement learning; deep reinforcement learning for aerial manipulation; aerial manipulator dynamics and control; over-actuated drone control with manipulator; reinforcement learning for overactuated UAV manipulator; reinforcement learning for drone manipulator control; over actuated drones with robotic arms research; aerial manipulation using deep reinforcement learning methods.",
+      "matched_requirement_id": "req-composite-drone-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18516v1",
+      "source": "arxiv",
+      "title": "Task Allocation and Motion Planning in Dynamic, Cluttered Environments via CBBA and Graphs of Convex Sets",
+      "abstract": "Multi-agent task planning in cluttered, dynamic environments requires assigning tasks to agents while simultaneously determining safe, time-efficient trajectories through the environment. When tasks are dynamic, such as rendezvous objectives, allocation decisions depend not only on which agent is best suited for a task, but also on when and where that task can be reached. This paper presents a solution to this problem, which combines Graphs of Convex Sets (GCS) for trajectory optimization with the Consensus-Based Bundle Algorithm (CBBA) for distributed task allocation. In our approach, GCS finds optimal trajectories through dynamic environments using a time-extended (3D+time) configuration space. At the same time, CBBA coordinates task assignments across agents, enabling informed decision-making in a moving environment. We then connect allocation and planning to allow the agents to avoid collisions in the 3D+time configuration space and provide accurate time estimates for task completion. We demonstrate the effectiveness of our approach in simulated cluttered environments with static and dynamic tasks.",
+      "authors": [
+        "Matthew D. Osburn",
+        "Cameron K. Peterson",
+        "John L. Salmon"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-16T22:14:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.18516v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-agent task allocation and motion planning for dynamic environments",
+      "llm_evidence_cn": "面向动态环境的多智能体任务分配与运动规划",
+      "llm_evidence": "面向动态环境的多智能体任务分配与运动规划",
+      "canonical_evidence": "面向动态环境的多智能体任务分配与运动规划",
+      "llm_tldr_en": "Combines GCS for trajectory optimization with CBBA for distributed task allocation in cluttered dynamic environments.",
+      "llm_tldr_cn": "在动态杂乱环境中，多智能体任务分配需要同时考虑轨迹安全性。本文提出融合图凸集（GCS）轨迹优化与一致性束算法（CBBA）的分布式框架，在时间扩展配置空间内求解最优轨迹，并实现任务高效分配。该方法可迁移至多无人机协同操作场景。",
+      "llm_tldr": "在动态杂乱环境中，多智能体任务分配需要同时考虑轨迹安全性。本文提出融合图凸集（GCS）轨迹优化与一致性束算法（CBBA）的分布式框架，在时间扩展配置空间内求解最优轨迹，并实现任务高效分配。该方法可迁移至多无人机协同操作场景。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19752v1",
+      "source": "arxiv",
+      "title": "Temporal Self-Imitation Learning",
+      "abstract": "Long-horizon robot manipulation policies trained with reward shaping can still exploit dense rewards through inefficient interaction, while rare efficient behaviors may be forgotten during training. We argue that temporal efficiency itself provides a powerful and underutilized source of self-supervision for reinforcement learning. We introduce Temporal Self-Imitation Learning (TSIL), a reinforcement learning framework that mines temporally efficient successful trajectories generated during learning and converts them into reusable supervision for future policy improvement. TSIL progressively refines learning using configuration-conditioned adaptive temporal targets derived from fast successful trajectories, while preserving and replaying efficient behaviors through efficiency-weighted self-imitation learning. Across 15 distinct long-horizon manipulation tasks, TSIL consistently improves learning efficiency, task-completion efficiency, revisitation of fast successful behaviors, and robustness to unstable training conditions. More broadly, our results suggest that the temporal structure of successful behavior itself provides a scalable self-supervisory signal for reinforcement learning beyond manually engineered reward shaping alone.",
+      "authors": [
+        "Yinsen Jia",
+        "Boyuan Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T03:31:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.19752v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "temporal self-imitation learning for robot manipulation",
+      "llm_evidence_cn": "用于机器人操作的时间自模仿学习",
+      "llm_evidence": "用于机器人操作的时间自模仿学习",
+      "canonical_evidence": "用于机器人操作的时间自模仿学习",
+      "llm_tldr_en": "TSIL mines efficient trajectories during RL training and replays them as supervision for accelerated learning.",
+      "llm_tldr_cn": "长时域机器人操作中，高效轨迹容易在训练中被遗忘。本文提出时间自模仿学习（TSIL），从学习过程中挖掘时间高效的轨迹，将其作为监督信号反馈给策略。通过配置条件自适应时间目标和效率加权回放，TSIL提高了采样效率。该方法可加速无人机机械臂控制策略的学习。",
+      "llm_tldr": "长时域机器人操作中，高效轨迹容易在训练中被遗忘。本文提出时间自模仿学习（TSIL），从学习过程中挖掘时间高效的轨迹，将其作为监督信号反馈给策略。通过配置条件自适应时间目标和效率加权回放，TSIL提高了采样效率。该方法可加速无人机机械臂控制策略的学习。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for drone manipulator control",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.20135v1",
+      "source": "arxiv",
+      "title": "Frequency-Aware Flow Matching for Continuous and Consistent Robotic Action Generation",
+      "abstract": "Flow matching has emerged as a standard paradigm for robotic manipulation owing to its strong expressive power for modelling complex, multimodal action distributions, alongside similar approaches like diffusion policy. However, existing methods rely on discretized action chunks, making them brittle to demonstrations collected at heterogeneous control frequencies and prone to temporally inconsistent actions that degrade control stability. In this paper, we propose Frequency-Aware Flow Matching (FAFM), which outputs continuous, temporally consistent actions. To handle heterogeneous frequency input, we transform discrete action sequences into the frequency domain with the discrete cosine transform (DCT), perform flow matching over the resulting coefficients, and reconstruct continuous actions via cosine basis expansion. To generate temporally consistent actions, we regularize the first-order temporal derivative to promote smooth actions. This corresponds to a Sobolev-type constraint that suppresses high-frequency errors and discourages abrupt action changes. Our FAFM is simple, introduces no additional network parameters and applies to standalone flow-matching policies and vision-language action models. Across synthetic toy benchmark, obstacle avoidance, LapGym, and LIBERO, FAFM improves success rates, multimodal expressivity, motion smoothness, convergence speed, robustness to mechanical bias and mixed-frequency input. These gains are consistent when deployed on a real-world Franka robot. Code available at https://anonymous.4open.science/r/FAFM.",
+      "authors": [
+        "Jianing Guo",
+        "Fangzheng Chen",
+        "Zihao Mao",
+        "Wong Lik Hang Kenny",
+        "Zhenhong Wu",
+        "Yu Li",
+        "Yishuai Cai",
+        "Yuanpei Chen",
+        "Yikun Ban",
+        "Kai Chen",
+        "Qi Dou",
+        "Yaodong Yang",
+        "Xianglong Liu",
+        "Huijie Zhao",
+        "Simin Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T11:58:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.20135v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "frequency-aware flow matching for robotic action generation applicable to arm control",
+      "llm_evidence_cn": "频率感知流匹配用于机器人动作生成，可应用于机械臂控制",
+      "llm_evidence": "频率感知流匹配用于机器人动作生成，可应用于机械臂控制",
+      "canonical_evidence": "频率感知流匹配用于机器人动作生成，可应用于机械臂控制",
+      "llm_tldr_en": "This paper introduces Frequency-Aware Flow Matching (FAFM) for continuous and temporally consistent robotic action generation, handling heterogeneous frequency inputs via DCT and flow matching. The method is general-purpose for robotic manipulation and can be adapted for aerial manipulator control.",
+      "llm_tldr_cn": "该论文提出频率感知流匹配（FAFM）方法，用于生成连续且时间一致的机器人动作。通过离散余弦变换处理异构频率输入，在频域进行流匹配，避免了离散化带来的时序不一致问题。该方法是一种通用的机器人操作动作生成方法，可迁移至空中机械臂控制场景，提升动作的平滑性与稳定性。",
+      "llm_tldr": "该论文提出频率感知流匹配（FAFM）方法，用于生成连续且时间一致的机器人动作。通过离散余弦变换处理异构频率输入，在频域进行流匹配，避免了离散化带来的时序不一致问题。该方法是一种通用的机器人操作动作生成方法，可迁移至空中机械臂控制场景，提升动作的平滑性与稳定性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,34 +6,48 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-19
-- 运行时间：2026-06-19 22:05:28 UTC
+- 最新运行日期：2026-06-20
+- 运行时间：2026-06-20 21:32:41 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：1
-- 速读区：3
+- 本次总论文数：9
+- 精读区：0
+- 速读区：9
 
 ### 今日简报（AI）
-今日精选4篇论文，精读聚焦过驱动飞机可解释控制分配，速读涵盖无人机吊运、物理接地VLA及零样本灵巧操作。  
-最值得关注的方向：过驱动飞机的非线性控制分配方法（精读8.0分）与机器人灵巧操作中的零样本长程推理（速读6.0分）。  
-建议普通读者优先阅读精读论文，深入理解可解释控制框架；若对机器人操作感兴趣，可同步速读零样本灵巧操作类工作。
-- 详情：[/202606/19/README](/202606/19/README)
+今日聚焦人机交互安全、无人机抗风网络与强化学习可扩展三大方向。最值得关注的是浮基机器人全身阻抗模型预测控制实现物理交互安全，以及结合TD3算法优化无人机基站抗风轨迹保障服务连续。建议优先阅读这两篇，为具身智能与通信系统实际部署提供安全鲁棒性方案。
+- 详情：[/202606/20/README](/202606/20/README)
 
 ### 精读区论文标签
-1. [An integrated interpretable control effectiveness learning and nonlinear control allocation methodology for overactuated aircrafts](/202606/19/2606.13794v2-an-integrated-interpretable-control-effectiveness-learning-and-nonlinear-control-allocation-methodology-for-overactuated-aircrafts)  
-   标签：评分：8.0/10、query:aerial-arm
-   evidence：过驱动飞行器控制分配方法可迁移至过驱动空中机械臂
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Contraction-based Neural Control for Cooperative Aerial Payload Transportation with Variable-length Cables](/202606/19/2606.20127v1-contraction-based-neural-control-for-cooperative-aerial-payload-transportation-with-variable-length-cables)  
+1. [Whole-Body Impedance Model Predictive Control for Safe Physical Human--Robot Interaction on Floating-Base Platforms](/202606/20/2606.14617v1-whole-body-impedance-model-predictive-control-for-safe-physical-human--robot-interaction-on-floating-base-platforms)  
    标签：评分：7.0/10、query:aerial-arm
-   evidence：变长缆绳协作空中载荷运输
-2. [PhysVLA: Towards Physically-Grounded VLA for Embodied Robotic Manipulation](/202606/19/2606.13886v1-physvla-towards-physically-grounded-vla-for-embodied-robotic-manipulation)  
+   evidence：适用于空中机器人物理交互的浮基平台全身阻抗MPC
+2. [Wind-Resilient Trajectory Optimization for UAV-BS Networks: TD3 for Continuous Service Availability](/202606/20/2606.18556v1-wind-resilient-trajectory-optimization-for-uav-bs-networks-td3-for-continuous-service-availability)  
+   标签：评分：7.0/10、query:aerial-arm
+   evidence：基于深度强化学习的无人机抗风轨迹优化
+3. [Provably Safe, Yet Scalable Reinforcement Learning](/202606/20/2606.14536v1-provably-safe-yet-scalable-reinforcement-learning)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：可扩展至空中机械臂的安全强化学习框架
+4. [Transferring Contact, Not Just Motion: Compliant Grasping Across Dexterous Hands](/202606/20/2606.15516v2-transferring-contact-not-just-motion-compliant-grasping-across-dexterous-hands)  
    标签：评分：6.0/10、query:aerial-arm
-   evidence：物理基础的机器人操纵控制可应用于空中机械臂
-3. [Zero-Shot Long-Horizon Dexterous Manipulation via Multi-View 3D-Grounded VLM Reasoning](/202606/19/2606.19340v1-zero-shot-long-horizon-dexterous-manipulation-via-multi-view-3d-grounded-vlm-reasoning)  
+   evidence：跨形态的力反馈顺从抓取
+5. [Geometric Action Model for Robot Policy Learning](/202606/20/2606.17046v1-geometric-action-model-for-robot-policy-learning)  
    标签：评分：6.0/10、query:aerial-arm
-   evidence：零样本灵巧操纵方法可应用于空中抓取
+   evidence：用于机器人操作策略的几何动作模型
+6. [TRIDENT: Breaking the Hybrid-Safety-Physics Coupling for Provably Safe Multi-Agent Reinforcement Learning](/202606/20/2606.18308v1-trident-breaking-the-hybrid-safety-physics-coupling-for-provably-safe-multi-agent-reinforcement-learning)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：面向混合动作和物理动力学的多智能体安全强化学习
+7. [Task Allocation and Motion Planning in Dynamic, Cluttered Environments via CBBA and Graphs of Convex Sets](/202606/20/2606.18516v1-task-allocation-and-motion-planning-in-dynamic-cluttered-environments-via-cbba-and-graphs-of-convex-sets)  
+   标签：评分：6.0/10、query:aerial-arm
+   evidence：面向动态环境的多智能体任务分配与运动规划
+8. [Temporal Self-Imitation Learning](/202606/20/2606.19752v1-temporal-self-imitation-learning)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：用于机器人操作的时间自模仿学习
+9. [Frequency-Aware Flow Matching for Continuous and Consistent Robotic Action Generation](/202606/20/2606.20135v1-frequency-aware-flow-matching-for-continuous-and-consistent-robotic-action-generation)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：频率感知流匹配用于机器人动作生成，可应用于机械臂控制
 
 
 <div class="dpr-home-promo-card">
