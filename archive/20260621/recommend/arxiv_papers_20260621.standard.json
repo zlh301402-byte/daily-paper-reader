@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-21T21:07:56.722342+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 12,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.18953v1",
+      "source": "arxiv",
+      "title": "Object-Centric Residual RL for Zero-Shot Sim-to-Real VLA Enhancement",
+      "abstract": "Vision-Language-Action (VLA) models can generalize across diverse manipulation tasks, but their imitation-learning-based policies remain brittle in precise physical interactions due to compounding execution errors; Can a reinforcement learning policy trained purely in simulation improve the robustness of real-world VLAs zero-shot? Residual RL, which learns a corrective policy on top of a frozen VLA, offers a natural framework, but existing approaches face a fundamental sim-to-real dilemma: privileged-state methods require lossy distillation for deployment; image-based methods suffer from the visual domain gap; and real-world RL is costly and unsafe. We propose an object-centric residual RL framework that refines VLA actions using object poses, enabling a compact observation space that transfers consistently between simulation and reality. To align the two domains, we additionally replay the same teleoperation demonstrations in simulation to train a sim counterpart of the real-world VLA. The residual RL policy is trained only in simulation with pose noise injection and dropout, and transfers zero-shot to the real robot. Across five manipulation tasks on a real Franka Research 3 (FR3) robot, our method improves the success rate from 42% to 76% zero-shot, and the improved rollouts can be further reused to retrain the base VLA for self-improvement without additional teleoperation. Project page: https://www.microsoft.com/en-us/research/articles/object-centric-residual-rl/",
+      "authors": [
+        "Kinam Kim",
+        "Namiko Saito",
+        "Heecheol Kim",
+        "Katsushi Ikeuchi",
+        "Jaegul Choo",
+        "Yasuyuki Matsushita"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-17T11:36:54+00:00",
+      "link": "https://arxiv.org/pdf/2606.18953v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Residual RL refines VLA actions for manipulation, zero-shot sim-to-real applicable to robotic arm control",
+      "llm_evidence_cn": "残差强化学习优化视觉-语言-动作模型的动作，实现零样本仿真到现实迁移，可应用于机械臂控制",
+      "llm_evidence": "残差强化学习优化视觉-语言-动作模型的动作，实现零样本仿真到现实迁移，可应用于机械臂控制",
+      "canonical_evidence": "残差强化学习优化视觉-语言-动作模型的动作，实现零样本仿真到现实迁移，可应用于机械臂控制",
+      "llm_tldr_en": "Proposes object-centric residual RL that refines VLA actions using object poses for zero-shot sim-to-real VLA enhancement, improving physical interaction robustness.",
+      "llm_tldr_cn": "针对模仿学习策略在精确物理交互中执行误差累积的问题，提出以物体为中心的残差强化学习框架，利用物体位姿优化VLA动作，实现零样本仿真到现实迁移。在模拟环境中训练的策略可直接提升真实世界VLA的鲁棒性，避免了昂贵的真实世界训练。",
+      "llm_tldr": "针对模仿学习策略在精确物理交互中执行误差累积的问题，提出以物体为中心的残差强化学习框架，利用物体位姿优化VLA动作，实现零样本仿真到现实迁移。在模拟环境中训练的策略可直接提升真实世界VLA的鲁棒性，避免了昂贵的真实世界训练。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.20197v1",
+      "source": "arxiv",
+      "title": "Stable Transformer-Actor-Critic Model Predictive Control: A Contraction Analysis Approach",
+      "abstract": "Actor-Critic Model Predictive Control (MPC) effectively addresses complex, non-convex control problems, but guaranteeing the closed-loop stability of sequence-based learning models within these pipelines remains challenging. This paper introduces a novel Transformer-Actor-Critic MPC architecture with formal robustness guarantees. First, we prove that Transformer networks can satisfy global incremental Input-to-State Stability ($δ$ISS). We then leverage Riemannian contraction theory to analyze the interconnected dynamics between the physical plant and the predictive neural network. Finally, we integrate these theoretical bounds as a training regularizer to yield a certifiably robust policy. The framework is validated on a nonlinear 3D drone model executing target-reaching and obstacle-avoidance maneuvers.",
+      "authors": [
+        "Antonio Marino",
+        "Valerio Modugno",
+        "Marco Cognetti"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-18T13:11:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.20197v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Actor-Critic RL method for control stability, applicable to robotic arm control",
+      "llm_evidence_cn": "Actor-Critic强化学习方法提供控制稳定性，可适用于机械臂控制",
+      "llm_evidence": "Actor-Critic强化学习方法提供控制稳定性，可适用于机械臂控制",
+      "canonical_evidence": "Actor-Critic强化学习方法提供控制稳定性，可适用于机械臂控制",
+      "llm_tldr_en": "Proposes Transformer-Actor-Critic MPC with contraction analysis to guarantee closed-loop stability, validated on nonlinear 3D control problem.",
+      "llm_tldr_cn": "针对序列学习模型在模型预测控制中闭环稳定性难以保证的问题，提出一种基于Transformer的Actor-Critic MPC架构，利用黎曼收缩理论分析互联动力学，并将稳定性界作为训练正则化项，实现了可认证鲁棒的控制策略。在非线性三维控制问题上验证了有效性。",
+      "llm_tldr": "针对序列学习模型在模型预测控制中闭环稳定性难以保证的问题，提出一种基于Transformer的Actor-Critic MPC架构，利用黎曼收缩理论分析互联动力学，并将稳定性界作为训练正则化项，实现了可认证鲁棒的控制策略。在非线性三维控制问题上验证了有效性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

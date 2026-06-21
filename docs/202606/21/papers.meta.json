@@ -1,0 +1,39 @@
+{
+  "label": "2026-06-21",
+  "date": "2026-06-21",
+  "generated_at": "2026-06-21T21:09:26",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202606/21/2606.18953v1-object-centric-residual-rl-for-zero-shot-sim-to-real-vla-enhancement",
+      "section": "quick",
+      "title_en": "Object-Centric Residual RL for Zero-Shot Sim-to-Real VLA Enhancement",
+      "authors": "Kinam Kim, Namiko Saito, Heecheol Kim, Katsushi Ikeuchi, Jaegul Choo, Yasuyuki Matsushita",
+      "date": "2026-06-17",
+      "pdf": "https://arxiv.org/pdf/2606.18953v1",
+      "score": "7.0",
+      "evidence": "残差强化学习优化视觉-语言-动作模型的动作，实现零样本仿真到现实迁移，可应用于机械臂控制",
+      "tldr": "视觉-语言-动作（VLA）模型在精确物理交互中因执行误差累积而表现脆弱。提出以物体为中心的残差强化学习框架，仅采用物体姿态作为观测，构造紧凑且跨域一致的表示；在仿真中通过姿态噪声注入和dropout训练残差策略，并重放遥操作演示对齐仿真与真实域。该策略零样本迁移至真实Franka FR3机器人，五个操作任务成功率从42%提升至76%，有效避免视觉域差距和真实世界RL的高成本。此外，改进后的轨迹可循环用于基础VLA的自我提升，无需额外遥操作数据。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Vision-Language-Action (VLA) models can generalize across diverse manipulation tasks, but their imitation-learning-based policies remain brittle in precise physical interactions due to compounding execution errors; Can a reinforcement learning policy trained purely in simulation improve the robustness of real-world VLAs zero-shot? Residual RL, which learns a corrective policy on top of a frozen VLA, offers a natural framework, but existing approaches face a fundamental sim-to-real dilemma: privileged-state methods require lossy distillation for deployment; image-based methods suffer from the visual domain gap; and real-world RL is costly and unsafe. We propose an object-centric residual RL framework that refines VLA actions using object poses, enabling a compact observation space that transfers consistently between simulation and reality. To align the two domains, we additionally replay the same teleoperation demonstrations in simulation to train a sim counterpart of the real-world VLA. The residual RL policy is trained only in simulation with pose noise injection and dropout, and transfers zero-shot to the real robot. Across five manipulation tasks on a real Franka Research 3 (FR3) robot, our method improves the success rate from 42% to 76% zero-shot, and the improved rollouts can be further reused to retrain the base VLA for self-improvement without additional teleoperation. Project page: https://www.microsoft.com/en-us/research/articles/object-centric-residual-rl/",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/21/2606.20197v1-stable-transformer-actor-critic-model-predictive-control-a-contraction-analysis-approach",
+      "section": "quick",
+      "title_en": "Stable Transformer-Actor-Critic Model Predictive Control: A Contraction Analysis Approach",
+      "authors": "Antonio Marino, Valerio Modugno, Marco Cognetti",
+      "date": "2026-06-18",
+      "pdf": "https://arxiv.org/pdf/2606.20197v1",
+      "score": "6.0",
+      "evidence": "Actor-Critic强化学习方法提供控制稳定性，可适用于机械臂控制",
+      "tldr": "Actor-Critic MPC在处理复杂非凸控制问题时，难以保证基于序列学习模型的闭环稳定性。本文提出一种Transformer-Actor-Critic MPC架构，先证明Transformer网络满足全局增量输入状态稳定性，再利用里曼收缩理论分析系统与预测网络的互联动力学，并将理论界作为训练正则化器得到可认证鲁棒的策略。在非线性3D无人机模型上的目标到达与避障实验验证了其有效性。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Actor-Critic Model Predictive Control (MPC) effectively addresses complex, non-convex control problems, but guaranteeing the closed-loop stability of sequence-based learning models within these pipelines remains challenging. This paper introduces a novel Transformer-Actor-Critic MPC architecture with formal robustness guarantees. First, we prove that Transformer networks can satisfy global incremental Input-to-State Stability ($δ$ISS). We then leverage Riemannian contraction theory to analyze the interconnected dynamics between the physical plant and the predictive neural network. Finally, we integrate these theoretical bounds as a training regularizer to yield a certifiably robust policy. The framework is validated on a nonlinear 3D drone model executing target-reaching and obstacle-avoidance maneuvers.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
