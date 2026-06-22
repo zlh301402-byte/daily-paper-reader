@@ -1,0 +1,235 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-22T21:59:59.308375+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 12,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.17982v1",
+      "source": "arxiv",
+      "title": "LAGO Policy: Latency-Aware Asynchronous Diffusion Policies with Goal-Directed Collision-Free Planning for Smooth Manipulation",
+      "abstract": "Diffusion-based visuomotor policies deployed with asynchronous inference often exhibit inter-chunk discontinuities and lack explicit mechanisms for obstacle-aware execution, leading to jerky motions and collisions that hinder reliable manipulation in real-world scenes. To address these issues, we propose LAGO Policy, a unified asynchronous action-generation framework that integrates trajectory optimization with diffusion policy for smooth and safe execution. LAGO Policy improves inter-chunk consistency via latency-aware classifier-free guidance conditioning on future actions. It further enables goal-directed collision-free trajectory planning by predicting a task-relevant interaction goal from demonstrations. Finally, spatial-temporal trajectory optimization refines the actions to be executed for low-jerk and feasible motion. Extensive real-world experiments demonstrate that LAGO Policy achieves smooth collision-free execution with high task success across challenging manipulation tasks. Project Website: https://lago-policy.github.io/",
+      "authors": [
+        "Guowei Shi",
+        "Xupeng Xie",
+        "Yiming Luo",
+        "Jian Guo",
+        "Jun Ma",
+        "Boyu Zhou"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-16T14:33:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.17982v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "diffusion-based manipulation policy with trajectory optimization applicable to aerial manipulation",
+      "llm_evidence_cn": "基于扩散的操作策略与轨迹优化，可应用于空中操作",
+      "llm_evidence": "基于扩散的操作策略与轨迹优化，可应用于空中操作",
+      "canonical_evidence": "基于扩散的操作策略与轨迹优化，可应用于空中操作",
+      "llm_tldr_en": "LAGO Policy integrates trajectory optimization with diffusion policy for smooth and safe manipulation, addressing inter-chunk discontinuity and collision avoidance, which are critical for aerial manipulation.",
+      "llm_tldr_cn": "LAGO策略针对扩散策略异步推理时的块间不连续和缺乏障碍物感知问题，提出延迟感知的无分类器指导，并结合轨迹优化实现平滑安全的操作。该方法通过预测任务相关的交互目标，实现面向目标的无碰撞轨迹规划。在操作任务中验证了其有效性和平滑性，为无人机机械臂的精细操作控制提供了潜在方案。",
+      "llm_tldr": "LAGO策略针对扩散策略异步推理时的块间不连续和缺乏障碍物感知问题，提出延迟感知的无分类器指导，并结合轨迹优化实现平滑安全的操作。该方法通过预测任务相关的交互目标，实现面向目标的无碰撞轨迹规划。在操作任务中验证了其有效性和平滑性，为无人机机械臂的精细操作控制提供了潜在方案。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.17511v1",
+      "source": "arxiv",
+      "title": "MagicSim: A Unified Infrastructure for Executable Embodied Interaction",
+      "abstract": "Robot learning and embodied agents now require simulation to serve as a shared execution substrate linking control, skills, and planning, not only as a renderer, controller testbed, or fixed task environment. Existing pipelines split these layers with \"magic\" actions, disconnected training environments, or forward-only renders that cannot reproduce, evaluate, and annotate the same episode. We present MagicSim, an embodied interaction infrastructure built around one deterministic batched runtime and a shared Markov decision process (MDP). From YAML-first specifications that decouple contents, placement, behavior, and agent exposure, MagicSim constructs diverse executable worlds spanning task families, interaction regimes, physics, layouts, sensors, avatars, and robot embodiments in one reset-and-step loop. A common execution interface grounds high-level commands through controllers, atomicskills, planner primitives, and asynchronous planning, realizing them as robot actions rather than simulator-side state edits. One task definition supports three capabilities: benchmark and RL evaluation, an autocollect interface that automatically turns commands into grounded trajectories, and agent/VLM-facing interaction. For automatic execution, commands flow through a Command->Skill->Planner->Robot->Record pipeline, while per-environment command, skill, planning, retry, annotation, and episode states advance independently above the shared physics tick. Successful rollouts are saved as structured multimodal trajectories aligning language supervision, action representations, visual/geometric representations, and task-level status with the executed episode. MagicSim thus unifies diverse world construction, embodied execution, task evaluation, automatic rollout generation, and interactive agent interfaces in one planner-in-the-loop runtime.",
+      "authors": [
+        "Haoran Lu",
+        "Songling Liu",
+        "Yue Chen",
+        "Guo Ye",
+        "Mutian Shen",
+        "Shuyang Yu",
+        "Yu Xiao",
+        "Jihai Zhao",
+        "Shang Wu",
+        "Jianshu Zhang",
+        "Xiangtian Gui",
+        "Chuye Hong",
+        "Yuran Wang",
+        "Maojiang Su",
+        "Jiayi Wang",
+        "Ruihai Wu",
+        "Zhaoran Wang",
+        "Han Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-06-16T04:42:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.17511v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "simulation infrastructure for embodied interaction that can support aerial manipulation control development",
+      "llm_evidence_cn": "支持空中操作控制开发的具身交互模拟基础设施",
+      "llm_evidence": "支持空中操作控制开发的具身交互模拟基础设施",
+      "canonical_evidence": "支持空中操作控制开发的具身交互模拟基础设施",
+      "llm_tldr_en": "MagicSim provides a unified simulation substrate integrating control, skills, and planning, which can be applied to developing and testing aerial manipulation strategies.",
+      "llm_tldr_cn": "MagicSim提出了一个统一的、可执行具身交互模拟基础设施，解决了现有仿真中控制、技能和规划层分离的问题。它通过YAML-first规范和共享MDP构建多样化的可执行世界，支持包括空中操作在内的多种任务。该平台为开发和评估无人机机械臂控制策略提供了可复现的测试环境，有望加速空中操作算法的迭代。",
+      "llm_tldr": "MagicSim提出了一个统一的、可执行具身交互模拟基础设施，解决了现有仿真中控制、技能和规划层分离的问题。它通过YAML-first规范和共享MDP构建多样化的可执行世界，支持包括空中操作在内的多种任务。该平台为开发和评估无人机机械臂控制策略提供了可复现的测试环境，有望加速空中操作算法的迭代。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18646v1",
+      "source": "arxiv",
+      "title": "A Scalable Embodied Intelligence Platform for Seamless Real-to-Sim-to-Real Transfer of Household Mobile Manipulation Tasks",
+      "abstract": "Mobile manipulation is a fundamental capability in embodied intelligence robotics. The growing demand for robust and generalizable manipulation in unstructured household environments has driven rapid progress in embodied intelligence platforms. However, achieving a seamless transfer across the real-to-sim-to-real cycle faces three key challenges, including costly high-fidelity simulation scenes reconstruction, the complexity of systematic strategy evaluation in simulation, and incompatible real-world deployments. To address these challenges, we develop BestMan, a scalable and seamless real-to-sim-to-real platform that bridges the gap between the simulation and the real world, enabling effective strategy development, integration, and deployment for household mobile manipulation. Specifically, we design a novel Automated Scene Generation (ASG) module to reconstruct realistic simulations from real observations. Then, we propose a simulation-guided task formalization and skill learning architecture that supports the flexible integration and large-scale evaluations of hybrid skill strategies in simulation. Finally, to enhance the real-world scalability, we develop a Hardware-agnostic and Unified Middleware (HUM) to ensure seamless and compatible sim-to-real transfer across heterogeneous mobile manipulators for real deployments. Experimental results demonstrate the superior performance of our proposed platform in establishing standardized benchmarks and facilitating promising research in the field of mobile manipulation.",
+      "authors": [
+        "Kui Yang",
+        "Xianlei Long",
+        "Haoxuan Li",
+        "Yan Ding",
+        "Chao Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-17T03:31:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.18646v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "platform for sim-to-real transfer in mobile manipulation, applicable to aerial manipulator deployment",
+      "llm_evidence_cn": "面向移动操作从模拟到真实迁移的平台，可应用于空中机械臂部署",
+      "llm_evidence": "面向移动操作从模拟到真实迁移的平台，可应用于空中机械臂部署",
+      "canonical_evidence": "面向移动操作从模拟到真实迁移的平台，可应用于空中机械臂部署",
+      "llm_tldr_en": "BestMan enables seamless real-to-sim-to-real transfer for household mobile manipulation tasks, providing a scalable platform that could be adapted for aerial manipulation.",
+      "llm_tldr_cn": "BestMan平台解决了家庭移动操作任务在真实-模拟-真实迁移中的高保真场景重建、策略评估复杂性和真实部署不兼容等关键挑战。该平台通过可扩展的架构实现有效的策略迁移，其方法论可推广至空中机械臂领域，为无人机带臂系统的真实部署提供参考。",
+      "llm_tldr": "BestMan平台解决了家庭移动操作任务在真实-模拟-真实迁移中的高保真场景重建、策略评估复杂性和真实部署不兼容等关键挑战。该平台通过可扩展的架构实现有效的策略迁移，其方法论可推广至空中机械臂领域，为无人机带臂系统的真实部署提供参考。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.19586v1",
+      "source": "arxiv",
+      "title": "One Demo is Worth a Thousand Trajectories: Action-View Augmentation for Visuomotor Policies",
+      "abstract": "Visuomotor policies for manipulation have demonstrated remarkable potential in modeling complex robotic behaviors, yet minor alterations in the robot's initial configuration and unseen obstacles easily lead to out-of-distribution observations. Without extensive data collection effort, these result in catastrophic execution failures. In this work, we introduce an effective data augmentation framework that generates visually realistic fisheye image sequences and corresponding physically feasible action trajectories from real-world eye-in-hand demonstrations, captured with a portable parallel gripper with a single fisheye camera. We introduce a novel Gaussian Splatting formulation, adapted to wide FoV fisheye cameras, to reconstruct and edit the 3D scene with unseen objects. We utilize trajectory optimization to generate smooth, collision-free, view-rendering-friendly action trajectories and render visual observations from corresponding novel views. Comprehensive experiments in simulation and the real world show that our augmentation framework improves the success rate for various manipulation tasks in both the same scene and the augmented scene with obstacles requiring collision avoidance.",
+      "authors": [
+        "Chuer Pan",
+        "Litian Liang",
+        "Dominik Bauer",
+        "Eric Cousineau",
+        "Benjamin Burchfiel",
+        "Siyuan Feng",
+        "Shuran Song"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-17T20:41:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.19586v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "data augmentation framework for visuomotor policies applicable to aerial manipulation",
+      "llm_evidence_cn": "面向视觉运动策略的数据增强框架，可应用于空中操作",
+      "llm_evidence": "面向视觉运动策略的数据增强框架，可应用于空中操作",
+      "canonical_evidence": "面向视觉运动策略的数据增强框架，可应用于空中操作",
+      "llm_tldr_en": "A data augmentation framework generates realistic fisheye image sequences and feasible action trajectories from few demos, improving robustness of visuomotor policies against configuration changes, relevant for aerial manipulation.",
+      "llm_tldr_cn": "该工作针对视觉运动策略对初始配置和未知障碍物敏感的问题，提出一种数据增强框架，利用Gaussian Splatting生成逼真的鱼眼图像序列和物理可行的动作轨迹。仅需少量真实演示即可增强策略的鲁棒性，为无人机机械臂在变化环境中的视觉操作提供了低成本数据扩充方法。",
+      "llm_tldr": "该工作针对视觉运动策略对初始配置和未知障碍物敏感的问题，提出一种数据增强框架，利用Gaussian Splatting生成逼真的鱼眼图像序列和物理可行的动作轨迹。仅需少量真实演示即可增强策略的鲁棒性，为无人机机械臂在变化环境中的视觉操作提供了低成本数据扩充方法。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.20411v1",
+      "source": "arxiv",
+      "title": "Direct Advantage Estimation for Scalable and Sample-efficient Deep Reinforcement Learning",
+      "abstract": "Direct Advantage Estimation (DAE) has been shown to improve the sample efficiency of deep reinforcement learning algorithms. However, its reliance on full environment observability limits its applicability in realistic settings, and its requirement to model transition probabilities incurs substantial computational overhead for high-dimensional observations. In the present work, we address both limitations. First, we extend the theoretical framework of DAE to partially observable domains with minimal modifications. Second, we reduce its computational complexity by introducing discrete latent dynamics models that efficiently approximate transition probabilities. We evaluate our approach on the Arcade Learning Environment and find that DAE scales effectively with function approximator capacity while retaining high sample efficiency.",
+      "authors": [
+        "Hsiao-Ru Pan",
+        "Bernhard Schölkopf"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-18T15:58:48+00:00",
+      "link": "https://arxiv.org/pdf/2606.20411v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "direct advantage estimation method improving sample efficiency in deep RL, applicable to robot arm control learning",
+      "llm_evidence_cn": "直接优势估计方法提升了深度强化学习的样本效率，可应用于机械臂控制学习",
+      "llm_evidence": "直接优势估计方法提升了深度强化学习的样本效率，可应用于机械臂控制学习",
+      "canonical_evidence": "直接优势估计方法提升了深度强化学习的样本效率，可应用于机械臂控制学习",
+      "llm_tldr_en": "DAE is extended to partially observable domains with reduced complexity, offering a more sample-efficient deep RL algorithm that can be applied to learning control policies for robotic arms, including aerial manipulators.",
+      "llm_tldr_cn": "该工作扩展了直接优势估计（DAE）框架，使其适用于部分可观测环境，并通过离散潜动力学模型降低计算复杂度。在Arcade学习环境上的评估表明，新方法在样本效率上取得改进。DAE作为一种通用的深度强化学习算法改进，可直接应用于无人机机械臂的控制策略学习，减少对大量交互数据的需求。",
+      "llm_tldr": "该工作扩展了直接优势估计（DAE）框架，使其适用于部分可观测环境，并通过离散潜动力学模型降低计算复杂度。在Arcade学习环境上的评估表明，新方法在样本效率上取得改进。DAE作为一种通用的深度强化学习算法改进，可直接应用于无人机机械臂的控制策略学习，减少对大量交互数据的需求。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
