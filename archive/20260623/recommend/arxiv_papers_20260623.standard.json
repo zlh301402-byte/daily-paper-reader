@@ -1,0 +1,222 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-23T22:25:54.178337+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 2,
+    "deep_cap": 7,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 12,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2606.21525v1",
+      "source": "arxiv",
+      "title": "Backpropagating Through Simulation: Analytic Policy Gradients for Sample and Learning Efficient Differentiable Continuous Control",
+      "abstract": "Model-free reinforcement learning algorithms such as Proximal Policy Optimization (PPO) treat the environment as a black box, estimating policy gradients from sampled rewards; this process demands millions of interactions and relies on high-variance advantage estimates. When environment dynamics are differentiable, the return is an end-to-end differentiable function of the policy parameters, enabling exact gradient computation via backpropagation through simulation. We term this approach Analytic Policy Gradients (APG) and evaluate it against PPO on four continuous control tasks of increasing dynamical complexity: a one-dimensional point-mass target-reaching task, a 2D point-mass navigation task with obstacle avoidance, a 2D rigid-body T-block pushing task, and a 7-DOF Franka FR3 end-effector reaching task. Both algorithms share identical model architectures, observation normalization, and optimizer settings. To decouple sample efficiency from compute efficiency, we design a multi-axis evaluation protocol that records performance against environment steps and gradient steps. We report a segmented backpropagation scheme with MC and critic-based bootstrap modes that mitigates gradient degradation on long-horizon tasks, and present ablations over segment length and bootstrap strategy.",
+      "authors": [
+        "Yueci Deng"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-19T15:22:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.21525v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "analytic policy gradients for sample-efficient continuous control applicable to robot arm RL",
+      "llm_evidence_cn": "用于机器人臂强化学习的样本高效分析策略梯度方法",
+      "llm_evidence": "用于机器人臂强化学习的样本高效分析策略梯度方法",
+      "canonical_evidence": "用于机器人臂强化学习的样本高效分析策略梯度方法",
+      "llm_tldr_en": "Analytic Policy Gradients (APG) compute exact gradients via backpropagation through differentiable simulators, enabling sample-efficient RL for continuous control tasks.",
+      "llm_tldr_cn": "针对模型无关强化学习样本效率低的问题，本文提出分析策略梯度（APG），利用可微环境动力学通过仿真反向传播计算精确梯度。在四个连续控制任务上，APG以远少于PPO的交互次数获得了更高的回报，证明了其在样本效率和收敛速度上的优势。该方法为基于模型的强化学习在机器人操作中的应用提供了新思路。",
+      "llm_tldr": "针对模型无关强化学习样本效率低的问题，本文提出分析策略梯度（APG），利用可微环境动力学通过仿真反向传播计算精确梯度。在四个连续控制任务上，APG以远少于PPO的交互次数获得了更高的回报，证明了其在样本效率和收敛速度上的优势。该方法为基于模型的强化学习在机器人操作中的应用提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.22303v1",
+      "source": "arxiv",
+      "title": "FlowDPG: Deterministic Policy Gradient on Flow Matching Policies for Real-World Manipulation",
+      "abstract": "Real-world reinforcement learning for robotic manipulation remains challenging, and this difficulty is amplified for flow matching policies: applying policy gradient methods to these policies is fundamentally limited by the need to backpropagate through time(BPTT) along the multi-step ODE that maps noise to actions, which is computationally prohibitive and numerically fragile. We propose FlowDPG, a DDPG-style method specifically designed for flow matching policies that distills the critic gradient into the velocity field at training time, bypassing BPTT entirely. Intuitively, FlowDPG combines two complementary vectors: the demonstration-driven velocity that keeps the action feasible, and the critic-driven correction that steers it toward higher value. Our contributions are threefold: (1) a BPTT-free distillation framework that enables stable DDPG-style policy improvement on flow matching policies, (2) a formal connection between the FlowDPG update direction and vanilla Deterministic Policy Gradient via three explicit approximations, and (3) real-world validation on a long-horizon, multi-stage, dual-arm AirPods assembly task, where FlowDPG attains a 92% end-to-end success rate, substantially outperforming recent RL methods spanning value-conditioning, auxiliary-module adaptation, and adjoint-based critic-gradient approaches. Videos and more results are provided on the project page https://flowdpg.github.io.",
+      "authors": [
+        "Kexin Shi",
+        "Junyao Shi",
+        "Poorvi Hebbar",
+        "Zhuolun Zhao",
+        "Tarun Amarnath",
+        "Yifan Su",
+        "Shikhar Bahl",
+        "Deepak Pathak"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-21T02:10:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.22303v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reinforcement learning for robot arm control using flow matching policies",
+      "llm_evidence_cn": "使用流匹配策略的机器人臂强化学习",
+      "llm_evidence": "使用流匹配策略的机器人臂强化学习",
+      "canonical_evidence": "使用流匹配策略的机器人臂强化学习",
+      "llm_tldr_en": "FlowDPG proposes a DDPG-style method for flow matching policies that bypasses backpropagation through time, enabling efficient real-world RL for robotic manipulation.",
+      "llm_tldr_cn": "针对真实世界机器人操作中流匹配策略强化学习的计算瓶颈，FlowDPG提出了一种基于DDPG的方法，通过将评论家梯度蒸馏到速度场中，绕过了时间反向传播，从而在训练时避免了昂贵的计算和数值不稳定性。该方法结合示范驱动的速度和评论家驱动的修正，在保持动作可行性的同时优化策略。实验表明，FlowDPG在真实世界操作任务中实现了高效的强化学习，为实际机器人应用提供了可靠方案。",
+      "llm_tldr": "针对真实世界机器人操作中流匹配策略强化学习的计算瓶颈，FlowDPG提出了一种基于DDPG的方法，通过将评论家梯度蒸馏到速度场中，绕过了时间反向传播，从而在训练时避免了昂贵的计算和数值不稳定性。该方法结合示范驱动的速度和评论家驱动的修正，在保持动作可行性的同时优化策略。实验表明，FlowDPG在真实世界操作任务中实现了高效的强化学习，为实际机器人应用提供了可靠方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.19752v2",
+      "source": "arxiv",
+      "title": "Temporal Self-Imitation Learning",
+      "abstract": "Long-horizon robot manipulation policies trained with reward shaping can still achieve high return through inefficient interactions, while rare efficient behaviors discovered during training may be forgotten. We argue that temporal efficiency itself provides a powerful and underutilized source of self-supervision for reinforcement learning. We introduce Temporal Self-Imitation Learning (TSIL), a reinforcement learning framework that mines temporally efficient successful trajectories generated during learning and converts them into reusable supervision for future policy improvement. TSIL progressively refines learning using configuration-conditioned adaptive temporal targets derived from fast successful trajectories, while preserving and replaying efficient behaviors through efficiency-weighted self-imitation learning. Across 15 distinct long-horizon manipulation tasks, TSIL consistently improves learning efficiency, task-completion efficiency, revisitation of fast successful behaviors, and robustness to unstable training conditions. More broadly, our results suggest that the temporal structure of successful behavior itself provides a scalable self-supervisory signal for reinforcement learning beyond manually engineered reward shaping alone.",
+      "authors": [
+        "Yinsen Jia",
+        "Boyuan Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T03:31:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.19752v2",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reinforcement learning framework for robot arm manipulation policies",
+      "llm_evidence_cn": "用于机器人臂操作策略的强化学习框架",
+      "llm_evidence": "用于机器人臂操作策略的强化学习框架",
+      "canonical_evidence": "用于机器人臂操作策略的强化学习框架",
+      "llm_tldr_en": "Temporal Self-Imitation Learning (TSIL) mines efficient trajectories to improve robot manipulation via RL, transferable to aerial manipulator control.",
+      "llm_tldr_cn": "该文提出时间自模仿学习（TSIL），一种从训练过程中提取高效成功轨迹并转化为可重用监督信号的强化学习框架。通过配置条件自适应时间目标，TSIL能在长时域机器人操作任务中持续优化策略，避免高效行为被遗忘。实验表明该方法在多种操作场景下显著提升样本效率和最终性能。该框架可迁移至空中机械臂控制等需要高效策略的领域。",
+      "llm_tldr": "该文提出时间自模仿学习（TSIL），一种从训练过程中提取高效成功轨迹并转化为可重用监督信号的强化学习框架。通过配置条件自适应时间目标，TSIL能在长时域机器人操作任务中持续优化策略，避免高效行为被遗忘。实验表明该方法在多种操作场景下显著提升样本效率和最终性能。该框架可迁移至空中机械臂控制等需要高效策略的领域。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.20197v2",
+      "source": "arxiv",
+      "title": "Stable Transformer-Actor-Critic Model Predictive Control: A Contraction Analysis Approach",
+      "abstract": "Actor-Critic Model Predictive Control (MPC) effectively addresses complex, non-convex control problems, but guaranteeing the closed-loop stability of sequence-based learning models within these pipelines remains challenging. This paper introduces a novel Transformer-Actor-Critic MPC architecture with formal robustness guarantees. First, we prove that Transformer networks can satisfy global incremental Input-to-State Stability ($δ$ISS). We then leverage Riemannian contraction theory to analyze the interconnected dynamics between the physical plant and the predictive neural network. Finally, we integrate these theoretical bounds as a training regularizer to yield a certifiably robust policy. The framework is validated on a nonlinear 3D drone model executing target-reaching and obstacle-avoidance maneuvers.",
+      "authors": [
+        "Antonio Marino",
+        "Valerio Modugno",
+        "Marco Cognetti"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-18T13:11:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.20197v2",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes a stable Transformer-Actor-Critic MPC with contraction analysis for nonlinear control, applicable to aerial vehicles",
+      "llm_evidence_cn": "提出一种基于收缩分析的稳定Transformer-Actor-Critic模型预测控制，可应用于飞行器控制",
+      "llm_evidence": "提出一种基于收缩分析的稳定Transformer-Actor-Critic模型预测控制，可应用于飞行器控制",
+      "canonical_evidence": "提出一种基于收缩分析的稳定Transformer-Actor-Critic模型预测控制，可应用于飞行器控制",
+      "llm_tldr_en": "The paper introduces a Transformer-Actor-Critic MPC architecture with formal stability guarantees via contraction theory, validated on a nonlinear 3D system, offering a robust control framework for complex systems like aerial vehicles.",
+      "llm_tldr_cn": "本文针对基于序列学习的模型预测控制难以保证闭环稳定性的问题，提出了一种新颖的Transformer-Actor-Critic MPC架构。通过证明Transformer网络的增量输入-状态稳定性，并利用黎曼收缩理论分析物理系统与预测网络的互联动力学，将理论界作为训练正则项，从而得到可证明鲁棒的策略。在非线性3D系统上的验证表明该方法能提供稳定控制。该框架可推广至空中机器人等复杂系统的控制策略设计。",
+      "llm_tldr": "本文针对基于序列学习的模型预测控制难以保证闭环稳定性的问题，提出了一种新颖的Transformer-Actor-Critic MPC架构。通过证明Transformer网络的增量输入-状态稳定性，并利用黎曼收缩理论分析物理系统与预测网络的互联动力学，将理论界作为训练正则项，从而得到可证明鲁棒的策略。在非线性3D系统上的验证表明该方法能提供稳定控制。该框架可推广至空中机器人等复杂系统的控制策略设计。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.23079v1",
+      "source": "arxiv",
+      "title": "AdaReP:Adaptive Re-Planning under Model Mismatch for Neural World-Model Predictive Control",
+      "abstract": "Neural world models coupled with model predictive control (MPC) replan at every environment step to bound accumulated prediction error, but this incurs substantial computational overhead. Reusing a cached plan reduces this overhead, yet its effectiveness depends on how prediction mismatch propagates through the local dynamics. We analyze this trade-off with a perturbation-based dynamic-regret framework and show that stale-plan penalties scale with the reuse tolerance, the accumulated mismatch since the last replanning step, and the local dynamics sensitivity. Based on this structure, we propose AdaReP, a training-free wrapper that adapts the replanning tolerance online using the current deviation from the cached rollout and a local sensitivity estimate, without modifying the learned world model or planner. Across image-space planning, latent-space control, and real-world robotic manipulation, AdaReP substantially reduces planner-side computation while maintaining comparable task performance, including over 80% fewer queries on a 50-trial physical robot study.",
+      "authors": [
+        "Yutian Cheng",
+        "Xiaojian Ma",
+        "Xianhao Wang",
+        "Min Yang",
+        "Rongpeng Su",
+        "Hangxin Liu",
+        "Xi Chen",
+        "Shuai Li",
+        "Qing Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-22T09:27:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.23079v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive replanning for neural world-model MPC applicable to aerial manipulator motion planning",
+      "llm_evidence_cn": "用于空中机械臂运动规划的自适应重规划神经世界模型MPC",
+      "llm_evidence": "用于空中机械臂运动规划的自适应重规划神经世界模型MPC",
+      "canonical_evidence": "用于空中机械臂运动规划的自适应重规划神经世界模型MPC",
+      "llm_tldr_en": "AdaReP adaptively adjusts replanning tolerance online based on prediction mismatch, reducing computational cost of neural MPC while maintaining performance.",
+      "llm_tldr_cn": "神经世界模型与MPC结合时每步重规划计算量大，AdaReP基于动态遗憾分析，提出训练无关的自适应容忍度调整方法。通过在线监测当前偏差与局部灵敏度，动态决定是否重用缓存计划，从而在不显著降低控制性能的前提下大幅减少重规划频率。该方法可作为即插即用模块适用于任何神经MPC系统。",
+      "llm_tldr": "神经世界模型与MPC结合时每步重规划计算量大，AdaReP基于动态遗憾分析，提出训练无关的自适应容忍度调整方法。通过在线监测当前偏差与局部灵敏度，动态决定是否重用缓存计划，从而在不显著降低控制性能的前提下大幅减少重规划频率。该方法可作为即插即用模块适用于任何神经MPC系统。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
