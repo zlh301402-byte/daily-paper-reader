@@ -1,0 +1,189 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-24T22:08:59.639138+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 12,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.22471v1",
+      "source": "arxiv",
+      "title": "Scalable Multi-Task Data Generation via Reinforcement Learning for Language-Conditioned Bimanual Dexterous Manipulation",
+      "abstract": "A key bottleneck in training generalist policies for bimanual dexterous manipulation is the lack of large-scale, high-quality datasets. Synthetic data generation in simulation provides a scalable alternative to human video demonstrations by overcoming challenges such as morphology mismatch, missing physical interactions, and the generation of robot actions. However, existing approaches based on human teleoperation offer limited task diversity, as object-centric trajectory matching often neglects the feasibility of robot execution. Reinforcement learning (RL) enables broader scalability but is often constrained by handcrafted, task-specific rewards. In this work, we propose a systematic RL-based data generation pipeline that integrates generalizable reward design, effective domain randomization, and language-conditioned task annotations. This pipeline synthesizes diverse, high-quality datasets for dexterous bimanual manipulation and enables training of language-conditioned multi-task policies. Our experiments show that the generated data significantly improves generalization across three representative manipulation tasks.",
+      "authors": [
+        "Zechu Li",
+        "Yufeng Jin",
+        "Puze Liu",
+        "Jan Peters",
+        "Georgia Chalvatzaki"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-21T12:31:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.22471v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL-based data generation for multi-task bimanual dexterous manipulation",
+      "llm_evidence_cn": "基于强化学习的多任务双手灵巧操作数据生成",
+      "llm_evidence": "基于强化学习的多任务双手灵巧操作数据生成",
+      "canonical_evidence": "基于强化学习的多任务双手灵巧操作数据生成",
+      "llm_tldr_en": "Proposes a scalable RL-based data generation pipeline for language-conditioned bimanual dexterous manipulation, overcoming limited task diversity in human teleoperation data.",
+      "llm_tldr_cn": "为解决双手灵巧操作策略训练中大规模高质量数据集缺乏的问题，提出系统性的强化学习数据生成方法，通过奖励函数设计生成多样化任务数据，支持语言条件操作。实验表明生成数据训练的策略在多种任务上表现优异，显著降低了人工演示依赖。",
+      "llm_tldr": "为解决双手灵巧操作策略训练中大规模高质量数据集缺乏的问题，提出系统性的强化学习数据生成方法，通过奖励函数设计生成多样化任务数据，支持语言条件操作。实验表明生成数据训练的策略在多种任务上表现优异，显著降低了人工演示依赖。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.23589v1",
+      "source": "arxiv",
+      "title": "KEMO: Event-Driven Keyframe Memory for Long-Horizon Robot Manipulation with VLA Policies",
+      "abstract": "Long-horizon robot manipulation remains challenging because similar observations may occur at different execution stages, while the appropriate action depends on previously completed operations. Memory can address this ambiguity by enabling policies to infer task progress from execution history. However, existing memory-augmented approaches often either retain dense histories that require compression or rely primarily on recent context that may discard earlier task-relevant events. In this work, we propose propose KEMO, a lightweight plug-in memory framework that automatically selectively preserves keyframes associated with task-relevant state changes for VLA policies. KEMO combines robot kinematics with visual filtering to detect events, encodes the selected keyframes as compact temporally ordered memory tokens, and integrates them with current visual features through cross-attention and gated residual fusion for VLA training. The detected events also define higher-weight training samples near critical transitions. We evaluate KEMO on various real-world dual-arm manipulation tasks spanning 2 to 6 scored subtasks, and trajectory length ranging from 830 steps to 2846 execution steps (durations from 28 to 95 seconds). Compared with the memory-free baseline (e.g., $π_{0.5}$), KEMO improves aggregate Task Success Rate by 23.6\\% and Stage Completion Rate by 34.1\\%. Ablations show that event-driven keyframe selection outperforms uniform sampling and recent-frame retention, while the proposed gated fusion and keyframe-aligned loss weighting provide complementary gains.",
+      "authors": [
+        "Yihan Zeng",
+        "Minghao Ye",
+        "Yiyuan Chen",
+        "Yide Shentu",
+        "Philipp Wu",
+        "Zike Yan",
+        "Zhongyu Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-22T16:57:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.23589v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes keyframe memory for long-horizon manipulation with VLA policies, enhancing task progress inference",
+      "llm_evidence_cn": "提出关键帧记忆方法，结合VLA策略提升长期操作中的任务进度推断",
+      "llm_evidence": "提出关键帧记忆方法，结合VLA策略提升长期操作中的任务进度推断",
+      "canonical_evidence": "提出关键帧记忆方法，结合VLA策略提升长期操作中的任务进度推断",
+      "llm_tldr_en": "KEMO automatically selects keyframes based on robot kinematics and visual filtering to lighten memory in VLA policies for long-horizon manipulation.",
+      "llm_tldr_cn": "针对长期机器人操作中相似观测导致动作歧义的问题，本文提出KEMO，一个轻量级即插即用记忆框架，通过结合机器人运动学和视觉滤波自动检测任务相关状态变化的关键帧，并选择性保留，从而为VLA策略提供清晰的执行历史。实验证明KEMO有效提升了长期操作的成功率，且计算开销小。",
+      "llm_tldr": "针对长期机器人操作中相似观测导致动作歧义的问题，本文提出KEMO，一个轻量级即插即用记忆框架，通过结合机器人运动学和视觉滤波自动检测任务相关状态变化的关键帧，并选择性保留，从而为VLA策略提供清晰的执行历史。实验证明KEMO有效提升了长期操作的成功率，且计算开销小。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.24466v1",
+      "source": "arxiv",
+      "title": "FT-WBC: Learning Fault-Tolerant Whole-Body Control for Legged Loco-Manipulation",
+      "abstract": "Legged manipulators combine the mobility of legged platforms with the manipulation capability of robotic arms. However, arm-induced Center-of-Mass shifts and dynamic disturbances make the system more prone to instability under actuator failures, potentially leading to falls, task failures, or safety risks. Existing fault-tolerant control methods mainly focus on locomotion alone, leaving the coupled problem of whole-body stability and arm reachability in fault-tolerant loco-manipulation largely unaddressed. To bridge this gap, we propose FT-WBC, a fault-tolerant loco-manipulation framework for robust whole-body control of legged manipulators under actuator failures. FT-WBC adopts a decoupled upper- and lower-body policy architecture and introduces two key modules: a Fault Estimator (FE) and a Posture Adaptation Module (PAM). The FE predicts faulty joints from lower-body proprioceptive histories, while the PAM uses this fault information to adapt the base posture plan generated by the arm policy, converting potentially unstable posture requests into safe and executable base posture commands. Through this fault-aware posture adaptation mechanism, FT-WBC synthesizes compensatory gaits under actuator failures and preserves as much arm workspace as possible while maintaining whole-body stability. Simulation and real-world experiments show that FT-WBC significantly improves survival rate and workspace under weakening or locked failures, and transfers zero-shot to a real legged manipulator in the real world.",
+      "authors": [
+        "Yudong Zhong",
+        "Pengfei Mai",
+        "Sikai Guo",
+        "Jiahang Cao",
+        "Zhihai Bi",
+        "Qiuyue Liu",
+        "Ziyan Feng",
+        "Jinni Zhou",
+        "Jun Ma"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-23T11:58:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.24466v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL for legged manipulator arm control",
+      "llm_evidence_cn": "有腿机器人机械臂的强化学习控制",
+      "llm_evidence": "有腿机器人机械臂的强化学习控制",
+      "canonical_evidence": "有腿机器人机械臂的强化学习控制",
+      "llm_tldr_en": "FT-WBC: a fault-tolerant RL framework for whole-body control of legged manipulators under actuator failures, using a decoupled upper/lower-body policy architecture to maintain stability and arm reachability.",
+      "llm_tldr_cn": "针对有腿机器人操作中机械臂引起的重心偏移和动态扰动导致执行器故障下不稳定问题，提出FT-WBC框架，采用解耦上下半身策略架构的容错全身控制，使用强化学习学习鲁棒策略。实验证明该方法在故障情况下维持全身稳定性和手臂可达性，为有腿机器人的安全操作提供了有效方案。",
+      "llm_tldr": "针对有腿机器人操作中机械臂引起的重心偏移和动态扰动导致执行器故障下不稳定问题，提出FT-WBC框架，采用解耦上下半身策略架构的容错全身控制，使用强化学习学习鲁棒策略。实验证明该方法在故障情况下维持全身稳定性和手臂可达性，为有腿机器人的安全操作提供了有效方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.24742v1",
+      "source": "arxiv",
+      "title": "World Value Models for Robotic Manipulation",
+      "abstract": "Generalist value models play a pivotal role in scaling robotic policy learning from large-scale, mixed-quality data. Mathematically, accurate value estimation demands deep temporal understanding, requiring models to both ground the current belief using historical context and plan over future outcomes. However, most existing robotic value models are built on Vision-Language Model (VLM) backbones that are pretrained primarily on static or temporally sparse visual observations, lacking the requisite temporal modeling capabilities for value estimation. Unlike VLMs, world models naturally excel at temporal modeling and future planning, making them ideal foundations for learning generalizable value functions. Driven by this insight, we marry world models with value estimation to construct a new generalist robotic value model, World Value Model (WVM), that offers accurate task progressions to assess data quality. On standard benchmarks, WVM delivers state-of-the-art (SOTA) Value-Order Correlation (VOC) results. Complementing standard evaluation suites that contains only expert data, we further introduce Suboptimal-Value-Bench, a multi-embodiment benchmark consisting of 800 suboptimal trajectories with high-fidelity, human-labeled frame annotations. Our evaluations show that WVM maintains its SOTA performance on Suboptimal-Value-Bench, establishing its robustness in handling both expert and suboptimal data. When deployed for policy learning, WVM improves manipulation performance across various policy extraction approaches in both simulated and real-world deployment, providing robust guidance for learning from mixed-quality data.",
+      "authors": [
+        "Zhihao Wang",
+        "Jianxiong Li",
+        "Yu Cui",
+        "Yuan Gao",
+        "Xianyuan Zhan",
+        "Junzhi Yu",
+        "Xiao Ma"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-23T16:07:48+00:00",
+      "link": "https://arxiv.org/pdf/2606.24742v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reinforcement learning for robot arm control via world value models",
+      "llm_evidence_cn": "用于机器人手臂控制的强化学习方法，世界价值模型",
+      "llm_evidence": "用于机器人手臂控制的强化学习方法，世界价值模型",
+      "canonical_evidence": "用于机器人手臂控制的强化学习方法，世界价值模型",
+      "llm_tldr_en": "Proposes World Value Models that combine world models with value estimation for robotic manipulation, enhancing temporal understanding for policy learning.",
+      "llm_tldr_cn": "该论文针对现有机器人价值模型缺乏时间建模能力的问题，提出将世界模型与价值估计相结合的世界价值模型，用于机器人操作策略的强化学习。该模型利用世界模型在时间建模和未来规划方面的优势，提升了价值估计的准确性，从而为机器人操作提供了更鲁棒的策略学习基础。",
+      "llm_tldr": "该论文针对现有机器人价值模型缺乏时间建模能力的问题，提出将世界模型与价值估计相结合的世界价值模型，用于机器人操作策略的强化学习。该模型利用世界模型在时间建模和未来规划方面的优势，提升了价值估计的准确性，从而为机器人操作提供了更鲁棒的策略学习基础。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
