@@ -1,0 +1,185 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-26T22:11:44.518931+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 12,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.26048v1",
+      "source": "arxiv",
+      "title": "Deep Reinforcement Learning-Enhanced Event-Triggered Data-Driven Predictive Control for a 3D Cable-Driven Soft Robotic Arm",
+      "abstract": "Soft robots are challenging to control due to their nonlinear and time-varying dynamics. Data-enabled predictive control (DeePC) offers a model-free alternative by directly leveraging measured input-output trajectories to construct a predictive controller. However, its receding-horizon formulation requires solving a constrained optimization problem at every sampling instant, which can be computationally demanding for real-time deployment on resource-limited robotic platforms.To address this limitation, we propose an adaptive reinforcement-learning-based event-triggered DeePC (RL-ET-DeePC) framework for soft robotic control. A model-free RL policy is trained to determine when to invoke the DeePC optimizer based on the current system state representation, thereby reducing unnecessary optimization calls while preserving closed-loop performance.Simulation results show that RL-ET-DeePC reduces optimization frequency by up to 66% compared to periodic DeePC, while maintaining comparable tracking accuracy. Hardware experiments on a three-dimensional cable-driven soft robotic arm demonstrate zero-shot transfer, achieving a 34% reduction in optimization frequency with tracking accuracy comparable to periodic DeePC and more consistent performance than a static threshold-based event-triggered baseline.",
+      "authors": [
+        "Cheng Ouyang",
+        "Moeen Ul Islam",
+        "Kaixiang Zhang",
+        "Zhaojian Li",
+        "Xiaobo Tan",
+        "Dong Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-24T17:26:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.26048v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL-based control for robot arm",
+      "llm_evidence_cn": "基于强化学习的机器人臂控制",
+      "llm_evidence": "基于强化学习的机器人臂控制",
+      "canonical_evidence": "基于强化学习的机器人臂控制",
+      "llm_tldr_en": "Proposes RL-ET-DeePC framework combining reinforcement learning with event-triggered data-driven predictive control for soft robotic arms, reducing computational cost.",
+      "llm_tldr_cn": "针对软体机器人臂由于非线性和时变动力学难以控制的问题，提出了一种自适应强化学习事件触发数据驱动预测控制（RL-ET-DeePC）框架。该方法训练一个无模型强化学习策略来决定何时调用DeePC优化，从而降低计算负担。实验表明该方法在保持控制性能的同时显著减少了优化求解频率。为软体臂的实时控制提供了一种高效方案。",
+      "llm_tldr": "针对软体机器人臂由于非线性和时变动力学难以控制的问题，提出了一种自适应强化学习事件触发数据驱动预测控制（RL-ET-DeePC）框架。该方法训练一个无模型强化学习策略来决定何时调用DeePC优化，从而降低计算负担。实验表明该方法在保持控制性能的同时显著减少了优化求解频率。为软体臂的实时控制提供了一种高效方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.23444v1",
+      "source": "arxiv",
+      "title": "SkyJEPA: Learning Long-Horizon World Models for Zero-Shot Sim-to-Real Control of Quadrotors",
+      "abstract": "Accurate dynamics models are critical for informed decision-making in robotic systems, particularly for agile aerial vehicles operating under uncertainty. Neural network dynamics models are attractive for capturing complex nonlinear effects, but existing predictive approaches struggle with long-horizon forecasting because their autoregressive rollout mechanism amplifies errors over time. Joint Embedding Predictive Architectures (JEPAs) offer a compelling alternative by modeling dynamics in latent space, yet prior JEPA-style methods for robot navigation have been studied primarily for kinematic-level planning, with limited investigation in high-frequency control. In this work, we introduce the JEPA-style model for real-time quadrotor control. The proposed approach combines a latent dynamics model with a novel physics-inspired prober that maps frozen latents to interpretable state, enabling physically grounded long-horizon prediction. Additionally, we combine the learned model with a sampling-based optimal control solution to take advantage of its predictive capabilities for real-time control on embedded hardware. Finally, to reduce the dependence on expensive and unsafe real-world data collection, we develop a structured pipeline for automated dataset generation. Extensive open-loop and outdoor closed-loop experiments demonstrate accurate prediction, robust zero-shot sim-to-real transfer, and strong generalization across diverse operating conditions.",
+      "authors": [
+        "Pratyaksh Rao",
+        "Wancong Zhang",
+        "Randall Balestriero",
+        "Yann LeCun",
+        "Giuseppe Loianno"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-06-22T15:00:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.23444v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "quadrotor dynamics modeling with JEPA for control",
+      "llm_evidence_cn": "基于JEPA的四旋翼动力学建模与控制",
+      "llm_evidence": "基于JEPA的四旋翼动力学建模与控制",
+      "canonical_evidence": "基于JEPA的四旋翼动力学建模与控制",
+      "llm_tldr_en": "SkyJEPA learns long-horizon world models for quadrotor control using JEPA-style latent prediction, enabling zero-shot sim-to-real transfer and high-frequency control.",
+      "llm_tldr_cn": "本文针对四旋翼飞行器在不确定性下的长期动力学预测难题，提出SkyJEPA框架，利用联合嵌入预测架构在潜在空间中建模动力学，避免了自回归误差放大。该方法支持实时高频控制，并实现了零样本仿真到实物的迁移。实验证明其预测精度和泛化能力优于现有模型，为敏捷飞行控制提供了新的思路。",
+      "llm_tldr": "本文针对四旋翼飞行器在不确定性下的长期动力学预测难题，提出SkyJEPA框架，利用联合嵌入预测架构在潜在空间中建模动力学，避免了自回归误差放大。该方法支持实时高频控制，并实现了零样本仿真到实物的迁移。实验证明其预测精度和泛化能力优于现有模型，为敏捷飞行控制提供了新的思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.24208v1",
+      "source": "arxiv",
+      "title": "Grounding Generative Policies in Physics: Optimization-Guided Diffusion for Robot Control",
+      "abstract": "Diffusion models sample effectively from high-dimensional, multimodal distributions, but their outputs may violate deployment constraints. For task-space robot policies, generated grasps, waypoints, or trajectories can be distributionally valid yet infeasible, violating reachability, collision-avoidance, or closed-loop executability requirements. This embodiment gap limits zero-shot deployment across robots, even when the task-space behavior itself is transferable.   We propose an inference-time optimization framework that couples the behavior generation to physical feasibility by formulating diffusion guidance as a constrained optimization problem. Our key insight is to replace the sampling perturbation in the backward process with an optimized correction, allowing hard constraints or soft penalties to be imposed during sampling without the need to retrain the diffusion model, while keeping samples close to the learned prior.   We evaluate the method on dexterous grasp synthesis with reachability and collision-avoidance constraints, and dynamic manipulation with controller-level trackability constraints. Across settings and robot embodiments, optimization-guided denoising matches the feasibility of projection- and gradient-guidance baselines while better preserving grasp quality, and improving controller-level executability and task success, with task success improving by up to 20pp. on dexterous grasping and 23pp. on visuomotor manipulation over the best baseline.",
+      "authors": [
+        "Sabrina Bodmer",
+        "René Zurbrügg",
+        "Tifanny Portela",
+        "Hao Ma",
+        "Alexandre Didier",
+        "Marco Hutter",
+        "Colin Jones",
+        "Melanie Zeilinger"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-23T06:49:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.24208v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Optimization-guided diffusion for feasible robot trajectories",
+      "llm_evidence_cn": "优化引导扩散生成可行机器人轨迹",
+      "llm_evidence": "优化引导扩散生成可行机器人轨迹",
+      "canonical_evidence": "优化引导扩散生成可行机器人轨迹",
+      "llm_tldr_en": "Proposes inference-time optimization to guide diffusion model outputs to satisfy physical constraints, enabling feasible grasps and trajectories.",
+      "llm_tldr_cn": "本文针对扩散模型生成轨迹可能违反物理约束的问题，提出推理时优化框架，通过将扩散引导建模为约束优化问题，确保生成行为的物理可行性。在多种机器人操作任务上，该方法减少了无效轨迹生成，提升了零样本部署能力。对于空中机械臂的运动规划具有直接应用价值。",
+      "llm_tldr": "本文针对扩散模型生成轨迹可能违反物理约束的问题，提出推理时优化框架，通过将扩散引导建模为约束优化问题，确保生成行为的物理可行性。在多种机器人操作任务上，该方法减少了无效轨迹生成，提升了零样本部署能力。对于空中机械臂的运动规划具有直接应用价值。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.26175v1",
+      "source": "arxiv",
+      "title": "RMTL: Reinforced Micro-task Learning for Long-Horizon Manipulation with VLM Rewards",
+      "abstract": "Reinforcement learning (RL) for robotic manipulation often requires manually designing a dense reward function, which is difficult to tune and often fragile, or learning a reward from human demonstrations or preferences, which can be expensive. A recent line of work uses pretrained vision-language models (VLMs) as zero-shot reward models, replacing these costs with a single text prompt. However, we argue that a single global prompt is too coarse for long-horizon manipulation tasks with randomized initial conditions. The single-prompt VLM reward is near-flat for much of the trajectory, making early progress hard for the agent to detect. We propose Reinforced Micro-Task Learning (RMTL), an approach that decomposes a manipulation task into a small set of language-described micro-tasks and trains the agent to switch between them. At each step, the agent receives a multi-view VLM reward computed using the prompt of the currently active micro-task and averaged across multiple camera views to reduce the effect of view-specific occlusions. A reverse curriculum gradually exposes the agent to harder initial conditions, while a PPO worker is first trained with a fixed distance-based rule that selects the active micro-task. We then replace this rule with a learned hierarchical manager, turning rule-based phase selection into a fully learned hierarchical policy. We instantiate RMTL on the Fetch manipulation environment using three short stage-specific prompts and without additional prompt tuning. Experiments show that RMTL provides more informative reward signals than single-prompt VLM rewards, enabling faster learning. These results suggest that decomposing VLM rewards into micro-task-specific language prompts can substantially improve the scalability of language-guided reinforcement learning for robotic manipulation.",
+      "authors": [
+        "Anıl Can Ateş",
+        "Orhan Kahraman",
+        "Cihan Topal"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-24T10:32:48+00:00",
+      "link": "https://arxiv.org/pdf/2606.26175v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL for manipulation with task decomposition",
+      "llm_evidence_cn": "强化学习用于操作任务分解",
+      "llm_evidence": "强化学习用于操作任务分解",
+      "canonical_evidence": "强化学习用于操作任务分解",
+      "llm_tldr_en": "RMTL decomposes long-horizon manipulation into micro-tasks, using VLM rewards to guide RL, addressing sparse reward issues.",
+      "llm_tldr_cn": "针对长时域操作中单一全局VLM奖励信号过于稀疏、早期进步难以检测的问题，提出了强化微任务学习（RMTL）方法。将操作任务分解为多个微任务，每个微任务有独立的VLM奖励，从而提供更密集的反馈。实验证明RMTL显著提高了学习效率和成功率。该方法可广泛用于机器人操作任务。",
+      "llm_tldr": "针对长时域操作中单一全局VLM奖励信号过于稀疏、早期进步难以检测的问题，提出了强化微任务学习（RMTL）方法。将操作任务分解为多个微任务，每个微任务有独立的VLM奖励，从而提供更密集的反馈。实验证明RMTL显著提高了学习效率和成功率。该方法可广泛用于机器人操作任务。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

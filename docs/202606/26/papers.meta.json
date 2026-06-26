@@ -1,0 +1,69 @@
+{
+  "label": "2026-06-26",
+  "date": "2026-06-26",
+  "generated_at": "2026-06-26T22:14:10",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202606/26/2606.26048v1-deep-reinforcement-learning-enhanced-event-triggered-data-driven-predictive-control-for-a-3d-cable-driven-soft-robotic-arm",
+      "section": "quick",
+      "title_en": "Deep Reinforcement Learning-Enhanced Event-Triggered Data-Driven Predictive Control for a 3D Cable-Driven Soft Robotic Arm",
+      "authors": "Cheng Ouyang, Moeen Ul Islam, Kaixiang Zhang, Zhaojian Li, Xiaobo Tan, Dong Chen",
+      "date": "2026-06-24",
+      "pdf": "https://arxiv.org/pdf/2606.26048v1",
+      "score": "7.0",
+      "evidence": "基于强化学习的机器人臂控制",
+      "tldr": "软体机器人因非线性和时变动力学难以控制，数据驱动预测控制（DeePC）提供了无模型方案，但实时优化计算负担大。本文提出基于强化学习的自适应事件触发DeePC框架，训练RL策略决定何时触发优化，减少调用次数。仿真显示优化频率降低66%且精度相当；在3D缆索驱动软臂实验中实现零样本迁移，优化频率降低34%，精度与定期DeePC持平，优于静态阈值触发方法。该工作通过减少计算开销促进DeePC在资源受限机器人平台上的实时部署。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Soft robots are challenging to control due to their nonlinear and time-varying dynamics. Data-enabled predictive control (DeePC) offers a model-free alternative by directly leveraging measured input-output trajectories to construct a predictive controller. However, its receding-horizon formulation requires solving a constrained optimization problem at every sampling instant, which can be computationally demanding for real-time deployment on resource-limited robotic platforms.To address this limitation, we propose an adaptive reinforcement-learning-based event-triggered DeePC (RL-ET-DeePC) framework for soft robotic control. A model-free RL policy is trained to determine when to invoke the DeePC optimizer based on the current system state representation, thereby reducing unnecessary optimization calls while preserving closed-loop performance.Simulation results show that RL-ET-DeePC reduces optimization frequency by up to 66% compared to periodic DeePC, while maintaining comparable tracking accuracy. Hardware experiments on a three-dimensional cable-driven soft robotic arm demonstrate zero-shot transfer, achieving a 34% reduction in optimization frequency with tracking accuracy comparable to periodic DeePC and more consistent performance than a static threshold-based event-triggered baseline.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/26/2606.23444v1-skyjepa-learning-long-horizon-world-models-for-zero-shot-sim-to-real-control-of-quadrotors",
+      "section": "quick",
+      "title_en": "SkyJEPA: Learning Long-Horizon World Models for Zero-Shot Sim-to-Real Control of Quadrotors",
+      "authors": "Pratyaksh Rao, Wancong Zhang, Randall Balestriero, Yann LeCun, Giuseppe Loianno",
+      "date": "2026-06-22",
+      "pdf": "https://arxiv.org/pdf/2606.23444v1",
+      "score": "6.0",
+      "evidence": "基于JEPA的四旋翼动力学建模与控制",
+      "tldr": "针对四旋翼长期预测中神经网络模型误差累积问题，提出SkyJEPA模型，将隐层动力学与物理启发探针结合，实现可解释的长期预测。结合采样最优控制实现实时控制，并设计自动数据集生成管道减少真实数据依赖。实验表明准确预测和零样本模拟到真实迁移能力。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Accurate dynamics models are critical for informed decision-making in robotic systems, particularly for agile aerial vehicles operating under uncertainty. Neural network dynamics models are attractive for capturing complex nonlinear effects, but existing predictive approaches struggle with long-horizon forecasting because their autoregressive rollout mechanism amplifies errors over time. Joint Embedding Predictive Architectures (JEPAs) offer a compelling alternative by modeling dynamics in latent space, yet prior JEPA-style methods for robot navigation have been studied primarily for kinematic-level planning, with limited investigation in high-frequency control. In this work, we introduce the JEPA-style model for real-time quadrotor control. The proposed approach combines a latent dynamics model with a novel physics-inspired prober that maps frozen latents to interpretable state, enabling physically grounded long-horizon prediction. Additionally, we combine the learned model with a sampling-based optimal control solution to take advantage of its predictive capabilities for real-time control on embedded hardware. Finally, to reduce the dependence on expensive and unsafe real-world data collection, we develop a structured pipeline for automated dataset generation. Extensive open-loop and outdoor closed-loop experiments demonstrate accurate prediction, robust zero-shot sim-to-real transfer, and strong generalization across diverse operating conditions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/26/2606.24208v1-grounding-generative-policies-in-physics-optimization-guided-diffusion-for-robot-control",
+      "section": "quick",
+      "title_en": "Grounding Generative Policies in Physics: Optimization-Guided Diffusion for Robot Control",
+      "authors": "Sabrina Bodmer, René Zurbrügg, Tifanny Portela, Hao Ma, Alexandre Didier, Marco Hutter, Colin Jones, Melanie Zeilinger",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24208v1",
+      "score": "6.0",
+      "evidence": "优化引导扩散生成可行机器人轨迹",
+      "tldr": "扩散模型生成的机器人行为虽分布有效但可能违反物理约束。现有方法需重训练或投影，影响样本质量。本文提出推理时优化框架，将扩散引导转化为约束优化问题，在去噪过程中用优化校正替代随机扰动，无需重训练即可施加硬约束或软惩罚。在灵巧抓取和动态操作任务上，任务成功率相比最佳基线提升最高23个百分点，且更好保持抓取质量。该方法可零样本部署于不同机器人，弥合了行为生成与物理可行性之间的鸿沟。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Diffusion models sample effectively from high-dimensional, multimodal distributions, but their outputs may violate deployment constraints. For task-space robot policies, generated grasps, waypoints, or trajectories can be distributionally valid yet infeasible, violating reachability, collision-avoidance, or closed-loop executability requirements. This embodiment gap limits zero-shot deployment across robots, even when the task-space behavior itself is transferable.   We propose an inference-time optimization framework that couples the behavior generation to physical feasibility by formulating diffusion guidance as a constrained optimization problem. Our key insight is to replace the sampling perturbation in the backward process with an optimized correction, allowing hard constraints or soft penalties to be imposed during sampling without the need to retrain the diffusion model, while keeping samples close to the learned prior.   We evaluate the method on dexterous grasp synthesis with reachability and collision-avoidance constraints, and dynamic manipulation with controller-level trackability constraints. Across settings and robot embodiments, optimization-guided denoising matches the feasibility of projection- and gradient-guidance baselines while better preserving grasp quality, and improving controller-level executability and task success, with task success improving by up to 20pp. on dexterous grasping and 23pp. on visuomotor manipulation over the best baseline.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/26/2606.26175v1-rmtl-reinforced-micro-task-learning-for-long-horizon-manipulation-with-vlm-rewards",
+      "section": "quick",
+      "title_en": "RMTL: Reinforced Micro-task Learning for Long-Horizon Manipulation with VLM Rewards",
+      "authors": "Anıl Can Ateş, Orhan Kahraman, Cihan Topal",
+      "date": "2026-06-24",
+      "pdf": "https://arxiv.org/pdf/2606.26175v1",
+      "score": "6.0",
+      "evidence": "强化学习用于操作任务分解",
+      "tldr": "长周期机器人操作强化学习中，单一VLM提示提供的奖励信号近乎平坦，难以捕捉早期进步。本文提出RMTL，将任务分解为多个语言描述的微任务，为每个微任务单独计算多视角VLM奖励，并采用反向课程和分层训练。实验表明，RMTL提供更丰富的奖励信号，显著加速学习过程，证明了微任务分解策略的有效性。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Reinforcement learning (RL) for robotic manipulation often requires manually designing a dense reward function, which is difficult to tune and often fragile, or learning a reward from human demonstrations or preferences, which can be expensive. A recent line of work uses pretrained vision-language models (VLMs) as zero-shot reward models, replacing these costs with a single text prompt. However, we argue that a single global prompt is too coarse for long-horizon manipulation tasks with randomized initial conditions. The single-prompt VLM reward is near-flat for much of the trajectory, making early progress hard for the agent to detect. We propose Reinforced Micro-Task Learning (RMTL), an approach that decomposes a manipulation task into a small set of language-described micro-tasks and trains the agent to switch between them. At each step, the agent receives a multi-view VLM reward computed using the prompt of the currently active micro-task and averaged across multiple camera views to reduce the effect of view-specific occlusions. A reverse curriculum gradually exposes the agent to harder initial conditions, while a PPO worker is first trained with a fixed distance-based rule that selects the active micro-task. We then replace this rule with a learned hierarchical manager, turning rule-based phase selection into a fully learned hierarchical policy. We instantiate RMTL on the Fetch manipulation environment using three short stage-specific prompts and without additional prompt tuning. Experiments show that RMTL provides more informative reward signals than single-prompt VLM rewards, enabling faster learning. These results suggest that decomposing VLM rewards into micro-task-specific language prompts can substantially improve the scalability of language-guided reinforcement learning for robotic manipulation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
