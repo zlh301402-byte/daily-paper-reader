@@ -1,0 +1,503 @@
+Title: BOWConnect: Parallel Bayesian Optimization over Windows with Learned Local Cost Maps for Sample-Efficient Kinodynamic Motion Planning
+
+URL Source: https://arxiv.org/pdf/2606.27292v1
+
+Published Time: Fri, 26 Jun 2026 01:26:17 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# BOWConnect : Parallel Bayesian Optimization over Windows with Learned Local Cost Maps for Sample-Efficient Kinodynamic Motion Planning 
+
+Sourav Raxit 1 , Abdullah Al Redwan Newaz 1∗
+
+, Jose Fuentes 2 , and Leonardo Bobadilla 2
+
+Abstract — This paper presents BOWConnect, a bidirectional parallel kinodynamic motion planner that addresses three fundamental limitations of existing sampling-based methods: sample inefficiency in high-dimensional state spaces, unre-liable cost heuristics under dynamic constraints, and poor performance in narrow passage environments. Unlike classical planners that rely on random control sampling and geometric distance heuristics, BOWConnect integrates Bayesian Opti-mization over Windows (BOW) as a learning-based steering function within a parallel tree-based exploration framework, enabling each worker to learn local cost maps and constraints to guide sampling toward dynamically feasible and collision-free controls. A bidirectional architecture simultaneously grows forward and backward trees from the start and goal regions in parallel threads, with a spatial hashing mechanism enabling fast connection queries and a boundary value problem solver gener-ating kinodynamically consistent bridge trajectories. Extensive evaluations across ten benchmark environments demonstrate that BOWConnect achieves 100% success while delivering the fastest or near-fastest planning time in complex scenarios, including narrow passages and non-convex spaces where state-of-the-art planners fail or degrade substantially. Real-world deployment on a ground vehicle and a quadrotor confirms real-time planning with no collisions. Videos of real-world and simulated experiments, high-resolution versions of the figures, and the open-source code are available at https: //bow-connect.github.io/ .
+
+I. I NTRODUCTION 
+
+Kinodynamic motion planning remains a fundamental challenge in robotics because the relevant search space is the system state space , which is typically higher-dimensional than configuration space due to the inclusion of configu-ration variables and their derivatives (e.g., velocities and higher-order derivatives) [1, 2]. This dimensionality makes sampling-based exploration susceptible to the curse of di-mensionality and slow convergence [3, 4]. Beyond dimensionality, kinodynamic planning must sat-isfy differential constraints throughout the trajectory [1, 2], meaning geometrically collision-free paths may still be dy-namically infeasible. For many systems, an exact steering function is difficult or impractical to derive [5], so planners typically generate motion by sampling controls and forward-propagating the dynamics rather than by simple interpola-                    
+
+> This work is supported in part by the U.S. EPA grant BR-02F47801-5010M, NSF grants 2118329, IIS-2024733, IIS-2331908, ONR grant N00014-23-1-2789, DoD grant 78170-RT-REP, the ARL under contract W911NF1920243, and the FDEP grant INV31.
+> 1S. Raxit, and A. A. R. Newaz (* corresponding author) are with the Department of Computer Science, Louisiana State University New Orleans, New Orleans, LA 70148, USA (email: {sraxit, aredwann }@uno.edu). 2
+> J. Fuentes, and L. Bobadilla are with the Knight Foundation School of Computing and Information Sciences, Florida International University, Miami, FL 33199, USA (email: {jfuen099@, bobadilla@cs. }fiu.edu).
+
+tion [2, 6, 7]. Guiding this search is equally difficult: existing methods often rely on Euclidean distance heuristics for candidate selection because estimating transition costs under dynamics is non-trivial, though learning-based approaches have recently been proposed to address this limitation [8, 9]. These challenges compound further in highly constrained environments such as narrow passages, where generating dy-namically feasible connections through constrained regions is particularly demanding [6, 10]. Parallelism has improved performance for geometric plan-ners such as RRT-Connect through GPU-parallel expansion and collision checking [11], but kinodynamic planners have historically been harder to parallelize due to propagation-dominated, serial computation patterns. This has motivated recent work that explicitly restructures kinodynamic tree growth for massively parallel devices [12], yet scalable bidirectional kinodynamic planning with efficient connection discovery remains an open problem. In this work, we present BOWConnect , a bidirectional and parallel kinodynamic motion planner designed to im-prove sample efficiency and accelerate connection discovery in continuous state spaces. BOWConnect grows two trees simultaneously from the start and goal, using an online learning-based trajectory generator to produce collision-free, kinodynamically feasible motions directly in continuous state and control spaces. A spatial hashing mechanism embedded in the MotionTree data structure enables efficient multi-stage feasibility verification, reducing redundant propagation and accelerating connection queries between the two trees. Together, these components improve computational effi-ciency while maintaining trajectory feasibility across diverse robotic platforms, as demonstrated through experiments on ground and aerial vehicles. The main contributions of this work are:  
+
+> •
+
+An online learning-based method for generating collision-free, kinodynamically feasible trajectories di-rectly in continuous state and control spaces.  
+
+> •
+
+A bidirectional parallel planning architecture that en-hances global connectivity while preserving local tra-jectory quality.  
+
+> •
+
+A spatial hashing mechanism within the MotionTree 
+
+data structure that enables efficient multi-stage feasibil-ity verification.  
+
+> •
+
+Extensive experimental validation on ground vehicles with unicycle and bicycle models, and aerial vehicles with quadrotor dynamics. 
+
+> arXiv:2606.27292v1 [cs.RO] 25 Jun 2026
+
+II. R ELATED WORK 
+
+Sampling-based motion planners (SBMPs) have emerged as dominant paradigms for kinodynamic motion planning in complex environments [13]. Sampling-based methods con-struct feasible trajectories through stochastic exploration of continuous state and control spaces while explicitly respect-ing dynamic constraints [14, 1, 5]. These algorithms provide probabilistic completeness and strong global exploration ca-pabilities; however, their solutions are often suboptimal and may require post-processing. Optimization-based approaches such as CHOMP, STOMP, and TrajOpt formulate motion planning as nonlinear trajectory optimization [15, 16, 17]. Although they generate smooth, high-quality trajectories, their performance depends heavily on gradient information and good initialization, making them susceptible to local minima in cluttered environments. To improve exploration efficiency, sampling-based plan-ners have incorporated structural and heuristic refinements. Early methods such as RRT and RRT ∗ rely on uniform random sampling and frequently evaluate edges that do not contribute to the final solution [1, 13]. Subsequent approaches introduced bidirectional search [18], informed sampling [19], and cost-aware edge prioritization [20, 21] to concentrate computation in promising regions. Batch-informed algorithms such as BIT ∗ integrate graph-search principles with sampling-based planning to reduce redun-dant computation [21]. In kinodynamic settings specifically, EST performs forward simulation of randomly sampled controls while biasing expansion toward sparsely explored regions [2], KPIECE leverages low-dimensional projections to guide exploration [6], and SST introduces pruning mech-anisms to maintain a sparse set of representative nodes while achieving asymptotic near-optimality [5]. Several approaches adopt a ’plan first, optimize later’ paradigm, refining RRT-generated paths using time-optimal steering or bang–bang control primitives [22], an approach supported by empirical evidence that post-optimization can yield high-quality solutions faster than running asymptoti-cally optimal variants such as RRT* [13] or SST* [5] to convergence [23]. Receding-horizon control (RHC) offers an alternative per-spective by repeatedly solving short-horizon optimization problems and executing only the first control action before replanning [24]. This paradigm has been successfully ap-plied to unified motion planning and control in dynamic environments [25]. Reactive planners such as the Dynamic Window Approach and Hybrid Reciprocal Velocity Obstacles operate over short temporal windows directly in velocity space [26, 27]. However, these approaches generally sacrifice long-horizon planning capability for reactivity. Bayesian optimization (BO), combined with Gaussian Processes (GPs), provides a principled framework for data-efficient optimization under uncertainty and has recently been explored for motion planning [28]. GP-based plan-ners model trajectory costs probabilistically and use ac-quisition functions to guide exploration toward safe and promising regions of the search space [29]. Extensions such as GPMP and GPMP2 leverage sparse GP representations to enable efficient continuous-time trajectory optimization under kinodynamic constraints [30]. Nevertheless, many BO-based planners remain computationally expensive and are typically applied in unidirectional, locally greedy manners. Bayesian Optimization over Windows (BOW) addresses this limitation by applying BO over short receding-horizon con-trol windows in continuous state and control spaces. By leveraging GP surrogates to guide control sampling, BOW enables locally optimal and dynamically feasible trajectory generation while explicitly accounting for uncertainty [31]. Related constrained-BO planners have also used local cost-map learning for multi-robot kinodynamic planning under STL specifications [32]. However, unidirectional window-based BO planners may struggle with global exploration, particularly in environments with narrow passages or com-plex connectivity structures. Despite these advances, existing parallel SBMP algorithms focus on RRT variants and do not learn cost maps to effi-ciently explore the space, limiting their overall performance. To address this gap, we develop BOWConnect, a CPU-based multithreaded planner that leverages high-level parallelism (see definition in [11]) of the local BOW planner to surpass state-of-the-art kinodynamic motion planning performance. III. P ROBLEM FORMULATION 
+
+Let C be the robot configuration space, modeled as an 
+
+n-dimensional smooth manifold. Let Cfree ⊂ C denote the open subset of configurations in which the robot does not intersect any obstacle. The kinodynamic planning problem extends beyond geometric path planning by incorporating the robot’s dynamics. Let x = ( q, ˙q) ∈ X be the 2n-dimensional state vector, where X = T C is the tangent bundle of C. The feasible state space is defined as: 
+
+Xfree = {(q, ˙q) ∈ X | q ∈ C free } (1) The system dynamics are governed by the ordinary differ-ential equation ˙x = f (x, u), where u ∈ U ⊂ Rm is a control input drawn from a compact action set. For a candidate control u, the system dynamics are integrated, e.g., using fourth-order Runge-Kutta over a finite time horizon T to obtain the predicted trajectory: 
+
+τ (u) = Φ( x, u) = {x(t) : t ∈ [0 , T ]} (2) 
+
+Problem 1 (Kinodynamic Planning): Given initial and goal states xI , xG ∈ Xfree , find a control sequence u :[0 , t F ] → U such that the resulting trajectory τ (u) =Φ( xI , u) satisfies: 
+
+τ (u) ⊂ X free , x(tF ) = xG (3) When time-optimality is required, tF is minimized over all feasible solutions. Algorithm 1 BOWConnect Algorithm 
+
+Require: Initial state xstart , goal position pgoal , sampling radius rgoal , number of workers N , time budget Tmax 
+
+Ensure: Kinodynamic trajectory τ or failure  
+
+> 1:
+
+S ← SAMPLE STATES (xstart , rgoal , N ) 
+
+> 2:
+
+G ← SAMPLE STATES (pgoal , rgoal , N ) 
+
+> 3:
+
+for i = 0 to N − 1 by step 2 do  
+
+> 4:
+
+Launch forward worker Wf [i]: S[i] → G [i] 
+
+> 5:
+
+Launch backward worker Wb[i+1] : G[i+1] → S [i+1]  
+
+> 6:
+
+end for  
+
+> 7:
+
+while time elapsed < T max do  
+
+> 8:
+
+for each forward state xf and backward state xb do  
+
+> 9:
+
+if xb nearby xf via spatial hash and ISKINEMAT -
+
+> ICALLY
+
+FEASIBLE (xf , xb) then  
+
+> 10:
+
+(ok, τ bridge ) ← SOLVE BVP( xf , xb) 
+
+> 11:
+
+if ok then  
+
+> 12:
+
+return (true, MERGE TREES (wf , τbridge , wb)) 
+
+> 13:
+
+end if  
+
+> 14:
+
+end if  
+
+> 15:
+
+end for  
+
+> 16:
+
+if any worker reached pgoal then  
+
+> 17:
+
+return unidirectional solution  
+
+> 18:
+
+end if  
+
+> 19:
+
+end while  
+
+> 20:
+
+return (f alse, ∅)
+
+IV. BOWC ONNECT ALGORITHM 
+
+The algorithmic steps of BOWConnect are outlined in Alg. 1. The core idea is to leverage multiple independent BOW planner [31] instances within a tree-based exploration framework. Unlike traditional bidirectional planners that grow a single forward and backward tree, BOWConnect spawns N/ 2 forward workers and N/ 2 backward workers, each maintaining its own search tree and BOW instance. This high-level parallelism enables diverse exploration patterns while preserving the kinodynamic feasibility guarantees of the underlying BOW planner. Given an initial state xstart ∈ Rn and goal position 
+
+pgoal ∈ Rd, BOWConnect first samples multiple initial configurations around both regions. Specifically, it generates collision-free start states S = {x1, . . . , xN } and goal states 
+
+G = {x′
+
+> 1
+
+, . . . , x′ 
+
+> N
+
+} by sampling uniformly within radius 
+
+rgoal of the respective centers. Each sampled state includes a random heading θ ∈ [−π, π ], enabling workers to explore from different initial orientations. This sampling strategy addresses heading ambiguity at the goal and provides di-versified exploration directions, significantly improving con-nection probability between trees. 
+
+A. Tree Growth with Constrained Bayesian Optimization 
+
+Figure 1 illustrates the tree growth behavior of BOW-Connect in a planar environment. Each worker thread main-tains a MotionTree data structure that stores explored states and their parent relationships. The tree growth process follows the RRT paradigm but uses BOW as the steering function instead of simple geometric interpolation. At each   
+
+> Fig. 1: Parallel motion tree growth of BOW-Connect in a cluttered planar environment. Trees are initialized from the start (green) and goal (red) regions and extended in separate threads using the BOW planner [31]. Grey trajectories depict sampled short-horizon trajectories and the bold blue curve indicates the final connected path. A successful bidirectional connection via boundary value problem solution is highlighted in cyan.
+
+iteration, a worker samples a random state xrand in the config-uration space, finds the nearest state xnear in its current tree, and invokes BOW to generate a kinodynamically feasible trajectory connecting them. The BOW planner formulates local planning as a con-strained Bayesian Optimization problem over the control space U ⊂ Rm, where the dimension m depends on the robot type. For each candidate control u, BOW uses a robot-specific motion model to simulate forward trajectory through numerical integration. The motion model captures the system dynamics via ordinary differential equations ˙x =
+
+f (x, u), which are integrated using fourth-order Runge-Kutta to obtain the predicted trajectory τ (u) over a finite time horizon T . For each simulated trajectory, BOW evaluates two functions: a reward and a constraint satisfaction indicator. The reward is defined as the negative distance to the local target for collision-free trajectories: 
+
+r(u) = 
+
+(
+
+−∥ p(T ) − ptarget ∥ if trajectory is collision-free 
+
+−∞ otherwise (4) where p(T ) represents the position component of the pre-dicted state after time horizon T . The constraint function returns 1 if the entire trajectory avoids obstacles and 0 otherwise: 
+
+c(u) = 1 − Icollision (τ (u)) (5) BOW learns two separate Gaussian Process models: one for the reward GP r and one for the constraint GP c. These models provide mean predictions μr (u), μc(u) and uncer-tainties σ2 
+
+> r
+
+(u), σ2 
+
+> c
+
+(u) respectively. The acquisition function balances exploration and exploitation while respecting collision constraints through the probability of feasibility :
+
+Pfeas (u) = Φ 
+
+ μc(u)
+
+σc(u)
+
+
+
+(6) where Φ is the standard normal cumulative distribution function. The next control to evaluate is selected by opti-mizing the constrained acquisition function α(u) = [ μr (u)−
+
+κσ r (u)] × Pfeas (u).
+
+A key property of this formulation is its learning behavior in narrow passages. When the reward function in Eqn. (4) drives the robot toward a region that is largely infeasible, constraint violations inflate Pfeas penal-ties, causing the feasibility term to dominate α(u) and redirecting the search toward collision-free controls in free space. This mechanism prevents BOW from becoming trapped in local minima induced by inadmissible costs within the planning horizon T . When BOW successfully produces a collision-free trajectory τ = [ xnear , x1, . . . , xm], all states are appended sequentially to the tree. Kinodynamic feasibility is guaranteed by construction, as the motion model integra-tion inherently respects velocity, acceleration, and curvature limits. Combined with parallel tree growth across multiple workers, this property gives BOW-Connect space exploration characteristics akin to those of global planners. 
+
+B. Connection Detection and BVP Solving 
+
+While workers grow their trees independently, the main thread periodically checks for potential connections between forward and backward trees. To enable efficient connection queries, BOWConnect employs spatial hashing through the 
+
+MotionTree structure. Each state x is mapped to a discrete grid cell via the hash function: 
+
+h(x) = ⌊(x − x0)/∆⌋ ⊕ ⌊ (y − y0)/∆⌋ ⊕ ⌊ (z − z0)/∆⌋ (7) where ∆ is the grid resolution and ⊕ denotes bit-packing op-erations. This allows O(1) average-case lookup to determine if a forward tree state has nearby backward tree states. When a potential connection is detected, BOWConnect performs a multi-stage verification. First, it checks kinematic feasibility by ensuring the required heading change and travel distance are within vehicle constraints. Specifically, given two states xf and xb belonging to the forward tree 
+
+TI and backward tree TG respectively, the connection is kinematically feasible if: 
+
+|θreq − θf | < θ max and ∥pb − pf ∥
+
+vmax 
+
+< T max (8) where θreq = arctan 2( yb − yf , x b − xf ) is the required heading and p(t) denotes the position component of x(t)
+
+at time t.If kinematically feasible, BOWConnect solves a Bound-ary Value Problem (BVP) [33] to generate the connecting trajectory. The BVP seeks a control uc : [0 , t c] → U such that the connecting trajectory τ (uc) = Φ( xf , uc) satisfies: 
+
+x(tc) = xb, τ (uc) ⊂ X free (9) The BVP solver employs proportional control to smoothly transition between states while respecting kinodynamic con-straints. Starting from xf , it iteratively computes the heading error ∆θ = θdesired − θcurrent and applies yaw rate ω =
+
+clamp (kp∆θ/ ∆t, −ωmax , ω max ) while moving toward xb
+
+with speed proportional to remaining distance. The resulting trajectory undergoes collision checking before acceptance. If multiple connections are found, BOWConnect selects the one with minimum Euclidean distance, as shorter connections are more reliable and easier to verify. 
+
+C. Solution Extraction and Fallback Mechanisms 
+
+BOWConnect terminates when trees successfully connect or when any worker reaches the goal region. Upon connec-tion, the algorithm extracts trajectories from both trees up to the connection points, generates the BVP bridge trajectory, and concatenates them. If the backward trajectory does not fully reach the goal, an additional BVP call extends it from the last state to the goal configuration. The algorithm implements graceful degradation through fallback solutions. If no connection is found within the time budget but a forward worker reached the goal, that unidirectional solution is returned. Similarly, backward solu-tions serve as fallbacks. The parallel architecture provides theoretical speedup proportional to the number of work-ers, though practical speedup is limited by connection checking overhead and sequential BVP solving . With Nf
+
+forward and Nb backward workers, the probability of finding at least one successful path is: 
+
+Psuccess = 1 − (1 − psingle )Nf ×Nb (10) where psingle is the success probability of a single worker pair. This portfolio effect, combined with BOW’s efficient local planning, enables BOWConnect to solve complex kin-odynamic planning problems in real-time. V. E XPERIMENTS AND RESULTS 
+
+All experiments were performed on a desktop computer running Ubuntu 22.04 LTS with an AMD Ryzen TM 9 7950X processor with 32 GB of RAM. Robot localization was achieved using a VICON motion capture system sampling at 120 Hz. The BOWConnect Planner was parameterized with the following constraints: maximum and minimum speeds of 1.0 m/s and 0.0 m/s respectively, maximum acceleration of 0.5 m/s 2, maximum yaw rate of 0.6981 rad/s, and maximum yaw acceleration of 2.0472 rad/s 2. The planner employed a time discretization of 0.1 s and a local planning horizon of 3.0 - 5.0 s. We evaluate BOWConnect against state-of-the-art kinodynamic planners with OMPL implementation including RRT [1], SST [5], EST [2], KPIECE [6], and BOW [31]. 
+
+A. UGV Benchmark Results 
+
+All planners are evaluated across six complex environ-ments: Bugtrap , Narrow Passage-1 , Narrow Passage-2 , For-est , Nonconvex , and Intel as shown in Table. I. For each environment–planner pair, five independent trials were con-ducted, and the mean and standard deviation of all key metrics (except success rate) were computed. All planners were evaluated under both Unicycle and Bicycle motion models. The evaluation metrics include total planning time, trajectory length, success rate, average velocity, and average jerk. Environment Planner Model Total Time (s) Traj. Length Succ. (%) Avg. Velocity Avg. Jerk 
+
+Bugtrap 
+
+RRT[1] Unicycle 0.815 ± 0.734 22.648 ± 3.679 100.0 0.781 ± 0.005 0.8871 ± 0.0698  
+
+> Bicycle
+
+— — 0.0 — —SST[5] Unicycle 5.066 ± 0.007 24.601 ± 3.493 100.0 0.794 ± 0.024 0.8406 ± 0.0494  
+
+> Bicycle
+
+— — 0.0 — —EST[2] Unicycle 0.849 ± 0.569 20.937 ± 1.869 100.0 0.808 ± 0.037 0.8982 ± 0.0806  
+
+> Bicycle
+
+— — 0.0 — —KPIECE[6] Unicycle 2.220 ± 2.591 22.752 ± 4.194 60.0 0.851 ± 0.016 0.7024 ± 0.0464  
+
+> Bicycle
+
+— — 0.0 — —BOW[31] Unicycle 0.200 ± 0.156 45.324 ± 35.758 100.0 0.735 ± 0.052 0.1373 ± 0.0102  
+
+> Bicycle
+
+0.019 ± 0.006 46.536 ± 10.557 100.0 1.060 ± 0.033 0.0065 ± 0.0010 
+
+BOWConnect Unicycle 0.035 ± 0.014 22.091 ± 3.427 100.0 0.800 ± 0.045 0.1881 ± 0.0289  
+
+> Bicycle
+
+0.021 ± 0.005 23.838 ± 2.397 100.0 1.000 ± 0.006 0.0279 ± 0.0047 
+
+Narrow Passage-1 
+
+RRT[1] Unicycle 0.903 ± 0.606 21.714 ± 1.363 100.0 0.732 ± 0.05 0.8528 ± 0.0320  
+
+> Bicycle
+
+25.989 ± 4.714 74.487 ± 6.992 80.0 0.765 ± 0.08 0.7982 ± 0.0474 SST[5] Unicycle 30.214 ± 0.009 20.789 ± 1.135 100.0 0.794 ± 0.007 0.8618 ± 0.0414  
+
+> Bicycle
+
+30.091 ± 0.009 74.640 ± 8.995 80.0 0.784 ± 0.032 0.7549 ± 0.0588 EST[2] Unicycle 6.112 ± 7.231 20.090 ± 0.537 100.0 0.787 ± 0.029 0.8813 ± 0.0520  
+
+> Bicycle
+
+— — 0.0 — —KPIECE[6] Unicycle 18.932 ± 11.173 20.853 ± 0.889 100.0 0.813 ± 0.030 0.7052 ± 0.0201  
+
+> Bicycle
+
+— — 0.0 — —BOW[31] Unicycle 19.538 ± 13.017 53.613 ± 20.695 100.0 0.610 ± 0.041 0.1677 ± 0.0047  
+
+> Bicycle
+
+— — 0.0 — —BOWConnect Unicycle 0.048 ± 0.003 24.801 ± 6.550 100.0 0.783 ± 0.077 0.3740 ± 0.1797  
+
+> Bicycle
+
+0.034 ± 0.008 22.190 ± 2.059 100.0 0.992 ± 0.040 0.0381 ± 0.0064 
+
+Narrow Passage-2 
+
+RRT[1] Unicycle 0.357 ± 0.307 11.374 ± 3.418 100.0 0.710 ± 0.083 0.7586 ± 0.0364  
+
+> Bicycle
+
+26.528 ± 6.883 8.229 ± 10.622 40.0 0.477 ± 0.244 0.5550 ± 0.2486 SST[5] Unicycle 30.062 ± 0.009 6.596 ± 0.165 100.0 0.701 ± 0.028 0.7912 ± 0.1364  
+
+> Bicycle
+
+30.003 ± 0.001 4.252 ± 8.476 20.0 0.459 ± 0.234 0.1403 ± 0.3137 EST[2] Unicycle 0.384 ± 0.206 8.434 ± 1.392 100.0 0.676 ± 0.056 0.8347 ± 0.0642  
+
+> Bicycle
+
+— — 0.0 — —KPIECE[6] Unicycle 1.432 ± 0.999 8.522 ± 1.026 100.0 0.700 ± 0.068 0.6730 ± 0.0969  
+
+> Bicycle
+
+— — 0.0 — —BOW[31] Unicycle 6.971 ± 11.596 31.626 ± 21.971 100.0 0.431 ± 0.036 0.1504 ± 0.0038  
+
+> Bicycle
+
+— — 0.0 — —BOWConnect Unicycle 0.056 ± 0.021 8.401 ± 0.737 100.0 0.522 ± 0.032 0.2232 ± 0.0203  
+
+> Bicycle
+
+0.048 ± 0.011 8.603 ± 0.034 100.0 0.641 ± 0.031 0.0493 ± 0.0041 
+
+Forest 
+
+RRT[1] Unicycle 1.020 ± 1.104 21.954 ± 1.646 100.0 0.782 ± 0.035 0.8671 ± 0.0249  
+
+> Bicycle
+
+1.148 ± 0.582 62.091 ± 14.824 100.0 0.706 ± 0.016 0.8065 ± 0.0440 SST[5] Unicycle 5.052 ± 0.005 26.491 ± 7.449 100.0 0.801 ± 0.012 0.8692 ± 0.0545  
+
+> Bicycle
+
+5.028 ± 0.002 63.091 ± 3.387 60.0 0.791 ± 0.018 0.6921 ± 0.0110 EST[2] Unicycle 2.072 ± 2.196 23.727 ± 5.727 80.0 0.807 ± 0.032 0.8942 ± 0.0426  
+
+> Bicycle
+
+— — 0.0 — —KPIECE[6] Unicycle 4.309 ± 1.621 30.613 ± 10.465 20.0 0.817 ± 0.041 0.7486 ± 0.0601  
+
+> Bicycle
+
+— — 0.0 — —BOW[31] Unicycle 0.045 ± 0.029 24.523 ± 1.402 100.0 0.790 ± 0.054 0.1671 ± 0.0126  
+
+> Bicycle
+
+0.030 ± 0.005 29.437 ± 6.909 100.0 0.971 ± 0.021 0.0101 ± 0.0013 
+
+BOWConnect Unicycle 0.024 ± 0.001 20.176 ± 1.496 100.0 0.811 ± 0.036 0.2423 ± 0.0434  
+
+> Bicycle
+
+0.025 ± 0.001 21.464 ± 2.795 100.0 0.871 ± 0.052 0.0193 ± 0.0075 
+
+Nonconvex 
+
+RRT[1] Unicycle 0.612 ± 0.742 26.355 ± 11.862 100.0 0.754 ± 0.033 0.8427 ± 0.0416  
+
+> Bicycle
+
+3.976 ± 1.480 31.496 ± 12.258 40.0 0.667 ± 0.055 0.7312 ± 0.1038 SST[5] Unicycle 5.068 ± 0.006 21.715 ± 12.541 80.0 0.764 ± 0.013 0.7782 ± 0.0797  
+
+> Bicycle
+
+5.021 ± 0.005 35.528 ± 16.913 20.0 0.732 ± 0.057 0.6652 ± 0.1004 EST[2] Unicycle 1.369 ± 2.241 19.414 ± 8.204 80.0 0.795 ± 0.026 0.8891 ± 0.0434  
+
+> Bicycle
+
+— — 0.0 — —KPIECE[6] Unicycle — — 0.0 — — 
+
+> Bicycle
+
+— — 0.0 — —BOW[31] Unicycle 0.034 ± 0.015 16.770 ± 1.044 100.0 0.770 ± 0.079 0.1400 ± 0.0070  
+
+> Bicycle
+
+0.022 ± 0.012 28.626 ± 18.668 80.0 0.849 ± 0.476 0.0049 ± 0.0028 
+
+BOWConnect Unicycle 0.024 ± 0.007 15.814 ± 0.824 100.0 0.859 ± 0.060 0.2187 ± 0.0397  
+
+> Bicycle
+
+0.019 ± 0.004 17.816 ± 3.969 100.0 0.973 ± 0.039 0.0301 ± 0.0066 
+
+Intel 
+
+RRT[1] Unicycle 6.886 ± 5.033 77.852 ± 4.577 100.0 0.777 ± 0.016 0.8563 ± 0.0153  
+
+> Bicycle
+
+15.945 ± 3.522 164.459 ± 4.196 100.0 0.769 ± 0.013 0.9034 ± 0.0238 SST[5] Unicycle 30.184 ± 0.016 75.559 ± 7.137 60.0 0.781 ± 0.011 0.8389 ± 0.0303  
+
+> Bicycle
+
+30.088 ± 0.004 152.552 ± 11.493 60.0 0.784 ± 0.005 0.8790 ± 0.0218 EST[2] Unicycle 23.704 ± 12.025 70.698 ± 4.662 40.0 0.808 ± 0.011 0.8625 ± 0.0471  
+
+> Bicycle
+
+— — 0.0 — —KPIECE[6] Unicycle — — 0.0 — — 
+
+> Bicycle
+
+— — 0.0 — —BOW[31] Unicycle 12.893 ± 14.040 180.675 ± 119.789 80.0 0.430 ± 0.242 0.1369 ± 0.0767  
+
+> Bicycle
+
+— — 0.0 — —BOWConnect Unicycle 0.397 ± 0.039 83.803 ± 14.019 100.0 0.566 ± 0.009 0.1904 ± 0.0137  
+
+> Bicycle
+
+2.133 ± 1.707 917.917 ± 773.043 100.0 1.089 ± 0.008 0.0118 ± 0.0023 
+
+TABLE I: Quantitative comparison of state-of-the-art kinodynamic motion planners across six environments for a UGV platform under Unicycle and Bicycle motion models, with best results per environment in bold and dashes (—) indicating failure to find a feasible solution. Overlaid on each environment are qualitative BOWConnect trajectories, where color encodes the linear velocity profile. 
+
+We set the solver timeout to 5–30 s depending on envi-ronment complexity. Across all environments, BOWConnect 
+
+achieves 100% success under both Unicycle and Bicycle motion models. Baseline planners degrade significantly under the Bicycle model, which imposes stricter nonholonomic constraints. EST and KPIECE fail entirely (0%) under the Bicycle model in every environment. RRT and SST also degrade, dropping to 40% and 20% in Narrow Passage-2 and to 40% and 20% in Nonconvex , respectively. Even under the Unicycle model, KPIECE fails in Nonconvex and Intel , while SST and EST drop below 100% in several environments. BOWConnect also achieves the fastest or near-fastest computation time across all environments under both motion models. In Bugtrap , it computes solutions in 0.035 s(Unicycle) and 0.021 s (Bicycle), outperforming all baselines except BOW under the Bicycle model ( 0.019 s). In Narrow Passage-1 and Narrow Passage-2 , where classical planners approach the 30 s time limit or fail, BOWConnect solves both in under 0.06 s. In Forest and Nonconvex , it computes solutions in under 0.03 s under both models. Even in the most complex environment ( Intel ), BOWConnect remains the fastest planner at 0.397 s (Unicycle) and 2.133 s (Bicycle), while baselines require 6.886 to 30 s. 
+
+BOWConnect also produces shorter trajectories in several environments. In Nonconvex , forward-only planners tend to explore suboptimal paths, whereas BOWConnect ’s backward tree guides expansion toward the goal more directly, achiev-ing the shortest average trajectory (15 .814 m Unicycle, 
+
+17 .816 m Bicycle) among all planners. The benefit is particu-larly evident under the Bicycle model, where BOW produces 
+
+28 .626 m compared to BOWConnect ’s 17 .816 m. Similarly, in Forest , BOWConnect achieves the shortest trajectory under both models ( 20 .176 m and 21 .464 m). The average velocity of BOWConnect remains competitive across all environments and achieves the highest value in 
+
+Nonconvex for both motion models. BOW-based planners further exhibit significantly lower jerk values than classi-cal sampling-based methods, indicating smoother control profiles. For example, in Bugtrap (Bicycle), BOWConnect 
+
+achieves an average jerk of 0.0279, substantially lower than RRT and EST. 
+
+B. UAV Benchmark Results 
+
+We evaluate BOWConnect across four quadrotor environ-ments ( Quad-1 through Quad-4 ) using the same baselines and evaluation metrics (Table II). All planners achieve 100% success in every environment. However, significant differ-ences arise in computation time and trajectory quality. BOWConnect and BOW both compute solutions in under 
+
+0.12 s, while SST, EST, and KPIECE consistently require 
+
+30 –42 s. In Quad-1 , BOWConnect requires 0.117 s com-pared to 7.815 s for RRT and over 29 s for SST and KPIECE. BOWConnect achieves the fastest time in Quad-2 (0.086 s), while BOW is slightly faster in Quad-1 (0.094 s), Quad-3 
+
+(0.074 s), and Quad-4 (0.058 s). BOWConnect produces the shortest trajectories in Quad-1 
+
+(6.562 m) and Quad-4 (6.231 m), with consistently lower variance than BOW. In Quad-2 and Quad-3 , SST yields the shortest trajectories (16 .715 m and 16 .615 m), but requires over 30 s to compute them. BOWConnect also achieves the lowest jerk in Quad-1 (0.0279 ) and Quad-4 
+
+(0.0246 ), indicating smoother control profiles than classical planners while maintaining computation times two orders of magnitude lower. 
+
+C. Unmanned Ground Vehicle Real-World Experiments 
+
+We implemented BOWConnect on a non-holonomic differential-drive Create 3 educational robot with a radius of 
+
+> (a)
+> (b)
+> Fig. 2: Experimental validation of the proposed kinodynamic mo-tion planner in a cluttered indoor laboratory environment under two representative start–goal configurations. Fig. 2a and Fig. 2b illustrate the first and second configurations, respectively. In each case, the left panel shows the planned trajectory visualized in RViz, where the green-to-red color gradient indicates temporal progression, and the right panel shows the corresponding real-world UGV experiment conducted under similar obstacle layouts.
+
+0.17 m, operating within a bounded 6.5 m × 5.5 m workspace populated with obstacle configurations designed to emu-late the constrained geometry of the benchmark scenario. Collision checking was performed using a 2D occupancy grid map constructed from the laboratory layout, while localization was provided by a Vicon motion capture system to ensure high-precision state estimation during execution. The UGV is modeled using a five-dimensional state vector 
+
+x = ( x, y, θ, v, ω ), where (x, y ) denote planar position, θ is the heading angle, v the linear velocity, and ω the angular velocity, with control input u = ( vc, ω c) representing com-manded linear and angular velocities with respect to the body frame. The Unicycle motion model was used for the physical experiments. As illustrated in Fig. 2, the goal pose (marked as a purple disk) was specified interactively in RViz using a 2D goal command, after which BOWConnect generated a dynamically feasible trajectory that was executed by the robot. The primary objective was to validate kinodynamic feasibility and real-time performance, and multiple start–goal configurations were tested across the workspace, with BOW-Connect consistently generating feasible trajectories in under 0.15 s. During execution, the maximum linear velocity was limited to 1.0 m/s and the maximum angular velocity to 1.5 rad/s, while the low-level controller operated with a control time step of ∆t = 0 .05 s. Across five independent trials with varying start–goal configurations, no collisions or tracking instabilities were observed during execution. The average planning time was 0.12 s, with a maximum of 0.15 s across all runs, demonstrating real-time feasibility on the Environment Planner Total Time (s) Traj. Length Succ. (%) Avg. Velocity Avg. Jerk                                                                                                                                                                                                                                                                                                                         
+
+> Quad-1
+> RRT[1] 7.815 ±5.281 7.558 ±1.099 100.0 0.443 ±0.088 0.0364 ±0.0041 SST[5] 30.197 ±0.009 7.822 ±1.126 100.0 0.479 ±0.159 0.0374 ±0.0063 EST[2] 42.196 ±1.998 8.027 ±3.189 100.0 0.578 ±0.040 0.0293 ±0.0047 KPIECE[6] 29.366 ±2.941 25.404 ±27.838 100.0 1.769 ±1.879 0.0460 ±0.0074 BOW[31] 0.094 ±0.027 6.673 ±0.845 100.0 0.575 ±0.132 0.0317 ±0.0038 BOWConnect 0.117 ±0.092 6.562 ±0.790 100.0 0.568 ±0.068 0.0279 ±0.0039
+> Quad-2
+> RRT[1] 4.558 ±3.380 16.835 ±2.252 100.0 0.792 ±0.170 0.0341 ±0.0030
+> SST[5] 30.200 ±0.006 16.715 ±2.075 100.0 0.886 ±0.451 0.0353 ±0.0028 EST[2] 41.701 ±0.989 25.492 ±7.931 100.0 2.686 ±2.178 0.0533 ±0.0221 KPIECE[6] 32.116 ±0.093 30.546 ±16.021 100.0 2.155 ±1.659 0.0519 ±0.0179 BOW[31] 0.103 ±0.040 33.944 ±34.635 100.0 0.684 ±0.066 0.0470 ±0.0041 BOWConnect 0.086 ±0.069 27.145 ±26.096 100.0 0.680 ±0.072 0.0432 ±0.0053
+> Quad-3
+> RRT[1] 3.885 ±2.856 18.224 ±3.044 100.0 0.611 ±0.230 0.0346 ±0.0012 SST[5] 30.208 ±0.006 16.615 ±0.492 100.0 0.775 ±0.127 0.0334 ±0.0031
+> EST[2] 40.987 ±0.695 16.943 ±4.446 100.0 1.301 ±0.662 0.0364 ±0.0210 KPIECE[6] 32.116 ±0.104 26.399 ±16.319 100.0 2.269 ±2.273 0.0445 ±0.0110 BOW[31] 0.074 ±0.009 22.674 ±10.714 100.0 0.657 ±0.039 0.0504 ±0.0019 BOWConnect 0.081 ±0.029 17.079 ±2.566 100.0 0.705 ±0.057 0.0467 ±0.0062
+> Quad-4
+> RRT[1] 3.802 ±2.566 9.866 ±1.714 100.0 0.531 ±0.129 0.0372 ±0.0047 SST[5] 30.198 ±0.007 9.833 ±3.309 100.0 0.644 ±0.212 0.0372 ±0.0056 EST[2] 40.895 ±1.017 11.502 ±9.871 100.0 1.201 ±0.668 0.0320 ±0.0145 KPIECE[6] 31.475 ±1.591 11.528 ±3.423 100.0 0.819 ±0.294 0.0426 ±0.0032 BOW[31] 0.058 ±0.014 6.463 ±1.595 100.0 0.637 ±0.107 0.0278 ±0.0049 BOWConnect 0.091 ±0.078 6.231 ±0.572 100.0 0.597 ±0.043 0.0246 ±0.0048
+
+TABLE II: Comparison of state-of-the-art kinodynamic motion planning methods across four quadrotor environments (Quad-1, Quad-2, Quad-3, and Quad-4). The best results in each environment are highlighted in bold . All planners were evaluated using a quadrotor motion model. Overlaid on each environment are qualitative BOWConnect trajectories, where color encodes the linear velocity profile. 
+
+onboard compute platform. 
+
+D. Unmanned Aireal Vehicle Physical Experiments 
+
+We implemented BOWConnect on a 6-DOF quadrotor UAV in a three-dimensional environment with 3D obstacles to demonstrate the capability of the proposed planner in high-dimensional planning problems, as shown in Fig. 3. The experiments were conducted using a Parrot Bebop 2 UAV. The UAV state is modeled using an 8-dimensional vector 
+
+x = ( x, y, z, θ, ˙x, ˙y, ˙z, ˙θ), which includes position, yaw ori-entation, and linear and angular velocities. The control input is defined as a 4-dimensional vector u = ( ˙ xc, ˙yc, ˙zc, ˙θc), rep-resenting commanded body-frame linear velocities and yaw rate. In Fig. 3, the left panels show the RViz visualization with the real UAV state and the planned trajectory generated by BOWConnect (green), while the cyan curve denotes the actual trajectory followed by the UAV during execution. The goal position is sent interactively from RViz using the Nav Goal tool. The experiments were conducted in a bounded workspace of 6.5 m × 5.5 m × 2.5 m with three box-shaped obstacles placed to replicate the RViz configuration: two identical obstacles of dimensions 0.4 m×0.8 m×0.92 m and one obstacle of dimensions 0.64 m × 0.64 m × 1.08 m. The close alignment between the planned trajectory (green) and the executed trajectory (cyan) demonstrates accurate tracking and confirms the dynamic feasibility of the generated paths. Multiple trials were conducted from different start and goal configurations, and in all cases BOWConnect consistently computed collision-free trajectories in under 0.1 s, demon-strating computational efficiency and robustness in high-dimensional kinodynamic planning. VI. C ONCLUSION 
+
+This paper presented BOWConnect, a bidirectional par-allel kinodynamic motion planner that combines parallel Bayesian Optimization over Windows local planners with spatial hashing and boundary value solver to overcome the sample inefficiency, heuristic limitations, and narrow passage failures of existing kinodynamic planners. BOWConnect re-places random control sampling with GP-guided acquisition and grows trees from both start and goal regions in parallel. Across ten benchmark environments evaluated under both kinematic and dynamic motion models, BOWConnect con-sistently achieves 100% success and the fastest or near-fastest computation time, typically solving problems in under 0.019s to 2.133s while classical planners such as SST, EST, and KPIECE frequently require 7 to 42 s or fail entirely. Real-world experiments on a ground vehicle and a quadrotor con-firm real-time performance under 0.15 s with no collisions, validating the practical applicability of the approach. Future work will explore adaptive worker allocation, planning under uncertainty, and extension to dynamic environments with moving obstacles. REFERENCES [1] S. M. LaValle and J. J. Kuffner Jr, “Randomized kinodynamic plan-ning,” The international journal of robotics research , vol. 20, no. 5, pp. 378–400, 2001. [2] D. Hsu, R. Kindel, J.-C. Latombe, and S. Rock, “Randomized kino-dynamic motion planning with moving obstacles,” The International Journal of Robotics Research , vol. 21, no. 3, pp. 233–255, 2002. [3] F. Meng, J. Liu, H. Shi, H. Ma, H. Ren, and M. Q.-H. Meng, “Online time-informed kinodynamic motion planning of nonlinear systems,” 
+
+> IEEE Robotics and Automation Letters , vol. 9, no. 11, pp. 9589–9596, 2024.
+
+(a) 
+
+(b) 
+
+Fig. 3: BOWConnect quadrotor experiments in a cluttered in-door environment with a fixed obstacle layout and two distinct start–goal configurations. Fig. 3a shows the first configuration, while Fig. 3b shows the second configuration. In each case, the left panel presents the simulated planning setup with the generated kinodynamic trajectory (green) visualized in RViz, and the right panel shows the corresponding real-world quadrotor experiment conducted under the identical obstacle arrangement, demonstrating sim-to-real consistency in trajectory execution. 
+
+[4] D. Zheng and P. Tsiotras, “Accelerating kinodynamic RRT* through dimensionality reduction,” in International Conference on Intelligent Robots and Systems . IEEE, 2021, pp. 3674–3680. [5] Y. Li, Z. Littlefield, and K. E. Bekris, “Asymptotically optimal sampling-based kinodynamic planning,” The International Journal of Robotics Research , vol. 35, no. 5, pp. 528–564, 2016. [6] I. A. S¸ ucan and L. E. Kavraki, “Kinodynamic motion planning by interior-exterior cell exploration,” in Algorithmic foundation of robotics VIII: selected contributions of the eight international work-shop on the algorithmic foundations of robotics . Springer, 2009, pp. 449–464. [7] M. Kleinbort, K. Solovey, Z. Littlefield, K. E. Bekris, and D. Halperin, “Probabilistic completeness of RRT for geometric and kinodynamic planning with forward propagation,” IEEE Robotics and Automation Letters , vol. 4, no. 2, pp. i–vii, 2018. [8] T. Lai, W. Zhi, T. Hermans, and F. Ramos, “Neural kinodynamic planning: Learning for kinodynamic tree expansion,” in IEEE/RSJ International Conference on Intelligent Robots and Systems . IEEE, 2024, pp. 11 789–11 795. [9] M. Faroni and D. Berenson, “Motion planning as online learning: A multi-armed bandit approach to kinodynamic sampling-based plan-ning,” IEEE Robotics and Automation Letters , vol. 8, no. 10, pp. 6651– 6658, 2023. [10] A. Boeuf, J. Cort´ es, R. Alami, and T. Sim´ eon, “Enhancing sampling-based kinodynamic motion planning for quadrotors,” in International Conference on Intelligent Robots and Systems . IEEE, 2015, pp. 2447– 2452. [11] C. H. Huang, P. Jadhav, B. Plancher, and Z. Kingston, “pRRTC: Gpu-parallel rrt-connect for fast, consistent, and low-cost motion planning,” in IEEE International Conference on Robotics and Automation , 2025. [12] N. Perrault, Q. H. Ho, and M. Lahijanian, “Kino-pax: Highly parallel kinodynamic sampling-based planner,” IEEE Robotics and Automation Letters , vol. 10, no. 3, pp. 2430–2437, 2025. [13] S. Karaman and E. Frazzoli, “Sampling-based algorithms for optimal motion planning,” The international journal of robotics research ,vol. 30, no. 7, pp. 846–894, 2011. [14] L. E. Kavraki, P. Svestka, J.-C. Latombe, and M. H. Overmars, “Prob-abilistic roadmaps for path planning in high-dimensional configuration spaces,” IEEE transactions on Robotics and Automation , vol. 12, no. 4, pp. 566–580, 2002. [15] N. Ratliff, M. Zucker, J. A. Bagnell, and S. Srinivasa, “Chomp: Gradient optimization techniques for efficient motion planning,” in 
+
+IEEE International Conference on Robotics and Automation . IEEE, 2009, pp. 489–494. [16] M. Kalakrishnan, S. Chitta, E. Theodorou, P. Pastor, and S. Schaal, “Stomp: Stochastic trajectory optimization for motion planning,” in 
+
+2011 IEEE International Conference on Robotics and Automation .IEEE, 2011, pp. 4569–4574. [17] J. Schulman, Y. Duan, J. Ho, A. Lee, I. Awwal, H. Bradlow, J. Pan, S. Patil, K. Goldberg, and P. Abbeel, “Motion planning with sequential convex optimization and convex collision checking,” The International Journal of Robotics Research , vol. 33, no. 9, pp. 1251–1270, 2014. [18] J. J. Kuffner and S. M. LaValle, “RRT-connect: An efficient approach to single-query path planning,” in IEEE International Conference on Robotics and Automation , vol. 2. IEEE, 2000, pp. 995–1001. [19] J. D. Gammell, S. S. Srinivasa, and T. D. Barfoot, “Informed RRT*: Optimal sampling-based path planning focused via direct sampling of an admissible ellipsoidal heuristic,” in International conference on intelligent robots and systems . IEEE, 2014, pp. 2997–3004. [20] M. P. Strub and J. D. Gammell, “Adaptively informed trees (AIT*): Fast asymptotically optimal path planning through adaptive heuristics,” in IEEE International Conference on Robotics and Automation . IEEE, 2020, pp. 3191–3198. [21] J. D. Gammell, S. S. Srinivasa, and T. D. Barfoot, “Batch informed trees (BIT*): Sampling-based optimal planning via the heuristically guided search of implicit random geometric graphs,” in IEEE Inter-national Conference on Robotics and Automation . IEEE, 2015, pp. 3067–3074. [22] A. J. La Valle, B. Sakcak, and S. M. LaValle, “Bang-bang boosting of RRTs,” in International Conference on Intelligent Robots and Systems .IEEE, 2023, pp. 2869–2876. [23] J. Luo and K. Hauser, “An empirical study of optimal motion planning,” in 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems . IEEE, 2014, pp. 1761–1768. [24] D. Q. Mayne and H. Michalska, “Model predictive control of nonlinear systems,” 1991 American Control Conference , pp. 2343–2348, 1991. [25] F. Zhang, N. Li, T. Xue, Y. Zhu, R. Yuan, and Y. Fu, “An improved dynamic window approach integrated global path planning,” in IEEE International Conference on Robotics and Biomimetics . IEEE, 2019, pp. 2873–2878. [26] A. A. R. Newaz and T. Alam, “Adaptive dynamic window approach for robot navigation in disturbance vector fields,” in 2024 21st Inter-national Conference on Ubiquitous Robots (UR) . IEEE, 2024, pp. 312–318. [27] J. Snape, J. Van Den Berg, S. J. Guy, and D. Manocha, “The hybrid reciprocal velocity obstacle,” IEEE Transactions on Robotics , vol. 27, no. 4, pp. 696–706, 2011. [28] C. Quintero-Pe na, C. Chamzas, V. Unhelkar, and L. E. Kavraki, “Motion planning via bayesian learning in the dark,” in International Conference on Intelligent Robots and Systems . IEEE, 2021, pp. 5634– 5641. [29] J. Ungredda and J. Branke, “Bayesian optimisation for constrained problems,” ACM Transactions on Modeling and Computer Simulation ,vol. 34, pp. 1–26, 2024. [30] M. Mukadam, J. Dong, X. Yan, F. Dellaert, and B. Boots, “Continuous-time gaussian process motion planning via probabilistic inference,” 
+
+The International Journal of Robotics Research , vol. 37, no. 11, pp. 1319–1340, 2018. [31] S. Raxit, A. A. R. Newaz, P. Padrao, J. Fuentes, and L. Bobadilla, “Bow: Bayesian optimization over windows for motion planning in complex environments,” IEEE Robotics and Automation Letters ,vol. 10, no. 10, pp. 10 714–10 721, 2025. [32] S. Raxit, A. A. R. Newaz, J. Fuentes, P. Padrao, A. Cavalcanti, and L. Bobadilla, “Multi-robot trajectory planning via constrained bayesian optimization and local cost map learning with stl-based conflict resolution,” arXiv preprint arXiv:2603.05767 , 2026. [33] S. M. LaValle, Planning algorithms . Cambridge university press, 2006.

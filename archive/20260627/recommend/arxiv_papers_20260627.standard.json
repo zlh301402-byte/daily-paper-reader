@@ -1,0 +1,97 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-27T21:31:31.465462+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 12,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.26341v1",
+      "source": "arxiv",
+      "title": "Scaling Nonlinear Optimization: Many Problems One GPU",
+      "abstract": "Many robotics problems, including trajectory optimization, inverse kinematics, and contact-rich motion planning, reduce to nonlinear programs (NLPs). Mature NLP solvers such as IPOPT can solve these problems, offering hard constraint satisfaction, optimality guarantees, and favorable scaling with problem dimension. These solvers underpin gradient-based methods in robotics, yet remain CPU-bound and solve only one problem at a time, preventing their integration into GPU-batched learning pipelines. On the other hand, sampling-based approaches such as reinforcement learning, model predictive path integral, and imitation learning have become the core of modern robotics research due to their ability to leverage GPU-batched simulators. These simulators can generate orders of magnitude more dynamics rollouts per second than was previously possible. If a GPU-batched NLP solver existed, it would unlock similar speedups in the number of constrained, locally optimal solutions generated per second. This regime of solving many problems concurrently versus solving a single problem at a time is a key requirement for integrating NLP solvers in modern GPU-batched robotics frameworks. To this end, we introduce \\texttt{jaxipm}, the first GPU-batched NLP solver, based on IPOPT, and implemented in JAX. We accomplish this by redesigning IPOPT's algorithm to eliminate control flow with \\textit{heterogeneous iteration fusion}, and by minimizing GPU idle time with \\textit{iteration level batching}. We evaluate \\texttt{jaxipm} on a variety of quadrotor nonlinear model predictive control benchmarks, including reference tracking in the presence of obstacles, multi-quadrotor navigation without collision, and navigation in a cluttered environment. We demonstrate up to a $32.85\\times$ increase in throughput over IPOPT. Our complete open-source codebase is available at https://github.com/johnviljoen/jaxipm.",
+      "authors": [
+        "John Viljoen",
+        "Johanna Haffner",
+        "Masayoshi Tomizuka",
+        "Negar Mehr"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-24T19:34:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.26341v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "GPU-batched NLP solving for trajectory optimization, applicable to rotorcraft manipulator trajectory tracking",
+      "llm_evidence_cn": "GPU批处理非线性规划求解用于轨迹优化，适用于旋翼飞行机械臂轨迹跟踪",
+      "llm_evidence": "GPU批处理非线性规划求解用于轨迹优化，适用于旋翼飞行机械臂轨迹跟踪",
+      "canonical_evidence": "GPU批处理非线性规划求解用于轨迹优化，适用于旋翼飞行机械臂轨迹跟踪",
+      "llm_tldr_en": "Proposes GPU-batched solving of nonlinear programs for robotics problems like trajectory optimization, enabling integration into learning pipelines.",
+      "llm_tldr_cn": "机器人轨迹优化、逆运动学和接触丰富运动规划等可归约为非线性规划。现有求解器如IPOPT虽能提供硬约束满足和最优性保证，但受限于CPU且单次求解。本文提出在GPU上批量求解非线性规划，使梯度方法融入学习流程，显著提升计算效率。",
+      "llm_tldr": "机器人轨迹优化、逆运动学和接触丰富运动规划等可归约为非线性规划。现有求解器如IPOPT虽能提供硬约束满足和最优性保证，但受限于CPU且单次求解。本文提出在GPU上批量求解非线性规划，使梯度方法融入学习流程，显著提升计算效率。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "rotorcraft manipulator modeling and trajectory tracking",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.27292v1",
+      "source": "arxiv",
+      "title": "BOWConnect: Parallel Bayesian Optimization over Windows with Learned Local Cost Maps for Sample-Efficient Kinodynamic Motion Planning",
+      "abstract": "This paper presents BOWConnect, a bidirectional parallel kinodynamic motion planner that addresses three fundamental limitations of existing sampling-based methods: sample inefficiency in high-dimensional state spaces, unreliable cost heuristics under dynamic constraints, and poor performance in narrow passage environments. Unlike classical planners that rely on random control sampling and geometric distance heuristics, BOWConnect integrates Bayesian Optimization over Windows (BOW) as a learning-based steering function within a parallel tree-based exploration framework, enabling each worker to learn local cost maps and constraints to guide sampling toward dynamically feasible and collision-free controls. A bidirectional architecture simultaneously grows forward and backward trees from the start and goal regions in parallel threads, with a spatial hashing mechanism enabling fast connection queries and a boundary value problem solver generating kinodynamically consistent bridge trajectories. Extensive evaluations across ten benchmark environments demonstrate that BOWConnect achieves 100\\% success while delivering the fastest or near-fastest planning time in complex scenarios, including narrow passages and non-convex spaces where state-of-the-art planners fail or degrade substantially. Real-world deployment on a ground vehicle and a quadrotor confirms real-time planning with no collisions. Videos of real-world and simulated experiments, high-resolution versions of the figures, and the open-source code are available at https://bow-connect.github.io/.",
+      "authors": [
+        "Sourav Raxit",
+        "Abdullah Al Redwan Newaz",
+        "Jose Fuentes",
+        "Leonardo Bobadilla"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-25T17:11:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.27292v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "kinodynamic motion planning using Bayesian optimization, relevant to motion planning for aerial manipulators",
+      "llm_evidence_cn": "使用贝叶斯优化的动力学运动规划，与空中机械臂运动规划相关",
+      "llm_evidence": "使用贝叶斯优化的动力学运动规划，与空中机械臂运动规划相关",
+      "canonical_evidence": "使用贝叶斯优化的动力学运动规划，与空中机械臂运动规划相关",
+      "llm_tldr_en": "BOWConnect integrates Bayesian Optimization over Windows with parallel tree-based exploration for sample-efficient kinodynamic motion planning.",
+      "llm_tldr_cn": "现有基于采样的运动规划方法在高维状态空间中样本效率低，动态约束下代价启发不可靠。本文提出BOWConnect，将窗口贝叶斯优化作为学习型引导函数融入并行树探索框架，使每个工作器学习局部代价图和约束，引导采样向动态可行且无碰撞区域推进，在窄通道环境中表现优异。",
+      "llm_tldr": "现有基于采样的运动规划方法在高维状态空间中样本效率低，动态约束下代价启发不可靠。本文提出BOWConnect，将窗口贝叶斯优化作为学习型引导函数融入并行树探索框架，使每个工作器学习局部代价图和约束，引导采样向动态可行且无碰撞区域推进，在窄通道环境中表现优异。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "motion planning and impedance control for unmanned aerial manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
