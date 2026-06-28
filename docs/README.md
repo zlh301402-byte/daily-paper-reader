@@ -6,27 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-27
-- 运行时间：2026-06-27 21:32:17 UTC
+- 最新运行日期：2026-06-28
+- 运行时间：2026-06-28 20:15:06 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今天速读2篇论文，聚焦GPU加速非线性优化与贝叶斯优化在运动规划中的应用。值得关注的方向是单GPU高效处理多种非线性优化问题，以及结合局部代价地图的贝叶斯优化提升运动规划采样效率。建议下一步关注GPU通用优化框架与样本高效的路径规划方法，尝试将相关思路应用于实际优化或机器人控制问题。
-- 详情：[/202606/27/README](/202606/27/README)
+今日速读一篇关于机器人操控强化学习的奖励建模文章。核心方向是用置信门控机制构建过程奖励模型，提升RL训练效率。普通读者可关注其如何通过分段奖励缓解稀疏反馈问题，对理解复杂机器人任务训练有参考价值。
+- 详情：[/202606/28/README](/202606/28/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Scaling Nonlinear Optimization: Many Problems One GPU](/202606/27/2606.26341v1-scaling-nonlinear-optimization-many-problems-one-gpu)  
-   标签：评分：7.0/10、query:aerial-arm
-   evidence：GPU批处理非线性规划求解用于轨迹优化，适用于旋翼飞行机械臂轨迹跟踪
-2. [BOWConnect: Parallel Bayesian Optimization over Windows with Learned Local Cost Maps for Sample-Efficient Kinodynamic Motion Planning](/202606/27/2606.27292v1-bowconnect-parallel-bayesian-optimization-over-windows-with-learned-local-cost-maps-for-sample-efficient-kinodynamic-motion-planning)  
-   标签：评分：7.0/10、query:aerial-arm
-   evidence：使用贝叶斯优化的动力学运动规划，与空中机械臂运动规划相关
+1. [RARM: Confidence-Gated Progress Reward Modeling for RL in Manipulation](/202606/28/2606.22027v1-rarm-confidence-gated-progress-reward-modeling-for-rl-in-manipulation)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：强化学习奖励建模用于机械臂操作
 
 
 <div class="dpr-home-promo-card">
