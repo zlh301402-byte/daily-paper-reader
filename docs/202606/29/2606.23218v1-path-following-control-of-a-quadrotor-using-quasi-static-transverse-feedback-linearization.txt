@@ -1,0 +1,608 @@
+Title: Path-following Control of a Quadrotor using Quasi-Static Transverse Feedback Linearization
+
+URL Source: https://arxiv.org/pdf/2606.23218v1
+
+Published Time: Tue, 23 Jun 2026 03:05:29 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Path-following Control of a Quadrotor using Quasi-Static Transverse Feedback Linearization 
+
+Mohamed Al Lawati 1 and Adeel Akhtar 2
+
+Abstract — We propose a quasi-static transverse feedback lin-earization (QSTFL) controller for a quadrotor to follow a pre-scribed geometric path, rather than a time-parameterized tra-jectory. In contrast to existing dynamic-feedback approaches, the controller does not introduce additional controller states. The thrust input is computed algebraically from the current state, eliminating the need for thrust-derivative measurements and numerical integration. The proposed design renders the path-following manifold invariant, ensuring that trajectories initialized on the path remain on it for all future time, while simultaneously regulating tangential velocity and yaw. We establish a diffeomorphic coordinate transformation and prove local exponential stability of the path-following mani-fold. In addition, closed-form expressions are derived for the thrust and torque inputs. Compared with dynamic-feedback constructions, the controller requires inversion of only a 3 × 3
+
+decoupling matrix rather than a 4 × 4 one, leading to asimpler control law and reduced computational complexity. Numerical simulations demonstrate the effectiveness of the proposed method. Code and animations are publicly available at https://gitlab.com/a5akhtar/quasistatic-tfl-uav/ .
+
+I. I NTRODUCTION 
+
+For a vehicle moving along a prescribed curve, a time-parameterized reference can be unsuitable: if the vehicle slows down or stops, the reference continues to evolve and a tracking error is generated. Path following avoids this issue by removing explicit time dependence from the output reference and, with suitable feedback, yields motion invariance along the path [ 1]. This framework is well suited to mobile robots and, in particular, to the unmanned aerial vehicles (UAVs). In this paper, the UAV under consideration is a quadrotor. Accordingly, throughout the paper, the terms 
+
+UAV and quadrotor are used interchangeably; when the meaning is clear from context, we also refer to it simply as the system . A quadrotor is a nonlinear underactuated system with six degrees of freedom and four control inputs [ 2]. Quadrotor motion control is commonly developed either in cascade form, with an inner attitude loop and an outer position loop [ 3], [ 4], or in monolithic form [ 5], [ 6]. In cascade designs, stability of the subsystems does not by itself imply stability of the full closed loop. Monolithic designs avoid this separation and are well suited to path-following problems with motion invariance. For this reason, we adopt a monolithic control design. A further distinction is between coordinate-based and coordinate-free quadrotor controllers [ 7], [ 8]. Coordinate-free formulations avoid singularities associated with lo-cal attitude parameterizations, but the existing designs are   
+
+> 1Department of Mechanical and Industrial Engineering, Sultan Qaboos University, Muscat, Oman.
+
+mlawati@squ.edu.om   
+
+> 2Department of Mechanical and Industrial Engineering, New Jersey Institute of Technology, NJ, USA.
+
+adeel.akhtar@njit.edu 
+
+typically not formulated as motion-invariant path-following controllers for the full quadrotor dynamics. Here we address path following directly for the full translational and rotational dynamics and obtain a local exponential stability result. Our approach is based on transverse feedback lineariza-tion (TFL) [ 5], [ 9], which treats path following as a set-stabilization problem. Since quadrotors are differentially flat [ 1], one can construct a feedback law and a coordinate transformation that put the dynamics into Brunovsk´ y normal form. Existing path-following designs for quadrotors use dynamic feedback [ 1], [ 5], which introduces additional con-troller states. In contrast, we use quasi-static feedback [ 10 ], so the control input is expressed in terms of auxiliary inputs and their time derivatives, computed from the current state, without dynamic extension. This reduces controller complexity and simplifies implementation. In this paper, we introduce quasi-static transverse feed-back linearization (QSTFL) for quadrotor path following. Unlike existing dynamic-feedback constructions [ 1], [ 5], the proposed design does not augment the system with extra controller states. Related quasi-static feedback results for quadrotors in [ 11 ] do not address the full nonlinear dynamics and do not establish motion invariance along a path. In contrast, our controller is designed for the full quadrotor dynamics, follows a broad class of curves, and locally exponentially stabilizes the set of motions along the path, thereby rendering that set controlled invariant. Moreover, the controller requires inversion of a 3 × 3 decoupling matrix rather than a 4 × 4 one. To the best of our knowledge, this is the first QSTFL-based controller for a quadrotor that exponentially stabilizes the motion-invariant path-following set. The main contributions are: (i) exponential stability of motions along the path (Theorem 4), (ii) a diffeomorphic coordinate transformation without dynamic extension (Lemma 3), and (iii) closed-form expressions for the control inputs ( 10 ) and ( 17 ). II. N OTATION AND MATH PRELIMINARIES 
+
+A. Notation 
+
+The set of reals is denoted by R. An element x ∈ Rn
+
+is written in its components as col( x1, x 2, · · · , x n), where 
+
+xi is the ith component of x. The first and second time-derivatives are respectively denoted ˙x and ¨x. For i ≥ 3,the ith time-derivative of x is x(i). For a matrix R, its ith 
+
+column is Ri, and its (i, j )th entry is Rij . The transpose of x is x⊤. Given a set S, the restriction of x to S is denoted as x|S . The neighborhood of S is denoted as NS .The Euclidean norm of x is ‖x‖, For x, y ∈ Rn, the standard 
+
+> arXiv:2606.23218v1 [math.OC] 22 Jun 2026
+
+inner product is denoted by 〈x, y 〉 = x⊤y. For a continuously differentiable function f : Rn → R, the gradient at x ∈ Rn
+
+is ∇f (x) = ( ∂f (x) 
+
+> ∂x
+
+)⊤ ∈ Rn, where ∂f  
+
+> ∂x
+
+denotes the vector of partial derivatives with respect to x. The Jacobian of f is df .The unit n-sphere is defined as Sn = {x ∈ Rn+1 : ‖x‖ = 1 }.For vectors x, y ∈ R3, the cross product operator is defined as × : R3 × R3 → R3, (x, y ) 7 → x × y. The natural basis in 
+
+R3 is {e1, e 2, e 3}. Trigonometric functions are abbreviated as sin( ξ) = s ξ , cos( ξ) = c ξ , and tan( ξ) = t ξ .
+
+B. Math Preliminaries 
+
+A smooth closed curve in R3 is the image of a smooth embedding γ : S1 → R3. Equivalently, it is a compact con-nected smooth 1-dimensional embedded submanifold of R3.In particular, a smooth closed curve is compact and admits a well-defined smooth tangent direction after choosing an orientation. For example, for any c ∈ R, the map γ1(λ) = (cos λ, sin λ, c ), λ ∈ S1, parametrizes the horizontal unit circle at height c, which is a smooth closed curve in R3.Our stability results rely on the generalized inverse func-tion theorem [ 12 ], which we restate below. 
+
+Theorem 1 (The generalized inverse function theorem [ 12 ]) .
+
+Let σ be smooth map on X , and let X ∗ ⊂ X be a closed embedded submanifold. Suppose (i) σ|X ∗ : X ∗ → σ(X ∗ ) is a diffeomorphism, and (ii) for all x∗ ∈ X ∗, dσ(x∗ ) is invertible. Then, σ|NX ∗ is a diffeomorphism. 
+
+This theorem generalizes the inverse function theorem in the sense that X ∗ is a set—not a single point. III. M ODELING 
+
+Consider a standard quadrotor model [ 1], [ 2], and let 
+
+N = {n1, n 2, n 3} be a fixed navigation frame with origin 
+
+ON , where n1, n 2, n 3 ∈ R3 are three orthonormal basis vectors aligned with the north, east, and down directions, respectively. Also, let b1, b 2, b 3 ∈ R3 form a right-handed orthonormal basis, and let B = {b1, b 2, b 3} be a frame whose origin, OB, is fixed at the UAV’s center of mass (CoM). The position and velocity, respectively, of OB relative to ON , are denoted p ∈ R3 and v = ˙ p ∈ R3. Both p and v are expressed in N . The attitude of B relative to N is expressed by a rotation matrix R ∈ SO (3) , whose columns are b1, b2, and 
+
+b3. The angular velocity of B relative to N is denoted by 
+
+Ω, and it is expressed in the body frame B. The UAV is actuated by positive thrust ut ∈ (0 , ∞) and torque τ ∈ R3.The thrust acts along the −b3 direction, and the ith torque component τi acts about bi, i = 1 , 2, 3. The UAV mass and moment of inertia are, respectively, denoted by m and J. The equations of motion of a standard UAV are given by [ 5], [ 6]
+
+˙p = v, ˙v =
+
+ge3 − 1
+
+m utRe 3 (1a) 
+
+˙R = RS (Ω) , ˙Ω = J−1(τ − Ω × JΩ) . (1b) Notice that the coupling between the translational dynamics, (1a ) and the rotational dynamics, ( 1b ) occurs through Re 3 =
+
+b3. Hence, among the twelve possible Euler parameteriza-tions [ 13 ], we choose the 2-1-3 Euler rotation sequence since it yields the simplest b3, i.e., no yaw dependence, and does not contain a singularity at hover state. Let θ, φ, and ψ be in R and represent respectively, pitch, roll, and yaw of the UAV. We define the UAV’s attitude by 
+
+η := col( θ, φ, ψ ). Thus, ( 1) is parameterized as 
+
+˙p = v, ˙v =
+
+ge3 − 1
+
+m utR3,
+
+˙η = W Ω, ˙Ω = J−1(τ − Ω × JΩ) ,
+
+(2) where 
+
+R3 = b3 =
+
+ sθ cφ
+
+−sφ
+
+cθ cφ
+
+ , and W =
+
+ sψ /cφ cψ /cφ 0cψ −sψ 0sψ tφ cψ tφ 1
+
+ .
+
+Next, we define the state and input vectors, respectively, as 
+
+x := col( p, v, η, Ω) ∈ X ⊂ R12 and u := col( ut, τ ) ∈
+
+(0 , ∞) × R3. Hence, ( 2) can be written in a control-affine form as 
+
+˙x = f (x) + G(x)u, (3) where the vector fields f : R12 → R12 and G : R12 →
+
+R12 ×4 are given by           
+
+> f(x) =
+> 
+> v
+> ge3
+> WΩ
+> −J−1(Ω ×JΩ)
+> ,and G(x) =
+> 
+> 03×4
+> −Re 3/m 03×3
+> 03×4
+> 03×1J−1
+> .
+
+The degree of underactuation of ( 3) is 2. Also, the model ( 3)is not well-defined on the singularity point φ = ±π/ 2.IV. P ROBLEM FORMULATION 
+
+Given a UAV, the main objective is to drive the UAV CoM to a desired geometric path C in 3D space while imposing invariance properties on C. By “geometric”, we mean that C
+
+is a curve in R3 not parameterized by time. The invariance properties simply mean that if the UAV is initialized on the path with velocity tangent to the path, it stays on the path for all time. This is in contrast to the conventional trajectory-tracking objective where such invariance is not guaranteed. In this work, the desired path C is assumed to be a compact connected smooth embedded curve in R3. Moreover, there exists an open neighborhood UC ⊂ R3 of C and smooth functions h1, h 2 : UC → R such that 
+
+C = {p ∈ UC : h1(p) = h2(p) = 0 }, (4) and 
+
+∇h1(p) × ∇ h2(p) 6 = 0 , ∀p ∈ UC . (5) Hence, C is a regular intersection of two surfaces and therefore a smooth embedded one-dimensional submanifold of R3. After choosing an orientation, the unit tangent field associated with C is well defined and smooth on UC , and is given by 
+
+ρ(p) = ∇h1(p) × ∇ h2(p)
+
+‖∇ h1(p) × ∇ h2(p)‖ . (6) Therefore, while on the path, the tangential speed of the UAV CoM is v|C = 〈v, ρ (p)〉. Since ( 5) holds on UC , the field ρ
+
+is well defined throughout a neighborhood of C.Assumption 1. Given the UAV model ( 3) and a path C
+
+satisfying ( 4)–( 5), assume that the following conditions hold on an open neighborhood NC ⊂ UC of C:
+
+A1 ut 6 = 0 and 
+
+A2 〈∇ h2, R 3〉 6 = 0 .Assumption A1 implies that there is always nonzero thrust during motion. Indeed, ut = 0 corresponds to all motors being shut off, which is undesirable for safe flight operations. As for A2 , on C, we realize that 〈∇ h2, R 3〉 = 0 corresponds to R3 being in a tangent plane to h2 = 0 , meaning the thrust produces no force in the direction needed to influence h2,causing a singularity in ( 10 ). Let us equip ( 3) with an output h ∈ R4, defined as 
+
+h = col( h1(p), h 2(p), 〈v, ρ 〉 − vd, ψ − ψd) , (7) where vd, ψ d : R3 → R represent, respectively, the desired tangential velocity of UAV CoM and desired UAV yaw at a given point p on the path C. Note that when h1 =
+
+h2 = 0 , the third output component 〈ρ, v 〉 − vd measures the deviation of the UAV velocity tangent to the path from the desired tangential velocity vd. With the above setup, the path-following problem (PFP) can be formulated as follows. 
+
+Problem 1 (Path Following Problem (PFP)) . Given the UAV model expressed in control-affine form ( 3) and a path ( 4)expressed as a set of points in the output space without a notion of time, design a feedback controller such that the closed-loop UAV system achieves the following goals: 
+
+G1 The UAV CoM approaches C exponentially fast. 
+
+G2 The UAV CoM’s motion along C is controlled invariant. 
+
+G3 The controller achieves two additional control specifi-cations while motion is on C, namely, 〈v, ρ 〉 → vd and 
+
+ψ → ψd as t → ∞ .
+
+Remark 1. The authors [ 1], [ 14 ] solved a similar PFP but rely on dynamic extension, introducing thrust and its time-derivative as controller states. This augmentation has two drawbacks: recovering thrust requires either solving a dif-ferential equation or integrating twice from sensor measure-ments, which poses practical challenges. Also, gain tuning must account for two extra states. The solution presented in this paper overcomes these challenges. V. S OLUTION USING A QSTFL Intuitively, our solution to the PFP is attained by driving h
+
+to zero using a feedback. When h = 0 , the feedback should maintain this value for all time. We rely on QSF to feedback linearization output dynamics [ 10 ], from which we adapt the following definition 
+
+Definition 1 (Quasi-static feedback) . Given a dynamical system ˙x = f (x, u ), a feedback is called quasi-static if it is of the form 
+
+ui = ϕi(x, ν, ˙ν, . . . , ν (s)), i = 1 , . . . , m 
+
+where s is a finite integer, ϕi are smooth functions, and ν is an auxiliary input such that 
+
+ν = ˜ ϕ(x).
+
+Taking time-derivatives of each output until an input appears yields the decoupling matrix A, whose invertibility guarantees input-output linearization. Specifically, differenti-ating h1, h2, h4 twice and h3 once gives 
+
+A =
+
+[
+
+− D⊤R3
+
+m
+
+03×3
+
+e⊤W J −1
+
+]
+
+, D = [ ∇h1, ∇h2, ρ, −∇ ψd] .
+
+Notice that A is singular of constant rank 2 since, away from the model singularity φ = ±π/ 2, two rows are always independent. This means that we have two affine independent relations between the inputs and output derivatives. Further-more, we realize that at hover, i.e., UAV is horizontally oriented at rest, the decoupling matrix A becomes 
+
+A0 =
+
+
+
+− ∂h 1/∂p 3 
+
+> m
+
+0 0 0
+
+− ∂h 2/∂p 3 
+
+> m
+
+0 0 00 0 0 00 0 0 1
+
+> J33
+
+
+
+.
+
+We note that the independence of the surfaces h1 and 
+
+h2 implies that both ∂h 1/∂p 3 and ∂h 2/∂p 3 are not zero simultaneously. We choose h2 such that ∂h 2/∂p 3 6 = 0
+
+at hover; the same construction applies if h1 is chosen instead. Hence, the expressions of ¨h2 along with ¨h4 form two independent relations with the input u. These two relations are valid at the hover case. Therefore, we assign two auxiliary inputs ν2 and ν4 as 
+
+ν2 = ¨h2, ν4 = ¨h4. (8) If ν2 and ν4 were known, then ( 8) provides two affine equations in terms of the input u. To design ν2 and ν4, let’s define the error coordinates zi = col 
+
+(
+
+hi, ˙hi
+
+)
+
+, for i ∈ { 2, 4}.Hence ( 8) results in 
+
+˙zi = Ac2zi + Bc2νi, (9) where (Ac2, Bc2) is a 2-by-2 Brunovsky pair. Next, we show that one can readily compute the thrust 
+
+ut using ( 8) and the choice of ν2 made in ( 18 ). Let H be the Hessian of h2 with respect to p. Thus, using the system dynamics and ( 8), we have ν2 = ¨h2 = v⊤Hv +〈∇ h2, e 3〉
+
+g −〈∇ h2, R 3〉ut/m, which can be solved for the thrust ut giving 
+
+ut = ut(x, ν 2) = m v⊤Hv − ν2 +
+
+g(∂h 2/∂p 3)
+
+〈∇ h2, R 3〉 . (10) 
+
+Remark 2. In this design, we compute the thrust alge-braically by performing elementary algebraic operations. This is unlike the dynamic controller. See Remark 1. The condition ut > 0 in ( 10 ) is only guaranteed near X ∗. For large initial errors, K2 should be designed to avoid ut ≤ 0,or ν2 can be saturated to enforce ut > 0 at the cost of temporarily losing the exponential stability guarantee. Similarly, letting Hd denote the Hessian of ψd with respect to p, we realize that 
+
+ν4 = ¨h4 = e⊤
+
+> 3
+
+(
+
+W J −1τ + ˙W Ω − W J −1(Ω × JΩ) 
+
+)
+
+− v⊤Hdv + 〈R3, ∇ψd〉ut/m −
+
+g〈∇ ψd, e 3〉.
+
+(11) This yields only one equation in τ . We differentiate further to obtain h(4) 1 and h(3) 3 , giving two additional independent equations in τ . Thus, we define auxiliary inputs ν1 and ν3
+
+ν1 = h(4) 1 , ν3 = h(3) 3 .
+
+The error coordinates are defined as z1 =col (h1, ˙h1,¨h1,h (3) 1
+
+) and z3 = col 
+
+(
+
+h3, ˙h3,¨h3
+
+)
+
+. As aresult, the corresponding error dynamics becomes 
+
+˙z1 = Ac4z1 + Bc4ν1, ˙z3 = Ac3z3 + Bc3ν3, (12) where (Ac4, B c4) and (Ac3, B c3) are, respectively, the 4-by-4 and 3-by-3 Brunovsky pairs. 
+
+Remark 3. Note that the four decoupled dynamics in ( 9) and (12 ) are linear-time invariant. Thus, there exists a plethora of inputs νi for each decoupled system to stabilize its error dynamics. We now form the other two equations. Computing two additional time-derivatives for ¨h1 and ˙h3, and realizing that 
+
+ut = ut(x, ν 2), we get 
+
+h(4) 1 = h(4) 1 (x, ν 2, ˙ν2, ¨ν2), h(3) 3 = h(3) 3 (x, ν 2, ˙ν2).
+
+Direct computation reveals 
+
+ν1 = h(4) 1 = ut(∇h1 × ∇ h2)⊤
+
+m〈∇ h2, R 3〉
+
+[ R1 
+
+> J11
+> R2
+> J22
+
+0
+
+]
+
+τ
+
++ ˜b1(x, ν 2, ˙ν2, ¨ν2) (13a) 
+
+ν3 = h(3) 3 = utρ⊤
+
+m〈∇ h2, R 3〉
+
+[ (∇h2 ×R1)  
+
+> J11
+> (∇h2×R2)
+> J22
+
+0
+
+]
+
+τ
+
++ ˜b3(x, ν 2, ˙ν2), (13b) where the expressions of ˜b1 and ˜b3 are lengthy and, hence, omitted, and ut is precomputed in ( 10 ). As a result, combin-ing ( 11 ) and ( 13 ), we arrive at 
+
+ν1
+
+ν3
+
+ν4
+
+ = ˜Aτ +
+
+
+
+˜b1
+
+˜b3
+
+〈∇ ψd, R 3 ut 
+
+> m
+
+−
+
+ge3〉 − v⊤Hdv
+
+ , (14) where ˜A is the new decoupling matrix given by 
+
+˜A =
+
+
+
+ut 〈∇ h1 ×∇ h2,R 1〉  
+
+> mJ 11 〈∇ h2,R 3〉
+
+ut 〈∇ h1 ×∇ h2,R 2〉  
+
+> mJ 22 〈∇ h2,R 3〉
+
+0
+
+ut 〈ρ, ∇h2 ×R1〉  
+
+> mJ 11 〈∇ h2,R 3〉
+
+ut 〈ρ, ∇h2 ×R2〉  
+
+> mJ 22 〈∇ h2,R 3〉
+
+0  
+
+> sψtφ
+> J11
+> cψtφ
+> J22
+> 1
+> J33
+
+ . (15) 
+
+Remark 4. This decoupling matrix is 3-by-3 as compared to the 4-by-4 decoupling matrix of [ 14 ] and [ 1]. This dimension simplification is a result of precomputing the thrust in ( 10 ). It can be seen from ( 14 ) that to calculate the input τ ∈ R3,we need to take the inverse of the decoupling matrix ˜A. It suffices to investigate the determinant of ˜A given by 
+
+det( ˜A) = − ‖∇ h1 × ∇ h2‖ u2
+
+> t
+
+m2J11 J22 J33 〈∇ h2, R 3〉 . (16) Assumption 1 and the smooth embedded-curve assumption on C ensure that det( ˜A) 6 = 0 in a neighborhood of the curve. Thus, the torque can be written in terms of state x
+
+and auxiliary input ν as 
+
+τ = τ (x, ν, ˙ν2, ¨ν2) (17) 
+
+= ˜A−1
+
+ν1
+
+ν3
+
+ν4
+
+ −
+
+
+
+˜b1(x, ˙ν2, ¨ν2)˜b3(x, ˙ν2)
+
+〈∇ ψd, R 3 ut 
+
+> m
+
+−
+
+ge3〉 − v⊤Hdv
+
+ ,
+
+where ut is computed in ( 10 ) and the auxiliary inputs νi are given in ( 18 ). The auxiliary input choice is made as 
+
+νi = −Kizi, i = 1 , 2, 3, 4, (18) where K1 ∈ R1×4, K3 ∈ R1×3, and K2, K 4 ∈ R1×2 are stabilizing gain row vectors chosen such that the linear error dynamics ( 9) and ( 12 ) are exponentially stable with desired eigenvalues. Notice that the error dynamics, given by ( 9) and (12 ), is 11-dimensional. Hence, there exists 1-dimensional zero dynamics whose stability is to be investigated. VI. S TABILITY ANALYSIS 
+
+The 11-dimensional error dynamics ( 9), ( 12 ) are expo-nentially stabilized by ( 18 ), leaving a 1-dimensional zero-dynamics [ 15 ] whose stability we now analyze. Let z(x) = col (z1(x), z 2(x), z 3(x), z 4(x)) ∈ R11 . The zero-dynamics evolve on the zero-dynamics manifold, X ∗, given by 
+
+X ∗ = {x ∈ X : z(x) = 0 }. (19) Let the state x ∈ X ⊂ R12 be transformed to (z, ξ ) ∈ Z ⊂ 
+
+R12 , i.e., x 7 → (z, ξ ) under some coordinate transformation, where the scalar ξ is to be defined. Since the z-coordinate captures the error dynamics, which is transverse to C, a plausible choice for the remaining coordinate, ξ, is a one that encodes the motion tangent to 
+
+C. To define ξ, we recall that C is a smooth embedded-curve by definition. Hence, C is diffeomorphic to the unit circle 
+
+S1, and let Λ : C → S1 be the diffeomorphism. Now, define the projection map π : X → C , x 7 → arg min ˜p∈C (‖p − ˜p‖),which takes a point in the state-space and returns the closest point on the path C. With this setup, we define ξ as 
+
+ξ = λ(x), (20) where λ = Λ ◦ π. Thus, the new state ξ represents the arc-length on S1 measured from a fixed point on S1 in the counterclockwise direction. Since C is a smooth compact embedded curve in R3, by the tubular neighborhood theo-rem [ 12 ], there exists ε > 0 such that π is a smooth well-defined map on NX ∗ := {x ∈ X : ‖p‖C < ε }, and we restrict all subsequent results to this neighborhood. Furthermore, for any x∗ ∈ X ∗ with position component p ∈ C , we have 
+
+π(x∗) = p since p is its own closest point on C, and hence 
+
+π|X ∗ is onto C. We now define the candidate coordinate transformation σ as 
+
+σ : NX ⋆ ⊂ X → σ(NX ⋆ ) ⊂ Z x 7 → col( z, ξ ) . (21) Note that (z, ξ ) ∈ σ(NX ⋆ ) ⊂ Z . For σ to be a coordinate transformation, it must be a diffeomorphism between NX ∗
+
+and σ(NX ∗ ). This diffeomorphism will be established using Theorem 1, which requires X ∗ to be compact – a fact established in the following lemma. 
+
+Lemma 2. The zero-dynamics set X ∗ is compact. Proof. It suffices to show that X ∗ is diffeomorphic to a compact set. This set can be chosen to be the unit circle S1.The diffeomorphism will be constructed using the restriction of σ on X ∗, denoted as σ|X ∗ . From the definition of σ,we have σ|X ∗ = col(0 , . . . , 0, λ |X ∗ ). The mapping λ|X ∗ is composed of two smooth and onto maps 1, hence, it is smooth and onto. Thus, we only need to show that π|X ∗ is one-to-one. Now, suppose p ∈ C . We need to show that there exists a unique x∗ ∈ X ∗ such that π(x∗) = p. To do so, we will express x∗ as a function of p. On X ∗, we have h3 = 0 .Thus, 〈ρ(p), v 〉 = vd(p). Also, h3 = 0 implies that velocity of the UAV CoM is tangent to the path C. This allows us to write v = ‖v‖ ρ. Since ‖ρ‖ = 1 , we immediately have 
+
+‖v‖ = vd(p). Thus, ‖v(p)‖ρ(p) = vd(p)ρ(p), which gives 
+
+v(p) = vd(p)ρ(p). (22) Hence, v is a function of p. From ( 2), we have ˙v =
+
+ge3 −
+
+ut/mR 3 implying 
+
+m(
+
+ge3 − ˙v) = utR3. (23) Since ‖R3‖ = 1 , we arrive at ut = |ut| = ‖m(
+
+ge3 − ˙v)‖.From ( 22 ), we have ˙v = vd(p) ˙ ρ(p) + ˙ vd(p)ρ(p) implying 
+
+ut = ‖m(
+
+ge3 − vd(p) ˙ ρ(p) − ˙vd(p)ρ(p)) ‖. From ( 23 ), we get 
+
+φ = sin −1
+
+(
+
+m ˙v2
+
+ut
+
+)
+
+= sin −1
+
+( (vd(p) ˙ ρ(p) + ˙ vd(p)ρ(p)) · e2
+
+‖
+
+ge3 − vd(p) ˙ ρ(p) − ˙vd(p)ρ(p)‖
+
+)
+
+θ = tan −1
+
+( (vd(p) ˙ ρ(p) + ˙ vd(p)ρ(p)) e1
+
+(vd(p) ˙ ρ(p) + ˙ vd(p)ρ(p)) e3 −
+
+g
+
+)
+
+.
+
+Also on X ∗, h4 = 0 , and therefore, ψ = ψd(p). Finally, invoking Ω = W −1 ˙η and using the expressions of φ, θ, and 
+
+ψ just found, we can write Ω = Ω( p). As a result, x∗ is uniquely determined by p. Hence, the mapping π|X ∗ is one-to-one. This result implies that σ|X ∗ is a diffeomorphism, and hence, X ∗ and S1 are diffeomorphic. As a result, com-pactness of X ∗ immediately follows from the compactness of S1.
+
+Lemma 2 guarantees the compactness of X ∗. We need this property of X ∗ to apply Theorem 1. The next lemma uses Theorem 1 to prove that σ is a diffeomorphism from NX ∗
+
+to σ(NX ∗ ).
+
+Lemma 3. The map σ : NX ⋆ ⊂ X → σ(NX ⋆ ), x 7 → (z, ξ )
+
+is a diffeomorphism of a neighborhood of X ∗ onto its image. Proof. Lemma 2 showed that X ∗ is compact. As well, its proof showed that σ|X ∗ is a diffeomorphism, and hence one-to-one. We now invoke Theorem 1. This means that to show                
+
+> 1In fact, the mapping Λis already a diffeomorphism, but πis not. Particularly, πis not one-to-one. For example, take ˜p∈ C , which can be mapped from col( p, v 1, η 1,Ω1)and col( p, v 2, η 2,Ω2). In fact, infinitely many such points exist. However, πis onto since it covers the entire path
+> C.
+
+σ is a diffeomorphism, we need to show that det(d σ) is not zero on X ∗. We compute 
+
+det(d σ) = u4 
+
+> t
+
+‖∇ h1 × ∇ h2‖3 〈∇ h1 × ∇ h2, ∇λ〉cφ
+
+m4〈R3, ∇h2〉2 .
+
+Based on the tubular neighborhood established above, C
+
+being a smooth embedded-curve, and by Assumption 1,we immediately have ut 6 = 0, ‖∇ h1 × ∇ h2‖ 6 = 0, and 
+
+〈R3, ∇h2〉 6 = 0. In addition, φ = ±π/ 2 is a model singularity, and hence cφ 6 = 0 in the region of model validity. It is left to show that 〈∇ h1 × ∇ h2, ∇λ〉 6 = 0.We have ∇λ|X ∗ = ∇Λ ◦ dπ|X ∗ = ∇Λ. Since Λ is a diffeomorphism, ∇Λ is a nonzero tangent to C. We conclude that ∇λ, ∇h1, and ∇h2 are independent vectors. Hence, 
+
+〈∇ h1 × ∇ h2, ∇λ〉 6 = 0 .
+
+Lemma 3 shows that σ is a diffeomorphism onto its image, hence, it is a valid coordinate transformation. We use this coordinate transformation to prove that when the transformed state z → 0 this implies that the system state x → C . This fact is formalized in our main result, which is stated in the next theorem. 
+
+Theorem 4. For the closed-loop system ˙z = Acz + Bcν,where Ac = blkdiag( Ac4, A c2, A c3, A c2) and ν given by (18 ), the set X ∗ given in (19 ) is exponentially stable. Moreover, the transformed state λ is bounded. Proof. We write X ∗ in the (z, ξ )-coordinates as σ(X ∗) = 
+
+{(z, ξ ) ∈ Z : z = 0 }. The z-subsystem is made exponen-tially stable by the choice of inputs ( 18 ). The ξ-subsystem evolves on a compact set S1. Hence, the λ-dynamics is bounded. Therefore, σ(X ∗) is exponentially stable. Since 
+
+σ is a diffeomorphism by Lemma 3, X ∗ is exponentially stable. 
+
+Theorem 4 proves that X ∗ is exponentially stable. The exponential stability of z1-dynamics and z2-dynamics mean that any initial condition close enough to C results in a motion that converges to C. Moreover, any motion starts in 
+
+X ∗ remains in X ∗. As a result objective G1 and G2 are fulfilled. The exponential stability of z3-dynamics and z4-dynamics guarantees that v → vdρ and ψ → ψd. This fulfills objective G3 . Hence, the control input given by thrust ( 10 )and torque ( 17 ), where ν is designed according to ( 18 ), indeed solves the PFP. VII. S IMULATION 
+
+This section demonstrates the QSF controller on two example paths: a horizontal circle and a twisted curve. Using QSTFL, motion invariance is highlighted in subsection VII-A 
+
+and path convergence is illustrated in subsection VII-B . To have more realistic simulations in both examples, the QSF is tested on the non-parameterized UAV model given in ( 1). The UAV mass and inertial matrix are chosen as m = 2 kg and 
+
+J = diag (0 .09 , 0.09 , 0.15)kg · m2. The proposed controller is simulated in MATLAB 2. 
+
+> 2Code and animation at https://gitlab.com/a5akhtar/quasistatic-tfl-uav/ .
+
+A. Example 1: horizontal circle 
+
+The path is a horizontal circle with constant traversal velocity, where the UAV heading is directed toward the center at all times — a configuration relevant to applications such as firefighting. Fig. 1a illustrates the invariance of X ∗.The UAV is initialized on C at rest with the heading pointing outward, i.e., away from the center. The heading angle is corrected, while the UAV never leaves the path C. Fig. 1b 
+
+shows the corresponding input that generated this motion. 
+
+(a) Snapshots of motion. (b) Input signal. Fig. 1. Controlled-invariance results under the QSTFL controller. 
+
+B. Example 2: twisted path 
+
+Consider a path formed by the intersection of the following two surfaces h1 = p21 + p22 − 4 and 
+
+h2 = − sin(2 p1) + p2 + p3 + 3 . On C, the desired velocity and heading angle are chosen, respectively, vd = 1 m /s and 
+
+ψd = 0 rad . Hence, the components of the output function 
+
+h are h1 = p21 + p22 − 4, h2 = − sin(2 p1) + p2 + p3 + 3 ,
+
+h3 = 2 cos(2 p1 )p2 v3+( −v2 +v3)p1 +p2v1
+
+√4(cos 2(2 p1 )) p22+4 cos(2 p1)p1 p2+2 p21 +p22
+
+− 1, and 
+
+h4 = ψ. The UAV is initialized as p(0) =col(4 ,5, − 1) m , v(0) = col( −0.1,0.2, − 0.2) m /s,
+
+η(0) = col( −π/ 10 ,π/ 8, − π/ 4) rad , and Ω(0) =col( −0.9,0.1,0.5) rad /s. Table I shows the gains along with eigenvalues of all the closed-loop zi-dynamics. 
+
+TABLE I GAINS AND EIGENVALUES OF THE zi -DYNAMICS (12 ) AND (9). 
+
+Dynamics Gains, Ki Eigenvalues 
+
+z1 [6 .24 ,16 .76 ,16 .22 ,6.7] {− 1, − 2, − 1.3, − 2.4}
+
+z2 [2 ,3] {− 1, − 2}
+
+z3 [2 .6,5.9,4.3] {− 1, − 2, − 1.3}
+
+z4 [2 ,3] {− 1, − 2}
+
+With the above data, the motion in Fig. 2a is generated, where the path convergence is illustrated. The output signals are shown in Fig. 2b .VIII. C ONCLUSIONS 
+
+This paper presented a QSTFL controller for the quadro-tor path following problem, achieving exponential stability, controlled-invariance, and direct tangential velocity and yaw control along the path. Unlike dynamic feedback designs [1], [ 14 ], the proposed controller does not require additional states, eliminating thrust-derivative measurements, double 
+
+(a) The QSTFL guarantees conver-gence to path. 
+
+(b) The output signal. Fig. 2. Snapshots, and input/output time signals for example 2. 
+
+integration, and simplifying gain tuning. The thrust force is computed algebraically, reducing the decoupling matrix from 4 × 4 to 3 × 3 and lowering computational complexity. Theoretical guarantees include a diffeomorphic coordinate transformation, compactness of the zero-dynamics manifold, and local exponential stability of the path-following set (Lemma 2, Lemma 3, and Theorem 4). Numerical simu-lations validated the theoretical results, demonstrating both motion invariance and path convergence. In summary, this paper presents a local solution to Problem 1 using quasi-static feedback. REFERENCES [1] A. Akhtar, S. L. Waslander, and C. Nielsen, “Path following for a quadrotor using dynamic extension and transverse feedback lineariza-tion,” in Proc. CDC , 2012, pp. 3551 –3556. [2] R. Mahony, V. Kumar, and P. Corke, “Multirotor aerial vehicles: Modeling, estimation, and control of quadrotor,” IEEE Robot. Autom. Mag. , vol. 19, no. 3, pp. 20–32, 9 2012. [3] A. Roza and M. Maggiore, “A class of position controllers for underactuated VTOL vehicles,” IEEE Trans. Automat. Contr. , vol. 59, no. 9, pp. 2580–2585, 2014. [4] B. Rub´ ı, R. P´ erez, and B. Morcego, “A survey of path following control strategies for uavs focused on quadrotors,” J. Intell. Robot. Syst. , 2019. [5] A. Roza and M. Maggiore, “Position control for a class of vehicles in 
+
+SE (3),” in Proc. CDC , 12 2012, pp. 5631–5636. [6] H. Mahmood, U. Ali, and A. Akhtar, “Path invariance of a quadrotor system under cyber attacks with theoretical guarantees,” in Proc. ACC ,2025, pp. 972–977. [7] L. Taeyoung, L. Melvin, and M. N. Harris, “Nonlinear robust tracking control of a quadrotor UAV on SE(3),” Asian J. Cont. , vol. 15, no. 2, pp. 391–408, 2012. [8] N. A. Chaturvedi and N. H. McClamroch, “Almost global attitude stabilization of an orbiting satellite including gravity gradient and control saturation effects,” in Proc. ACC , 2006. [9] C. Nielsen, L. Consolini, M. Maggiore, and M. Tosques, “Path following for the PVTOL: A set stabilization approach,” in Proc. CDC ,12 2008, pp. 584 –589. [10] E. Delaleau and J. Rudolph, “Control of flat systems by quasi-static feedback of generalized states,” Int. J. Cont. , vol. 71, no. 5, pp. 745– 765, 1998. [11] O. Fritsch, P. De Monte, M. Buhl, and B. Lohmann, “Quasi-static feedback linearization for the translational dynamics of a quadrotor helicopter,” in Proc. ACC , 2012, pp. 125–130. [12] V. Guillemin and A. Pollack, Differential Topology . Englewood Cliffs NJ: Prentice-Hall, 1974. [13] H. Schaub and J. Junkins, Analytical mechanics of space systems .American Institute of Aeronautics and Astronautics, 2018. [14] A. Roza and M. Maggiore, “Path following controller for a quadrotor helicopter,” in Proc. ACC . IEEE, 2012, pp. 4655–4660. [15] A. Isidori, Nonlinear Control Systems , 3rd ed. London, UK: Springer, 1995.
