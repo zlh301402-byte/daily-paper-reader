@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-30T22:22:32.666366+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 0,
+    "deep_cap": 7,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 12,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.27861v1",
+      "source": "arxiv",
+      "title": "PPO-EAL: Exact Augmented Lagrangian Proximal Policy Optimization for Safe Robotic Control",
+      "abstract": "Reinforcement learning (RL) has emerged as a promising solution to accomplish complex robotic control tasks; however, most of the current work ignores the safety requirements. Safe RL seeks to maximize task performance while satisfying explicit physical constraints, but current algorithms struggle to learn the policy efficiently with precise constraint satisfaction. This work proposes PPO-EAL, a novel first-order constrained policy optimization framework that integrates exact augmented Lagrangian optimization into proximal policy optimization for safe robotic control. By combining clipped policy updates with exact quadratic penalty terms, PPO-EAL achieves theoretically grounded constraint enforcement without requiring impractically large penalty factors. A momentum-regulated multiplier update further improves dual-variable stability, reducing constraint oscillation and unsafe behavior while preserving task performance. We provide exactness and convergence analysis under standard stochastic approximation assumptions. Extensive validation across diverse GPU-accelerated robotic benchmarks-including cart-pole balancing, cart-double-pendulum stabilization, 7-DoF Franka end-effector reaching, and quadrupedal locomotion-demonstrates superior safety precision and reward performance compared with state-of-the-art first-order safe RL baselines. Finally, we demonstrate zero-shot sim-to-real deployment in a contact-rich gear assembly task, where PPO-EAL substantially improves task success, reduces peak contact force, and enhances operational robustness. These results establish PPO-EAL as a general and practically deployable safe RL framework for diverse safety-critical robotic systems.",
+      "authors": [
+        "Jiatao Ding",
+        "Songqun Gao",
+        "Andrea Del Prete",
+        "Matteo Saveriano"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-26T08:59:38+00:00",
+      "link": "https://arxiv.org/pdf/2606.27861v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "keyword:drone-arm",
+        "query:aerial-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proximal policy optimization for safe robotic control",
+      "llm_evidence_cn": "用于安全机器人控制的近端策略优化",
+      "llm_evidence": "用于安全机器人控制的近端策略优化",
+      "canonical_evidence": "用于安全机器人控制的近端策略优化",
+      "llm_tldr_en": "PPO-EAL integrates exact augmented Lagrangian optimization into PPO for safe robotic control, achieving theoretically grounded constraint enforcement without impractical Lagrange multipliers.",
+      "llm_tldr_cn": "该论文针对安全强化学习中的约束满足问题，提出PPO-EAL框架，将精确增广拉格朗日优化融入近端策略优化。通过裁剪策略更新与精确二次惩罚项结合，在不依赖不切实际的拉格朗日乘子情况下实现理论上有保障的约束执行。在机器人控制任务中展示了有效性，为安全策略优化提供了新方法。",
+      "llm_tldr": "该论文针对安全强化学习中的约束满足问题，提出PPO-EAL框架，将精确增广拉格朗日优化融入近端策略优化。通过裁剪策略更新与精确二次惩罚项结合，在不依赖不切实际的拉格朗日乘子情况下实现理论上有保障的约束执行。在机器人控制任务中展示了有效性，为安全策略优化提供了新方法。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
