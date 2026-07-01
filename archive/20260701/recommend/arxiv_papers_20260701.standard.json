@@ -1,0 +1,366 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-01T21:12:03.239188+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2606.27344v1",
+      "source": "arxiv",
+      "title": "VibeAct: Vibration to Actions for Contact-Rich Reactive Robot Dexterity",
+      "abstract": "Dexterous manipulation depends on contact events that are fast, local, and often visually occluded. Piezoelectric microphones offer a compact and high-bandwidth way to sense these interactions, but the resulting vibro-acoustic signals are difficult to simulate faithfully enough for end-to-end sim-to-real policy learning on dexterous robot hands. We propose VibeAct, a framework that bridges real vibrotactile sensing and simulation-based reinforcement learning through a shared physical representation of contact and slip. In the real world, we embed piezoelectric microphones into a dexterous robot hand and collect vibro-acoustic data through teleoperation, then replay the recordings in a calibrated digital clone to automatically label per-finger contact and slip. A tactile estimator learns to predict contact and slip from real microphone waveforms, while manipulation policies are trained in simulation on the same representation computed directly from simulated contacts. This decoupling lets policies exploit rapid tactile feedback without simulating raw audio. Across five contact-rich tasks spanning regrasping, in-hand reorientation, and insertion, VibeAct consistently outperforms a proprioception-and-point-cloud baseline in simulation, with the largest gains on tasks requiring sustained reactive control, where the continuous slip-magnitude channel proves the most informative observation. The learned policies transfer to a physical dexterous hand-arm platform, improving success rates on deployed tasks. Project videos and additional details are at https://vibeact.github.io/.",
+      "authors": [
+        "Yuemin Mao",
+        "Uksang Yoo",
+        "Jean Oh",
+        "Jonathan Francis",
+        "Jeffrey Ichnowski"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-25T17:50:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.27344v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL for dexterous hand manipulation; transferable to robot arm control",
+      "llm_evidence_cn": "使用强化学习进行灵巧手操作，可迁移至机械臂控制",
+      "llm_evidence": "使用强化学习进行灵巧手操作，可迁移至机械臂控制",
+      "canonical_evidence": "使用强化学习进行灵巧手操作，可迁移至机械臂控制",
+      "llm_tldr_en": "VibeAct bridges real vibrotactile sensing with simulation-based RL through a shared contact/slip representation, enabling dexterous manipulation policies.",
+      "llm_tldr_cn": "针对灵巧手操作中接触信息难以模拟的问题，提出VibeAct框架，通过共享的接触与滑动物理表示桥接真实振动感知和基于仿真的强化学习。在真实手上嵌入压电麦克风收集信号，在数字克隆中回放并自动标注，训练策略可迁移至真实世界。该方法为机器人手部精细操作提供了新的感知-学习范式。",
+      "llm_tldr": "针对灵巧手操作中接触信息难以模拟的问题，提出VibeAct框架，通过共享的接触与滑动物理表示桥接真实振动感知和基于仿真的强化学习。在真实手上嵌入压电麦克风收集信号，在数字克隆中回放并自动标注，训练策略可迁移至真实世界。该方法为机器人手部精细操作提供了新的感知-学习范式。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31377v1",
+      "source": "arxiv",
+      "title": "Stage-Transition Dense Reward Modeling for Reinforcement Learning",
+      "abstract": "Reinforcement learning for long-horizon robotic manipulation is often limited by sparse and delayed rewards, while manually designing dense shaping signals is costly and brittle to changes in environments and object configurations. This work proposes Stage-Transition Dense Reward (STDR), a visual reward-learning framework that converts unstructured expert videos into logically grounded dense rewards for training RL agents from scratch. STDR leverages semantic understanding to infer a task's stage structure from demonstrations, and delivers two complementary learning signals during online training: (i) stage-transition feedback that provides goal-directed reward, and (ii) within-stage progress feedback that supplies fine-grained guidance toward completing each stage. Furthermore, an out-of-distribution (OOD) detection mechanism and a grasping regulation module are integrated to enhance robustness and prevent reward hacking. Experiments on 14 manipulation tasks across MetaWorld, ManiSkill, and Franka Kitchen show that STDR consistently improves sample efficiency and success rates over multiple baselines, and matches or surpasses handcrafted dense rewards on several challenging tasks. Real-robot evaluations further indicate that STDR assigns stable, progress-aligned rewards on successful executions while producing appropriately low rewards for failures, suggesting robustness to visual noise and better-calibrated reward assignment across settings.",
+      "authors": [
+        "Yang Yang",
+        "Bingjie Chen",
+        "Zihan Wang",
+        "Yizhe Li",
+        "Guoping Pan",
+        "Yi Cheng",
+        "Houde Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T09:07:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.31377v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Stage-transition dense reward for RL in robotic manipulation",
+      "llm_evidence_cn": "阶段转换密集奖励用于机器人操作的强化学习",
+      "llm_evidence": "阶段转换密集奖励用于机器人操作的强化学习",
+      "canonical_evidence": "阶段转换密集奖励用于机器人操作的强化学习",
+      "llm_tldr_en": "Proposes STDR to learn dense rewards from expert videos for training RL agents on long-horizon robotic manipulation, addressing sparse reward problem.",
+      "llm_tldr_cn": "针对长时程机器人操作中奖励稀疏的问题，提出阶段转换密集奖励（STDR）框架，从专家视频中学习逻辑化的密集奖励，通过阶段转换反馈和阶段内进度反馈两个互补信号，使RL智能体从零开始有效训练，且无需手工设计奖励函数。",
+      "llm_tldr": "针对长时程机器人操作中奖励稀疏的问题，提出阶段转换密集奖励（STDR）框架，从专家视频中学习逻辑化的密集奖励，通过阶段转换反馈和阶段内进度反馈两个互补信号，使RL智能体从零开始有效训练，且无需手工设计奖励函数。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.30268v1",
+      "source": "arxiv",
+      "title": "ConCent: Contact-Centric Real-to-Sim-to-Real Learning from One Demonstration",
+      "abstract": "Sim-to-real policy transfer -- deploying policies trained in simulation in the real world -- is a promising paradigm for scaling robot manipulation without large-scale real-world data. However, transferring simulation-trained policies remains challenging due to discrepancies in contact dynamics -- particularly in contact-rich tasks where subtle differences can alter task outcomes entirely. Because interaction between the manipulated object and the environment is mediated through contact, task success depends on accurately reproducing task-relevant contacts. Accordingly, in manipulation, contact-centric fidelity -- reproducing both the contact event sequence (when, where, and how contacts occur) and the local contact dynamics (how forces and motions evolve at each contact) -- is a necessary condition for task success. Based on this insight, we propose a contact-centric real-to-sim-to-real RL framework that uses task-relevant contact event sequences extracted from real demonstrations as the learning objective. We approximate objects as groups of primitives and optimize their contact geometry in simulation so that the resulting local contact dynamics explain the observed state transitions. The contact event sequence is automatically extracted by replaying the demonstration. This sequence serves as a structured reward signal, guiding the policy toward physically plausible contact regimes validated in reality and preventing exploitation of unrealistic simulator contacts. The signal is obtained automatically, requiring no per-task reward design. Experiments on contact-rich manipulation tasks demonstrate more stable and robust sim-to-real policy transfer compared to unconstrained RL baselines.",
+      "authors": [
+        "Heecheol Kim",
+        "Namiko Saito",
+        "Katsushi Ikeuchi",
+        "Yasuyuki Matsushita"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-29T13:16:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.30268v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "contact-centric real-to-sim-to-real learning for manipulation; applicable to robot arm",
+      "llm_evidence_cn": "以接触为中心的从真实到仿真再到真实操作学习，可应用于机械臂",
+      "llm_evidence": "以接触为中心的从真实到仿真再到真实操作学习，可应用于机械臂",
+      "canonical_evidence": "以接触为中心的从真实到仿真再到真实操作学习，可应用于机械臂",
+      "llm_tldr_en": "ConCent addresses sim-to-real gaps in contact dynamics by focusing on contact-centric fidelity, enabling policy transfer from one real demonstration.",
+      "llm_tldr_cn": "针对接触丰富任务中仿真到真实迁移的接触动力学差异问题，提出ConCent框架，以接触为中心保证事件序列和局部动力学保真度。仅需一次真实演示，即可在仿真中学习并成功迁移策略。该方法降低了数据需求，适用于各种机械臂操作任务。",
+      "llm_tldr": "针对接触丰富任务中仿真到真实迁移的接触动力学差异问题，提出ConCent框架，以接触为中心保证事件序列和局部动力学保真度。仅需一次真实演示，即可在仿真中学习并成功迁移策略。该方法降低了数据需求，适用于各种机械臂操作任务。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29028v1",
+      "source": "arxiv",
+      "title": "Keypose Exploration: Efficient Automatic Trajectory Labelling and Cross-Embodiment Policy Transfer",
+      "abstract": "Keypose-based manipulation decomposes tasks into critical waypoints to simplify policy learning for long-horizon tasks, but existing approaches rely on task-specific heuristics or manual annotation to extract keyposes from demonstrations. We present an automatic trajectory labelling pipeline for grasp-related tasks. This pipeline combines vision-language models (VLMs) for semantic event detection with classical trajectory analysis for precise temporal alignment, requiring VLM inference only on one single demo among repeating ones per task. Using the labelled data, we train a keypose-guided Diffusion Policy (DP) that exploits keypose conditioning to intervene demonstration distributions. We explore the possibility to apply this property for cross-embodiment transfer: candidate keyposes are sampled and filtered via a reachability map, steering the policy toward kinematically feasible keyposes for the target robot. As a preliminary feasibility study, experiments on two robomimic tasks show that the labelled data produces policies matching a standard DP baseline, and that reachability-filtered keypose conditioning may benefit zero-shot transfer on the multimodal insertion task when feasible candidates are available.",
+      "authors": [
+        "Yupu Lu",
+        "Hang Xu",
+        "Yizhou Chen",
+        "Jia Pan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-27T17:48:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.29028v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "keypose-based policy for grasp tasks; transferable to robot arm manipulation",
+      "llm_evidence_cn": "基于关键姿势的策略用于抓取任务，可迁移至机械臂操作",
+      "llm_evidence": "基于关键姿势的策略用于抓取任务，可迁移至机械臂操作",
+      "canonical_evidence": "基于关键姿势的策略用于抓取任务，可迁移至机械臂操作",
+      "llm_tldr_en": "Keypose Exploration automates trajectory labelling using VLMs and classical analysis, then trains a keypose-guided Diffusion Policy for grasp tasks, enabling cross-embodiment transfer.",
+      "llm_tldr_cn": "为降低长时程任务策略学习中的标注成本，提出自动轨迹标注流水线，结合视觉语言模型和经典轨迹分析，仅需一次VLM推理即可生成标签。利用标注数据训练关键姿势引导的扩散策略，在抓取任务上实现跨实体迁移。该方法可应用于机械臂操作。",
+      "llm_tldr": "为降低长时程任务策略学习中的标注成本，提出自动轨迹标注流水线，结合视觉语言模型和经典轨迹分析，仅需一次VLM推理即可生成标签。利用标注数据训练关键姿势引导的扩散策略，在抓取任务上实现跨实体迁移。该方法可应用于机械臂操作。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.31043v1",
+      "source": "arxiv",
+      "title": "Warp RL: Reshaping Base Policy Distributions for Dynamics Adaptation",
+      "abstract": "Residual reinforcement learning adapts a pretrained robot policy by learning an additive correction to its actions. While effective when adaptation amounts to shifting the base policy's action distribution, additive corrections cannot change the distribution's shape, scale, or state-dependent geometry -- limitations we formalize as wrong variance, miscalibrated confidence, and non-uniform correction. We show that these matter under dynamics shift: when the base distribution is geometrically mismatched to the shifted system, residual correction can underperform even the unadapted policy. We propose \\textbf{Warp RL}, a policy adaptation method that replaces additive residuals with an invertible, state-conditioned transformation of the base policy's action distribution. Instantiated with monotonic rational-quadratic spline flows [arXiv:0706.1234v1], Warp RL preserves identity initialization, strictly generalizes additive residual correction, and exposes a structured adaptation space suitable for both policy-gradient and gradient-free optimization. Across a variety of ManiSkill3 manipulation tasks with controlled dynamics shifts, Warp RL matches residual correction when translation is sufficient and substantially outperforms it when adaptation requires distributional reshaping. We further demonstrate that warping can replace additive correction in an off-policy sim-to-real pipeline, achieving comparable success rate with 30% faster task completion on a real-robot peg-insertion task.",
+      "authors": [
+        "Ethan Hirschowitz",
+        "Fabio Ramos"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-06-30T02:25:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.31043v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Warp RL adapts base policy via invertible transformation for dynamics shift, applicable to robot arm control",
+      "llm_evidence_cn": "Warp RL通过可逆变换调整策略以应对动力学变化，可应用于机器人手臂控制",
+      "llm_evidence": "Warp RL通过可逆变换调整策略以应对动力学变化，可应用于机器人手臂控制",
+      "canonical_evidence": "Warp RL通过可逆变换调整策略以应对动力学变化，可应用于机器人手臂控制",
+      "llm_tldr_en": "Proposes Warp RL to replace additive residual with invertible state-conditioned transformation for adapting robot policies to dynamics changes, outperforming standard residual RL.",
+      "llm_tldr_cn": "针对残差强化学习在处理动力学变化时的局限性（无法改变分布形状和状态相关几何），提出Warp RL方法，使用可逆的状态条件变换替代累加残差来调整基策略，在多种仿真和真实机器人任务上展示出更好的适应性能。",
+      "llm_tldr": "针对残差强化学习在处理动力学变化时的局限性（无法改变分布形状和状态相关几何），提出Warp RL方法，使用可逆的状态条件变换替代累加残差来调整基策略，在多种仿真和真实机器人任务上展示出更好的适应性能。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29892v1",
+      "source": "arxiv",
+      "title": "Trust Your Instincts: Confidence-Driven Test-Time RL for Vision-Language-Action Models",
+      "abstract": "Reinforcement learning (RL) has become indispensable for pushing Vision-Language-Action Models (VLAs) beyond static imitation learning. However, existing RL methods typically require external environmental feedback, relying on predefined success signals to guide policy updates. In this work, we show that VLA models possess useful internal evaluative capabilities: in discrete-action VLAs, trajectories with higher generation confidence are significantly more likely to succeed. Based on this observation, we introduce T^2VLA (Test-time VLA), an architecture-agnostic test-time RL framework that enables VLA models to achieve self-bootstrapping policy improvement. Instead of relying on external rewards, T^2VLA leverages trajectory-level similarity to high-confidence expert demonstrations as an intrinsic reward signal. In addition, we propose a Confidence-Driven Dual Expert Bootstrapping mechanism, which dynamically balances a Local Pseudo-Expert for exploration and a Global Expert Pool for training stability. Extensive experiments on the LIBERO and RoboTwin benchmarks show that T^2VLA consistently outperforms supervised baselines and approaches oracle RL performance with ground-truth rewards, achieving effective improvement without external reward feedback. Furthermore, T^2VLA adapts to distinct VLA paradigms, including both OpenVLA-OFT and the pi series.",
+      "authors": [
+        "Siyao Chen",
+        "Jiakang Yuan",
+        "Jiaxin Wang",
+        "Tao Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-29T07:31:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.29892v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning for robot arm control",
+      "llm_evidence_cn": "强化学习用于机械臂控制",
+      "llm_evidence": "强化学习用于机械臂控制",
+      "canonical_evidence": "强化学习用于机械臂控制",
+      "llm_tldr_en": "T2VLA uses test-time RL with internal confidence as reward to improve VLA models for action generation, applicable to robot arm control.",
+      "llm_tldr_cn": "本文针对视觉-语言-动作模型（VLA）需要外部奖励的问题，提出测试时强化学习框架T2VLA，利用VLA模型自身生成轨迹的置信度作为内部奖励进行策略自提升。该方法无需外部环境反馈，可适用于离散动作的机械臂控制任务。实验表明T2VLA能够有效提升VLA模型的性能，为机器人操作提供了自引导的强化学习范式。",
+      "llm_tldr": "本文针对视觉-语言-动作模型（VLA）需要外部奖励的问题，提出测试时强化学习框架T2VLA，利用VLA模型自身生成轨迹的置信度作为内部奖励进行策略自提升。该方法无需外部环境反馈，可适用于离散动作的机械臂控制任务。实验表明T2VLA能够有效提升VLA模型的性能，为机器人操作提供了自引导的强化学习范式。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.30474v1",
+      "source": "arxiv",
+      "title": "Grasp-Oriented Non-Prehensile Manipulation via Learning a Graspability Field",
+      "abstract": "Non-prehensile manipulation is often used as a preparatory step for robotic grasping, yet existing approaches typically require a predefined target object pose. In practice, however, objects admit multiple graspable configurations and the desired pose is not known in advance. We reformulate non-prehensile manipulation for grasping as optimizing an object centric graspability objective rather than reaching a specific pose. We construct a graspable set from synthesized grasps and define a graspability field that measures how suitable an object configuration is for successful grasp execution. The scalar measure provides a dense learning signal for reinforcement learning and determines when to terminate manipulation. This yields a closed-loop manipulation-to-grasp pipeline driven by a single policy. Experiments in simulation and on a real robot show that the policy reliably reconfigures objects into graspable states and transitions to grasping without external planners or manually specified stopping conditions. The predicted graspability distance correlates with real world grasp success, which indicates that the learned representation captures grasp feasibility of object configurations.",
+      "authors": [
+        "Licheng Zhong",
+        "Gim Hee Lee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-29T15:33:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.30474v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL for robotic arm grasping, transferable to aerial manipulation",
+      "llm_evidence_cn": "强化学习用于机械臂抓取，可迁移至空中操纵",
+      "llm_evidence": "强化学习用于机械臂抓取，可迁移至空中操纵",
+      "canonical_evidence": "强化学习用于机械臂抓取，可迁移至空中操纵",
+      "llm_tldr_en": "A graspability field learned via RL enables closed-loop non-prehensile manipulation for grasping without predefined target poses.",
+      "llm_tldr_cn": "针对非预抓取操作中需要预设目标姿态的问题，论文提出学习物体中心的可抓取性场，为强化学习提供密集信号，并自动决定终止操作。该方法可在不指定目标姿态的情况下实现抓取，为机械臂操作提供通用框架，可扩展至空中操纵场景。",
+      "llm_tldr": "针对非预抓取操作中需要预设目标姿态的问题，论文提出学习物体中心的可抓取性场，为强化学习提供密集信号，并自动决定终止操作。该方法可在不指定目标姿态的情况下实现抓取，为机械臂操作提供通用框架，可扩展至空中操纵场景。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.31846v1",
+      "source": "arxiv",
+      "title": "Z-1: Efficient Reinforcement Learning for Vision-Language-Action Models",
+      "abstract": "Vision-Language-Action (VLA) models offer a promising framework for robotic manipulation by connecting language instructions, visual observations, and continuous control. However, most existing policies remain limited by behavior cloning or supervised fine-tuning (SFT) from fixed demonstrations, which provides limited opportunity to improve from the policy's own failures. In this paper, we present Z-1, a reinforcement learning (RL) post-training framework for flow-based VLA models. Built on top of $π_{0.5}$, Z-1 uses only publicly released RoboCasa demonstrations for SFT and then applies a task-wise Group Relative Policy Optimization (GRPO) strategy across $24$ standard RoboCasa tasks. To improve the efficiency and stability of online optimization, Z-1 combines shared-prefix rollout construction, tree-structured trajectory branching, completion-aware reward calibration, and selective joint training of VLM and Action Expert. Across all $24$ RoboCasa tasks, Z-1 achieves an average success rate of $80.6\\%$, improving over its SFT initialization by $13.2\\%$ points and outperforms the published sota models. These results show that systematic GRPO post-training can substantially improve flow-based VLA policies without additional private demonstrations.",
+      "authors": [
+        "Lang Cao",
+        "Renhong Chen",
+        "Luyi Li",
+        "Peng Wang",
+        "Mofan Peng",
+        "Yitong Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T15:46:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.31846v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL for vision-language-action models in robotic manipulation, transferable to arm control",
+      "llm_evidence_cn": "强化学习用于视觉-语言-动作模型的操作，可迁移至机械臂控制",
+      "llm_evidence": "强化学习用于视觉-语言-动作模型的操作，可迁移至机械臂控制",
+      "canonical_evidence": "强化学习用于视觉-语言-动作模型的操作，可迁移至机械臂控制",
+      "llm_tldr_en": "Z-1 applies RL post-training on VLA models using GRPO across 24 RoboCasa tasks, improving performance from own failures.",
+      "llm_tldr_cn": "针对视觉-语言-动作模型受限于行为克隆和固定演示的问题，论文提出Z-1强化学习后训练框架，基于π_{0.5}进行SFT，然后使用任务级GRPO策略在24个RoboCasa任务上优化。在线优化提升了策略的效率和稳定性，为机器人操作提供了高效RL微调方案。",
+      "llm_tldr": "针对视觉-语言-动作模型受限于行为克隆和固定演示的问题，论文提出Z-1强化学习后训练框架，基于π_{0.5}进行SFT，然后使用任务级GRPO策略在24个RoboCasa任务上优化。在线优化提升了策略的效率和稳定性，为机器人操作提供了高效RL微调方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.32027v1",
+      "source": "arxiv",
+      "title": "Freeform Preference Learning for Robotic Manipulation",
+      "abstract": "Reward design remains a central bottleneck for autonomous robot policy improvement, especially in long-horizon manipulation tasks where sparse success labels provide too little signal and binary preferences collapse many competing notions of quality into one ambiguous signal. We introduce Freeform Preference Learning (FPL), a method for learning robot policies from freeform human preferences. Rather than asking annotators which of two trajectories is better overall, FPL lets them define natural-language preference axes, such as speed, safety, quality of placement, or carefulness, and provide pairwise preferences along each axis. These annotations are used to learn a language-conditioned reward model that maps a trajectory and preference label to an axis-specific reward. We use this model to train a reward-conditioned policy that optimizes across the multiple human-specified dimensions. Across four real-world and two simulated long-horizon manipulation tasks, FPL improves over sparse-reward and binary-preference methods by 38 percentage points. Beyond improved performance, FPL learns dense progress signals without explicit subtask segmentation, shows compositionality of behavior not present in the data, and allows users to steer the policy towards different behaviors at test time without retraining. Blog post with videos available at https://freeform-pl.github.io/fpl.website/",
+      "authors": [
+        "Marcel Torne",
+        "Anubha Mahajan",
+        "Abhijnya Bhat",
+        "Chelsea Finn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-30T17:54:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.32027v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL for robotic manipulation via preference learning, applicable to arm control",
+      "llm_evidence_cn": "通过偏好学习的机器人操作强化学习，适用于机械臂控制",
+      "llm_evidence": "通过偏好学习的机器人操作强化学习，适用于机械臂控制",
+      "canonical_evidence": "通过偏好学习的机器人操作强化学习，适用于机械臂控制",
+      "llm_tldr_en": "Freeform Preference Learning lets annotators define natural-language preference axes to learn a language-conditioned reward model for robot policy improvement.",
+      "llm_tldr_cn": "针对奖励设计在长周期操作中的瓶颈，论文提出自由形式偏好学习方法，让标注者定义自然语言偏好轴（如速度、安全）并提供对比，从而学习语言条件化的奖励模型，支持多维度策略优化。该方法有效提升了机器人操作的样本效率和性能。",
+      "llm_tldr": "针对奖励设计在长周期操作中的瓶颈，论文提出自由形式偏好学习方法，让标注者定义自然语言偏好轴（如速度、安全）并提供对比，从而学习语言条件化的奖励模型，支持多维度策略优化。该方法有效提升了机器人操作的样本效率和性能。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
