@@ -1,0 +1,212 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-02T21:36:47.995987+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.26428v1",
+      "source": "arxiv",
+      "title": "Play2Perfect: What Matters in Dexterous Play Pretraining for Precise Assembly?",
+      "abstract": "Multi-fingered robots promise the speed and dexterity of human hands, yet challenging problems such as precise assembly have remained out of reach. These tasks are contact-rich, making data collection for imitation learning difficult, and sparse-reward, making direct exploration with reinforcement learning (RL) intractable. Consequently, prior work has made progress by structuring the problem with specialized grippers, tool attachments, and environment fixtures. In this work, we argue that before a robot can perfect precise assembly, it must first learn to play. We further ask the question: what factors in the process of learning to play matter for precise assembly? We propose Play2Perfect, an RL framework for task-agnostic pretraining through play on diverse objects and goals, which is then perfected on precise assembly. The goal of play is to acquire reusable manipulation priors, such as grasping, in-hand reorientation and pose reaching. Finetuning then adapts this general prior to assembly, focusing exploration on the final contact-rich, high-precision interactions needed for success. We systematically study key design choices in play pretraining, including object diversity, training objective, trajectory diversity, and goal precision. We show that our prior is 33x more sample-efficient than RL training from scratch, even when provided with dense, multi-stage rewards. We demonstrate zero-shot sim-to-real transfer, achieving 60% success on tight insertions with only 0.5 mm contact clearance, and over 50% success on long-horizon multi-part assembly and screwing.",
+      "authors": [
+        "Tyler Ga Wei Lum",
+        "Kushal Kedia",
+        "C. Karen Liu",
+        "Jeannette Bohg"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T22:39:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.26428v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL pretraining framework for dexterous precise assembly tasks",
+      "llm_evidence_cn": "用于灵巧精确装配的强化学习预训练框架",
+      "llm_evidence": "用于灵巧精确装配的强化学习预训练框架",
+      "canonical_evidence": "用于灵巧精确装配的强化学习预训练框架",
+      "llm_tldr_en": "Proposes Play2Perfect, a task-agnostic RL pretraining framework that enables dexterous robots to learn precise assembly through play-like exploration before fine-tuning on sparse-reward tasks, achieving significant improvement.",
+      "llm_tldr_cn": "灵巧机器人完成精密装配面临接触密集和数据稀疏的挑战。本文提出Play2Perfect框架，让机器人通过类似玩耍的任务无关预训练获得通用操作技能，再微调用于精密装配。实验证明预训练能显著提升装配成功率，揭示了预训练中关键因素如探索多样性和奖励设计的重要性。",
+      "llm_tldr": "灵巧机器人完成精密装配面临接触密集和数据稀疏的挑战。本文提出Play2Perfect框架，让机器人通过类似玩耍的任务无关预训练获得通用操作技能，再微调用于精密装配。实验证明预训练能显著提升装配成功率，揭示了预训练中关键因素如探索多样性和奖励设计的重要性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.31043v2",
+      "source": "arxiv",
+      "title": "Warp RL: Reshaping Base Policy Distributions for Dynamics Adaptation",
+      "abstract": "Residual reinforcement learning adapts a pretrained robot policy by learning an additive correction to its actions. While effective when adaptation amounts to shifting the base policy's action distribution, additive corrections cannot change the distribution's shape, scale, or state-dependent geometry -- limitations we formalize as wrong variance, miscalibrated confidence, and non-uniform correction. We show that these matter under dynamics shift: when the base distribution is geometrically mismatched to the shifted system, residual correction can underperform even the unadapted policy. We propose Warp RL, a policy adaptation method that replaces additive residuals with an invertible, state-conditioned transformation of the base policy's action distribution. Instantiated with monotonic rational-quadratic spline flows (arXiv:1906.04032), Warp RL preserves identity initialization, strictly generalizes additive residual correction, and exposes a structured adaptation space suitable for both policy-gradient and gradient-free optimization. Across a variety of ManiSkill3 manipulation tasks with controlled dynamics shifts, Warp RL matches residual correction when translation is sufficient and substantially outperforms it when adaptation requires distributional reshaping. We further demonstrate that warping can replace additive correction in an off-policy sim-to-real pipeline, achieving comparable success rate with 30% faster task completion on a real-robot peg-insertion task.",
+      "authors": [
+        "Ethan Hirschowitz",
+        "Fabio Ramos"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-06-30T02:25:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.31043v2",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL method for dynamics adaptation applicable to robot arm control",
+      "llm_evidence_cn": "适用于机械臂控制的强化学习动力学适应方法",
+      "llm_evidence": "适用于机械臂控制的强化学习动力学适应方法",
+      "canonical_evidence": "适用于机械臂控制的强化学习动力学适应方法",
+      "llm_tldr_en": "Warp RL replaces additive residual corrections with an invertible transformation of base policy distribution for better dynamics adaptation in RL.",
+      "llm_tldr_cn": "针对残差强化学习在动力学变化下适应性不足的问题，本文提出Warp RL方法，用可逆的状态条件变换替代加法残差，重塑基策略的动作分布。实验表明在多种动力学偏移场景下，Warp RL显著优于传统残差方法。该方法为机器人强化学习策略的鲁棒适应提供了新思路。",
+      "llm_tldr": "针对残差强化学习在动力学变化下适应性不足的问题，本文提出Warp RL方法，用可逆的状态条件变换替代加法残差，重塑基策略的动作分布。实验表明在多种动力学偏移场景下，Warp RL显著优于传统残差方法。该方法为机器人强化学习策略的鲁棒适应提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29820v1",
+      "source": "arxiv",
+      "title": "Dual-Flow Reinforcement Learning with State-Aware Exploration",
+      "abstract": "In complex continuous-control reinforcement learning tasks, multimodal optimal actions often coincide with uncertain, multimodal return distributions, making reliable value estimation and multimodal exploration challenging. Existing value estimation methods using unimodal Gaussians restrict expressiveness and yield biased estimates. Recent generative policies can represent multimodal actions but often collapse to a few modes and under-explore high-value areas of the action space. Motivated by these challenges, we propose Dual-Flow RL, a unified actor-critic framework that jointly models a continuous return distribution and a multimodal policy distribution using conditional flow matching (CFM). This design supports reliable value estimation and sustained multimodal exploration. To further enhance exploration, we introduce an Entropy-Covariance Exploration Regulator (ECER) that enables state-aware exploration regulation leveraging policy entropy and action-uncertainty covariance. Experiments on DeepMind Control Suite and Humanoid-Bench show that Dual-Flow RL achieves state-of-the-art performance on most tasks, significantly outperforming prior diffusion-based and flow-based methods.",
+      "authors": [
+        "Qijun Li",
+        "Zheng Fu",
+        "Qi Song",
+        "Yifei He",
+        "Weitao Zhou",
+        "Kun Jiang",
+        "Diange Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-29T05:57:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.29820v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes Dual-Flow RL framework for continuous control, applicable to robot arm control requiring multimodal policies",
+      "llm_evidence_cn": "提出双流强化学习框架用于连续控制，可应用于需要多模态策略的机械臂控制",
+      "llm_evidence": "提出双流强化学习框架用于连续控制，可应用于需要多模态策略的机械臂控制",
+      "canonical_evidence": "提出双流强化学习框架用于连续控制，可应用于需要多模态策略的机械臂控制",
+      "llm_tldr_en": "Dual-Flow RL jointly models return and policy distributions using conditional flow matching, enabling reliable value estimation and multimodal exploration for complex continuous-control tasks.",
+      "llm_tldr_cn": "针对复杂连续控制任务中多模态最优动作与不确定回报分布导致的价值估计偏差和探索不足问题，提出双流强化学习框架，利用条件流匹配联合建模回报分布与多模态策略分布，实现可靠价值估计与持续多模态探索。实验表明在标准连续控制任务上取得优越性能，为机器人臂等连续控制提供了通用强化学习方案。",
+      "llm_tldr": "针对复杂连续控制任务中多模态最优动作与不确定回报分布导致的价值估计偏差和探索不足问题，提出双流强化学习框架，利用条件流匹配联合建模回报分布与多模态策略分布，实现可靠价值估计与持续多模态探索。实验表明在标准连续控制任务上取得优越性能，为机器人臂等连续控制提供了通用强化学习方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.31958v1",
+      "source": "arxiv",
+      "title": "Adapting Generalist Robot Policies with Semantic Reinforcement Learning",
+      "abstract": "Generalist robot policies learn a diverse repertoire of behaviors from large-scale pretraining. In principle, this makes them excellent priors for downstream adaptation via reinforcement learning (RL). In practice, however, standard RL methods leveraging this prior optimize directly over robot actions, requiring the base policy's action distribution to be close to that of a performant policy from the start. This assumption breaks down for complex or long-horizon tasks that fall outside the pretraining distribution. Our key insight is that, for sufficiently expressive generalist policies, language prompts are an effective alternative space for learning to solve such tasks: modulating language inputs elicits skills already within the policy's repertoire, which can be composed to solve tasks beyond its zero-shot capabilities. We propose Semantic Action Reinforcement Learning (SARL), which learns to optimize this prompt space through online interaction, treating the generalist policy as a controllable skill prior. Importantly, leveraging pretrained skills rather than learning new ones from scratch yields structured, semantically meaningful exploration and highly efficient online improvement, and learning to modulate prompts through experience grounds them in induced real-world behaviors for robust task-solving. Across real-world settings and simulated benchmarks, we show SARL unlocks fundamentally new capabilities -- adapting VLA behavior to solve complex, long-horizon tasks -- and significantly outperforms existing approaches for improving robot behavior in deployment.",
+      "authors": [
+        "Jagdeep Singh Bhatia",
+        "Andrew Wagenmaker",
+        "William Chen",
+        "Sergey Levine"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T17:00:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.31958v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generalist robot policy adaptation via semantic RL, transferable to arm control",
+      "llm_evidence_cn": "通过语义强化学习适应通用机器人策略，可迁移至机械臂控制",
+      "llm_evidence": "通过语义强化学习适应通用机器人策略，可迁移至机械臂控制",
+      "canonical_evidence": "通过语义强化学习适应通用机器人策略，可迁移至机械臂控制",
+      "llm_tldr_en": "Uses language prompts as action space to adapt generalist robot policies via RL, enabling complex task learning outside pretraining distribution.",
+      "llm_tldr_cn": "本文提出了一种通过语义强化学习适应通用机器人策略的方法。针对标准强化学习在复杂或长时域任务中难以利用预训练策略的问题，作者将语言提示作为动作空间，通过优化语言输入来激发策略中的已有技能。实验表明该方法能有效学习新任务，为机器人臂控制提供了可迁移的通用框架。",
+      "llm_tldr": "本文提出了一种通过语义强化学习适应通用机器人策略的方法。针对标准强化学习在复杂或长时域任务中难以利用预训练策略的问题，作者将语言提示作为动作空间，通过优化语言输入来激发策略中的已有技能。实验表明该方法能有效学习新任务，为机器人臂控制提供了可迁移的通用框架。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.00392v1",
+      "source": "arxiv",
+      "title": "Learning Generalizable Skill Policy with Data-Efficient Unsupervised RL",
+      "abstract": "Unsupervised Reinforcement Learning (URL) aims to pre-train scalable, skill-conditioned policies without extrinsic rewards, serving as a foundation for downstream control tasks. Despite recent progress, we argue that current off-policy URL methods are limited by two critical, overlooked bottlenecks: (1) non-stationary skill semantics and (2) brittle generalization. To address these challenges, we propose GenDa (Generalizable Data-efficient Agent), a unified framework for robust unsupervised reinforcement learning. First, we introduce a skill relabeling mechanism to mitigate non-stationarity and significantly improve data efficiency for pre-training. Second, we propose a Complementary Information Bottleneck (CIB), encouraging the learned skill policy to focus on ego-centric features and become robust to distribution shifts for downstream tasks. Through various experiments, we demonstrate that GenDa significantly enhances the scalability of URL with superior generalizability and data efficiency. Our code and videos are available at https://ihatebroccoli.github.io/official-GenDa.",
+      "authors": [
+        "Jongchan Park",
+        "Seungjun Oh",
+        "Seungho Baek",
+        "Yusung Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-01T03:34:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.00392v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "unsupervised RL for skill pre-training, transferable to robot arm control",
+      "llm_evidence_cn": "无监督强化学习技能预训练，可迁移至机械臂控制",
+      "llm_evidence": "无监督强化学习技能预训练，可迁移至机械臂控制",
+      "canonical_evidence": "无监督强化学习技能预训练，可迁移至机械臂控制",
+      "llm_tldr_en": "GenDa addresses non-stationary skill semantics and brittle generalization in unsupervised RL for downstream control tasks.",
+      "llm_tldr_cn": "本文提出GenDa框架，用于数据高效的无监督强化学习。针对现有无监督RL方法中技能语义非平稳和泛化脆弱的问题，引入技能重标记机制缓解非平稳性，并通过互补信息瓶颈（CIB）增强泛化。无监督预训练后的技能策略可有效迁移至下游控制任务，包括机械臂操作。该方法提升了无监督RL的实用性和效率。",
+      "llm_tldr": "本文提出GenDa框架，用于数据高效的无监督强化学习。针对现有无监督RL方法中技能语义非平稳和泛化脆弱的问题，引入技能重标记机制缓解非平稳性，并通过互补信息瓶颈（CIB）增强泛化。无监督预训练后的技能策略可有效迁移至下游控制任务，包括机械臂操作。该方法提升了无监督RL的实用性和效率。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
