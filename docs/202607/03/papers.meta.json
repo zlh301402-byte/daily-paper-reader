@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-03",
+  "date": "2026-07-03",
+  "generated_at": "2026-07-03T20:31:48",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/03/2607.01651v1-one-demonstration-is-enough-for-real-world-robotic-reinforcement-learning",
+      "section": "deep",
+      "title_en": "One Demonstration Is Enough for Real-World Robotic Reinforcement Learning",
+      "authors": "Yuwan Liu, Hongze Yu, Song Liu, Yuhan Wang, Junge Zhang, Yaodong Yang, Yuanpei Chen, Ceyao Zhang",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.01651v1",
+      "score": "8.0",
+      "evidence": "单演示强化学习用于真实机器人控制",
+      "tldr": "真实世界机器人强化学习面临数据昂贵和奖励难设计的问题。现有方法需大量示范或持续人工干预。AutoSERL框架仅需单个演示，通过滑动窗口干预机制引导探索、安全恢复机制纠正失败、干预终止准则自动关闭指导，实现自动化干预。在6个接触密集型操作任务上，AutoSERL优于SERL（20个演示）、行为克隆和MILES，插入任务成功率100%，且对位置变化更鲁棒，显著降低数据需求和人工干预。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Learning effective robot control policies on physical hardware is challenging due to costly data collection and the difficulty of reward specification. Prior work has incorporated demonstrations into reinforcement learning (RL), yet existing approaches either require large numbers of demonstrations or depend on continuous human intervention during training. To address these limitations, we present AutoSERL, a framework that leverages a single demonstration to fully automate the intervention process in real-world robot RL. The framework includes three complementary mechanisms to accomplish certain tasks: a sliding window intervention mechanism that continuously guides exploration to prevent local optima and unsafe deviations, a safety recovery mechanism that detects and corrects failure states via predefined trajectory recovery points, and an intervention termination criterion that automatically disables guidance once the policy can independently complete the task, preserving its exploration advantage. We evaluate AutoSERL on six contact-intensive manipulation tasks across two robot platforms, spanning insertion, hanging, and hinge-based tasks. AutoSERL consistently outperforms SERL initialized with 20 demonstrations, behavior cloning, and MILES -- a dedicated one-shot imitation learning baseline -- across all tasks while matching HIL-SERL, achieves 100% success rate on insertion tasks, and demonstrates improved robustness to positional variations, all from a single demonstration. Code and videos are available on our project website: https://autoserl.github.io/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/03/2607.02431v1-worldsample-closed-loop-real-robot-rl-with-world-modelling",
+      "section": "quick",
+      "title_en": "WorldSample: Closed-loop Real-robot RL with World Modelling",
+      "authors": "Yuquan Xue, Le Xu, Zeyi Liu, Zhenyu Wu, Zhengyi Gu, Xinyang Song, Bofang Jia, Ziwei Wang",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.02431v1",
+      "score": "7.0",
+      "evidence": "基于世界模型增强的真实机器人强化学习框架",
+      "tldr": "强化学习可克服模仿学习的示范覆盖限制，但真实机器人交互成本高。WorldSample框架通过真实rollout训练世界模型生成高保真合成数据，并引入策略节奏学习（PPL）调控训练，实现物理数据增强。实验表明，该方法在接触性和精确操作任务中使策略成功率提升28%，训练步骤减少59%，同时世界模型PSNR提高19.4dB、SSIM提高0.47。该工作为真实机器人强化学习提供了高效且低成本的训练范式。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Reinforcement learning (RL) can overcome the demonstration-coverage limitation of imitation learning (IL) by allowing robots to improve through trial-and-error interaction beyond the states observed in demonstrations. However, deploying RL on real robots remains constrained by high interaction costs, since each physical rollout is costly and reflects only one realized action-outcome path. To address this challenge, we propose WorldSample, a physically grounded data augmentation framework for real-robot RL that closes a real-synthetic loop between physical rollouts, world-model generation, and policy improvement. Grounded on real rollouts, WorldSample generates high-fidelity synthetic transitions through a post-trained world model, which greatly lowers the visual hallucination. Specifically, rather than simply using these transitions as real-world experience, WorldSample introduces Policy-Paced Learning (PPL) to regulate the training process through sample selection and scheduling, balancing useful augmentation against value overestimation and mitigating the hallucination-induced noise. Experiments on robot manipulation tasks involving contact-rich and precise tasks show that WorldSample improves policy success rate by 28% while reducing training steps by 59% compared with baselines. Furthermore, WorldSample improves world model visual fidelity by 19.4dB in PSNR and 0.47 in SSIM over demonstration-only post-training, validating the effectiveness of the real-synthetic loop for both policy and world model performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/03/2606.27603v1-learning-to-throw-agile-and-accurate-cable-suspended-payload-delivery-with-a-quadrotor",
+      "section": "quick",
+      "title_en": "Learning to Throw: Agile and Accurate Cable-Suspended Payload Delivery with a Quadrotor",
+      "authors": "Yifan Zhai, Elia Raimondi, Yunfan Ren, Ismail Geles, Yannick Armati, Jiaxu Xing, Davide Scaramuzza",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.27603v1",
+      "score": "6.0",
+      "evidence": "四旋翼缆绳悬挂负载投递混合仿真",
+      "tldr": "四旋翼悬挂载荷投送中，现有模型方法因保守约束和跟踪误差性能受限。本文提出混合仿真框架，耦合高保真四旋翼模型与物理求解器，训练强化学习策略实现敏捷准确投送。硬件实验相比基线减少50%着陆误差和30%投送时间，并支持视觉输入，开源仿真器推动动态空中操纵研究。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Quadrotors offer the agility needed to rapidly transport suspended payloads during time-critical applications, including search-and-rescue and medical delivery. While suspended-payload transport and traversal for these missions are well studied, the highly dynamic targeted release of the payload remains comparatively underexplored. State-of-the-art approaches typically rely on model-based trajectory optimization and tracking; however, these methods often yield sub-optimal performance due to conservative feasibility constraints, tracking errors, and the inherent difficulty of analytically modeling flexible rope dynamics. To overcome these limitations, we propose a hybrid simulation framework that couples a high-fidelity analytical quadrotor model with a physics solver for complex rope and payload interactions. By exchanging forces between the two domains at every step, we obtain a physically accurate simulation of the suspended-payload system. Leveraging this environment, we train a deep reinforcement learning (RL) policy that executes agile, accurate payload throws to designated targets. Deployed zero-shot on hardware, our RL policy pushes the boundary of the agility-accuracy trade-off, outperforming the model-based baseline by reducing the landing error by up to 50% and the throw duration by up to 30%. Ablation studies confirm that the coupled simulation is the key enabler of these gains. We further show that the same pipeline trains a policy driven by visual observations rather than an explicit state estimate, achieving accuracy comparable to that of the state-based policy. To accelerate future research in dynamic aerial manipulation, we open-source the simulator to the community upon acceptance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/03/2607.01938v1-physmani-physics-principled-3d-world-model-for-dynamic-object-manipulation",
+      "section": "quick",
+      "title_en": "PhysMani: Physics-principled 3D World Model for Dynamic Object Manipulation",
+      "authors": "Peng Yun, Shouwang Huang, Hao Li, Jinxi Li, Jianan Wang, Bo Yang",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.01938v1",
+      "score": "6.0",
+      "evidence": "利用物理原理世界模型的强化学习操控",
+      "tldr": "针对非结构化3D环境中快速动态物体的操作难题，现有视觉-语言-动作模型缺乏准确3D几何和物理预测。本文提出PhysMani框架，耦合物理原理的3D高斯世界模型与未来感知策略模型：世界模型在线优化无散度高斯速度场实现快速物理预测，策略模型通过可学习的token交叉注意力模块融合预测的未来动态。在含16个任务的PhysMani-Bench基准上，仿真和真实机器人实验均取得更高成功率。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Manipulating fast and dynamically moving targets in unstructured 3D environments remains challenging for embodied AI. Existing visual-language-action models and world models struggle with accurate 3D geometry and physically meaningful forecasting. We propose PhysMani, a framework that couples a physics-principled 3D Gaussian world model with a future-aware action policy model. The world model learns a divergence-free Gaussian velocity field via online optimization for fast and physically grounded future dynamics prediction. The policy model integrates the predicted 3D scene future dynamics through a learnable token based cross-attention module. We introduce PhysMani-Bench, a dynamic manipulation benchmark with 16 tasks, and demonstrate a superior success rate over strong baselines in both simulation and real-world robot experiments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

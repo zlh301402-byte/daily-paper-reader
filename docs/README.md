@@ -6,37 +6,34 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-02
-- 运行时间：2026-07-02 21:40:21 UTC
+- 最新运行日期：2026-07-03
+- 运行时间：2026-07-03 20:31:39 UTC
 - 运行状态：成功
-- 本次总论文数：5
+- 本次总论文数：4
 - 精读区：1
-- 速读区：4
+- 速读区：3
 
 ### 今日简报（AI）
-1) 今日精选5篇论文，精读《Play2Perfect》揭示灵巧操作预训练的关键因素，速读聚焦动态适应与语义强化学习。
-2) 最值得关注的是灵巧预训练对精密装配任务的核心影响，以及基于分布调整的动态适应策略。
-3) 建议优先阅读精读论文，并结合速读中的通用策略适应方法，关注灵巧操作与鲁棒性提升的结合点。
-- 详情：[/202607/02/README](/202607/02/README)
+1. 今日精读高分论文《One Demonstration Is Enough for Real-World Robotic Reinforcement Learning》——仅需一次演示即可启动真实场景的机器人强化学习。  
+2. 最值得关注的方向是**数据高效的真实世界机器人学习**：一次演示替代数千次人工试错，大幅降低部署成本。  
+3. 建议优先了解文中“一次演示+自采集交互”的框架，对研发少样本或无样本的机器人应用有直接启发。
+- 详情：[/202607/03/README](/202607/03/README)
 
 ### 精读区论文标签
-1. [Play2Perfect: What Matters in Dexterous Play Pretraining for Precise Assembly?](/202607/02/2606.26428v1-play2perfect-what-matters-in-dexterous-play-pretraining-for-precise-assembly)  
+1. [One Demonstration Is Enough for Real-World Robotic Reinforcement Learning](/202607/03/2607.01651v1-one-demonstration-is-enough-for-real-world-robotic-reinforcement-learning)  
    标签：评分：8.0/10、query:drone-arm
-   evidence：用于灵巧精确装配的强化学习预训练框架
+   evidence：单演示强化学习用于真实机器人控制
 
 ### 速读区论文标签
-1. [Warp RL: Reshaping Base Policy Distributions for Dynamics Adaptation](/202607/02/2606.31043v2-warp-rl-reshaping-base-policy-distributions-for-dynamics-adaptation)  
+1. [WorldSample: Closed-loop Real-robot RL with World Modelling](/202607/03/2607.02431v1-worldsample-closed-loop-real-robot-rl-with-world-modelling)  
    标签：评分：7.0/10、query:drone-arm
-   evidence：适用于机械臂控制的强化学习动力学适应方法
-2. [Adapting Generalist Robot Policies with Semantic Reinforcement Learning](/202607/02/2606.31958v1-adapting-generalist-robot-policies-with-semantic-reinforcement-learning)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：通过语义强化学习适应通用机器人策略，可迁移至机械臂控制
-3. [Learning Generalizable Skill Policy with Data-Efficient Unsupervised RL](/202607/02/2607.00392v1-learning-generalizable-skill-policy-with-data-efficient-unsupervised-rl)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：无监督强化学习技能预训练，可迁移至机械臂控制
-4. [Dual-Flow Reinforcement Learning with State-Aware Exploration](/202607/02/2606.29820v1-dual-flow-reinforcement-learning-with-state-aware-exploration)  
+   evidence：基于世界模型增强的真实机器人强化学习框架
+2. [Learning to Throw: Agile and Accurate Cable-Suspended Payload Delivery with a Quadrotor](/202607/03/2606.27603v1-learning-to-throw-agile-and-accurate-cable-suspended-payload-delivery-with-a-quadrotor)  
+   标签：评分：6.0/10、query:aerial-arm
+   evidence：四旋翼缆绳悬挂负载投递混合仿真
+3. [PhysMani: Physics-principled 3D World Model for Dynamic Object Manipulation](/202607/03/2607.01938v1-physmani-physics-principled-3d-world-model-for-dynamic-object-manipulation)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：提出双流强化学习框架用于连续控制，可应用于需要多模态策略的机械臂控制
+   evidence：利用物理原理世界模型的强化学习操控
 
 
 <div class="dpr-home-promo-card">
