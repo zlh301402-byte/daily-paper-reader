@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-04",
+  "date": "2026-07-04",
+  "generated_at": "2026-07-04T21:01:33",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/04/2607.02205v1-actuator-reality-shaping-for-zero-shot-sim-to-real-robot-learning",
+      "section": "quick",
+      "title_en": "Actuator Reality Shaping for Zero-Shot Sim-to-Real Robot Learning",
+      "authors": "Satoshi Yamamori, Koji Ishihara, Kentaro Minamikawa, Kiyoharu Ohomori, Taiyo Yazaki, Norikazu Sugimoto, Jun Morimoto",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.02205v1",
+      "score": "7.0",
+      "evidence": "执行器真实感塑造方法，可迁移至机械臂",
+      "tldr": "模拟到现实迁移受限于执行器动力学差异，现有方法通过增加模拟保真度来缓解。本文提出执行器现实塑造，将物理执行器的闭环行为匹配模拟中的理想二阶参考动力学，为强化学习策略提供标准化接口。在多种机器人平台上（单关节伺服、7-DOF机械臂、轮腿机器人、人形机器人）实现了零样本迁移，显著降低了跟踪误差并提升了任务表现。该方法可跨硬件平台重用，避免了任务级微调或学习执行器模型。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Sim-to-real transfer in robot learning is often limited by discrepancies between the ideal actuator dynamics assumed during policy training and the nonlinear, hardware-dependent behavior of physical motors. While conventional approaches attempt to bridge this gap by increasing simulator fidelity through system identification, domain randomization, or learned actuator models, we introduce an alternative paradigm: actuator reality shaping. Instead of modifying the simulator to match the real world, our method shapes the closed-loop behavior of physical actuators to match the idealized second-order reference dynamics used in simulation. By equipping each joint with a two-degree-of-freedom feedforward--feedback controller, we decouple reference-response shaping from robust stabilization, thereby providing a standardized actuator interface for reinforcement learning policies. As a result, policies trained only with the prescribed reference model can be deployed zero-shot on real hardware without task-level fine-tuning or learned actuator models. We validate the approach on a single-joint high-gear-ratio servo under external loads and a 7-DOF robotic arm reaching task, where actuator reality shaping substantially reduces sim-to-real tracking error and improves zero-shot task performance compared with standard servo-control and representative real-to-sim-to-real baselines. We further demonstrate zero-shot transfer on a wheeled-legged robot driving over a slope and a humanoid robot walking, suggesting that actuator reality shaping can serve as a reusable interface for robot learning across diverse hardware platforms.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/04/2606.29806v1-accelerating-q-learning-through-efficient-value-sharing-across-actions",
+      "section": "quick",
+      "title_en": "Accelerating Q-learning through Efficient Value-Sharing across Actions",
+      "authors": "Prabhat Nagarajan, Brett Daley, Martha White, Marlos C. Machado",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.29806v1",
+      "score": "6.0",
+      "evidence": "通用的RL加速方法，可应用于机械臂控制",
+      "tldr": "强化学习中动作值学习效率低下，因初始值接近零且各动作独立更新，缺乏值结构共享。本文提出均值扩展层，在状态内共享动作值并学习低范数表示，加速学习。作为无参数层加入DQN和IQN，在57个Atari游戏上整体性能提升，动作间隙增大，值过估计显著降低。该层简单有效，贡献了高效的值共享机制。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Action-values are foundational to many control algorithms such as Q-learning. Therefore learning action-values efficiently is central to reinforcement learning (RL). However, learning them can be slow, requiring many updates to move values from their initialization, typically near zero, to their true values, which may be far from zero. Moreover, action-value learning algorithms typically update each state-action pair independently, without learning shared value structure across actions within a state. In this paper, we address these inefficiencies by introducing the mean-expansion layer, which accelerates action-value learning by sharing values across actions within a state and by changing the problem from directly learning potentially large action-values to learning a lower-norm representation of them. In deep RL, this layer can be applied as a parameter-free addition to Q-network architectures without altering the underlying algorithm. Applied to deep Q-networks and implicit quantile networks, it improves aggregate performance across 57 Atari games while increasing action gaps and dramatically reducing value overestimation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
