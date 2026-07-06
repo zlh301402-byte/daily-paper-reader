@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-06",
+  "date": "2026-07-06",
+  "generated_at": "2026-07-06T20:47:45",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/06/2606.31200v1-agentic-rag-vlm-affordance-aware-retrieval-augmented-generation-with-self-reflective-planning-for-robotic-grasping",
+      "section": "quick",
+      "title_en": "Agentic RAG-VLM: Affordance-Aware Retrieval-Augmented Generation with Self-Reflective Planning for Robotic Grasping",
+      "authors": "Tao Chen, Lizheng Liu, Jiaxu Wang, Ziyue Jiang, Ruiqi Tian, JiGuang Huo, Zhongxue Gan",
+      "date": "2026-06-30",
+      "pdf": "https://arxiv.org/pdf/2606.31200v1",
+      "score": "6.0",
+      "evidence": "面向机器人抓取的VLM和规划方法",
+      "tldr": "现有VLM抓取方法仅依赖视觉相似性匹配物体，忽视物理属性且缺乏空间推理与失败恢复。本文提出Agentic RAG-VLM框架，通过层次化物理属性感知RAG、场景图约束推理和自反思闭环规划，实现语义理解与物理执行的融合。在12任务基准上达到78.3%成功率，较VLM基线绝对提升53.3个百分点。该工作证明了物理属性感知检索、场景图推理和代理自恢复对鲁棒操作缺一不可。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Generalizable robotic grasping in cluttered environments is essential for deploying manipulators in unstructured human spaces, yet existing VLM-based methods rely on visual similarity for object matching, neglecting physical affordances such as handle graspability and material fragility, and operate open-loop without spatial reasoning or failure recovery, limiting their effectiveness when objects are densely packed or physically diverse. We present Agentic RAG-VLM, a unified framework that bridges VLM-based semantic understanding and physically grounded grasp execution by integrating retrieval-augmented generation (RAG) with vision-language models (VLMs) and agentic self-reflective planning. Agentic RAG-VLM introduces three tightly coupled components: (1) a Hierarchical Affordance-Aware RAG (HAA-RAG) that encodes four-dimensional affordance descriptors, including type, material, fragility, and graspable region, and retrieves strategies by functional affordance compatibility rather than visual appearance; (2) a Scene Graph Constraint Reasoner that constructs spatial relationship graphs from VLM perception and translates proximity, occlusion, and support constraints into concrete grasp parameter adjustments; and (3) an Agentic Self-Reflective Pipeline with a 14-type failure taxonomy and three-level adaptive retry for closed-loop grasp refinement. Evaluated on a 12-task benchmark spanning single-grasp, interactive, and long-horizon scenarios with 360 trials per configuration, Agentic RAG-VLM achieves 78.3 percent overall success, a 53.3 percentage-point absolute gain over VLM-only baselines, demonstrating that affordance-aware retrieval, scene graph reasoning, and agentic recovery are jointly essential for robust manipulation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
