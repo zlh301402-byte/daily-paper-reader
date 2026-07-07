@@ -6,24 +6,39 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-06
-- 运行时间：2026-07-06 20:47:39 UTC
+- 最新运行日期：2026-07-07
+- 运行时间：2026-07-07 22:08:47 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：0
+- 本次总论文数：5
+- 精读区：4
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦1篇速读论文，探讨具身智能抓取中的检索增强生成新范式。值得关注的是“具身感知检索+自反思规划”结合，提升机器人对物体可操作性的理解与抓取成功率。建议后续跟进其与视觉语言模型的融合实验，对比传统抓取策略的鲁棒性。
-- 详情：[/202607/06/README](/202607/06/README)
+今日精选5篇论文，精读4篇，重点关注空中操控与连续体机械臂领域。
+
+两篇9.0高分论文分别实验评估通用关节连续体机械臂性能，并深入探讨空中操控的接触、介质耦合与准备度几何。
+
+建议优先精读这两篇高分论文，快速把握空中机器人操控的硬件与理论前沿。
+- 详情：[/202607/07/README](/202607/07/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [U-Joint CAAMS: Experimental Evaluation of a Universal-Joint Continuum Manipulator for Aerial Manipulation](/202607/07/2607.03321v1-u-joint-caams-experimental-evaluation-of-a-universal-joint-continuum-manipulator-for-aerial-manipulation)  
+   标签：评分：9.0/10、query:drone-arm
+   evidence：多旋翼无人机上的连续体机械臂
+2. [Aerial Manipulation: Contact, Medium Coupling, and the Geometry of Readiness](/202607/07/2607.04719v1-aerial-manipulation-contact-medium-coupling-and-the-geometry-of-readiness)  
+   标签：评分：9.0/10、query:aerial-arm
+   evidence：空中操作综述，涵盖接触与介质耦合
+3. [MorphQuad: Morphable Quadrotor for Superhuman Maneuverability, Manipulation, and Resiliency](/202607/07/2607.02764v1-morphquad-morphable-quadrotor-for-superhuman-maneuverability-manipulation-and-resiliency)  
+   标签：评分：8.0/10、query:drone-arm
+   evidence：具备操纵能力的可变形四旋翼
+4. [FLOAT Drone for Physical Interaction: Lateral Airflow Reduction, Wrench Modeling, and Adaptive Control](/202607/07/2607.04260v1-float-drone-for-physical-interaction-lateral-airflow-reduction-wrench-modeling-and-adaptive-control)  
+   标签：评分：8.0/10、query:drone-arm
+   evidence：全驱动无人机物理交互与自适应控制
 
 ### 速读区论文标签
-1. [Agentic RAG-VLM: Affordance-Aware Retrieval-Augmented Generation with Self-Reflective Planning for Robotic Grasping](/202607/06/2606.31200v1-agentic-rag-vlm-affordance-aware-retrieval-augmented-generation-with-self-reflective-planning-for-robotic-grasping)  
+1. [On the Comparison of Reinforcement Learning and Adaptive Control for Linear Systems under Packet Loss and Uncertainty](/202607/07/2606.32003v1-on-the-comparison-of-reinforcement-learning-and-adaptive-control-for-linear-systems-under-packet-loss-and-uncertainty)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：面向机器人抓取的VLM和规划方法
+   evidence：比较强化学习（DDPG）与自适应控制在不确定性系统上的表现，可用于机械臂控制
 
 
 <div class="dpr-home-promo-card">

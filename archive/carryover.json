@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-06T20:47:05.645933+00:00",
-  "updated_date": "20260706",
+  "generated_at": "2026-07-07T22:04:58.811206+00:00",
+  "updated_date": "20260707",
   "carryover_days": 9,
   "tag_states": {
     "aerial-arm": {
@@ -9,7 +9,7 @@
       "items": []
     },
     "drone-arm": {
-      "updated_date": "20260706",
+      "updated_date": "20260707",
       "carryover_days": 9,
       "items": []
     }

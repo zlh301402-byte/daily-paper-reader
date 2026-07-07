@@ -1,0 +1,636 @@
+Title: U-Joint CAAMS: Experimental Evaluation of a Universal-Joint Continuum Manipulator for Aerial Manipulation
+
+URL Source: https://arxiv.org/pdf/2607.03321v1
+
+Published Time: Tue, 07 Jul 2026 01:19:23 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# U-Joint CAAMS: Experimental Evaluation of a Universal-Joint Continuum Manipulator for Aerial Manipulation 
+
+Anuraj Uthayasooriyan 1,2 , Musab Alibrahim 2, Krishna Manaswi Digumarti 1,2 ,Fernando Vanegas 1,2 , Felipe Gonzalez 1,2 
+
+Fig. 1: (a) CAD versions of the proposed U-Joint CM and prior NiTi CM, (b)in flight water sampling , (c)spot spraying on an artificial plant target, and (d) whole-body grasping and transportation performed by the U-Joint CAAMS (See the accompanying video †). 
+
+Abstract — Continuum manipulators mounted on multi-rotor UAVs enable compliant aerial manipulation, but payloads and propeller downwash amplify out-of-plane bending and twisting that degrade end-effector pose accuracy. To address this problem, we present a universal-joint-based continuum manipulator designed to improve resistance to out-of-plane deformation during aerial manipulation. The proposed design uses a tubular backbone with spring-reinforced universal joints and an integrated conduit for internal routing and fluid delivery. We evaluate the design in still air and under peak propeller downwash across varying payloads, and benchmark it against a prior Nitinol-backbone CM. Bench tests show improved resistance to out-of-plane deformation across all conditions. Under peak downwash, the proposed design reduces mean error by 2.5–4× in yaw, 2–45 × in y-axis, and up to 5× in roll compared to the NiTi-backbone design. We further analyze hover stability through in-flight coupled-disturbance tests over varying payloads and actuation speeds, and demonstrate the system in water sampling, spot spraying, and object transport. 
+
+I. I NTRODUCTION 
+
+Multi-rotor uncrewed aerial vehicles (UAVs) equipped with robotic arms can interact with objects in flight, enabling tasks ranging from sensing to physical manipulation. The appli-cations include infrastructure monitoring[1], environmental sample recovery[2],[3] sensor deployment and retrieval[1], and spot spraying[4]. Continuum manipulators (CM) are increasingly preferred over rigid link robot arms for their               
+
+> The authors wish to acknowledge the continued support from the Queensland University of Technology (QUT) through the QUT Centre for Robotics, the support of the Research Engineering Facility (REF) team and the senior technicians Steven Bulmer, Benjamin Brownlee, and Amir Moghaddam at QUT for the provision of expertise and research infrastructure, and the technical support from Julian Galvez (REF), and P, Keertinathan.
+> 1QUT Centre for Robotics, 2School of Electrical Engineering and Robotics, 3REF, QUT, Brisbane, QLD Australia 4000.
+
+uthayaso@qut.edu.au | uanuraj@hotmail.com   
+
+> †Video: https://youtu.be/eEp1iFBMUUQ
+
+light weight, better dexterity and compliance [5]–[9]. Manip-ulator inertia influences coupled disturbance (CPD) of aerial manipulators [10]. Continuum arm aerial manipulator systems (CAAMS) also have the advantage of low manipulator inertia as the actuators can be remotely located within the UAV [8]. Due to softness, CMs have difficulty in tracking a desired end effector (EE) pose. In applications of spraying, liquid sam-pling and sensing, the CM must carry extra load. Further, the downwash (DW) from the UAV-propellers exerts aerodynamic loads on the CM. This combination of external loads worsens the pose-tracking of CMs. Out of plane bending, amplified by external loads has been found as a major contributor to the pose error as observed in our prior work [9]. CAAMS research has emerged only in recent years. More studies focus on dynamics and control, and comparatively less on design [6], [7], [11]–[13]. Samadikhoshkho et al. did foundational work on CAAMS, including coupled modeling and vision-based control [14]–[16]. A dynamics controller for a dual-arm CAAMS was presented in [17], and inte-gration/control of a soft CM on an omnidirectional micro multi-rotor was explored in [5]. Beyond these, recent efforts have reported prototyping and control contributions, including mechanical analysis of modular CMs [18], tethered CAAMS designs [11], [12], tendon slack prevention with IMU-based closed-loop control[6], a 3–section CM–CAAMS for cluttered environments[7], vine CM [13] and tiltable and extensible CM system targeted for deployment while avoiding DW [9]. Although, [9] reports DW-amplified orientation errors, a design-oriented solution that robustly mitigates out-of-plane deformation remains largely unexplored. From an aerial manipulation perspective, Cartesian position errors can often be compensated by leveraging the UAV motion. In contrast, orientation errors induced by out-of-plane bending or twisting of the CM are comparatively harder to correct. 
+
+> arXiv:2607.03321v1 [cs.RO] 3 Jul 2026
+
+Fig. 2: The design details of the proposed U-Joint CM: (a) The U-Joint CAAMS prototype, (b) Designed universal joint , (c) Tubular guide link, (d) The actuation compartment base plate, and (e) Tendon tensioning system. Inspired by [6], [19]–[22], in this work, we present a tubular, universal-joint CM (U-joint CM) design with a flexible conduit backbone (Fig.1(a) and Fig.2). The primary focus is to improve the out of plane bending errors observed in the Nitinol backbone CM (NiTi - CM) design similar to the one used in Tilt-X[9]. As discussed in our prior review [22], we chose a universal-joint profile to improve torsional resistance without the added weight and actuation complexity of stiffness-tuning approaches such as phase-change materials [23], curvature-constraining rods [24], and jamming-based methods [25], [26], [22]. Springs reinforce the universal joints to improve rigidity and elasticity against out-of-plane bending and twisting. We experimentally evaluate the proposed design in (1)still air and (2)under propeller DW across varying payloads, and benchmark its behavior against the continuum design in [9]. Results show improved resistance to out-of-plane bending. We further assess U-joint CAAMS’s hover stability via in-flight coupled-disturbance (CPD) analysis during manipulator actuation across multiple speeds and payloads. We also demonstrate the proposed U-joint CAAMS in three in-flight tasks: water sampling, spot spraying, and object transport as shown in Fig 1(b) – Fig 1(d). In summary, this work presents the: 1) Design of a tubular universal-joint-based CM with an integrated conduit backbone for multi purpose aerial manipulation. 2) Experimental evaluation of the design for out of plane bending and twisting under varying payloads in still air and propeller-downwash. 3) Quantitative analysis of in-flight hover stability via coupled-disturbance (CPD) during CM actuation. 4) Demonstration of the system in three in-flight tasks. II. D ESIGN AND SYSTEM ARCHITECTURE 
+
+A. Design of U-Joint continuum manipulator (U-Joint CM) 
+
+This design incrementally improves the continuum section used in our prior Tilt-X work. Motivated by Tilt-X limitations and the target aerial manipulation scenarios in Sec. I, we define the following U-joint CM design requirements. 1) Reducing out of plane bending. 2) Increasing payload handling capacity. 3) Increasing stability against the propeller DW. 4) Adaptable for the applications of environment water sampling, spraying and carrying sensors. In Tilt-X, out-of-plane bending was primarily driven by torsion of the NiTi backbone (backbone diameter: 1 mm, tendons: braided micro filament threads). Here we replace it with a tubular universal-joint backbone reinforced by radially arranged chain of helical springs to increase torsional stiffness and provide enough elasticity for shape restoration. Figure 2 shows the CAD exploded view and key dimensions. The tubular joint–link geometry integrates a concentric PVC conduit, selected for its flexibility and ability to recover the straight reference shape. The tendons are 1 mm braided steel cables. Key dimensions (disk spacing, tendon routing hole(eyelet) distance, length, and outer diameter) match the Tilt-X NiTi CM to ensure a fair experimental comparison. Except for the springs, tendons, routing pulleys, and fixtures, all parts are 3D-printed in PLA. The actuation compartment uses three daisy-chained Dynamixel XL430 servos driven via a U2D2 interface and Power Hub. Spring-loaded pretensioners with tension adjusters set the initial tendon tension and shape of the U-joint CM. The U-joint CM weighs 430 g, whereas the NiTi CM weighs 330 g including actuation compartment. The total mass of the U-joint CAAMS, including the pump and battery, is 2350 g. BILDA 6A BEC       
+
+> Pump /Sprayer
+> (DFR0523)
+> OptiTrack Motion Capture System
+> CM Pose via WiFi
+> Power
+> Data/Signal
+> WiFi
+> RPi 4B 8GB
+> 20.04
+> Transmitter
+> Radio QGround
+> Control 20.04
+> Ground Control Station (GCS)
+> Serial Com.
+> Power
+> Module
+> Power Dist.
+> Board
+> Radio
+> Reciever
+> Pixhawk 6x
+> Holybro X500 V2
+> Ethernet
+> WiFi
+> XL430 servo
+> Daisy -chain
+> U2D2 +
+> Power Hub
+> CM
+> MAVROS /
+> MAVLink
+> Blheli S
+> ESC
+> 2216
+> 920KV
+> QUT UAS
+> Power PCB
+> WiFi
+> PC
+> 4S LiPo Battery
+> Emergency
+> Switch
+> Power
+> 12V 20A DC
+> or
+
+Fig. 3: The system architecture of the U-Joint CAAMS proposed and experimented under bench test and flight tests. 
+
+B. System architecture of proposed U-Joint CAAMS 
+
+Fig. 3 summarizes the U-joint CAAMS architecture. The platform comprises a Holybro X500 V2 quadrotor with the proposed U-joint CM (see Fig. 3; quadrotor specs in Fig. 2(a)). Power is supplied by a 4S LiPo battery for flight and a 12 V/20 A DC supply for bench tests. A Raspberry Pi 4B runs ROS to control the CM and interfaces with the flight controller via MAVROS/MAVLink. The onboard computer is accessed from a ROS-enabled ground station, while QGroundControl and an RC transmitter provide flight monitoring and command. System pose is measured using OptiTrack motion capture system. For water sampling and spot spraying, a 6 V/1.8 A peristaltic pump (DFRobot DFR0523, 85 ml/min) is controlled by the Raspberry Pi. 
+
+C. Kinematic model 
+
+To enable a fair comparison with the Tilt-X NiTi CM, we adopt the same constant-curvature (CC) model used in [9], following the standard formulation in [27]. A brief summary is provided below. The Fig. 4(a) depicts the U-joint CAAMS workspace with the right handed coordinate frame definitions as follow: {W }:world, {U }: UAV, {B}: base of the U-joint CM, and {E}:tip of the U-joint CM. The frame {B} is defined such that the U-joint CM at its rest state aligns with -z axis, tendon T 1
+
+aligns with the x-axis of the frame {B}. Further, the x-axis of {B} and {U } are aligned with the forward direction of the UAV. In the rest state of the U-joint CM, the frame {E} is also designated similar to that of {B}. End effector pose can be obtained by the following homogeneous transformation: 
+
+TW E = TW U · TU B · TBE . (1) For bench experiments TW B is determined directly using the Optitrack motion capture system. When flight test is performed TW U is found using the motion capture system while TU B is estimated from the design. Under the assumption of inextensible backbone, a CC model for a CM can be established using the parameters curvature: κ, bending plane angle: ϕ measured from positive x–axis and length of the backbone: ℓ. Thus the pose of the end effector TBE in frame {B} is 
+
+TBE =
+
+
+
+cκℓ cϕ sϕ sκℓ cϕ 1 
+
+> κ
+
+(1 − cκℓ )cϕ
+
+cκℓ sϕ −cϕ sκℓ sϕ 1 
+
+> κ
+
+(1 − cκℓ )sϕ
+
+sκℓ 0 −cκℓ − 1 
+
+> κ
+
+sκℓ 
+
+0 0 0 1
+
+ . (2) where cϕ = cos ϕ, sϕ = sin ϕ, cκℓ = cos( κℓ ), and sκℓ =sin( κℓ ).As the design imply, the tendons are distributed at equal spacing around the backbone of length L at a radial distance 
+
+d. For this continuum section, the kinematic parameters can be presented in terms of the tendon–length actuation vector 
+
+q = [ l1, l 2, l 3]T by the following equations: 
+
+ℓ(q) = L (3) 
+
+ϕ(q) = atan2 
+
+√3 ( l2 − l3), l 2 + l3 − 2l1
+
+
+
+(4) 
+
+κ(q) = 2
+
+d (l1 + l2 + l3)
+
+q
+
+l21 + l22 + l23 − l1l2 − l1l3 − l2l3
+
+(5) where li is the length of each tendon with i = 1 , 2, 3. To actuate the CM, the required change in tendon length ∆li of a tendon li to result a change in curvature and bending in a targeted plane is 
+
+∆li = −Lκd cos ( ϕi) , (6) where ϕi is the location of the tendon relative to the bending plane at the base of the CM. The effective change of ∆li is created by the rotation of the driving pulleys of radius rmi
+
+coupled to the servo motors in the actuation compartment, applying a turn of ψi can then be written as 
+
+∆li = rmi ψi, (7) III. E XPERIMENTS 
+
+A. Experiment Design 
+
+We conducted three experiments: (i) bench evaluation of U-joint CM, (ii) flight hover testing for CPD following [10], and (iii) in-flight application demonstrations. Table I summarizes the experimental plan. Bench tests were conducted under three cases: (i) no DW (props off - T0) for U-joint vs NiTi comparison, (ii) no DW with variable end-effector payload, and (iii) maximum-throttle (T100) assuming a worst case scenario with variable payload. Payloads were swept from 0 to 50 g in 10 g increments. We assume that maximum EE loading of 50 g is reasonable considering a light weight sensor of the amount of liquid that can stay within the U-Joint conduit. TABLE I: Bench-top experiments under different cases             
+
+> Cases Throttle T% EE Loading (g) Physical interpretation Case(i) 00No DW (NiTi Vs U-Joint) Case(ii) 00,10,20,30,40,50 No DW; Variable EE loading Case(iii) 100 0,10,20,30,40,50 DW; Variable EE loading Power supply line
+> Test bench
+> Reflective
+> markers
+> WS Samples (P0,P1, P2, P3, P4, P5)
+> P0
+> P2
+> P3
+> P1
+> P5 P4
+
+𝜙 = 0
+
+𝑧 𝐵 
+
+𝑥 𝐵  
+
+> X (Front)
+
+{W}
+
+{B}
+
+> Home
+> Bending plane
+
+z
+
+> Sample plane
+
+{E}
+
+{B}
+
+{U}
+
+> P1
+> P2
+> P3
+> P4
+> P5
+> Home
+> P0
+> Reflective
+> markers
+> Bending Plane
+> T1
+> T2
+> T3
+
+𝑦 𝐵 
+
+𝑥 𝐵 
+
+d
+
+𝜙  𝜙 𝑖 
+
+> CC Model
+> Workspace
+
+y
+
+x z
+
+{W}
+
+> Up
+
+(a)  (b)     
+
+> {B}
+> 𝑦 𝐵
+> 𝑧 𝐵 𝑅 𝑒𝑥𝑝 ,𝑝
+> 𝐵
+> 𝑅 𝑟𝑒𝑓 ,𝑝
+> 𝐵
+> Δ𝛾 𝑝
+> {B}𝑥 𝐵
+> 𝑧 𝐵
+> 𝑅 𝑟𝑒𝑓 ,𝑝
+> 𝐵
+> ∆𝛽 𝑝
+> {B}
+> 𝑅 𝑒𝑥𝑝 ,𝑝
+> 𝐵
+> 𝑃 𝑒𝑥𝑝 ,𝑝
+> 𝐵
+> 𝑅 𝑟𝑒𝑓 ,𝑝
+> 𝐵
+> 𝑃 𝑟𝑒𝑓 ,𝑝
+> 𝐵
+> Yaw (𝑧 𝐵 )
+> Pitch (𝑦 𝐵 )Roll (𝑥 𝐵 )
+> 𝑒 𝑃
+> 𝑝𝑜𝑠
+> {B}𝑥 𝐵
+> 𝑦 𝐵
+> 𝑅 𝑒𝑥𝑝 ,𝑝
+> 𝐵
+> 𝑅 𝑟𝑒𝑓 ,𝑝
+> 𝐵
+> ∆𝛼 𝑝
+> 𝑅 𝑒𝑥𝑝 ,𝑝
+> 𝐵
+
+(c) 
+
+> U-Joint
+> CM
+> Motion capture system
+
+Fig. 4: (a)The constant–curvature CM workspace of the CAAMS and reference frames: world {W }, UAV {U }, CM base 
+
+{B}, and CM tip {E}. The triangle indicates tendon locations (T1–T3). The pink dots on the sample plane indicate the sample points P0(Home),P1, P2, P3, P4 and P5 for the experiment. (b) Definition of position and orientation errors between the expected {ref } and the measured {exp } pose expressed in {B}. (C) Experiment rig used for the bench-based experiments. 
+
+B. Experiment Setup 
+
+The Fig. 4(c) depicts the experiment bench setup. For bench experiments, each type of CAAMS was rigidly mounted to a test bench to constrain all six UAV DOF. An OptiTrack ®
+
+motion-capture system tracked reflective markers to define the frames {U }, {B}, and {E}. The CPD hover experiment was performed with the U-joint CAAMS in autonomous position-hold mode. 
+
+C. Data Collection 1) Bench experiment: We first sample the CC-model workspace generated by Eq. (2) (bending ≤ 180 ◦ to avoid propeller interference). Fig. 4(a) shows the forward-aligned bending plane with the forward direction of the CAAMS selected for evaluation. We chose four random WS sample points that cover the bending angles from 0–180 ◦ to compare NiTi and U-joint CMs. Using the kinematic model (Section II-C), we precompute tendon length commands for each pose. For each case in Table I, the CAAMS is actuated with these commands and all frame poses and actuation variables are logged to ROS .bag files. Payloads are applied in 10 g steps. Each WS point is measured over three cycles with a 10 s hold. Preliminary trials showed that the NiTi CM could not reliably hold the commanded poses under a 10g payload; therefore, only the U-joint CM was tested for the payload sweep. 
+
+2) Flight hover experiment: Following [10], we evaluate hover stability of U-Joint CAAMS via coupled-disturbance (CPD) analysis during sinusoidal U-joint CM motion in autonomous position hold at (0 , 0, 1.5) m. We record U-Joint CAAMS’s position in two conditions: (i) hover only (no manipulator motion) for benchmarking a baseline and (ii) hover with oscillatory CM actuation. Tests are repeated for three payloads: W0, W30, and W50. Each oscillation cycle starts from the home position P 0 (Fig. 4(a)) and executes: home →P4 →home →P5 →home. We test six cycle times, T ∈ {2, 4, 8, 12 , 16 , 20 } s. The quarter-cycle time (T / 4) is the travel time from home to an extreme point, consistent with [10]. The quarter-cycle time of last three periods match [10]; the rest of the shorter periods probe more aggressive, worst-case scenarios for U-Joint CAAMS. 
+
+D. Evaluation of data 
+
+To support the analysis in Section IV, we summarize the evaluation metrics in this section. For each WS sample point 
+
+P , we express the pose errors in the CM base frame {B} as the Euclidean position error epos  
+
+> p
+
+given in (8) and the scalar orientation error e◦ 
+
+> R,p
+
+expressed by (10) . We define epos  
+
+> p
+
+(mm) as the Euclidean distance between the measured and reference positions and e◦ 
+
+> R,p
+
+(deg) as the principal rotation angle of the relative rotation Rrel ,p , i.e., the axis–angle rotation about unit axis ˆup that maps the measured orientation to the reference orientation. To analyze Case (i) in Section IV, the reference pose is provided by the CC-model at the corresponding WS-point. For the rest of the cases, the reference at each WS-point is the mean over repeated measurements from case (i) : positions are averaged linearly and orientations are averaged as unit quaternions using Markley’s method [28]. Euler angles are not averaged; Euler error components are obtained from (11) . For Case (i) (Sec. IV), the reference pose at each WS point is the CC-model prediction. For the remaining cases, the reference at each WS point is the Case (i) mean over repetitions: positions are averaged arithmetically, while orientations are averaged in quaternion space using Markley’s method [28]. Euler error components are calculated using (11). 
+
+1) Position error: As seen in Fig. 4(a),(b), at each WS sam-ple P , let PB 
+
+> exp
+
+= [ xB
+
+> exp ,p
+
+, y B
+
+> exp ,p
+
+, z B
+
+> exp ,p
+
+]⊤ be the measured EE position for the sample, and pB 
+
+> ref
+
+= [ xB
+
+> ref ,p
+
+, y B
+
+> ref ,p
+
+, z B
+
+> ref ,p
+
+]⊤
+
+be the respective reference EE position. Now, the Euclidean position error can be written as 
+
+epos  
+
+> p
+
+=
+
+q
+
+∆x2 
+
+> p
+
++ ∆ y2 
+
+> p
+
++ ∆ z2 
+
+> p
+
+, (8) where ∆xp = xB 
+
+> exp ,p
+
+− xB
+
+> ref ,p
+
+, ∆yp = yB 
+
+> exp ,p
+
+− yB
+
+> ref ,p
+
+, and 
+
+∆zp = zB 
+
+> exp ,p
+
+− zB
+
+> ref ,p
+
+.
+
+2) Orientation error: Let RB 
+
+> exp ,p
+
+∈ SO (3) and RB 
+
+> ref ,p
+
+∈
+
+SO (3) be the measured and reference EE orientations at the same workspace point. Following, [29], defining the relative rotation between them: Let RB 
+
+> exp ,p
+
+∈ SO (3) and RB 
+
+> ref ,p
+
+∈ SO (3) denote the −100             
+
+> 0
+> dx (mm)
+> x-error
+> −50
+> 0
+> dy (mm)
+> y-error
+> −200
+> −100
+> dz (mm)
+> z-error
+> P1 P2 P3 P4
+> Point
+> 0
+> 20
+> ΔRoll (deg)  Roll error
+> P1 P2 P3 P4
+> Point
+> −50
+> −25
+> ΔPitch (deg)  Pitch error
+> P1 P2 P3 P4
+> Point
+> −25
+> 0
+> 25
+> ΔYaw (deg)  Yaw error
+> NiTi_T0_W0 U-Joint_T0_W0 NiTi_T100_W0 U-Joint_T100_W0
+
+Fig. 5: The component wise error analysis plots of U-Joint CM and the NiTi-CM against the Constant Curvature model under no DW effect (Throttle T=0) and no end effector loading. Upper raw shows positional error components and the lower raw depicts orientation error components with rescpect to the CM base. measured and reference end-effector orientations at the same WS point. Refering [29], we define the relative rotation as: 
+
+Rrel ,p =  RB
+
+> exp ,p
+
+−1 RB
+
+> ref ,p
+
+. (9) The scalar orientation error is the principal rotation angle associated with Rrel ,p :
+
+eori R,p = ∠(Rrel ,p ) ∈ [0 , π ], e◦ 
+
+> R,p
+
+= 180 
+
+π eori R,p , (10) where ∠(·) returns the principal rotation angle and e◦ 
+
+> R,p
+
+is expressed in degrees. For qualitative interpretation, we further decompose Rrel ,p into extrinsic (fixed-axis) Z–Y–X Euler angles [30], [31]: 
+
+∆αp ∆βp ∆γp
+
+⊤ = Euler extrinsic zyx (Rrel ,p ) , (11) where ∆α, ∆β, and ∆γ denote yaw–pitch–roll corrections about the fixed base-frame axes zB , yB , and xB , respectively (see Fig. 4(b)). Each angle is wrapped to [−180 ◦, 180 ◦] to avoid discontinuities. Here, yaw is rotation about zB , pitch is the tilt about yB , and roll about xB .
+
+3) Mean and standard deviation (SD) used in plots: For each workspace point P and the samples k, the plotted mean and SD are computed from the set of available scalar errors 
+
+{ep,k }Np 
+
+> k=1
+
+(either epos  
+
+> p
+
+in (8) or e◦ 
+
+> R,p
+
+in (10)) as 
+
+μp = 1
+
+NpNp
+
+X
+
+> k=1
+
+ep,k , (12) 
+
+σp =
+
+vuut 1
+
+NpNp
+
+X
+
+> k=1
+
+(ep,k − μp)2, (13) where Np: number of samples pooled for point p.IV. R ESULTS AND DISCUSSION 
+
+As described in Section III, here we report results from bench experiments, CPD tests, and application demonstrations. Bench tests assess U-joint CM’s resistance to out-of-plane bending in still air (T0) and propeller DW (T100) using three cases: (i) benchmarking of both CMs (U-joint vs NiTi) against CC-model , (ii) payload-induced pose variation of the U-joint CM in still air, and (iii) DW-induced pose error at T100 across payloads. Both the Cases (ii) &(iii) use baseline from Case (i). We further analyze robustness to out-of-plane bending; the goal is not evaluating CC-model accuracy, but resistance of U-Joint CM to out-of-plane deformation. Results are analyzed via component-wise errors in position 
+
+dx, d y , d z and orientation ∆Yaw, ∆Pitch, and ∆Roll. Legends denote W as the EE payload mass (e.g., W10 = 10 g) and T
+
+as the throttle level ( T0 : still air; T100 : max. throttle). Out-of-plane deformation is captured by paired signatures of( ∆Yaw, 
+
+dy ) and ( ∆Roll): larger ( ∆Yaw, dy ) indicates greater out-of-plane bending, while larger ( ∆Roll) indicates increased twisting. In-plane bending is reflected by (∆ θ, d x) and dz .
+
+A. Case (i): Benchmarking U-joint and NiTi CMs against the CC–model (still air T = 0 )
+
+Fig. 5 reports model-relative errors at the workspace (WS) points (P1–P4) for the two prototypes under no payload (W0) with or without DW. Out-of-plane bending is assessed via the paired signatures (∆ Yaw , d y ), while twisting is assessed via 
+
+∆Roll. In still air(T0) , the U-joint CM keeps ∆Yaw tightly bounded (-4 ◦ and +9 ◦) with small SD and dy remains close to zero across points. The NiTi CM shows larger ∆Yaw SD and a clear drift in dy , most pronounced at P4 with approximately 4-times mean error at T100 than U-Joint CM. Under DW T100 W0 , NiTi errors increase sharply (notably ∆Yaw, dy
+
+at P4), whereas the U-joint CM response remains bounded. For the U-joint CM, ∆Roll is similar in T0 and T100, with mean |∆Roll | bounded within ≈12 ◦ and a smaller SD. The NiTi CM shows larger twisting, with mean |∆Roll | ≈ 22 ◦
+
+which is around 2x of error and more than double the SD. In Fig. 5, both CMs show increasing |dz | and a more nega-tive ∆Pitch from P1 to P4, consistent with growing in-plane 
+
+deformation relative to the CC model. For an upside-down, tendon-driven CM, self-weight acts as a persistent in-plane load, introducing a systematic bias in (dx, d z , ∆Pitch ). The near-overlap of NiTi results between T0 and T100 suggests DW has a weaker effect on in-plane deformation than on the out-of-plane channels (∆ Yaw , d y ) and ∆Roll. In contrast, −40              
+
+> −20
+> dx (mm)
+> x-error
+> −4
+> −2
+> 0
+> dy (mm)
+> y-error
+> −50
+> 0
+> dz (mm)
+> z-error
+> P1 P2 P3 P4
+> Point
+> −2
+> 0
+> ΔRoll (deg)  Roll error
+> P1 P2 P3 P4
+> Point
+> −15
+> −10
+> −5
+> ΔPitch (deg)  Pitch error
+> P1 P2 P3 P4
+> Point
+> 0
+> 2
+> 4
+> ΔYaw (deg)  Yaw error
+> T0_W10 T0_W20 T0_W30 T0_W40 T0_W50
+
+Fig. 6: The component wise error analysis plots of U-Joint CM against the baseline under no DW effect (Throttle T=0) and varying end effector loading of 0g to 50g (E.g. in T0 W10, T0: no throttle, and W10: 10g load). Upper raw shows positional error components and the lower raw depicts orientation error components with rescpect to the CM base. −50               
+
+> −25
+> dx (mm)
+> x-error
+> −10
+> 0
+> dy (mm)
+> y-error
+> −50
+> 0
+> dz (mm)
+> z-error
+> P1 P2 P3 P4
+> Point
+> −5
+> 0
+> ΔRoll (deg)  Roll error
+> P1 P2 P3 P4
+> Point
+> −10
+> 0
+> ΔPitch (deg)  Pitch error
+> P1 P2 P3 P4
+> Point
+> −2.5
+> 0.0
+> 2.5
+> ΔYaw (deg)  Yaw error
+> T100_W0 T100_W10 T100_W20 T100_W30 T100_W40 T100_W50
+
+Fig. 7: The component wise error analysis of U-Joint CM against the baseline under extreme DW effect (Throttle T=100%) and varying end effector loading of 0g to 50g (E.g. in T100 W10, T100: 100% throttle, and W10: 10g load). Upper raw shows positional error components and the lower raw depicts orientation error components with rescpect to the CM base. the U-joint CM shows larger in-plane model mismatch as expected(more negative dz and ∆Pitch), indicating stronger gravity-driven deviation from the CC assumption. Overall, under peak DW the U-joint CM achieves approxi-mately 2.5–4× lower yaw error, 2.5–45 × lower dy , and up to ∼ 5× lower roll error than the NiTi CM. The consistently lower and similar ∆Yaw, dy and ∆Roll with lower SD across T0 and T100 confirms stronger resistance to out-of-plane bending for the U-joint design. Although the U-joint CM shows larger in-plane error, its SD remains bounded and the T0 and T100 trends align closely, including at the extreme point P4, compared with the NiTi CM. 
+
+B. Case (ii): Payload-induced pose variation of the U-joint CM in still air (baseline: Case (i), T = 0 )
+
+Here, Results are reported relative to the U-joint T0 W0 baseline. The out-of-plane signatures remain tightly bounded under EE loading. Across W10–W50, ∆Yaw stays within 
+
+∼ ± 4◦ and dy within ∼ ± 4 mm over the workspace ( ≈ 1% 
+
+of the CM length), indicating strong resistance to payload-induced out-of-plane bending. Twisting is also limited: ∆Roll remains bounded with a small spread across payloads. The largest variability occurs at W50, with SD of ∼ ± 2◦ in yaw and ∼ ± 1.5 mm in dy (≈ 0.4% of the CM length). A single outlier at W20 appears in ∆Roll, likely due to an experimental disturbance. Overall, these results confirm that the U-joint profile maintains out-of-plane robustness under load. AS expected, while payload increases (W10–W50), the in-plane signatures (dx, d z , ∆Pitch) grow: dz and ∆Pitch become more negative and peak at P4, indicating gravity-driven sag ( dz shift ≈ 18% of CM length). dx also shifts negative, peaking at P3 ( ≈ 13% ), capturing the coupled in-plane offset. Despite these biases, repeatability remains consistent with SD: < 10 mm and < 2◦. These systematic trends can be exploited to tune U-joint CAAMS kinematics via MPC or data-driven control using the experiment data obtained. 
+
+C. Case (iii): Payload and DW-induced pose variation of the U-joint CM in under extreme DW (baseline: Case (i), 
+
+T = 100% )
+
+Fig. 7 shows T100 load sweeps relative to the T0 W0 baseline. The out-of-plane signatures remain bounded: ∆Yaw stays within a few degrees (within the ±2.5◦ axis range) and 
+
+dy within ∼ 4 to −8 mm ( ≈ 3% of CM length), with slightly Fig. 8: Time-lapse composite of the U-joint CAAMS during the hover test at T = 20 s and W = 0 , showing CM motion over a quarter-cycle. larger magnitudes at P3–P4. Unlike Case (ii), ∆Yaw and 
+
+dy take mixed signs, consistent with DW-induced loading. 
+
+∆Roll is also limited (typically ∼ 0 to −5◦), peaking at P4 for higher payloads. Overall, the bounded (∆ Yaw , d y ) and 
+
+∆Roll confirm robust out-of-plane performance under DW and payload. Under DW, the in-plane channels (dx, d z , ∆Pitch) remain load and workspace-dependent. With increasing payload, dz
+
+and ∆Pitch become more negative and peak at P4, indicating gravity-driven sag and the DW load. dx also shifts negative, peaking near P3 and partially recovering toward P4, consistent with a coupled in-plane offset. However the pattern remains similar between case(ii) and case(iii). Further tight error bounds and small SD confirm that the U-Joint CM improves the stability as required by the established design intention under the Section II. 
+
+D. Flight hover stability test 
+
+We follow the CPD hover protocol in [10], but do not perform a direct comparison due to differences in platform and manipulator morphology. Fig. 8 shows a time-lapse composite of the U-joint CAAMS over a quarter of the slowest actuation cycle ( T = 20 s). Figure 9 plot reports hover-position RMSE during U-Joint CM actuation for W0, W30, and W50 over cycle times T ∈ { 2, 4, 8, 12 , 16 , 20 } s; hover without CM actuation defines the baseline, with RMSE/Mean/Max overlaid on the plot. CPD shows axis-dependency: the x-axis (CM actuation direction) is most sensitive consistent with [10], and deviates most from the baseline mean at slow actuation ( T = 20 s). The Max x-axis errors are 52.9 mm (at 50 g), 47.9 mm (at 30 g), and 47.9 mm (at 20 g). In all other cases, RMSE remains close to the baseline mean. The y- and x-axis RMSE are bounded within 10–25 mm and 3–10 mm, respectively, and the z-axis error is the smallest while being most sensitive to fast actuation. Overall, RMSE remains bounded across all payloads for T ∈ { 2, 4, 8, 12 } s on all axes, indicating stable hover and bounded range CPD during U-joint CM actuation at corresponding speeds. These results support the applicability of the U-joint CAAMS for real-world deployment. In this case, 
+
+Fig. 9: RMSE of Cartesian positions during CPD hover tests with sinusoidal U-joint CM actuation. Results are shown for payloads W0, W30, and W50 over six cycle times ( T ∈{2, 4, 8, 12 , 16 , 20 } s; Baseline hover RMSE/Mean/Max (no actuation) are overlaid for reference. We analyzed one representative bending plane; a full 360 ◦
+
+bending plane sweep is left for future real-world validation. 
+
+E. Application experimentation of U-Joint CAAMS 
+
+Guided by the CPD hover tests, we conducted three application flights with the U-joint CAAMS (Fig. 1(b)–(d)): (1) water sampling, (2) spot spraying on an artificial plant target, and (3) whole-body-grasp object transport of a 780 g tripod (see the accompanying video †). For the transport task, the pump was removed to reduce system mass. The U-joint CAAMS was remotely operated under position control mode launched from the GCS and successfully performed water sampling, spot spraying and object transportation tasks. Overall, the laboratory demonstrations support the purpose of the new design. The water sampling and spraying demon-strations used a low-flow peristaltic pump (85 ml/min) for the proof-of-concept; practical deployments may require higher-flow and higher-pressure pumps. We also observed strong DW disturbance of the water sampling surface and sprayed target, which can degrade sampling/spraying quality. To reduce distur-bance at the interaction site, the U-joint CM can be integrated with Tilt-X’s tilting and telescopic extension to operate outside the DW region [9]. During whole-body grasping, the U-joint CM deformed and deviated from its initial shape. For object transport, the observed shape deformation is acceptable and reflects the its improved payload capacity. Finally, the CPD results and successful demonstrations indicate that closed-loop control and autonomous operation are feasible next steps for the U-joint CAAMS. V. CONCLUSIONS 
+
+This paper presented a tubular universal-joint CM pro-file for aerial manipulation with an integrated conduit for protected routing and fluid delivery. Bench tests in still air and propeller DW showed improved resistance to payload-and DW-induced out-of-plane bending compared with the Tilt-X continuum design. The repeatable load and DW-dependent biases suggested that a learned correction model could be integrated within an MPC framework. We quantified hover stability via in-flight CPD analysis over payload and actuation-speed sweeps, and demonstrated the applicability of the system through in-flight water sampling, spot spraying, and object transport. To improve kinematic accuracy, future work will consider a two-section design and higher-fidelity modeling. The current system operates open loop; IMU-based feedback control, as in [7], [6], can compensate unmodeled effects beyond CC modeling and mitigate mechanical distur-bances. Further integration of improved U-Joint CM design with Tilt-X is expected to improve accuracy of environmental interaction in the presence of downwash. REFERENCES [1] S. Hamaza, I. Georgilas, G. Heredia, A. Ollero, and T. Richardson, “Design, modeling, and control of an aerial manipulator for placement and retrieval of sensors in the environment,” J. Field Robot. , vol. 37, no. 7, pp. 1224–1245, 2020. [2] K. R. I. Sanim, M. Kalaitzakis, B. Kosaraju, Z. Kitzhaber, C. English, N. Vitzilaios, M. Myrick, M. Hodgson, and T. Richardson, “Develop-ment of an aerial drone system for water analysis and sampling,” in 
+
+2022 Int. Conf. Unmanned Aircraft Syst. (ICUAS) . IEEE, 2022, pp. 1601–1607. [3] C. Geckeler, S. Kirchgeorg, G. Strunck, F. B. Thostrup, F. Sangermano, A. Desiderato, M. L ¨uthi, M. Jucker, M. A. G. Herrera, N. D. Franco-Sierra et al. , “Field deployment of biodivx drones in the amazon rainforest for biodiversity monitoring,” IEEE Trans. Field Robot. , 2025. [4] N. Delavarpour, C. Koparan, Y. Zhang, D. D. Steele, K. Betitame, S. G. Bajwa, and X. Sun, “A review of the current unmanned aerial vehicle sprayer applications in precision agriculture,” J. ASABE , vol. 66, no. 3, pp. 703–721, 2023. [5] R. Sz ´asz, M. Allenspach, M. Han, M. Tognon, and R. K. Katzschmann, “Modeling and control of an omnidirectional micro aerial vehicle equipped with a soft robotic arm,” in 2022 IEEE 5th Int. Conf. Soft Robot. (RoboSoft) . IEEE, 2022, pp. 01–08. [6] R. Peng, Z. Wang, and P. Lu, “Aecom: An aerial continuum manipulator with imu-based kinematic modeling and tendon-slacking prevention,” 
+
+IEEE Trans. Syst., Man, Cybern., Syst. , vol. 53, no. 8, pp. 4740–4752, 2023. [7] R. Peng, Y. Wang, M. Lu, and P. Lu, “A dexterous and compliant aerial continuum manipulator for cluttered and constrained environments,” 
+
+Nat. Commun. , vol. 16, no. 1, p. 889, 2025. [8] A. Jalali and F. Janabi-Sharifi, “Aerial continuum manipulation: A new platform for compliant aerial manipulation,” Front. Robot. AI , vol. 9, p. 903877, 2022. [9] A. Uthayasooriyan, K. M. Digumarti, J. Breward, F. Vanegas, J. Galvez-Serna, and F. Gonzalez, “Tilt-x: Enabling compliant aerial manipulation through a tiltable-extensible continuum manipulator,” 2026. [Online]. Available: https://arxiv.org/abs/2602.23576 [10] Q. Xu, Z. Li, H. Li, Y. Yang, X. Yu, and Z. Chen, “Atom: A tendon-driven aerial manipulator achieving high stiffness, high torque, and low coupling disturbance,” IEEE Robot. Autom. Lett. , vol. 11, no. 1, pp. 522–529, 2025. [11] J. L. Chien, L. T. L. Clarissa, J. Liu, J. Low, and S. Foong, “Kinematic model predictive control for a novel tethered aerial cable-driven continuum robot,” in 2021 IEEE/ASME Int. Conf. Adv. Intell. Mechatronics (AIM) . IEEE, 2021, pp. 1348–1354. [12] J. L. Chien, C. Leong, J. Liu, and S. Foong, “Design and control of an aerial-ground tethered tendon-driven continuum robot with hybrid routing,” Robot. Auton. Syst. , vol. 161, p. 104344, 2023. [13] R. Jitosho, C. E. Winston, S. Yang, J. Li, M. Ahlquist, N. J. Woehrle, C. K. Liu, and A. M. Okamura, “Flying vines: Design, modeling, and control of a soft aerial robotic arm,” IEEE Robot. Autom. Lett. , 2025. [14] Z. samadikhoshkho, S. Ghorbani, and F. Janabi-Sharifi, “Coupled dynamic modeling and control of aerial continuum manipulation systems,” Appl. Sci .[15] Z. Samadikhoshkho, S. Ghorbani, and F. Janabi-Sharifi, “Modeling and control of aerial continuum manipulation systems: A flying continuum robot paradigm,” IEEE Access , vol. 8, pp. 176 883–176 894, 2020. [16] Z. samadikhoshkho, S. Ghorbani, and F. Janabi-Sharifi, “Vision-based reduced-order adaptive control of aerial continuum manipulation systems,” Aerosp. Sci. Technol. , vol. 121, p. 107322, 2022. [17] S. Ghorbani, Z. Samadikhoshkho, and F. Janabi-Sharifi, “Dual-arm aerial continuum manipulation systems: modeling, pre-grasp planning, and control,” Nonlinear Dyn. , vol. 111, no. 8, pp. 7339–7355, 2023. [18] Q. Zhao, G. Zhang, H. Jafarnejadsani, and L. Wang, “A modular continuum manipulator for aerial manipulation and perching,” in 
+
+ASME Int. Des. Eng. Tech. Conf. Comput. Inf. Eng. Conf. , vol. 86281. American Society of Mechanical Engineers, 2022, p. V007T07A014. [19] R. M. Grassmann, C. Shentu, T. Hamoda, P. Triana Dewi, and J. Burgner-Kahrs, “Open continuum robotics – one actuation module to create them all,” Front. Robot. AI , vol. 11, p. 1272403, 2024. [20] A. B. Clark, V. Mathivannan, and N. Rojas, “A continuum manipulator for open-source surgical robotics research and shared development,” 
+
+IEEE Trans. Med. Robot. Bionics , vol. 3, no. 1, pp. 277–280, 2020. [21] A. Yeshmukhametov, K. Koganezawa, Y. Yamamoto, Z. Buribayev, Z. Mukhtar, and Y. Amirgaliyev, “Development of continuum robot arm and gripper for harvesting cherry tomatoes,” Appl. Sci. , vol. 12, no. 14, p. 6922, 2022. [22] A. Uthayasooriyan, F. Vanegas, A. Jalali, K. M. Digumarti, F. Janabi-Sharifi, and F. Gonzalez, “Tendon-driven continuum robots for aerial manipulation—a survey of fabrication methods,” Drones , vol. 8, no. 6, p. 269, 2024. [23] P. Wang, S. Guo, X. Wang, and Y. Wu, “Design and analysis of a novel variable stiffness continuum robot with built-in winding-styled ropes,” IEEE Robot. Autom. Lett. , vol. 7, no. 3, pp. 6375–6382, 2022. [24] B. Zhao, W. Zhang, Z. Zhang, X. Zhu, and K. Xu, “Continuum manipulator with redundant backbones and constrained bending curvature for continuously variable stiffness,” in 2018 IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS) . IEEE, 2018, pp. 7492–7499. [25] J. Gumowski, K. M. Digumarti, and D. Howard, “An experimental characterization of mechanical layer jamming systems,” in Proceedings - 2026 IEEE 9th International Conference on Soft Robotics (RoboSoft) .Institute of Electrical and Electronics Engineers Inc., 2026. [26] D. Howard, J. O’Connor, J. Letchford, T. Joseph, S. Lin, S. Baldwin, and G. Delaney, “A comprehensive dataset of grains for granular jamming in soft robotics: Grip strength and shock absorption,” in 2023 IEEE Int. Conf. Soft Robot. (RoboSoft) . IEEE, 2023, pp. 1–8. [27] R. J. Webster III and B. A. Jones, “Design and kinematic modeling of constant curvature continuum robots: A review,” Int. J. Robot. Res. ,vol. 29, no. 13, pp. 1661–1683, 2010. [28] F. L. Markley, Y. Cheng, J. L. Crassidis, and Y. Oshman, “Quaternion averaging,” 2007. [29] K. Lynch and F. Park, Modern Robotics: Mechanics, Planning, and Control . Cambridge University Press, 2017. [30] SciPy Developer, “scipy.spatial.transform.rotation.as euler,” SciPy Documentation, 2025, accessed: 2025-12-29. [Online]. Avail-able: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial. transform.Rotation.as euler.html [31] SciPy Developers, “scipy.spatial.transform.rotation.from euler,” SciPy Documentation, 2025, accessed: 2025-12-29. [Online]. Avail-able: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial. transform.Rotation.from euler.html

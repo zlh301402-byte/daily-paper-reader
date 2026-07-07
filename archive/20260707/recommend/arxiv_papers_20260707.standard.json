@@ -1,0 +1,209 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-07T22:04:58.810524+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.03321v1",
+      "source": "arxiv",
+      "title": "U-Joint CAAMS: Experimental Evaluation of a Universal-Joint Continuum Manipulator for Aerial Manipulation",
+      "abstract": "Continuum manipulators mounted on multi-rotor UAVs enable compliant aerial manipulation, but payloads and propeller downwash amplify out-of-plane bending and twisting that degrade end-effector pose accuracy. To address this problem, we present a universal-joint-based continuum manipulator designed to improve resistance to out-of-plane deformation during aerial manipulation. The proposed design uses a tubular backbone with spring-reinforced universal joints and an integrated conduit for internal routing and fluid delivery. We evaluate the design in still air and under peak propeller downwash across varying payloads, and benchmark it against a prior Nitinol-backbone CM. Bench tests show improved resistance to out-of-plane deformation across all conditions. Under peak downwash, the proposed design reduces mean error by 2.5-4x in yaw, 2-45x in y-axis, and up to 5x in roll compared to the NiTi-backbone design. We further analyze hover stability through in-flight coupled-disturbance tests over varying payloads and actuation speeds, and demonstrate the system in water sampling, spot spraying, and object transport.",
+      "authors": [
+        "Anuraj Uthayasooriyan",
+        "Musab Alibrahim",
+        "Krishna Manaswi Digumarti",
+        "Fernando Vanegas",
+        "Felipe Gonzalez"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-03T13:38:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.03321v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "aerial manipulator on multi-rotor UAV",
+      "llm_evidence_cn": "多旋翼无人机上的连续体机械臂",
+      "llm_evidence": "多旋翼无人机上的连续体机械臂",
+      "canonical_evidence": "多旋翼无人机上的连续体机械臂",
+      "llm_tldr_en": "Evaluates a universal-joint continuum manipulator for aerial manipulation, showing improved resistance to out-of-plane deformation under downwash.",
+      "llm_tldr_cn": "针对多旋翼无人机上连续体机械臂在旋翼下洗气流中易发生面外变形的问题，本文提出了一种基于万向节的连续体机械臂设计。该设计采用弹簧加强的万向节和管状骨架，提升了抗变形能力。实验在静态和旋翼下洗条件下对不同负载进行了评估，结果表明其相比镍钛诺骨架方案具有更优的抗面外变形性能，为空中操纵提供了更可靠的硬件基础。",
+      "llm_tldr": "针对多旋翼无人机上连续体机械臂在旋翼下洗气流中易发生面外变形的问题，本文提出了一种基于万向节的连续体机械臂设计。该设计采用弹簧加强的万向节和管状骨架，提升了抗变形能力。实验在静态和旋翼下洗条件下对不同负载进行了评估，结果表明其相比镍钛诺骨架方案具有更优的抗面外变形性能，为空中操纵提供了更可靠的硬件基础。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "unmanned aerial vehicle with robotic arm",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04719v1",
+      "source": "arxiv",
+      "title": "Aerial Manipulation: Contact, Medium Coupling, and the Geometry of Readiness",
+      "abstract": "Aerial robots are increasingly moving from remote observation toward physical interaction with objects, surfaces, structures, loads, and surrounding flows. This review argues that aerial manipulation cannot be understood as classical manipulation simply mounted on a flying base. Because flying agents remain aloft through continuous momentum and energy exchange with the surrounding medium, support, locomotion, stabilization, and task-directed interaction are intrinsically coupled. Building on broad views of manipulation as intentional environmental regulation through physical interaction, we propose a medium-aware interpretation of aerial manipulation in which interaction may be mediated by contact, by the surrounding fluid, or by both. The review organizes biological and robotic examples into a repertoire of interaction modes and a capability ladder, then develops an actuation-geometric viewpoint in which redundancy induces task-equivalent fibers. Internal motion along these fibers can trade energy for active readiness, aerodynamic promptness, and passive medium coupling. This perspective clarifies why aerial manipulation is difficult, why biological flyers remain broader than robotic systems, and how future platforms may command forces while also shaping how the medium acts back on them.",
+      "authors": [
+        "Antonio Franchi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-07-06T06:45:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.04719v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "survey on aerial manipulation covering contact and medium coupling",
+      "llm_evidence_cn": "空中操作综述，涵盖接触与介质耦合",
+      "llm_evidence": "空中操作综述，涵盖接触与介质耦合",
+      "canonical_evidence": "空中操作综述，涵盖接触与介质耦合",
+      "llm_tldr_en": "This review argues that aerial manipulation is intrinsically coupled with the surrounding medium, proposing a medium-aware interpretation.",
+      "llm_tldr_cn": "空中机器人与环境物理交互的综述指出：空中操作不能简单视为经典操作安装在飞行基座上，因为飞行器通过动量与介质交换保持悬停，支撑、稳定和任务交互紧密耦合。本文提出介质感知的空中操作解释，涵盖接触和流体介质的双重作用，为无人机机械臂系统提供了理论基础。",
+      "llm_tldr": "空中机器人与环境物理交互的综述指出：空中操作不能简单视为经典操作安装在飞行基座上，因为飞行器通过动量与介质交换保持悬停，支撑、稳定和任务交互紧密耦合。本文提出介质感知的空中操作解释，涵盖接触和流体介质的双重作用，为无人机机械臂系统提供了理论基础。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.02764v1",
+      "source": "arxiv",
+      "title": "MorphQuad: Morphable Quadrotor for Superhuman Maneuverability, Manipulation, and Resiliency",
+      "abstract": "Infrastructure maintenance, contact-based inspection, and emergency response can benefit from aerial vehicles that act as a flying human hand with extreme maneuverability, manipulation, and resiliency (MMR): maneuverability to fly in arbitrary orientations to reach remote and tight locations; manipulation to point sensors, turn valves, and press tools at arbitrary orientations; resiliency to maintain accurate motion and force control despite disturbances from arbitrary directions, such as wind, ground effects, and friction. Realizing MMR on aerial vehicles requires not only omnidirectional flight; it also requires (I) vectoring of maximum thrust in any direction, to maximize capacity for contact-force application and disturbance rejection, (II) global stability, to enable control over any orientation/position, and (III) compact, standard designs that build upon platforms such as quadrotors to inherit technological know-how. No current aerial vehicle simultaneously enables I--III, due to structural and control limitations that constrain actuation. We present MorphQuad: a morphable quadrotor that enjoys MMR. Key to our approach is a hardware and control co-design: on hardware, we independently articulate each of the four rotor systems via two-axis gimbals; on control, we introduce globally-stable control, and energy-optimal thrust allocation that permits inter-rotor thrust cancellations only to avoid downwash interference and gimbal lock. With fully-onboard autonomy, MorphQuad demonstrates multi-revolution rotation while translating or hovering, for pipe inspection and target tracking (maneuverability); valve turning, perching, and object pressing and pushing with human-level strengths (manipulation); and wind rejection from any direction, even directed to a single rotor, and push-pull recovery (resiliency).",
+      "authors": [
+        "J. Diaz Peon Gonzalez Pacheco",
+        "J. Xu",
+        "A. Zhao",
+        "H. Zhou",
+        "A. Navsalkar",
+        "A. Scheffer",
+        "A. Malli Reddi",
+        "S. Shankar",
+        "Y. Bao",
+        "V. Tzoumas"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-02T21:01:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.02764v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "morphable quadrotor with manipulation capability for contact tasks",
+      "llm_evidence_cn": "具备操纵能力的可变形四旋翼",
+      "llm_evidence": "具备操纵能力的可变形四旋翼",
+      "canonical_evidence": "具备操纵能力的可变形四旋翼",
+      "llm_tldr_en": "MorphQuad is a morphable quadrotor achieving superhuman maneuverability, manipulation (sensor pointing, valve turning), and resiliency through omnidirectional thrust vectoring and deformable structure, enabling aerial manipulation.",
+      "llm_tldr_cn": "本文提出MorphQuad可变形四旋翼，通过改变机体构型实现全方向推力矢量，从而具备超强的机动性、操纵能力（如转动阀门、按压工具）和抗扰动韧性。其变形机构使其能够充当“飞行人手”，在狭小空间内完成接触式任务，为空中机械臂的发展提供了新思路。",
+      "llm_tldr": "本文提出MorphQuad可变形四旋翼，通过改变机体构型实现全方向推力矢量，从而具备超强的机动性、操纵能力（如转动阀门、按压工具）和抗扰动韧性。其变形机构使其能够充当“飞行人手”，在狭小空间内完成接触式任务，为空中机械臂的发展提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "unmanned aerial vehicle with robotic arm",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04260v1",
+      "source": "arxiv",
+      "title": "FLOAT Drone for Physical Interaction: Lateral Airflow Reduction, Wrench Modeling, and Adaptive Control",
+      "abstract": "Aerial physical interaction represents a promising direction for next-generation unmanned aerial vehicles (UAVs), but it requires an aerial platform that can exert contact forces while maintaining stable flight. For close-proximity tasks, this translates into three coupled design requirements: multidimensional wrench generation for stable contact, compactness for maneuverability and safety in confined spaces, and reduced lateral airflow toward the target when generating horizontal force. This article presents FLOAT Drone, a fully actuated coaxial UAV with servo-driven control surfaces for close-proximity physical interaction. The coaxial dual-rotor layout provides a compact propulsion layout, while the control surfaces, immersed in the rotor downwash, generate lateral forces and moments for 6-DoF wrench generation. A force-matched computational fluid dynamics (CFD) comparison with a tilted-rotor alternative quantifies the reduction in target-facing lateral airflow. To account for nonlinear rotor--control-surface coupling in the rotor wake, a high-fidelity polynomial aerodynamic wrench model is identified from precision force measurements and embedded in a constrained nonlinear allocator for real-time wrench tracking. Comparative flight and interaction experiments show that the proposed framework improves control accuracy over linear allocation baselines, rejects ground-effect and payload disturbances, and enables close-proximity drawer push--pull manipulation through a $2~\\mathrm{cm}$ handle clearance.",
+      "authors": [
+        "Junxiao Lin",
+        "Kehan Zhou",
+        "Shuhang Ji",
+        "Yimin Peng",
+        "Shen Wang",
+        "Jialiang Hou",
+        "Fei Gao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-05T12:14:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.04260v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "aerial physical interaction with full actuation and adaptive control",
+      "llm_evidence_cn": "全驱动无人机物理交互与自适应控制",
+      "llm_evidence": "全驱动无人机物理交互与自适应控制",
+      "canonical_evidence": "全驱动无人机物理交互与自适应控制",
+      "llm_tldr_en": "FLOAT Drone uses a fully actuated coaxial UAV with servo-driven control surfaces for close-proximity physical interaction, addressing wrench generation, compactness, and airflow reduction, enabling stable contact force exertion.",
+      "llm_tldr_cn": "针对近距离空中物理交互任务，本文提出了FLOAT Drone——一种带有伺服驱动控制面的全驱动同轴无人机。它通过紧凑的布局和多维力矩生成能力，在稳定接触的同时减少对目标的侧向气流干扰。实验表明该平台能有效进行接触力控制，为空中操纵提供了可行的硬件与控制方案。",
+      "llm_tldr": "针对近距离空中物理交互任务，本文提出了FLOAT Drone——一种带有伺服驱动控制面的全驱动同轴无人机。它通过紧凑的布局和多维力矩生成能力，在稳定接触的同时减少对目标的侧向气流干扰。实验表明该平台能有效进行接触力控制，为空中操纵提供了可行的硬件与控制方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.32003v1",
+      "source": "arxiv",
+      "title": "On the Comparison of Reinforcement Learning and Adaptive Control for Linear Systems under Packet Loss and Uncertainty",
+      "abstract": "This paper presents a comparative study between Adaptive Quantized Control (AQC) and Deep Deterministic Policy Gradient (DDPG) reinforcement learning for uncertain linear systems with input quantization over communication channels subject to packet loss. The considered setting also includes dynamic switching from a nominal unstable system to a more unstable one during operation. The AQC is designed for unknown system dynamics using acknowledgment messages to compensate for packet losses, whereas the DDPG controller is trained using the nominal system model without acknowledgment messages. Numerical results show that the DDPG controller achieves faster transient responses and improved damping within its training environment. However, under model uncertainty, packet loss, and dynamic switching, the AQC consistently demonstrates superior robustness owing to its rigorous Lyapunov stability guarantees. These results highlight the trade-off between data-driven performance and model-based robustness, and provide insight into the applicability of reinforcement learning and adaptive control for networked uncertain systems.",
+      "authors": [
+        "Moh Kamalul Wafi"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-06-30T17:36:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.32003v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "compares reinforcement learning (DDPG) and adaptive control for uncertain systems, relevant to robot arm control",
+      "llm_evidence_cn": "比较强化学习（DDPG）与自适应控制在不确定性系统上的表现，可用于机械臂控制",
+      "llm_evidence": "比较强化学习（DDPG）与自适应控制在不确定性系统上的表现，可用于机械臂控制",
+      "canonical_evidence": "比较强化学习（DDPG）与自适应控制在不确定性系统上的表现，可用于机械臂控制",
+      "llm_tldr_en": "Compares DDPG reinforcement learning with adaptive control for linear systems with packet loss and uncertainty; DDPG shows faster transient response and improved damping, offering insights for RL-based robot arm control.",
+      "llm_tldr_cn": "本文对比了深度确定性策略梯度（DDPG）与自适应量化控制在不稳定线性系统（含丢包和不确定性）下的控制性能。数值结果表明DDPG能实现更快的瞬态响应和更好的阻尼，为将强化学习应用于机器人臂控制提供了参考和基准。",
+      "llm_tldr": "本文对比了深度确定性策略梯度（DDPG）与自适应量化控制在不稳定线性系统（含丢包和不确定性）下的控制性能。数值结果表明DDPG能实现更快的瞬态响应和更好的阻尼，为将强化学习应用于机器人臂控制提供了参考和基准。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
