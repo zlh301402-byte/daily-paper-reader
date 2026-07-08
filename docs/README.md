@@ -6,39 +6,46 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-07
-- 运行时间：2026-07-07 22:08:47 UTC
+- 最新运行日期：2026-07-08
+- 运行时间：2026-07-08 21:20:19 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：4
-- 速读区：1
+- 本次总论文数：8
+- 精读区：3
+- 速读区：5
 
 ### 今日简报（AI）
-今日精选5篇论文，精读4篇，重点关注空中操控与连续体机械臂领域。
-
-两篇9.0高分论文分别实验评估通用关节连续体机械臂性能，并深入探讨空中操控的接触、介质耦合与准备度几何。
-
-建议优先精读这两篇高分论文，快速把握空中机器人操控的硬件与理论前沿。
-- 详情：[/202607/07/README](/202607/07/README)
+今日精选8篇论文，重点关注空中操纵的接触与几何准备，以及基于流匹配的视觉-语言-动作策略引导。  
+最值得看的是《Aerial Manipulation》关于接触与介质耦合的几何分析（9.0分）和《Guided Action Flow》中Q引导推理的流匹配策略（8.0分）。  
+后续可关注sim-to-real零样本迁移方向，尤其是基于合成先验的世界动作模型和力控抓取领域进展。
+- 详情：[/202607/08/README](/202607/08/README)
 
 ### 精读区论文标签
-1. [U-Joint CAAMS: Experimental Evaluation of a Universal-Joint Continuum Manipulator for Aerial Manipulation](/202607/07/2607.03321v1-u-joint-caams-experimental-evaluation-of-a-universal-joint-continuum-manipulator-for-aerial-manipulation)  
+1. [Aerial Manipulation: Contact, Medium Coupling, and the Geometry of Readiness](/202607/08/2607.04719v1-aerial-manipulation-contact-medium-coupling-and-the-geometry-of-readiness)  
    标签：评分：9.0/10、query:drone-arm
-   evidence：多旋翼无人机上的连续体机械臂
-2. [Aerial Manipulation: Contact, Medium Coupling, and the Geometry of Readiness](/202607/07/2607.04719v1-aerial-manipulation-contact-medium-coupling-and-the-geometry-of-readiness)  
-   标签：评分：9.0/10、query:aerial-arm
-   evidence：空中操作综述，涵盖接触与介质耦合
-3. [MorphQuad: Morphable Quadrotor for Superhuman Maneuverability, Manipulation, and Resiliency](/202607/07/2607.02764v1-morphquad-morphable-quadrotor-for-superhuman-maneuverability-manipulation-and-resiliency)  
+   evidence：空中操纵动力学与控制综述
+2. [Guided Action Flow: Q-Guided Inference for Flow-Matching Vision-Language-Action Policies](/202607/08/2607.02092v2-guided-action-flow-q-guided-inference-for-flow-matching-vision-language-action-policies)  
    标签：评分：8.0/10、query:drone-arm
-   evidence：具备操纵能力的可变形四旋翼
-4. [FLOAT Drone for Physical Interaction: Lateral Airflow Reduction, Wrench Modeling, and Adaptive Control](/202607/07/2607.04260v1-float-drone-for-physical-interaction-lateral-airflow-reduction-wrench-modeling-and-adaptive-control)  
+   evidence：基于强化学习评论家的引导用于机器人臂操纵策略
+3. [HALO-WA: Hybrid-Attention Latent-Guided Online Reinforcement Learning for World-Action Models](/202607/08/2607.04265v1-halo-wa-hybrid-attention-latent-guided-online-reinforcement-learning-for-world-action-models)  
    标签：评分：8.0/10、query:drone-arm
-   evidence：全驱动无人机物理交互与自适应控制
+   evidence：提出在线RL适配世界动作模型，用于机器人臂控制
 
 ### 速读区论文标签
-1. [On the Comparison of Reinforcement Learning and Adaptive Control for Linear Systems under Packet Loss and Uncertainty](/202607/07/2606.32003v1-on-the-comparison-of-reinforcement-learning-and-adaptive-control-for-linear-systems-under-packet-loss-and-uncertainty)  
+1. [Efficient Sim-to-Real Transfer of World-Action Models from Synthetic Priors](/202607/08/2606.31101v1-efficient-sim-to-real-transfer-of-world-action-models-from-synthetic-priors)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：将世界-动作模型从仿真迁移至真实机器人操作
+2. [Actuator Reality Shaping for Zero-Shot Sim-to-Real Robot Learning](/202607/08/2607.02205v2-actuator-reality-shaping-for-zero-shot-sim-to-real-robot-learning)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：用于机器人学习的模拟到现实方法，适用于无人机机械臂强化学习
+3. [Closing the Reality Gap: Zero-Shot Sim-to-Real Deployment for Dexterous Force-Based Grasping and Manipulation](/202607/08/2607.04940v1-closing-the-reality-gap-zero-shot-sim-to-real-deployment-for-dexterous-force-based-grasping-and-manipulation)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：强化学习用于灵巧操纵及模拟到真实迁移
+4. [Optimal Transport Q-Learning for Flow Policy Steering and Acceleration](/202607/08/2607.06262v1-optimal-transport-q-learning-for-flow-policy-steering-and-acceleration)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：利用强化学习后训练微调机器人操作中的流策略
+5. [Dynamic Evaluation of Classical and Control-Aware Optimal Trajectory Planning in Robot Manipulators](/202607/08/2607.05544v1-dynamic-evaluation-of-classical-and-control-aware-optimal-trajectory-planning-in-robot-manipulators)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：比较强化学习（DDPG）与自适应控制在不确定性系统上的表现，可用于机械臂控制
+   evidence：考虑控制的机器人机械臂轨迹规划，与空中机械臂控制相关
 
 
 <div class="dpr-home-promo-card">
