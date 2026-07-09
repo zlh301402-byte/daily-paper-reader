@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-09",
+  "date": "2026-07-09",
+  "generated_at": "2026-07-09T21:53:51",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/09/2607.03723v1-omnitactune-policy-agnostic-real-world-rl-for-tactile-residual-adaptation-of-visual-policies",
+      "section": "deep",
+      "title_en": "OmniTacTune: Policy-Agnostic Real-World RL for Tactile Residual Adaptation of Visual Policies",
+      "authors": "Kelin Yu, Haode Zhang, Harish Ravichandar, Yunhai Han, Ruohan Gao",
+      "date": "2026-07-04",
+      "pdf": "https://arxiv.org/pdf/2607.03723v1",
+      "score": "9.0",
+      "evidence": "真实世界强化学习用于机器人手臂触觉残差适应",
+      "tldr": "视觉策略在接触丰富的操作中因缺乏触觉反馈而失败，但触觉数据收集困难且泛化差。OmniTacTune提出一种策略无关的真实世界强化学习管道，通过两阶段设计学习触觉残差策略来修正视觉策略。在四个真实任务中，40-80分钟内将成功率从5-40%提升至85-100%。该方法为将触觉融入大规模视觉策略提供高效路径。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Visual policies learned from human videos, teleoperation, and robot demonstrations offer scalable motion priors, but often fail in contact-rich manipulation, where success significantly depends on local force and contact geometry. Tactile sensing provides these complementary signals, yet tactile data remain costly to collect and hard to generalize across sensors, robots, and tasks. We introduce OmniTacTune, a policy-agnostic real-world RL pipeline that adapts tactile feedback to pretrained visual policies through residual correction. OmniTacTune uses a two-stage design: it first bootstraps tactile-aware learning from autonomous base-policy rollouts, then learns a lightweight tactile residual policy through online interaction. Extensive experiments show that OmniTacTune generalizes across diverse contact-rich tasks, visual base policies, and tactile representations. Across four real-world contact-rich tasks, it improves visual base policies from 5-40% success to 85-100% within 40-80 minutes, demonstrating an efficient path for adapting tactile feedback to scalable visual robot policies. Project page: https://colinyu1.github.io/omnitactune-site/",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/09/2607.06706v1-vision-language-action-vla-models-for-unmanned-aerial-robotics-and-bimanual-manipulation-a-review",
+      "section": "deep",
+      "title_en": "Vision Language Action (VLA) Models for Unmanned Aerial Robotics and Bimanual Manipulation: A Review",
+      "authors": "Inkyu Sa, Chanoh Park, Hea-Min Lee, Donghee Noh, Ho Seok Ahn",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06706v1",
+      "score": "8.0",
+      "evidence": "无人机与双臂操作VLA模型综述",
+      "tldr": "视觉-语言-动作（VLA）模型将视觉感知、自然语言理解和动作生成融合于单一基础模型，使机器人能直接根据指令从图像生成动作。双机械臂协调（每个臂7自由度）是VLA框架最具挑战的测试床，而无人机需在严格延迟和载荷约束下协调推力、姿态和夹爪命令。本综述涵盖2017-2026年183篇文献，沿七个维度组织：VLA架构、训练策略、动作表征、双臂协调（2022-2026）、无人机导航与控制（2017-2026）、语言基础及跨领域问题（包括记忆和世界模型）。结果表明双臂VLA的协调策略、训练方案和动作表征可迁移至无人机系统，并识别出14个跨两个领域的未来研究方向。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Vision Language Action (VLA) models unify visual perception, natural-language understanding, and action generation within a single foundation model, allowing a robot to follow instructions such as fold the towel or fly to the red building directly from camera images. Because VLAs inherit world knowledge from internet-scale pre-training, they have become the dominant framework for learning-based manipulation, with bimanual coordination serving as the most demanding testbed: two arms with 7 degrees of freedom each must move in concert to fold, assemble, and reorient objects. Unmanned aerial robotics faces a structurally similar challenge: a drone must coordinate thrust, attitude, and increasingly gripper commands from visual observations under strict latency and payload constraints. This review covers 183 contributions spanning 2017-2026 and organized along seven dimensions: VLA architectures, training recipes, action representations, bimanual coordination (2022-2026), unmanned aerial vehicle (UAV) navigation and control (2017-2026), language grounding, and cross-cutting concerns including memory and world models. We show that the coordination strategies, training recipes, and action representations developed for bimanual VLAs transfer to unmanned aerial systems and identify fourteen research directions across both domains.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/09/2607.03570v1-cross-embodiment-robot-manipulation-via-a-unified-hand-action-space",
+      "section": "quick",
+      "title_en": "Cross-Embodiment Robot Manipulation via a Unified Hand Action Space",
+      "authors": "Luis Felipe Casas, Robert Teal, Keval Shah, Abhijit Tadepalli, Wanxin Jin, Yu Xiang",
+      "date": "2026-07-03",
+      "pdf": "https://arxiv.org/pdf/2607.03570v1",
+      "score": "6.0",
+      "evidence": "使用强化学习训练跨本体灵巧操作策略",
+      "tldr": "机器人操作策略通常绑定特定手部实体，限制跨平台迁移。本文提出统一手部动作空间（UHAS），通过球体几何变形统一表示动作，并用级联逆运动学映射到不同实体。在多种手部（Allegro、LEAP、Shadow等）上实现零样本迁移和快速微调，真实世界部署成功。UHAS首次实现跨实体灵巧操作策略的直接转移。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Robot manipulation policies are typically tied to specific robotic hand embodiments, limiting the transfer of learned behaviors across platforms with different kinematic structures. In this work, we propose the Unified Hand Action Space (UHAS), a sphere-based unified action representation for cross-embodiment dexterous manipulation. UHAS represents robotic hand actions as geometric deformations of a canonical sphere and uses a Cascade Inverse Kinematics (CIK) algorithm to map the shared representation to embodiment-specific joint configurations. Using reinforcement learning, we train dexterous manipulation policies directly in the proposed action space for in-hand cube reorientation tasks. We evaluate our method in both simulation and real-world experiments across multiple robotic hands, including the Allegro Hand, LEAP Hand, Shadow Hand, and MANO Human Hand. Experimental results demonstrate effective dexterous manipulation, zero-shot transfer to unseen hands, rapid finetuning across embodiments, and successful real-world deployment. Our experiments show that the proposed UHAS representation enables stable dexterous control and cross-embodiment policy transfer across robotic hands.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/09/2607.04153v1-mask-based-predictive-representations-for-reinforcement-learning",
+      "section": "quick",
+      "title_en": "Mask-based Predictive Representations for Reinforcement Learning",
+      "authors": "Kai Zhao",
+      "date": "2026-07-05",
+      "pdf": "https://arxiv.org/pdf/2607.04153v1",
+      "score": "6.0",
+      "evidence": "基于掩码预测的强化学习表示学习",
+      "tldr": "视觉深度强化学习面临高维图像和有限样本的挑战。受自然语言处理和计算机视觉启发，提出基于掩码预测的自监督辅助任务，利用环境序列上下文预测掩码信息，结合Transformer在潜在空间重建输入序列。该方法学习到有效表示，显著提升样本效率，在多个连续和离散控制基准上超越现有最先进方法。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Vision-based deep reinforcement learning involves dealing with high-dimensional inputs of image information. It is crucial to abstract effective states from high-dimensional image inputs and limited samples for sample-efficient reinforcement learning. To address this challenge, inspired by fields such as natural language processing and computer vision, we propose a self-supervised task based on mask prediction as an auxiliary task for reinforcement learning. This non-reconstruction method uses the sequence information collected by the agent from the environment and the context information in the sequence to predict the masked information, thereby strengthening the agent's understanding of the task and learning effective representations. Combined with transformers, we find that the model reconstructs the masked input sequence in the latent space. By feeding the compressed representations learned by this method into reinforcement learning models, we observe an improvement in the sample efficiency of reinforcement learning. Moreover, the model outperforms state-of-the-art sample-efficient reinforcement learning methods on multiple continuous and discrete control benchmarks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
