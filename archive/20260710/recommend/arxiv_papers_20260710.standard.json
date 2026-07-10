@@ -1,0 +1,138 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-10T20:29:05.994622+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.02205v2",
+      "source": "arxiv",
+      "title": "Actuator Reality Shaping for Zero-Shot Sim-to-Real Robot Learning",
+      "abstract": "Sim-to-real transfer in robot learning is often limited by discrepancies between the ideal actuator dynamics assumed during policy training and the nonlinear, hardware-dependent behavior of physical motors. While conventional approaches attempt to bridge this gap by increasing simulator fidelity through system identification, domain randomization, or learned actuator models, we introduce an alternative paradigm: actuator reality shaping. Instead of modifying the simulator to match the real world, our method shapes the closed-loop behavior of physical actuators to match the idealized second-order reference dynamics used in simulation. By equipping each joint with a two-degree-of-freedom feedforward--feedback controller, we decouple reference-response shaping from robust stabilization, thereby providing a standardized actuator interface for reinforcement learning policies. As a result, policies trained only with the prescribed reference model can be deployed zero-shot on real hardware without task-level fine-tuning or learned actuator models. We validate the approach on a single-joint high-gear-ratio servo under external loads and a 7-DOF robotic arm reaching task, where actuator reality shaping substantially reduces sim-to-real tracking error and improves zero-shot task performance compared with standard servo-control and representative real-to-sim-to-real baselines. We further demonstrate zero-shot transfer on a wheeled-legged robot driving over a slope and a humanoid robot walking, suggesting that actuator reality shaping can serve as a reusable interface for robot learning across diverse hardware platforms. Project page: https://syamamori.github.io/ActuatorRealityShaping.github.io/",
+      "authors": [
+        "Satoshi Yamamori",
+        "Koji Ishihara",
+        "Kenjiro Minamikawa",
+        "Ryosei Ohmori",
+        "Taiyo Yasaki",
+        "Norikazu Sugimoto",
+        "Jun Morimoto"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-02T14:12:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.02205v2",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "sim-to-real transfer method applicable to robot arm control",
+      "llm_evidence_cn": "仿真到现实迁移方法，可应用于机械臂控制",
+      "llm_evidence": "仿真到现实迁移方法，可应用于机械臂控制",
+      "canonical_evidence": "仿真到现实迁移方法，可应用于机械臂控制",
+      "llm_tldr_en": "Shapes physical actuator behavior to match idealized simulation dynamics, enabling zero-shot transfer for robot learning.",
+      "llm_tldr_cn": "该论文提出执行器现实塑造方法，通过为每个关节配备二自由度前馈-反馈控制器，使物理执行器的闭环行为匹配仿真中使用的理想二阶参考动力学，从而在不需要修改仿真器的情况下实现零样本仿真到现实迁移。该方法适用于任何机器人系统，包括无人机机械臂，并在多种任务上验证了有效性。",
+      "llm_tldr": "该论文提出执行器现实塑造方法，通过为每个关节配备二自由度前馈-反馈控制器，使物理执行器的闭环行为匹配仿真中使用的理想二阶参考动力学，从而在不需要修改仿真器的情况下实现零样本仿真到现实迁移。该方法适用于任何机器人系统，包括无人机机械臂，并在多种任务上验证了有效性。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06706v1",
+      "source": "arxiv",
+      "title": "Vision Language Action (VLA) Models for Unmanned Aerial Robotics and Bimanual Manipulation: A Review",
+      "abstract": "Vision Language Action (VLA) models unify visual perception, natural-language understanding, and action generation within a single foundation model, allowing a robot to follow instructions such as fold the towel or fly to the red building directly from camera images. Because VLAs inherit world knowledge from internet-scale pre-training, they have become the dominant framework for learning-based manipulation, with bimanual coordination serving as the most demanding testbed: two arms with 7 degrees of freedom each must move in concert to fold, assemble, and reorient objects. Unmanned aerial robotics faces a structurally similar challenge: a drone must coordinate thrust, attitude, and increasingly gripper commands from visual observations under strict latency and payload constraints. This review covers 183 contributions spanning 2017-2026 and organized along seven dimensions: VLA architectures, training recipes, action representations, bimanual coordination (2022-2026), unmanned aerial vehicle (UAV) navigation and control (2017-2026), language grounding, and cross-cutting concerns including memory and world models. We show that the coordination strategies, training recipes, and action representations developed for bimanual VLAs transfer to unmanned aerial systems and identify fourteen research directions across both domains.",
+      "authors": [
+        "Inkyu Sa",
+        "Chanoh Park",
+        "Hea-Min Lee",
+        "Donghee Noh",
+        "Ho Seok Ahn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-07T18:24:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.06706v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "review of VLA models for UAV and bimanual manipulation",
+      "llm_evidence_cn": "无人机与双臂操作的VLA模型综述",
+      "llm_evidence": "无人机与双臂操作的VLA模型综述",
+      "canonical_evidence": "无人机与双臂操作的VLA模型综述",
+      "llm_tldr_en": "This review discusses Vision Language Action (VLA) models for unmanned aerial robotics and bimanual manipulation, highlighting their potential for drone-arm coordination.",
+      "llm_tldr_cn": "无人机与双臂操作面临视觉语言动作模型整合的挑战。本文综述了VLA模型在无人机和双臂操作中的应用，指出VLA统一视觉、语言和动作生成，可指导无人机飞行和机械臂操作。综述分析了现有方法、挑战和未来方向，表明VLA模型为无人机机械臂控制提供了新范式。本文为相关研究提供系统梳理。",
+      "llm_tldr": "无人机与双臂操作面临视觉语言动作模型整合的挑战。本文综述了VLA模型在无人机和双臂操作中的应用，指出VLA统一视觉、语言和动作生成，可指导无人机飞行和机械臂操作。综述分析了现有方法、挑战和未来方向，表明VLA模型为无人机机械臂控制提供了新范式。本文为相关研究提供系统梳理。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "unmanned aerial vehicle with robotic arm",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07252v1",
+      "source": "arxiv",
+      "title": "Safe Reinforcement Learning using Ideas from Model Predictive Control",
+      "abstract": "Reinforcement learning (RL) enables the synthesis of control policies directly from data, making it highly appealing for complex cyber-physical systems (CPSs) and robotics. A persistent challenge, however, is ensuring strict, hard safety constraints during the active learning phase. In real-world physical systems, violating mechanical limits can cause irreversible damage, necessitating that exploration remains strictly within safe operational regions. We propose a generalized framework that combines the adaptive, high-performance nature of deep reinforcement learning (DRL) with the formal safety guarantees of model predictive control (MPC). Using a mathematical model of the system dynamics, offline MPC computations define a feasible state-action space, representing all safe combinations of system states and control inputs that guarantee constraint satisfaction. During training and deployment, the RL agent's instantaneous actions are projected onto this globally verified feasible set via a safety filter. We systematically evaluate our generalized approach on a non-linear 1-DoF laboratory testbed, demonstrating successful exploration and stable policy convergence on physical hardware.",
+      "authors": [
+        "Georg Schäfer",
+        "Jakob Rehrl",
+        "Stefan Huber",
+        "Simon Hirlaender"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-07-08T10:35:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.07252v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Safe RL framework using MPC policies for general robotic systems",
+      "llm_evidence_cn": "将MPC安全保证与深度强化学习结合，适用于机器人控制",
+      "llm_evidence": "将MPC安全保证与深度强化学习结合，适用于机器人控制",
+      "canonical_evidence": "将MPC安全保证与深度强化学习结合，适用于机器人控制",
+      "llm_tldr_en": "Proposes Safe RL framework combining DRL with MPC for hard safety constraints in CPS and robotics, enabling safe exploration.",
+      "llm_tldr_cn": "针对强化学习在物理系统中探索阶段违反安全限制的问题，提出一种将深度强化学习与模型预测控制相结合的通用框架。通过离线MPC计算定义可行状态-动作空间，在保持高性能的同时提供形式化安全保证。该方法适用于多种机器人系统，可有效降低训练过程中的安全风险。",
+      "llm_tldr": "针对强化学习在物理系统中探索阶段违反安全限制的问题，提出一种将深度强化学习与模型预测控制相结合的通用框架。通过离线MPC计算定义可行状态-动作空间，在保持高性能的同时提供形式化安全保证。该方法适用于多种机器人系统，可有效降低训练过程中的安全风险。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
