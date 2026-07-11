@@ -6,32 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 20:29:50 UTC
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 21:15:45 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：1
 - 精读区：0
-- 速读区：3
+- 速读区：1
 
 ### 今日简报（AI）
-今日收录3篇机器人学习相关论文，均属速读，聚焦Sim-to-Real迁移、VLA模型综述及安全强化学习。  
-最值得关注零样本仿真到现实机器人学习的执行器现实塑造方法，以及基于MPC思想的安全强化学习框架。  
-建议优先阅读这两篇，理解如何通过物理建模或控制理论增强机器人部署的鲁棒性与安全性。
-- 详情：[/202607/10/README](/202607/10/README)
+今天速读了一篇关于预期强化学习用于轨迹跟踪的论文。该研究探讨了通过预期机制提前规划，提升轨迹跟踪的稳定性与响应速度。建议关注强化学习在机器人控制中的前瞻性算法设计。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Actuator Reality Shaping for Zero-Shot Sim-to-Real Robot Learning](/202607/10/2607.02205v2-actuator-reality-shaping-for-zero-shot-sim-to-real-robot-learning)  
-   标签：评分：6.0/10、query:aerial-arm
-   evidence：仿真到现实迁移方法，可应用于机械臂控制
-2. [Vision Language Action (VLA) Models for Unmanned Aerial Robotics and Bimanual Manipulation: A Review](/202607/10/2607.06706v1-vision-language-action-vla-models-for-unmanned-aerial-robotics-and-bimanual-manipulation-a-review)  
+1. [Anticipatory Reinforcement Learning for Trajectory Tracking](/202607/11/2607.03132v1-anticipatory-reinforcement-learning-for-trajectory-tracking)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：无人机与双臂操作的VLA模型综述
-3. [Safe Reinforcement Learning using Ideas from Model Predictive Control](/202607/10/2607.07252v1-safe-reinforcement-learning-using-ideas-from-model-predictive-control)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：将MPC安全保证与深度强化学习结合，适用于机器人控制
+   evidence：预测性强化学习用于无人机测试平台上的轨迹跟踪
 
 
 <div class="dpr-home-promo-card">
