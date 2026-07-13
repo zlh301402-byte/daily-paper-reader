@@ -1,0 +1,583 @@
+Title: Task-Adaptive Design of Modular Aerial Manipulators Under Airflow Exposure Constraints
+
+URL Source: https://arxiv.org/pdf/2607.09548v1
+
+Published Time: Mon, 13 Jul 2026 01:04:41 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+## Task-Adaptive Design of Modular Aerial Manipulators Under Airflow Exposure Constraints 
+
+Mengguang Li and Heinz Koeppl 
+
+Abstract — Aerial manipulation with multirotor platforms enables physical interaction in complex environments, but rotor-induced airflow remains a critical limitation for tasks involving airflow-sensitive targets or surroundings. This paper presents an optimization-based design framework for modular aerial manipulators that jointly considers task wrench feasibility, end-effector placement, and airflow exposure constraints. We first introduce a novel categorization of target-side airflow toler-ance and formulate the corresponding exposure requirements as geometric constraints. To efficiently model rotor-induced airflow, we introduce a compact cone-sphere envelope that approximates the spreading structure of a quadrotor’s airflow while preserving computational tractability for optimization. Building on this formulation, we propose a reconfiguration optimization that adapts a modular aerial manipulator to diverse task wrench requirements while enforcing both target-side airflow exposure and intra-platform airflow interference constraints. Unlike prior designs that assume a fixed end-effector location, the proposed framework optimizes the end-effector placement together with the platform configuration. Scalability experiments and ablation studies validate the effec-tiveness of the proposed framework. 
+
+I. INTRODUCTION Aerial manipulation aims to enable physical interaction in elevated or otherwise hard-to-reach environments. Multirotor platforms are particularly attractive for such tasks due to their maneuverability, hovering capability, and mechanical sim-plicity. Recent prototypes have demonstrated high-precision task execution in aerial manipulation scenarios [1]. How-ever, unlike ground-based manipulators, multirotor systems inevitably generate rotor-induced airflow, including inflow above the rotors and the wake flow beneath them, com-monly referred to as downwash. This airflow can disturb the manipulated target, the surrounding environment, and even other parts of the aerial platform itself, thereby introducing additional design and control challenges [2]. One important but underexplored aspect is the airflow tolerance on the target side. For tasks involving airflow-sensitive targets or environments, the platform must sat-isfy the required manipulation wrench while limiting rotor-induced airflow near the contact region and along the relevant flight path. Existing works have addressed this issue only partially. In [3], a non-interference sphere is introduced around the end-effector. While this provides a local protec-tion region, it does not directly generalize to tasks requiring                  
+
+> *This work has been funded by the LOEWE initiative (Hesse, Germany) within the emergenCITY center [LOEWE/1/12/519/03/05.001(0016)/72]. The authors are with the Department of Electrical Engi-neering and Information Technology, Technische Universit¨ at Darmstadt, 64287 Darmstadt, Germany.
+
+{mengguang.li, heinz.koeppl }@tu-darmstadt.de 
+
+Fig. 1: An optimal configuration of a five-module platform that satisfies the task in Section III-C while respecting two target-side airflow requirements. Black squares represent modules, red arrows indicate each module’s z-axis, and blue rectangles denote the connected connectors. The green sphere marks the end-effector position, while the yellow sphere indicates the platform COM. The cyan line between them highlights the off-center end-effector placement. The purple and green-yellow volumes visualize the intra-platform and target-side airflow exposure envelopes, respectively. airflow constraints along the interaction trajectory. Long-reach aerial manipulators [4] increase the standoff distance between the rotors and the target to reduce airflow inter-action, but they do not explicitly optimize this distance or analyze how it affects the wrench feasibility of the overall aerial system. More recently, FlyingToolbox [5] achieved centimeter-level docking accuracy by estimating disturbance forces using a feedforward neural network. Nevertheless, in such systems the end-effector may still operate within the near-field airflow of the platform. Overall, target-side airflow exposure requirements are rarely categorized or analyzed systematically, which makes it difficult to specify and enforce airflow constraints across different aerial manipulation tasks. Rotor-induced airflow is also critical on the platform side. Downwash interaction between rotors, modules, or neigh-boring aerial vehicles can reduce rotor efficiency, degrade tracking performance, and compromise stability [2]. For multirotor swarms, such interactions are often compensated at the control level, for example by using relative induced velocity models [6] or learning-based residual modules [7]. Although these methods can improve flight stability, avoiding strong airflow interference remains preferable when high arXiv:2607.09548v1 [cs.RO] 10 Jul 2026 motion precision and rotor efficiency are required. Several geometric airflow models have therefore been proposed for design and planning. An ellipsoidal non-collision volume is used in [8], but this representation can be overly conservative. An experimentally derived axisymmetric non-convex volume is introduced in [3]. However, the associated iterative inner-loop optimization increases computational cost and limits scalability. A follow-up work [9] approximates this volume using a discrete set of overlapping spheres. Other works use simplified cylindrical models [10] or capsule-based airflow envelopes [11], which provide computational convenience but do not fully capture the spreading behavior observed in recent studies [2,6]. These observations motivate the need to incorporate rotor-induced airflow, both on the target side and within the aerial platform, into the optimal design of aerial manipulation sys-tems. In addition to airflow constraints, the system must also satisfy the task-specific manipulation wrench requirement. Prior work on multirotor system design either does not explicitly consider wrench requirements [12]–[14], assumes that the desired wrench is applied directly at the center of mass (COM) [11,15]–[17], or treats an off-centered end-effector location as fixed a priori [18,19]. Consequently, a design that is feasible for one end-effector placement may fail to generate the same required wrench when the end-effector is mounted elsewhere. This indicates that end-effector placement, wrench feasibility, and airflow exposure should be treated as coupled design variables rather than independent post-design considerations. In this work, we address these limitations by jointly considering wrench feasibility, end-effector placement, and airflow exposure constraints within a single nonlinear opti-mization framework. Building on the modular aerial platform introduced in [11], we propose an optimal design method that reconfigures the aerial system according to task-specific wrench requirements while respecting both target-side and intra-platform airflow constraints. To model rotor-induced airflow, we introduce a cone-sphere envelope that provides a compact and realistic approximation of the spreading downwash region while retaining computational efficiency for optimization. Moreover, we relax the assumption that the end-effector placement is known a priori and instead optimize its location as part of the design. An illustrative example is shown in Fig. 1. The main contributions are summarized as follows: 
+
+• We propose a novel categorization of aerial manipu-lation based on target-side airflow tolerance, enabling systematic specification of airflow exposure constraints. 
+
+• We introduce a cone-sphere airflow envelope for stan-dard quadrotor modules, which captures the spreading structure of rotor-induced airflow while remaining suit-able for efficient geometric constraint evaluation. 
+
+• We formulate a joint optimization framework that simul-taneously considers target-side airflow constraints, intra-platform airflow interference, end-effector placement, and task wrench feasibility for the design of modular aerial manipulation systems. <latexit sha1_base64="Dk3FEUz4cYfkPN5lLGzdMbNOulY=">AAAEP3icjVPNbtNAEN7W/JTw18IRDisipCJVUVyhgjglpK4aKaqKmjSVYitar8fJqutd413TRJafgys8Co/BE3BDXLmxToPSuKlgJUuz38w38814x485U7pe/762bt26fefuxr3K/QcPHz3e3HpyqmSaUOhRyWVy5hMFnAnoaaY5nMUJkMjn0PfPW4W//wkSxaTo6mkMXkRGgoWMEm0gz42IHlPCs4N82B9uVuu1+uzg64Y9N6pofo6HW9ZzN5A0jUBoyolSAw5aQxKTGJIdux7rHSpFCAkICl7GAKC45/glhgmhGrcdxymQipsqiAk9JyMYGFOQCJSXzdoz0QYJcCgT8wmNZ+hVRkYipaaRbyKLdlTZV4ArfQWipeQqX4J9P8qXFenwrZEv4lSbTi4FhSnHWuJipjhgCVDNp8YgNGGaUUzHJDEdmskvpY7HU8VoqZ5iqWB6kleWhfORNLnGJS1Cggi8hZdR4xdwQWUUERFk7km/3W0d5gPbM3a32XWwq2Gi/TBTF0xTM4ntqv2qRGo1T5xVFGqeVo6r9t/7uxy7PoyYyJqdVmOUl9I4R/uzTJlrRK4OKfyd9tH/Viux952DZq/TzcvMAEKScv1veYsENyqch9wkclHK8MzLvsLUY1j8tSw3+2SXt+e6cbpbs/dqex9eVxvv55u1gZ6hF2gb2egNaqBDdIx6iKKP6DP6gr5a36wf1k/r12Xo+tqc8xQtHev3H9z8bd8=</latexit> 
+
+FW <latexit sha1_base64="u8rGR9T9hHO4SNk1u0wPS4KKlzs=">AAAERHicjVPNattAEN5E/UndP6c9toelppBCCFYpaekprqMSgwkpsZNAZMxqNbKXrHaFdpTECL1Jr+2j9B36Dr2VXktXjotjJaEdWDT7zXyz34x2g0QKg83m96Vl59btO3dX7tXuP3j46HF99cmB0VnKoc+11OlRwAxIoaCPAiUcJSmwOJBwGJy0y/jhKaRGaNXDSQKDmI2UiARnaKFhve4HWoZmEttPDsXQHdYbzY3m1OhVx505DTKzveGq89wPNc9iUMglM+ZYAiKkCUsgXXebCa5zrSJIQXEY5AIAyn1BX1I4Zxxpx/O8Eqn5mYGE8RM2gmPrKhaDGeTTHm22RUIa6dQuhXSKXmbkLDZlGzYzZjg21VgJXhsrEdRammIBDoK4WFSE0TsrXyUZ2k4uBEWZpKhpOVgaihQ4yol1GE8FCk75mKW2Qzv+hdLJeGIEr5xnRKYEnhe1ReFypG2tcUWL0qDCwTwquI0rOOM6jpkKc3//sNNr7xTH7sD6vVbPoz7COQZRbs4EcjuJtYb7qkJqt/a96yjc3q+CNty/+/cF9QMYCZW3uu2tUVEp4+1uTyvlvhV5fUoZ73Z2//e0Cnvb+9jqd3tFlRlCxDKJ/5Y3L3CjwlnKTSLnR1mevdmXmDiG+V/LC/ue3OrrueocvN5wNzc2P71pbH2YvawV8oy8IGvEJW/JFtkhe6RPODkln8kX8tX55vxwfjq/LlKXl2acp2TBnN9/ADsmb4Q=</latexit> 
+
+e1
+
+<latexit sha1_base64="2S4us2uNDO47jMVitDTbJymWVaI=">AAAERHicjVPNattAEN5E/UnTnzjtsT0sNYUUQrBCSUtPcR2VBExIiZ0EImNWq5G9ZLUrtKMkRuhNem0fpe/Qd+it9Fq6clwcKw7twKLZb+ab/Wa0GyRSGGw0vi8sOnfu3ru/9GD54aPHT1Zqq0+PjM5SDl2upU5PAmZACgVdFCjhJEmBxYGE4+CsVcaPzyE1QqsOjhLoxWygRCQ4Qwv1azU/0DI0o9h+cij6m/1avbHRGBu96bgTp04mdtBfdV74oeZZDAq5ZMacSkCENGEJpOtuI8F1rlUEKSgOvVwAQLkv6CsKl4wj3fM8r0SW/cxAwvgZG8CpdRWLwfTycY822yIhjXRql0I6Rq8zchabsg2bGTMcmmqsBOfGSgS1lqaYgYMgLmYVYfTOyldJhraTK0FRJilqWg6WhiIFjnJkHcZTgYJTPmSp7dCOf6Z0MhwZwSvnGZEpgZfF8qxwOdC21rCiRWlQYW8aFdzGFVxwHcdMhbl/eLzXae0Wp27P+p1mx6M+wiUGUW4uBHI7ibW6+7pCajUPvXkUbu9XQevu3/37gvoBDITKm+3W9qColPH2d8aVct+KnJ9Sxtt7+/97WoW9431sdtudosoMIWKZxH/Lmxa4VeEk5TaR06Msz97sa0wcwvSv5YV9T2719dx0jjY33K2NrU9v6tsfJi9riTwnL8kacclbsk12yQHpEk7OyWfyhXx1vjk/nJ/Or6vUxYUJ5xmZMef3Hz71b4U=</latexit> 
+
+e2
+
+<latexit sha1_base64="rFnXRwZkbJzJwC6k1fQ+E064d14=">AAAERHicjVPNbtNAEN7W/JTwl8IRDisipCJVVVxQQZwaUqNGqqqiJm2lOorW63Gy6nrX8o7bRpbfhCs8Cu/AO3BDXBHrNCiN2wpGWnn2m/lmvxnvBokUBpvN7wuLzq3bd+4u3avdf/Dw0eP68pMDo7OUQ49rqdOjgBmQQkEPBUo4SlJgcSDhMDhpl/HDU0iN0KqL4wT6MRsqEQnO0EKDet0PtAzNOLafHIrB60G90VxrToxeddyp0yBT2xssO8/9UPMsBoVcMmOOJSBCmrAE0lW3meAq1yqCFBSHfi4AoNwX9CWFc8aRdjzPK5GanxlIGD9hQzi2rmIxmH4+6dFmWySkkU7tUkgn6GVGzmJTtmEzY4YjU42V4LWxEkGtpSnm4CCIi3lFGL2z8lWSoe3kQlCUSYqaloOloUiBoxxbh/FUoOCUj1hqO7TjnyudjMZG8Mp5RmRK4HlRmxcuh9rWGlW0KA0q7M+igtu4gjOu45ipMPf3Dzvd9nZx7Pat3211PeojnGMQ5eZMILeTWGm4ryqkdmvfu47C7f0qaMP9u39fUD+AoVB5a6e9OSwqZbzdrUml3Lcir08p4zud3f89rcLe8j62ejvdosoMIWKZxH/LmxW4UeE05SaRs6Msz97sS0wcweyv5YV9T2719Vx1DtbX3I21jU9vGpsfpi9riTwjL8gKcclbskm2yR7pEU5OyWfyhXx1vjk/nJ/Or4vUxYUp5ymZM+f3H0LEb4Y=</latexit> 
+
+e3
+
+<latexit sha1_base64="Cg2Xkp6toaR0/Sw0TzaEkYCxQwc=">AAAEP3icjVPNTttAEF5wf2j6A7TH9rBqVIlKKLIDDbQnQjACCSEqEoIUR2i9GScr1ruud12ILD9Hr+2j9DH6BL1VvfbWdQgKsRK1K1ma/Wa+mW/GO37EmdK2/WNh0bp3/8HDpUelx0+ePlteWX1+pmQSU2hRyWV87hMFnAloaaY5nEcxkNDn0PYvG7m//RlixaRo6mEE3ZD0BQsYJdpAXS8kekAJT/ezi92LlbJdeb9dq76rYrti21vVjVpuVLc2qxvYMUh+ymh8Ti5WrVdeT9IkBKEpJ0p1OGgNcUQiiNcdO9LrVIoAYhAUuikDgPye4TcYrgnV+NB13RwpeYmCiNBL0oeOMQUJQXXTUXsm2iA9HMjYfELjEXqXkZJQqWHom8i8HVX05eBMX45oKbnKpmDfD7NpRTrYNvJFlGjTyY2gIOFYS5zPFPdYDFTzoTEIjZlmFNMBiU2HZvJTqaPBUDFaqKdYIpi+zkrTwnlfmlyDghYhQfS6Ey+jxi/gisowJKKXeqftw2bjIOs4XWM3600XexqutR+k6oppaiaxVnbeFkiN+qk7i0LN08pw2bm9f8iw50OfibR+1NjpZ4U07vHeKFPqGZGzQ3L/0eHx/1YrsPfc/XrrqJkVmT0ISML1v+VNEsxVOA6ZJ3JSyvDMy77D1AOY/LU0M/t0uzR4vnFWrTi1Su3jZnlnd7xZS+gleo3WkIO20A46QCeohSj6hL6gr+ib9d36af2yft+ELi6MOS/Q1LH+/AWL5W4O</latexit> 
+
+FB
+
+<latexit sha1_base64="z1fD/nFXL2jl7/LIBNvAZz3yA9Q=">AAAEP3icjVNda9swFFXrfXTdV7s9bg9iYdBBCXYZWbKnZqlLC6V0NGkLtQmyfJ2IypJnyWuD8e/Y6/ZT9jP2C/Y29rq3yWlKGpOwCQxX59xzda6sGyScKW3bP5aWrTt3791febD68NHjJ0/X1p+dKJmlFHpUcpmeBUQBZwJ6mmkOZ0kKJA44nAYXnZI//QypYlJ09SgBPyYDwSJGiTaQ78VEDynh+W7Rd/trNbtum9Vo4DJwmrZjglarubXVws6Ysu0amqyj/rr10gslzWIQmnKi1DkHrSFNSALppmMnepNKEUEKgoKfMwAo9wV+jeGKUI33XdctkVUvU5AQekEGcG5CQWJQfj5uz2QbJMSRTM0nNB6jtxU5iZUaxYHJLNtRVa4E53IloqXkqpiBgyAuZh3pqGnsiyTTppNrQ1HGsZa4vFMcshSo5iMTEJoyzSimQ5KaDs3Nz5ROhiPFaOU8xTLB9FWxOmucD6SpNax4ERJE6E9ZRg0v4JLKOCYizL3j0/1uZ684d3wTd9tdF3sarnQQ5eqSaWpuYqPmvKmIOu1jd56EmqdV4Jpzs39fYC+AARN5+6CzPSgqZdzDnXGl3DMm56eU/MH+4f+eVlHvuLvt3kG3qCpDiEjG9b/tTQssdDhJWWRyepTRmZd9S6mHMP1reWHm6WZo8OLgZKvuNOqNj29r2x8mk7WCXqBXaAM56B3aRnvoCPUQRZ/QF/QVfbO+Wz+tX9bv69TlpYnmOZpZ1p+/e6FuCg==</latexit> 
+
+FE
+
+<latexit sha1_base64="/faFu5X/eTmGdYVxm5Mrv8ns1b8=">AAAEOnicjVPNattAEN5E/UndnyTtsT0sNYUUgpGS2LV7suuoxBBCSuwkEJmwWo/sJatdoV01NkIv0Wv7KH2RXnsrvfYBunIcHIuEdkEw+818M9+MdvyIM6Vt+8fSsnXv/oOHK49Kj588fba6tv78WMkkptCjksv41CcKOBPQ00xzOI1iIKHP4cS/aOf+k88QKyZFV08i6IdkKFjAKNEGOvUIj0bkfPt8rWxXGg17x2lgu1K17a16zRj29la9WsVOxZ6eMpqdw/N165U3kDQJQWjKiVJnHLSGOCIRxJuOHelNKkUAMQgK/ZQBQH7P8BsMY0I17riumyMlL1EQEXpBhnBmTEFCUP102pmJNsgABzI2n9B4it5kpCRUahL6JjIkeqSKvhy81ZcjWkqusgXY98NsUZEO6ka+iBJtOrkSFCQca4nzceIBi4FqPjEGoTHTjGI6IrHp0Ax9IXU0mihGC/UUSwTT46y0KJwPpck1KmgREsSgP/cyavwCLqkMQyIGqXd00um297Izp2/sbqvrYk/DWPtBqi6ZpmYSG2XnbYHUbh25t1GoeVUZLjvX9/cZ9nwYMpG29tvNYVZI4x7sTjOlnhF5e0ju3+8c/G+1AnvX/djq7XezInMAAUm4/re8eYI7Fc5C7hI5L2V45mXfYOoRzP9ampl9ul4afLdxvFVxapXap51y88Nss1bQS/QabSAHvUNNtIcOUQ9RxNEX9BV9s75bP61f1u+r0OWlGecFWjjWn7+0xGvD</latexit> 
+
+↵3
+
+<latexit sha1_base64="Sp9Cw4PE2fC0znPmtRBBL4GFMnE=">AAAEOnicjVPNattAEN5E/UndnyTtsT0sNYUUgpFCGic92XVUYjAhJXYSsIxZrUf2ktWu0K4aG6GX6LV9lL5Ir72VXvsAXdkOjkVCuyCY/Wa+mW9GO37EmdK2/WNl1bp3/8HDtUelx0+ePlvf2Hx+pmQSU+hQyWV84RMFnAnoaKY5XEQxkNDncO5fNnL/+WeIFZOirScR9EIyFCxglGgDXXiERyPS3+1vlO2Ks1Ot2ja2KwcHB9Xqu5lh7+5jp2JPTxnNz0l/03rlDSRNQhCacqJUl4PWEEckgnjbsSO9TaUIIAZBoZcyAMjvGX6DYUyoxk3XdXOk5CUKIkIvyRC6xhQkBNVLp52ZaIMMcCBj8wmNp+hNRkpCpSahbyJDokeq6MvBW305oqXkKluCfT/MlhXpYN/IF1GiTSczQUHCsZY4HycesBio5hNjEBozzSimIxKbDs3Ql1JHo4litFBPsUQwPc5Ky8L5UJpco4IWIUEMegsvo8Yv4IrKMCRikHqn58124yjrOj1jt+ttF3saxtoPUnXFNDWT2Co7bwukRv3UvY1CzavKcNm5vr/PsOfDkIm03mrUhlkhjXt8OM2Uekbk7SG5v9U8/t9qBfah+7HeabWzInMAAUm4/re8RYI7Fc5D7hK5KGV45mXfYOoRLP5ampl9ul4afLdxtlNx9ip7n3bLtQ/zzVpDL9FrtIUcVEU1dIROUAdRxNEX9BV9s75bP61f1u9Z6OrKnPMCLR3rz18ZBGve</latexit> 
+
+↵4
+
+<latexit sha1_base64="ai2dPGbSe0++WUp+vPe5YdS/WBM=">AAAEOnicjVPNattAEN5E/UnTv6Q9toelppBCMFJqu0lPdh2VBEJIiR0bImNW65G9ZLUrtKsmRuglem0fpS/Sa2+l1z5AV46DY2HTDghmv5lv5pvVjh9xprRt/1hZte7cvXd/7cH6w0ePnzzd2Hx2pmQSU2hTyWXc9YkCzgS0NdMculEMJPQ5dPyLZh7vfIZYMSlaehxBLyRDwQJGiTZQ1yM8GpF+tb9RsstV29mrVLFd3jO2WzGO/dax7Rp2yvbESmhqJ/1N66U3kDQJQWjKiVLnHLSGOCIRxNuOHeltKkUAMQgKvZQBQH7O8GsMV4RqfOi6bo6se4mCiNALMoRz4woSguqlk8lMtkEGOJCx+YTGE/Q2IyWhUuPQN5kh0SNVjOXgwliOaCm5yuZg3w+zeUU62DXyRZRoM8m1oCDhWEucXycesBio5mPjEBozzSimIxKbCc2lz5WORmPFaKGfYolg+ipbnxfOh9LUGhW0CAli0JtFGTVxAZdUhiERg9Q77Ry2mgfZudMzfqvRcrGn4Ur7QaoumabmJrZKzpsCqdk4dRdRqHlVGS45N+f3GfZ8GDKRNo6a9WFWKOMe708qpZ4RuTgljx8dHv9vtwJ73/3YaB+1siJzAAFJuP63vFmBpQqnKctEzloZnnnZt5h6BLO/lmZmn26WBi93znbKTq1c+1Qp1T9MN2sNvUCv0BZy0DtURwfoBLURRRx9QV/RN+u79dP6Zf2+Tl1dmXKeozmz/vwF0xJryw==</latexit> 
+
+↵5
+
+<latexit sha1_base64="LsEsJc+v+eVvTDFspSRAxtFiP/Y=">AAAEOnicjVPNattAEN5E/UnTv6Q9toelppBCMFIap3ZPdh2VBEJIiZ0EImNW65G1ZLUrtKvGRuglem0fpS/Sa2+l1z5AV4mDY2HTLghmv5lv5pvRjh9zprRt/1hatu7cvXd/5cHqw0ePnzxdW392omSaUOhSyWVy5hMFnAnoaqY5nMUJkMjncOpftAv/6WdIFJOio8cx9CIyFCxglGgDnXmExyHpb/XXKna1Ua/VtrewXbXtxnbtrTEajYZTd7BjkOJU0OQc9detl95A0jQCoSknSp1z0BqSmMSQbDp2rDepFAEkICj0MgYAxT3HrzGMCNV433XdAln1UgUxoRdkCOfGFCQC1cuuOjPRBhngQCbmExpfobcZGYmUGke+iYyIDlXZV4BzfQWipeQqn4F9P8pnFemgbuSLONWmk2tBQcqxlrgYJx6wBKjmY2MQmjDNKKYhSUyHZugzqeNwrBgt1VMsFUyP8tVZ4XwoTa6wpEVIEIPe1Muo8Qu4pDKKiBhk3vHpfqe9l587PWN3Wh0XexpG2g8ydck0NZPYqDhvSqR269idR6HmVeW44tzc3+fY82HIRNY6aDeHeSmNe7h7lSnzjMj5IYX/YP/wf6uV2Lvux1b3oJOXmQMISMr1v+VNEyxUOAlZJHJayvDMy77F1CFM/1qWm326WRq82DjZqjo71Z1P25Xmh8lmraAX6BXaQA56h5poDx2hLqKIoy/oK/pmfbd+Wr+s39ehy0sTznM0c6w/fwHo12vR</latexit> 
+
+↵2
+
+<latexit sha1_base64="8x2UeMOmFjzBWgnYfJMrf9ULTEU=">AAAEOnicjVPNbtNAEN7W/JTw0xaOcFgRIRWpiuxCQ8spITVqpKoqatJEiqNqvRknq653Le+aJrL8ElzhUXgRrtwQVx6AdZoqjdUIVrI0+818M9+Md/yIM6Vt+8fKqnXn7r37aw9KDx89frK+sfn0TMkkptCmksu46xMFnAloa6Y5dKMYSOhz6PgXjdzf+QyxYlK09CSCfkiGggWMEm2grkd4NCLn9vlG2a7Y1d19ex/blV3b2Zsatl3d23mDHWPkp4xm5+R803rhDSRNQhCacqJUj4PWEEckgnjbsSO9TaUIIAZBoZ8yAMjvGX6FYUyoxk3XdXOk5CUKIkIvyBB6xhQkBNVPp52ZaIMMcCBj8wmNp+hNRkpCpSahbyJDokeq6MvBW305oqXkKluAfT/MFhXpYM/IF1GiTSdXgoKEYy1xPk48YDFQzSfGIDRmmlFMRyQ2HZqhL6SORhPFaKGeYolgepyVFoXzoTS5RgUtQoIY9OdeRo1fwCWVYUjEIPVOO81W4zDrOX1jt+otF3saxtoPUnXJNDWT2Co7rwukRv3UvY1CzavKcNm5vr/PsOfDkIm0ftSoDbNCGvf4YJop9YzI20Ny/1Hz+H+rFdgH7sd6+6iVFZkDCEjC9b/lzRMsVTgLWSZyXsrwzMu+wdQjmP+1NDP7dL00eLlxtlNxqpXqp7fl2ofZZq2h5+gl2kIOeodq6BCdoDaiiKMv6Cv6Zn23flq/rN9XoasrM84ztHCsP38Blpxruw==</latexit> 
+
+↵0
+
+<latexit sha1_base64="Z4BZ9rebShQHiYf6ARid+qfxakI=">AAAEOnicjVPNattAEN5E/UndnyTtsT0sNYUUgpFS58c9xXVUEgghJXZsiExYrUf2ktWu0K4aG6GX6LV9lL5Ir72VXvsAXTkOjoVNuyCY/Wa+mW9GO37EmdK2/WNp2bp3/8HDlUelx0+ePltdW39+rmQSU2hRyWXc8YkCzgS0NNMcOlEMJPQ5tP2rRu5vf4ZYMSmaehRBNyR9wQJGiTZQxyM8GpBL53KtbFfs7Vp1dwvblW3bqVXfGaNW26vubGOnYo9PGU3O6eW69crrSZqEIDTlRKkLDlpDHJEI4k3HjvQmlSKAGASFbsoAIL9n+A2GIaEaH7mumyMlL1EQEXpF+nBhTEFCUN103JmJNkgPBzI2n9B4jN5lpCRUahT6JjIkeqCKvhyc68sRLSVX2Qzs+2E2q0gHe0a+iBJtOrkRFCQca4nzceIei4FqPjIGoTHTjGI6ILHp0Ax9JnU0GClGC/UUSwTTw6w0K5z3pck1KGgREkSvO/UyavwCrqkMQyJ6qXfWPmo2DrMLp2vsZr3pYk/DUPtBqq6ZpmYSG2XnbYHUqJ+58yjUvKoMl53b+/sMez70mUjrx439flZI454cjDOlnhE5PyT3Hx+d/G+1AvvA/VhvHTezIrMHAUm4/re8aYKFCichi0ROSxmeedl3mHoA07+WZmafbpcGLzbOtyrOTmXnU7W8/2GyWSvoJXqNNpCDdtE+OkSnqIUo4ugL+oq+Wd+tn9Yv6/dN6PLShPMCzRzrz1/g0mvP</latexit> 
+
+↵1
+
+<latexit sha1_base64="kySfLf33wNGMQ+CyA87GELywKBk=">AAAERHicjVPdatswFFbr/XTdT9PtcrsQC4MOSrDDmrW7SpZ6NFBKR5O2UIcgy8eJqCwZS24TjN9kt9uj7B32Drsbux2T05Q0pmU7IHz0nfMdfedY8mPOlLbtH0vL1r37Dx6uPFp9/OTps7XK+vNjJdOEQo9KLpNTnyjgTEBPM83hNE6ARD6HE/+8XcRPLiBRTIqunsTQj8hQsJBRog00qFQ8X/JATSLzyeJ84A4qVbtW37J3th1s12xj9bpxtmxnp9HAzhSx7Sqa2eFg3XrlBZKmEQhNOVHqjIPWkMQkhmTTsWO9SaUIIQFBoZ8xACj2OX6DYUyoxh3XdQtk1UsVxISekyGcGVeQCFQ/m/Zosg0S4FAmZgmNp+hNRkYiVbRhMiOiR6ocK8BbYwWipeQqX4B9P8oXFelw28gXcapNJ1eCwpRjLXExWBywBKjmE+MQmjDNKKYjkpgOzfgXSsejiWK0dJ5iqWB6nK8uCudDaWqNSlqEBBH051FGTVzAJZVRRESQeUcnnW57Lz9z+sbvtrou9jSMtR9m6pJpaiaxUXXelkjt1pF7G4Wa+5XjqnO9/5Bjz4chE1lrv90c5qUy7sHutFLmGZG3pxTx/c7B/55WYu+6n1q9/W5eZgYQkpTrf8ubF7hT4SzlLpHzowzP3OwbTD2C+V/LcvOerh8Nvts5rtecRq3x+V21+XH2slbQS/QabSAHvUdNtIcOUQ9RdIG+oK/om/Xd+mn9sn5fpS4vzTgv0IJZf/4Cgqtv2w==</latexit> 
+
+pE
+
+<latexit sha1_base64="g2yUfUF+FTnSfxyia0zTMkGXWFs=">AAAERHicjVPNattAEN5E/UndP6c9toelppBCCFYpaekprqMSgwkpsZNAZMxqNbKXrHaFdpTECL1Jr+2j9B36Dr2VXktXjotjJaEdWDT7zXyz34x2g0QKg83m96Vl59btO3dX7tXuP3j46HF99cmB0VnKoc+11OlRwAxIoaCPAiUcJSmwOJBwGJy0y/jhKaRGaNXDSQKDmI2UiARnaKFhve4HWoZmEttProuhO6w3mhvNqdGrjjtzGmRme8NV57kfap7FoJBLZsyxBERIE5ZAuu42E1znWkWQguIwyAUAlPuCvqRwzjjSjud5JVLzMwMJ4ydsBMfWVSwGM8inPdpsi4Q00qldCukUvczIWWzKNmxmzHBsqrESvDZWIqi1NMUCHARxsagIo3dWvkoytJ1cCIoySVHTcrA0FClwlBPrMJ4KFJzyMUtth3b8C6WT8cQIXjnPiEwJPC9qi8LlSNta44oWpUGFg3lUcBtXcMZ1HDMV5v7+YafX3imO3YH1e62eR32Ecwyi3JwJ5HYSaw33VYXUbu1711G4vV8Fbbh/9+8L6gcwEipvddtbo6JSxtvdnlbKfSvy+pQy3u3s/u9pFfa297HV7/aKKjOEiGUS/y1vXuBGhbOUm0TOj7I8e7MvMXEM87+WF/Y9udXXc9U5eL3hbm5sfnrT2Powe1kr5Bl5QdaIS96SLbJD9kifcHJKPpMv5Kvzzfnh/HR+XaQuL804T8mCOb//AGFab44=</latexit> 
+
+o1
+
+<latexit sha1_base64="PcyTIn8vDR68Io1id4SddOp6UEI=">AAAERHicjVPNattAEN5E/UnTnzjtsT0sNYUUQrBCSUtPcR2VBExIiZ0EImNWq5G9ZLUrtKMkRuhNem0fpe/Qd+it9Fq6clwcKw7twKLZb+ab/Wa0GyRSGGw0vi8sOnfu3ru/9GD54aPHT1Zqq0+PjM5SDl2upU5PAmZACgVdFCjhJEmBxYGE4+CsVcaPzyE1QqsOjhLoxWygRCQ4Qwv1azU/0DI0o9h+cl30N/u1emOjMTZ603EnTp1M7KC/6rzwQ82zGBRyyYw5lYAIacISSNfdRoLrXKsIUlAcerkAgHJf0FcULhlHuud5Xoks+5mBhPEzNoBT6yoWg+nl4x5ttkVCGunULoV0jF5n5Cw2ZRs2M2Y4NNVYCc6NlQhqLU0xAwdBXMwqwuidla+SDG0nV4KiTFLUtBwsDUUKHOXIOoynAgWnfMhS26Ed/0zpZDgyglfOMyJTAi+L5VnhcqBtrWFFi9Kgwt40KriNK7jgOo6ZCnP/8Hiv09otTt2e9TvNjkd9hEsMotxcCOR2Emt193WF1GoeevMo3N6vgtbdv/v3BfUDGAiVN9ut7UFRKePt74wr5b4VOT+ljLf39v/3tAp7x/vY7LY7RZUZQsQyif+WNy1wq8JJym0ip0dZnr3Z15g4hOlfywv7ntzq67npHG1uuFsbW5/e1Lc/TF7WEnlOXpI14pK3ZJvskgPSJZyck8/kC/nqfHN+OD+dX1epiwsTzjMyY87vP2Upb48=</latexit> 
+
+o2 <latexit sha1_base64="0hBepB2f5b1dZYgTuxy4IcHvBQA=">AAAERHicjVPNbtNAEN7W/JTwl8IRDisipCJVVVxQQZwaUqNGqqqiJm2lOorW63Gy6nrX8o7bRpbfhCs8Cu/AO3BDXBHrNCiN2wpGWnn2m/lmvxnvBokUBpvN7wuLzq3bd+4u3avdf/Dw0eP68pMDo7OUQ49rqdOjgBmQQkEPBUo4SlJgcSDhMDhpl/HDU0iN0KqL4wT6MRsqEQnO0EKDet0PtAzNOLafXBeD14N6o7nWnBi96rhTp0GmtjdYdp77oeZZDAq5ZMYcS0CENGEJpKtuM8FVrlUEKSgO/VwAQLkv6EsK54wj7XieVyI1PzOQMH7ChnBsXcViMP180qPNtkhII53apZBO0MuMnMWmbMNmxgxHphorwWtjJYJaS1PMwUEQF/OKMHpn5askQ9vJhaAokxQ1LQdLQ5ECRzm2DuOpQMEpH7HUdmjHP1c6GY2N4JXzjMiUwPOiNi9cDrWtNapoURpU2J9FBbdxBWdcxzFTYe7vH3a67e3i2O1bv9vqetRHOMcgys2ZQG4nsdJwX1VI7da+dx2F2/tV0Ib7d/++oH4AQ6Hy1k57c1hUyni7W5NKuW9FXp9Sxnc6u/97WoW95X1s9Xa6RZUZQsQyif+WNytwo8Jpyk0iZ0dZnr3Zl5g4gtlfywv7ntzq67nqHKyvuRtrG5/eNDY/TF/WEnlGXpAV4pK3ZJNskz3SI5ycks/kC/nqfHN+OD+dXxepiwtTzlMyZ87vP2j4b5A=</latexit> 
+
+o3
+
+<latexit sha1_base64="UoNjNKWvEN0lWfMh43a8/GjCGlY=">AAAERHicjVPNattAEN5E/UndP6c9toelppBCCFYIaekprqOSQAgpsZNAZMxqNbKXrHaFdpTYCL1Jr+2j9B36Dr2VXktXjotjJaEdWDT7zXyz34x2g0QKg83m94VF587de/eXHtQePnr85Gl9+dmR0VnKocu11OlJwAxIoaCLAiWcJCmwOJBwHJy1y/jxOaRGaNXBcQK9mA2UiARnaKF+ve4HWoZmHNtProv+Rr/eaK41J0avO+7UaZCpHfSXnZd+qHkWg0IumTGnEhAhTVgC6arbTHCVaxVBCopDLxcAUO4L+prCiHGku57nlUjNzwwkjJ+xAZxaV7EYTC+f9GizLRLSSKd2KaQT9CojZ7Ep27CZMcOhqcZK8MZYiaDW0hRzcBDExbwijN5Z+SrJ0HZyKSjKJEVNy8HSUKTAUY6tw3gqUHDKhyy1Hdrxz5VOhmMjeOU8IzIlcFTU5oXLgba1hhUtSoMKe7Oo4Dau4ILrOGYqzP3D491Oe6c4dXvW77Q6HvURRhhEubkQyO0kVhrumwqp3Tr0bqJwe78K2nD/7t8X1A9gIFTe2mtvDYpKGW9/e1Ip963Im1PK+N7u/v+eVmFvex9b3b1OUWWGELFM4r/lzQrcqnCacpvI2VGWZ2/2FSYOYfbX8sK+J7f6eq47R+tr7uba5qeNxtaH6ctaIi/IK7JCXPKWbJEdckC6hJNz8pl8IV+db84P56fz6zJ1cWHKeU7mzPn9B2zHb5E=</latexit> 
+
+o4
+
+<latexit sha1_base64="uck9Bhri11iMGYA3/TcF9RwPmmk=">AAAERHicjVPNbtNAEN7W/JTwl8IRDisipCJVVVxBQZwaUqNGqqqiJm2lOorW63Gy6nrX8o7bRpbfhCs8Cu/AO3BDXBHrNCiN2wpGWnn2m/lmvxnvBokUBpvN7wuLzq3bd+4u3avdf/Dw0eP68pMDo7OUQ49rqdOjgBmQQkEPBUo4SlJgcSDhMDhpl/HDU0iN0KqL4wT6MRsqEQnO0EKDet0PtAzNOLafXBeDN4N6o7nWnBi96rhTp0GmtjdYdp77oeZZDAq5ZMYcS0CENGEJpKtuM8FVrlUEKSgO/VwAQLkv6EsK54wj7XieVyI1PzOQMH7ChnBsXcViMP180qPNtkhII53apZBO0MuMnMWmbMNmxgxHphorwWtjJYJaS1PMwUEQF/OKMHpn5askQ9vJhaAokxQ1LQdLQ5ECRzm2DuOpQMEpH7HUdmjHP1c6GY2N4JXzjMiUwPOiNi9cDrWtNapoURpU2J9FBbdxBWdcxzFTYe7vH3a67e3i2O1bv9vqetRHOMcgys2ZQG4nsdJwX1VI7da+dx2F2/tV0Ib7d/++oH4AQ6Hy1k57c1hUyni7W5NKuW9FXp9Sxnc6u/97WoW95X1s9Xa6RZUZQsQyif+WNytwo8Jpyk0iZ0dZnr3Zl5g4gtlfywv7ntzq67nqHKyvuRtrG59eNzY/TF/WEnlGXpAV4pK3ZJNskz3SI5ycks/kC/nqfHN+OD+dXxepiwtTzlMyZ87vP3CWb5I=</latexit> 
+
+o5
+
+Fig. 2: Left: An example five-module platform. The red circle marks the platform COM, and the blue circle marks the end-effector, here implemented as a rigid end-effector attached to one of the available connectors. Right: The corresponding representative graph, where gray rectangles indicate available connectors. II. BACKGROUND AND SYSTEM MODEL We use a standard quadrotor as the base module, which is a common baseline for modular multirotor aerial platforms. Each module is equipped with four connectors. Prior to assembly, each connector can be assigned a prescribed angle and then rigidly attached to a connector on another module. Following [11], a platform is represented as an edge-labeled tree graph G = ( V, E), where V denotes the set of modules and E the set of labeled edges, each encoding a connection with relative angle α. An illustration is provided in Fig. 2. We adopt the first step of their two-step pipeline to generate non-isomorphic configurations for n modules. Let FW denote the inertial frame and FB the body frame attached to the platform COM. We consider a rigid end-effector and define the end-effector frame FE such that it is co-aligned with FB . For a target end-effector wrench 
+
+[f ⊤
+
+E , τ ⊤
+
+E ]⊤ ∈ R6, the corresponding wrench expressed about the COM in FB is 
+
+f B = RE f E , τ B = RE τ E + pE × f B ,
+
+where pE is the end-effector position relative to the COM. Since FE and FB are co-aligned, we set RE = I3×3.For a fixed end-effector wrench, the resulting wrench about the platform COM therefore depends on the end-effector placement pE . Given an optimal pE , the end-effector can be realized using one or more available connectors and rigid rods of appropriate lengths, as commonly used in off-center aerial manipulators [18]. One example realization is shown in Fig. 2. For a given graph G of an n-module platform, we initialize the root module at p1 = [0 , 0, 0] ⊤ with orientation R1 =
+
+Rx(α0)Ry (α1), where Rx(·) and Ry (·) denote elementary rotations about the x- and y-axes, respectively. Because the topology is a tree, standard traversal procedures (e.g., breadth-first search) can be used to compute each module pose from the relative connection angle between a parent and its child. Specifically, for a module i with parent h,
+
+Ri = Rh ¯Ri, pi = ph + Rhti + Riti,
+
+where ti is the vector from the i module’s COM to its connected connector to h, expressed in the module body frame. The relative rotation ¯Ri is selected according to the connection axis: ¯Ri = Rx(αi) for a connection along the 
+
+y-axis, and ¯Ri = Ry (αi) for a connection along the x-axis. Let m be the mass of each module and mE the end-effector mass, the total mass is mt = nm + mE . Denoting the end-effector position in FB by p′ 
+
+> E
+
+∈ R3, the COM of the full platform is 
+
+pCOM = 1
+
+mt
+
+mE p′ 
+
+> E
+
++ m
+
+> n
+
+X
+
+> i=1
+
+pi
+
+!
+
+.
+
+After computing the pose (pi, Ri) of each module i =1, . . . , n , we shift the module positions and the end-effector position p′ 
+
+> E
+
+to the platform COM: 
+
+oi = pi − pCOM , pE = p′ 
+
+> E
+
+− pCOM .
+
+For an X-layout quadrotor with arm length larm , define the rotor position vectors in the module body frame as 
+
+δ1 = larm 
+
+√2 [1 , −1, 0] ⊤, δ2 = larm 
+
+√2 [−1, −1, 0] ⊤,
+
+δ3 = larm 
+
+√2 [−1, 1, 0] ⊤, δ4 = larm 
+
+√2 [1 , 1, 0] ⊤.
+
+For module i with position oi and orientation Ri in the platform frame FB , the rotor positions in FB are given by 
+
+oiq = oi + Ri δq , q ∈ { 1, 2, 3, 4}.
+
+Given rotor angular speed ωiq , the generated thrust and torque are modeled as 
+
+fiq = kf ω2 
+
+> iq
+
+, τiq = ( −1) q kτ ω2 
+
+> iq
+
+,
+
+where kf and kτ are the rotor coefficients. Let e3 = [0 , 0, 1] ⊤
+
+and zi = Rie3, the total force and torque about the COM are 
+
+F =
+
+> n
+
+X
+
+> i=1 4
+
+X
+
+> q=1
+
+fiq zi, τ =
+
+> n
+
+X
+
+> i=1 4
+
+X
+
+> q=1
+
+(fiq oiq × zi + τiq zi) ,
+
+Stacking squared rotor speeds as the control input uk =ω211 , . . . , ω 2
+
+> n4
+
+⊤, with bounds 0 ≤ ω2 
+
+> iq
+
+≤ umax , the achiev-able wrench W = [ F ⊤, τ ⊤]⊤ ∈ R6 satisfies 
+
+W = A(α, p′ 
+
+> E
+
+)uk, A(α, p′ 
+
+> E
+
+) = [ A11 , . . . , An4] ,
+
+where each column Aiq ∈ R6 is given by 
+
+Aiq =
+
+ kf zi
+
+kf oiq × zi + ( −1) q kτ zi
+
+
+
+.
+
+For a target wrench applied at the end-effector bE =[f ⊤ 
+
+> E
+
+, τ ⊤ 
+
+> E
+
+]⊤, the corresponding wrench about the platform COM is bB (p′ 
+
+> E
+
+) = [f ⊤ 
+
+> B
+
+, τ ⊤ 
+
+> B
+
+]⊤. The wrench feasibility condition [11,15] requires that there exists a feasible control input uk such that 
+
+A(α, p′ 
+
+> E
+
+)uk = bB (p′ 
+
+> E
+
+),
+
+where α, uk, and p′ 
+
+> E
+
+are decision variables. III. METHODS Aerial manipulation tasks are commonly categorized by the degree of environment coupling into momentary cou-pling , loose coupling , and strong coupling [1,20], which is consistent with established categorizations in ground manip-ulation. For multirotor platforms, an additional task aspect is the rotor-induced flow field [2], which can also be critical for targets or their surroundings. Complementary to environment coupling, we propose a task categorization based on target-side airflow exposure requirements. Specifically, we model such requirements as a velocity-limited envelope in which the rotor-induced airflow speed must remain below a threshold. We consider three envelope types: 1) Local envelope : a bounded region around the interac-tion area where only low-velocity airflow is allowed. 2) Directional envelope : a region or union of regions aligned with one or more prescribed motion paths, e.g., approach/departure directions or given flight paths. 3) Exterior envelope : a region defined outside a specified allowed volume, where the airflow speed must remain below the threshold throughout the exterior space. A local envelope applies when targets are sensitive mainly during interaction, or when the platform is delivered to the workspace by other means, e.g., cable-suspended multirotor platforms [21,22]. A directional envelope applies when low airflow exposure must be maintained along motion paths be-fore and after interaction. Many standard aerial manipulation tasks fall into this category [1]. An exterior envelope captures stricter target-side airflow requirements, e.g., operation near walls or corners, or tasks in which the entire aerial platform must remain within confined spaces [4]. The proposed target-side airflow categorization can serve as a complement to environment coupling when bench-marking aerial manipulators. For example, picking up a lightweight object with a standard quadrotor may appear trivial when considering environment coupling alone, but can become challenging once target-side airflow exposure requirements are imposed. Note that, for manipulation tasks with no target-side airflow exposure requirement, only intra-platform airflow interference needs to be considered, if applicable. 
+
+A. No target-side airflow requirement 
+
+Based on the proposed target-side airflow categorization, we develop a design framework for a modular aerial manipu-lation platform that enforces the corresponding requirements. We first consider the baseline case where only intra-platform interference is relevant. Most recently, a comprehensive experimental analysis of multi-quadrotor downwash was conducted using particle image velocimetry [2]. This study characterizes the quadrotor flow field and confirms that the near-field transitions approx-imately into a turbulent jet downstream in the far field [6]. Motivated by these observations, we introduce a cone-sphere envelope to capture the dominant rotor-induced inflow, near-field, and far-field regions. The cone-sphere is constructed as a union of spheres swept along a line segment of length 
+
+lair with a radius that increases linearly along the segment. The radius growth ∆rair is chosen to match the turbulent jet spreading angle θair , yielding ∆rair = lair tan( θair /2) .With a sufficiently large lair , the airflow speed outside this envelope falls below a prescribed threshold. For demonstra-tion in this work, we use the characteristic spreading angle 
+
+θair = 10 ◦ as in [6], and set the distance from module COM to the far end of the cone-sphere to 20( larm /√2) . As reported in [2], for distances larger than 19( larm /√2) , the downwash effect becomes negligible, with the airflow speed outside the envelope dropping below 40 % of the maximum induced velocity. An illustration is shown in Fig. 3. The cone-sphere parameters can be adjusted to represent different levels of airflow enclosure, resulting in either a more conservative or less restrictive envelope model. Compared with the simplified capsule model in [11], incorporating the cone-sphere model while maintaining com-parable computational complexity is nontrivial. Enforcing non-intersection between each pair of cone-sphere envelopes naturally introduces two additional variables that parame-terize the closest points on the corresponding centerlines. Similar to [3], this could be handled through an iterative inner-loop optimization within the overall design optimiza-tion. However, such an approach restricts scalability as the number of modules increases. Instead, we propose a smooth approximation of the minimum distance between two cone-sphere envelopes. This formulation avoids introducing two additional optimization variables for each module pair, while preserving smooth constraints suitable for efficient gradient-based optimization. We begin by exploiting the geometric properties of the distance between two cone-sphere volumes. For module i in the platform, the cone-sphere starts at its COM position oi
+
+with radius rair > 0 and extends along di = −lair zi. A point on the segment P i(η) and its sphere radius ri(η) can be formulated as 
+
+P i(η) = oi + ηdi, ri(η) = ri, 0 + ∆ riη, 
+
+where η ∈ [0 , 1] , ri, 0 = rair and ∆ri = ∆ rair . Similarly, we define the cone-sphere line segment for module j by P j (γ)
+
+with γ ∈ [0 , 1] . The distance between the two cone-spheres can be written as 
+
+dair (η, γ ) = ∥P i(η) − P j (γ)∥ − (ri(η) + rj (γ)) .
+
+To ensure that the two volumes for modules i and j do not overlap, i.e. dmin = min {dair } ≥ 0, it is equivalent to requiring that the worst-case clearance is nonnegative, i.e., 
+
+fair (η, γ ) := ∥P i(η) − P j (γ)∥2 −  ri(η) + rj (γ)2,
+
+min 
+
+(η,γ )∈[0 ,1] 2 fair (η, γ ) ≥ 0. (1) We observe that fair (η, γ ) is a bivariate quadratic polynomial and thus continuously differentiable. Since the feasible set 
+
+[0 , 1] 2 is compact, a global minimizer exists. Moreover, any near-field 
+
+far-field 
+
+inflow  
+
+> <latexit sha1_base64="q/jz5LESphapLwOvH0Xfd4XaYVA=">AAAEQnicjVPNbhMxEHa7/JTwl8KRy4qoUnqJslXVIk4JaVArRVVQk6ZSdhV5vd7E1GuvbC9tZPlReBo4wgPwCtxQrxzwpkFptqlgpNWOZ+ab+WbsCVNKpKrXf6ytO/fuP3i48aj0+MnTZ8/Lmy9OJc8Ewn3EKRdnIZSYEob7iiiKz1KBYRJSPAjPW7l/8AkLSTjrqWmKgwSOGYkJgsqaRuX9LT/kNJLTxP5014w+VuvbJT8WEGnP6B3j+mqCFRxpP4FqIhINiTCmNCpX6rX6TNzbijdXKmAu3dHm+pUfcZQlmClEoZRDr56qQEOhCKLYlPxM4hSiczjGQ6symGAZ6FmHxt2ylsiNubAfU+7MehOhYSLzHmxkTlMWfblxpS+3KM6pXCKgwzApMFLxm0ATlmYKM3RNKM6oq7ibj9WNiMBI0alVIBLE9uSiCbRTVHb4S6nTyVQSVKgnScaIujSlZeJ0zG2uSYEL45hFwcJLkPUzfIF4kkAWaf9kcNRrHZqhF1i91+y17SXiSxXGWl4QhewkqhVvuwBqNU/aqyDIvi7jVry/57f2SYR4TJhudlqNsSmkaR8fzDJp35JcHZL7O0fH/1utgD5ov2/2Oz1TREY4hhlV/6a3SHAnw3nIXSQXpSxO4JtIuyyLW9PGrolXXIrbyulOzdur7X3YrTTezRdmA7wCr0EVeGAfNMAh6II+QOAz+AK+ge/OV+en88u5ug5dX5tjXoIlcX7/AYOLcHQ=</latexit>
+
+1
+
+2 ✓air 
+
+cone-sphere 
+
+envelope  
+
+> <latexit sha1_base64="DS5+Uh7e2zGQ5dKD+lJd073JqIw=">AAAEG3icjVPLbtNAFJ3GPEp4pbBkMyJCKpsoRqggVglpUCtFVVGTplJsRePxOBl1HtbMuG008p/AEn6EHWLLgu/gBxinQWncVDCSpTP33HPv8bVvlDKqTbP5a6Pi3bp95+7mver9Bw8fPa5tPTnWMlOYDLBkUp1ESBNGBRkYahg5SRVBPGJkGJ12Cn54RpSmUvTNLCUhRxNBE4qRcaFxrcbGNuDITBW3iKo8H9fqzUZzfuB14C9AHSzO4Xir8juIJc44EQYzpPXIb6YmtEgZihnJq0GmSYrwKZqQkYMCcaJDO7eewxcuEsNEKvcIA+fRqwqLuNYzHrnMwqUuc0VwLVdEjJRMrxiwUcRLjkzyNrRUpJkhAl8aSjIGjYTFvGBMFcGGzRxAWFH3ThBPkULYuKmulE6nM01xqZ+mmaDmIq+uGmcT6WpNS16EJCIOlyzFjhfkHEvOkYhtcDTc73f28pEfOtxv97swMOTCRInV59RgN4ntuv+yJOq0j7rrJNj9Njms+3/v73IYRGRChW33Oq1JXirTPdidV7KBM7k+peB7+wf/262k3u1+aA96/bysjEmCMmb+bW9Z4EaHi5SbTC5bOZ0iV5VmSpZfzRZr4peX4jo4ftXwdxo7H1/XW+8XC7MJnoHnYBv44A1ogT1wCAYAgzPwCXwBX73P3jfvu/fjMrWysdA8BSvH+/kHLIRhHw==</latexit>
+
+lair  
+
+> <latexit sha1_base64="p4yr0wKuVxjKpHi6VW/hfo7aIRU=">AAAELnicjVPLbtNAFJ3WPEp4tbBkYxEhlU1kR6ggVglpUCtFVVGTplJsRePJOBl1HmZmTBuN5gP4GljCjyCxQGzZ8wOM06A0bioYydL1Pfece+baN8koUToIvq+tezdu3rq9cady9979Bw83tx4dK5FLhHtIUCFPEqgwJRz3NNEUn2QSQ5ZQ3E9OWwXe/4ClIoJ39TTDMYNjTlKCoHap4WY1SiVEph5YE6n3Upu6tXRoIgb1RDIDJbPWVQW1YHb8q0E4D6pgfg6HW+u/o5FAOcNcIwqVGoRBpmOnpgmi2FaiXOEMolM4xgMXcsiwis3sNtZ/5jIjPxXSPVz7s+xlhoFMqSlLXGXhUpWxIrkSKzJaCKqWDJgkYSVHOn0VG8KzXGOOLgylOfW18IsR+iMiMdJ06gKIJHF38tEEujFqN+gl6WwyVQSV+imSc6LPbWXZOB0LpzUpeeEC81G8QAlyOMdnSDAG+chER/39bmvPDsLYxd1mt+1HGp/rJDXqjGjkJrFdDZ+XSK3mUXsVBbk/yfrV8O/7a+tHCR4TbpqdVmNsSzLtg92ZkomcydUlBd7ZP/jfbiX2bvtts9fp2jJzhFOYU/1vewuBax3OS64zuWjleBJfZuoJXnw1U6xJWF6Kq8FxvRbu1Hbevag23swXZgM8AU/BNgjBS9AAe+AQ9AACH8En8AV89T5737wf3s+L0vW1OecxWDrerz+gI2l7</latexit>
+
+20 
+
+p2 larm 
+
+Fig. 3: Illustration of the proposed cone-sphere envelope used to capture the rotor-induced airflow of a quadrotor. The envelope geometry is inspired by the empirical observations reported in [2] (Fig. 1). The envelope does not encompass the entire region with non-zero airflow velocity. Rather, it defines a critical region where the aerodynamic effects are considered non-negligible. minimizer satisfies the Karush-Kuhn-Tucker (KKT) first-order necessary conditions for the bound-constrained prob-lem [23]. For the two-dimensional box constraints, the active set at a KKT point has three possibilities: 1) It is empty, in which case the minimizer is an interior stationary point with 0 < η < 1 and 0 < γ < 1;2) It contains one bound, in which case the minimizer lies on one of the four edges, i.e., η ∈ { 0, 1} or γ ∈ { 0, 1}
+
+with the other variable free; 3) It contains two bounds, in which case the minimizer is one of the four corners (η, γ ) ∈ { 0, 1}2.For clarity, these cases are illustrated in Fig. 4. Accordingly, the global minimum of fair on [0 , 1] 2 can be obtained by evaluating fair on a finite set of analytically constructed candidates. Define w0 = oi − oj , expanding fair yields the quadratic form 
+
+fair (η, γ ) = Aη 2 + Bγ 2 + Cηγ + Dη + Eγ + F, (2) with coefficients 
+
+A = ∥di∥2 − (∆ ri)2, B = ∥dj ∥2 − (∆ rj )2,C = −2( d⊤
+
+i dj + ∆ ri ∆rj ),D = 2 d⊤
+
+i w0 − 2( ri, 0 + rj, 0) ∆ ri,E = −2 d⊤
+
+j w0 − 2( ri, 0 + rj, 0) ∆ rj ,F = ∥w0∥2 − (ri, 0 + rj, 0)2.
+
+The unconstrained stationary point is obtained by solving the linear system ∇fair (η, γ ) = 0. When the determinant 
+
+fdet = 4 AB − C2̸ = 0 , this yields a unique stationary pair 
+
+η0 = (CE − 2BD )fdet 
+
+f 2det + ϵ , γ0 = (CD − 2AE )fdet 
+
+f 2det + ϵ ,
+
+where ϵ > 0 is a small regularization term introduced for numerical stability when the stationary point is ill-conditioned, i.e., when fdet ≈ 0. We bound (η0, γ 0) to [0 , 1] 2(a) (b) (c) 
+
+<latexit sha1_base64="Zzf4wLLsy0ioMM0BrEAegB/0Sts=">AAAEMHicjVPNbtpAEN7g/qT0j7THXlZFSOSC7CikVU8gQpVIKKIKhEgYofV6Dausdy3vugla+Qn6NO2xfZH2VPXaa1+gayAiWKB2JGvH38w38+3Y40WMSmXbP3YK1r37Dx7uPio+fvL02fPS3osLKZIYkz4WTMSXHpKEUU76iipGLqOYoNBjZOBdtbL44COJJRW8p2YRGYVowmlAMVIGGpcqrieYL2ehOXQ3HdOqvV+s+GPthkhN41AjGqfpuFS2a3Xb2AG0a9l5WIdLpA6dOWLbZbC07niv8Mf1BU5CwhVmSMqhY0dqpFGsKGYkLbqJJBHCV2hChsblKCRypOf3SWHFID4MRGweruAcvcvQKJSZZJOZqZT5WAZujGWIEoLJNQHa88KcIhW8HWnKo0QRjheCgoRBJWA2ROjTmGDFZsZBOKbmThBPUYywMqNeKx1NZ5LiXD9JE07VTVpcF84mwtSa5rRwQbg/WkUpNnFOrrEIQ8R97Z4PTnutk3TojIzfa/ba0FXkRnmBltdUYTOJatnZz5FazfP2Jgo2/1IKy87t+7sUuh6ZUK6bnVZjkubKtM+O55W0a0RuTsnindOz/+2WYx+33zf7nV6aZ/okQAlT/5a3KrBV4TJlm8hVK8OLyV2mmpLVV9PZmtzuAtzuXBzUnKPa0YfDcqPbWCzMLngFXoMqcMAb0AAnoAv6AINP4DP4Cr5ZX6zv1k/r1yK1sLNcspdgzazffwFBMWmk</latexit> P i(0) <latexit sha1_base64="nkJAXfTyJFnWKnQODmpfHVvRv+A=">AAAEMHicjVPNbtpAEN5Af1L6R9pjL6siJHJBNkkh7QlEqBIJRVSBEAkjtF4vsMp61/Kum6CVn6BP0x7bF2lPVa+99gW6BiKCBWpHsjyeb76Zb8c7bsCoVJb1YyeTvXf/wcPdR7nHT54+e57fe3EhRRRi0sOCifDSRZIwyklPUcXIZRAS5LuM9N2rZoL3P5JQUsG7ahaQoY8mnI4pRsqERvmi4wrmyZlvXroTj2jJ3s8VvZF2fKSmoa8RDeN4lC9Y5bdH1cqbCrTKllWrHFQTp1I7rBxA20QSK4CldUZ7mT+OJ3DkE64wQ1IObCtQQ41CRTEjcc6JJAkQvkITMjAuRz6RQz0/TwyLJuLBsQjNwxWcR+8yNPJlItlkJiplGkuCG7EkooRgck2Adl0/pUiNj4aa8iBShOOFoHHEoBIwGSL0aEiwYjPjIBxScyaIpyhEWJlRr5UOpjNJcaqfpBGn6ibOrQtnE2FqTVNauCDcG65Qig3OyTUWvo+4p53z/mm3eRIP7KHxu41uCzqK3Ch3rOU1VdhMolSw91OkZuO8tYmCzV2KYcG+/X4XQ8clE8p1o92sT+JUmdbZ8bySdozIzSkJ3j49+99uKfZx632j1+7GaaZHxihi6t/yVgW2KlymbBO5amV4IbnLVFOy+ms6WZPbXYDbnYtK2a6Wqx8OC/VOfbEwu+AVeA1KwAY1UAcnoAN6AINP4DP4Cr5lv2S/Z39mfy1SMzvLJXsJ1iz7+y/b7GnP</latexit> P i(1) 
+
+<latexit sha1_base64="Zzf4wLLsy0ioMM0BrEAegB/0Sts=">AAAEMHicjVPNbtpAEN7g/qT0j7THXlZFSOSC7CikVU8gQpVIKKIKhEgYofV6Dausdy3vugla+Qn6NO2xfZH2VPXaa1+gayAiWKB2JGvH38w38+3Y40WMSmXbP3YK1r37Dx7uPio+fvL02fPS3osLKZIYkz4WTMSXHpKEUU76iipGLqOYoNBjZOBdtbL44COJJRW8p2YRGYVowmlAMVIGGpcqrieYL2ehOXQ3HdOqvV+s+GPthkhN41AjGqfpuFS2a3Xb2AG0a9l5WIdLpA6dOWLbZbC07niv8Mf1BU5CwhVmSMqhY0dqpFGsKGYkLbqJJBHCV2hChsblKCRypOf3SWHFID4MRGweruAcvcvQKJSZZJOZqZT5WAZujGWIEoLJNQHa88KcIhW8HWnKo0QRjheCgoRBJWA2ROjTmGDFZsZBOKbmThBPUYywMqNeKx1NZ5LiXD9JE07VTVpcF84mwtSa5rRwQbg/WkUpNnFOrrEIQ8R97Z4PTnutk3TojIzfa/ba0FXkRnmBltdUYTOJatnZz5FazfP2Jgo2/1IKy87t+7sUuh6ZUK6bnVZjkubKtM+O55W0a0RuTsnindOz/+2WYx+33zf7nV6aZ/okQAlT/5a3KrBV4TJlm8hVK8OLyV2mmpLVV9PZmtzuAtzuXBzUnKPa0YfDcqPbWCzMLngFXoMqcMAb0AAnoAv6AINP4DP4Cr5ZX6zv1k/r1yK1sLNcspdgzazffwFBMWmk</latexit> P i(0) <latexit sha1_base64="nkJAXfTyJFnWKnQODmpfHVvRv+A=">AAAEMHicjVPNbtpAEN5Af1L6R9pjL6siJHJBNkkh7QlEqBIJRVSBEAkjtF4vsMp61/Kum6CVn6BP0x7bF2lPVa+99gW6BiKCBWpHsjyeb76Zb8c7bsCoVJb1YyeTvXf/wcPdR7nHT54+e57fe3EhRRRi0sOCifDSRZIwyklPUcXIZRAS5LuM9N2rZoL3P5JQUsG7ahaQoY8mnI4pRsqERvmi4wrmyZlvXroTj2jJ3s8VvZF2fKSmoa8RDeN4lC9Y5bdH1cqbCrTKllWrHFQTp1I7rBxA20QSK4CldUZ7mT+OJ3DkE64wQ1IObCtQQ41CRTEjcc6JJAkQvkITMjAuRz6RQz0/TwyLJuLBsQjNwxWcR+8yNPJlItlkJiplGkuCG7EkooRgck2Adl0/pUiNj4aa8iBShOOFoHHEoBIwGSL0aEiwYjPjIBxScyaIpyhEWJlRr5UOpjNJcaqfpBGn6ibOrQtnE2FqTVNauCDcG65Qig3OyTUWvo+4p53z/mm3eRIP7KHxu41uCzqK3Ch3rOU1VdhMolSw91OkZuO8tYmCzV2KYcG+/X4XQ8clE8p1o92sT+JUmdbZ8bySdozIzSkJ3j49+99uKfZx632j1+7GaaZHxihi6t/yVgW2KlymbBO5amV4IbnLVFOy+ms6WZPbXYDbnYtK2a6Wqx8OC/VOfbEwu+AVeA1KwAY1UAcnoAN6AINP4DP4Cr5lv2S/Z39mfy1SMzvLJXsJ1iz7+y/b7GnP</latexit> P i(1) <latexit sha1_base64="Zzf4wLLsy0ioMM0BrEAegB/0Sts=">AAAEMHicjVPNbtpAEN7g/qT0j7THXlZFSOSC7CikVU8gQpVIKKIKhEgYofV6Dausdy3vugla+Qn6NO2xfZH2VPXaa1+gayAiWKB2JGvH38w38+3Y40WMSmXbP3YK1r37Dx7uPio+fvL02fPS3osLKZIYkz4WTMSXHpKEUU76iipGLqOYoNBjZOBdtbL44COJJRW8p2YRGYVowmlAMVIGGpcqrieYL2ehOXQ3HdOqvV+s+GPthkhN41AjGqfpuFS2a3Xb2AG0a9l5WIdLpA6dOWLbZbC07niv8Mf1BU5CwhVmSMqhY0dqpFGsKGYkLbqJJBHCV2hChsblKCRypOf3SWHFID4MRGweruAcvcvQKJSZZJOZqZT5WAZujGWIEoLJNQHa88KcIhW8HWnKo0QRjheCgoRBJWA2ROjTmGDFZsZBOKbmThBPUYywMqNeKx1NZ5LiXD9JE07VTVpcF84mwtSa5rRwQbg/WkUpNnFOrrEIQ8R97Z4PTnutk3TojIzfa/ba0FXkRnmBltdUYTOJatnZz5FazfP2Jgo2/1IKy87t+7sUuh6ZUK6bnVZjkubKtM+O55W0a0RuTsnindOz/+2WYx+33zf7nV6aZ/okQAlT/5a3KrBV4TJlm8hVK8OLyV2mmpLVV9PZmtzuAtzuXBzUnKPa0YfDcqPbWCzMLngFXoMqcMAb0AAnoAv6AINP4DP4Cr5ZX6zv1k/r1yK1sLNcspdgzazffwFBMWmk</latexit> P i(0) <latexit sha1_base64="nkJAXfTyJFnWKnQODmpfHVvRv+A=">AAAEMHicjVPNbtpAEN5Af1L6R9pjL6siJHJBNkkh7QlEqBIJRVSBEAkjtF4vsMp61/Kum6CVn6BP0x7bF2lPVa+99gW6BiKCBWpHsjyeb76Zb8c7bsCoVJb1YyeTvXf/wcPdR7nHT54+e57fe3EhRRRi0sOCifDSRZIwyklPUcXIZRAS5LuM9N2rZoL3P5JQUsG7ahaQoY8mnI4pRsqERvmi4wrmyZlvXroTj2jJ3s8VvZF2fKSmoa8RDeN4lC9Y5bdH1cqbCrTKllWrHFQTp1I7rBxA20QSK4CldUZ7mT+OJ3DkE64wQ1IObCtQQ41CRTEjcc6JJAkQvkITMjAuRz6RQz0/TwyLJuLBsQjNwxWcR+8yNPJlItlkJiplGkuCG7EkooRgck2Adl0/pUiNj4aa8iBShOOFoHHEoBIwGSL0aEiwYjPjIBxScyaIpyhEWJlRr5UOpjNJcaqfpBGn6ibOrQtnE2FqTVNauCDcG65Qig3OyTUWvo+4p53z/mm3eRIP7KHxu41uCzqK3Ch3rOU1VdhMolSw91OkZuO8tYmCzV2KYcG+/X4XQ8clE8p1o92sT+JUmdbZ8bySdozIzSkJ3j49+99uKfZx632j1+7GaaZHxihi6t/yVgW2KlymbBO5amV4IbnLVFOy+ms6WZPbXYDbnYtK2a6Wqx8OC/VOfbEwu+AVeA1KwAY1UAcnoAN6AINP4DP4Cr5lv2S/Z39mfy1SMzvLJXsJ1iz7+y/b7GnP</latexit> P i(1) 
+
+<latexit sha1_base64="EhqPncrn1JIHE8Drq+kewk4Yv6k=">AAAEMHicjVPNbtpAEN6E/qT0J6Q99rIqQiIXZJMU0p5AhCqRUEQVCJEwQuv1Atusdy3vugla+Qn6NO2xfZH2VPXaa1+gayAiWKB2JMvj+eab+Xa84waMSmVZP7a2M/fuP3i48yj7+MnTZ7u5vecXUkQhJl0smAgvXSQJo5x0FVWMXAYhQb7LSM+9aiR47yMJJRW8o6YBGfhozOmIYqRMaJgrOK5gnpz65qXb8fBD0d7PFryhdnykJqGvEQ3jeJjLW6U3R5Xy6zK0SpZVLR9UEqdcPSwfQNtEEsuDhbWHe9t/HE/gyCdcYYak7NtWoAYahYpiRuKsE0kSIHyFxqRvXI58Igd6dp4YFkzEgyMRmocrOIveZWjky0SyyUxUyjSWBNdiSUQJweSKAO26fkqRGh0NNOVBpAjHc0GjiEElYDJE6NGQYMWmxkE4pOZMEE9QiLAyo14pHUymkuJUP0kjTtVNnF0VzsbC1JqktHBBuDdYohQbnJNrLHwfcU87573TTuMk7tsD43fqnSZ0FLlR7kjLa6qwmUQxb++nSI36eXMdBZu7FMO8ffv9NoaOS8aU63qrURvHqTLNs+NZJe0YketTErx1eva/3VLs4+a7erfVidNMj4xQxNS/5S0LbFS4SNkkctnK8EJyl6kmZPnXdLImt7sANzsX5ZJdKVXeH+Zr7dp8YXbAS/AKFIENqqAGTkAbdAEGn8Bn8BV8y3zJfM/8zPyap25vLZbsBVixzO+/36dp0A==</latexit> P j (1) 
+
+<latexit sha1_base64="Yf307Yu1jJ7XcWX1Fr0FjjjUSUg=">AAAEMHicjVPNbtpAEN7E/UnpT0h77GVVhEQuyI5CWvUEIlSJhCKqQIiEEVqv17DNetfyrpuglZ+gT9Me2xdpT1WvvfYFugYiggVqR7J2/M18M9+OPV7EqFS2/WNr27p3/8HDnUeFx0+ePtst7j2/kCKJMelhwUR86SFJGOWkp6hi5DKKCQo9RvreVTOL9z+SWFLBu2oakWGIxpwGFCNloFGx7HqC+XIamkN30tGHir1fKPsj7YZITeJQIxqn6ahYsqs129gBtKvZeViDC6QGnRli2yWwsM5ob/uP6wuchIQrzJCUA8eO1FCjWFHMSFpwE0kihK/QmAyMy1FI5FDP7pPCskF8GIjYPFzBGXqXoVEoM8kmM1Mp87EMXBvLECUEkysCtOeFOUUqeDPUlEeJIhzPBQUJg0rAbIjQpzHBik2Ng3BMzZ0gnqAYYWVGvVI6mkwlxbl+kiacqpu0sCqcjYWpNclp4YJwf7iMUmzinFxjEYaI+9o97592myfpwBkav9votqCryI3yAi2vqcJmEpWSs58jNRvnrXUUbP6lFJac2/e3KXQ9MqZcN9rN+jjNlWmdHc8qadeIXJ+SxdunZ//bLcc+br1r9NrdNM/0SYASpv4tb1lgo8JFyiaRy1aGF5O7TDUhy6+mszW53QW42bk4qDpH1aP3h6V6pz5fmB3wErwCFeCA16AOTkAH9AAGn8Bn8BV8s75Y362f1q956vbWYslegBWzfv8FROxppQ==</latexit> P j (0) 
+
+<latexit sha1_base64="EhqPncrn1JIHE8Drq+kewk4Yv6k=">AAAEMHicjVPNbtpAEN6E/qT0J6Q99rIqQiIXZJMU0p5AhCqRUEQVCJEwQuv1Atusdy3vugla+Qn6NO2xfZH2VPXaa1+gayAiWKB2JMvj+eab+Xa84waMSmVZP7a2M/fuP3i48yj7+MnTZ7u5vecXUkQhJl0smAgvXSQJo5x0FVWMXAYhQb7LSM+9aiR47yMJJRW8o6YBGfhozOmIYqRMaJgrOK5gnpz65qXb8fBD0d7PFryhdnykJqGvEQ3jeJjLW6U3R5Xy6zK0SpZVLR9UEqdcPSwfQNtEEsuDhbWHe9t/HE/gyCdcYYak7NtWoAYahYpiRuKsE0kSIHyFxqRvXI58Igd6dp4YFkzEgyMRmocrOIveZWjky0SyyUxUyjSWBNdiSUQJweSKAO26fkqRGh0NNOVBpAjHc0GjiEElYDJE6NGQYMWmxkE4pOZMEE9QiLAyo14pHUymkuJUP0kjTtVNnF0VzsbC1JqktHBBuDdYohQbnJNrLHwfcU87573TTuMk7tsD43fqnSZ0FLlR7kjLa6qwmUQxb++nSI36eXMdBZu7FMO8ffv9NoaOS8aU63qrURvHqTLNs+NZJe0YketTErx1eva/3VLs4+a7erfVidNMj4xQxNS/5S0LbFS4SNkkctnK8EJyl6kmZPnXdLImt7sANzsX5ZJdKVXeH+Zr7dp8YXbAS/AKFIENqqAGTkAbdAEGn8Bn8BV8y3zJfM/8zPyap25vLZbsBVixzO+/36dp0A==</latexit> P j (1) 
+
+<latexit sha1_base64="Yf307Yu1jJ7XcWX1Fr0FjjjUSUg=">AAAEMHicjVPNbtpAEN7E/UnpT0h77GVVhEQuyI5CWvUEIlSJhCKqQIiEEVqv17DNetfyrpuglZ+gT9Me2xdpT1WvvfYFugYiggVqR7J2/M18M9+OPV7EqFS2/WNr27p3/8HDnUeFx0+ePtst7j2/kCKJMelhwUR86SFJGOWkp6hi5DKKCQo9RvreVTOL9z+SWFLBu2oakWGIxpwGFCNloFGx7HqC+XIamkN30tGHir1fKPsj7YZITeJQIxqn6ahYsqs129gBtKvZeViDC6QGnRli2yWwsM5ob/uP6wuchIQrzJCUA8eO1FCjWFHMSFpwE0kihK/QmAyMy1FI5FDP7pPCskF8GIjYPFzBGXqXoVEoM8kmM1Mp87EMXBvLECUEkysCtOeFOUUqeDPUlEeJIhzPBQUJg0rAbIjQpzHBik2Ng3BMzZ0gnqAYYWVGvVI6mkwlxbl+kiacqpu0sCqcjYWpNclp4YJwf7iMUmzinFxjEYaI+9o97592myfpwBkav9votqCryI3yAi2vqcJmEpWSs58jNRvnrXUUbP6lFJac2/e3KXQ9MqZcN9rN+jjNlWmdHc8qadeIXJ+SxdunZ//bLcc+br1r9NrdNM/0SYASpv4tb1lgo8JFyiaRy1aGF5O7TDUhy6+mszW53QW42bk4qDpH1aP3h6V6pz5fmB3wErwCFeCA16AOTkAH9AAGn8Bn8BV8s75Y362f1q956vbWYslegBWzfv8FROxppQ==</latexit> P j (0) 
+
+<latexit sha1_base64="EhqPncrn1JIHE8Drq+kewk4Yv6k=">AAAEMHicjVPNbtpAEN6E/qT0J6Q99rIqQiIXZJMU0p5AhCqRUEQVCJEwQuv1Atusdy3vugla+Qn6NO2xfZH2VPXaa1+gayAiWKB2JMvj+eab+Xa84waMSmVZP7a2M/fuP3i48yj7+MnTZ7u5vecXUkQhJl0smAgvXSQJo5x0FVWMXAYhQb7LSM+9aiR47yMJJRW8o6YBGfhozOmIYqRMaJgrOK5gnpz65qXb8fBD0d7PFryhdnykJqGvEQ3jeJjLW6U3R5Xy6zK0SpZVLR9UEqdcPSwfQNtEEsuDhbWHe9t/HE/gyCdcYYak7NtWoAYahYpiRuKsE0kSIHyFxqRvXI58Igd6dp4YFkzEgyMRmocrOIveZWjky0SyyUxUyjSWBNdiSUQJweSKAO26fkqRGh0NNOVBpAjHc0GjiEElYDJE6NGQYMWmxkE4pOZMEE9QiLAyo14pHUymkuJUP0kjTtVNnF0VzsbC1JqktHBBuDdYohQbnJNrLHwfcU87573TTuMk7tsD43fqnSZ0FLlR7kjLa6qwmUQxb++nSI36eXMdBZu7FMO8ffv9NoaOS8aU63qrURvHqTLNs+NZJe0YketTErx1eva/3VLs4+a7erfVidNMj4xQxNS/5S0LbFS4SNkkctnK8EJyl6kmZPnXdLImt7sANzsX5ZJdKVXeH+Zr7dp8YXbAS/AKFIENqqAGTkAbdAEGn8Bn8BV8y3zJfM/8zPyap25vLZbsBVixzO+/36dp0A==</latexit> P j (1) 
+
+<latexit sha1_base64="Yf307Yu1jJ7XcWX1Fr0FjjjUSUg=">AAAEMHicjVPNbtpAEN7E/UnpT0h77GVVhEQuyI5CWvUEIlSJhCKqQIiEEVqv17DNetfyrpuglZ+gT9Me2xdpT1WvvfYFugYiggVqR7J2/M18M9+OPV7EqFS2/WNr27p3/8HDnUeFx0+ePtst7j2/kCKJMelhwUR86SFJGOWkp6hi5DKKCQo9RvreVTOL9z+SWFLBu2oakWGIxpwGFCNloFGx7HqC+XIamkN30tGHir1fKPsj7YZITeJQIxqn6ahYsqs129gBtKvZeViDC6QGnRli2yWwsM5ob/uP6wuchIQrzJCUA8eO1FCjWFHMSFpwE0kihK/QmAyMy1FI5FDP7pPCskF8GIjYPFzBGXqXoVEoM8kmM1Mp87EMXBvLECUEkysCtOeFOUUqeDPUlEeJIhzPBQUJg0rAbIjQpzHBik2Ng3BMzZ0gnqAYYWVGvVI6mkwlxbl+kiacqpu0sCqcjYWpNclp4YJwf7iMUmzinFxjEYaI+9o97592myfpwBkav9votqCryI3yAi2vqcJmEpWSs58jNRvnrXUUbP6lFJac2/e3KXQ9MqZcN9rN+jjNlWmdHc8qadeIXJ+SxdunZ//bLcc+br1r9NrdNM/0SYASpv4tb1lgo8JFyiaRy1aGF5O7TDUhy6+mszW53QW42bk4qDpH1aP3h6V6pz5fmB3wErwCFeCA16AOTkAH9AAGn8Bn8BV8s75Y362f1q956vbWYslegBWzfv8FROxppQ==</latexit> P j (0) 
+
+<latexit sha1_base64="+IErzmYExvyQOBaCClEuVvi0j6E=">AAAEQnicjVPNattAEN5E/UndP6c99rLUBJKLkUxxkp5sHJcEQnCJHQcsY1arlb3NaldoV03Mso/Sp2mP7QP0FXorufbQle3gWCS0C0Kj+eab+Wa0EySMSuW6P9fWnQcPHz3eeFJ6+uz5i5flzVdnUmQpJj0smEjPAyQJo5z0FFWMnCcpQXHASD+4aOV4/zNJJRW8q6YJGcZozGlEMVLWNSrvbvmBYKGcxvalO2b0advdKW2FI+3HSE3SWCOaGlO65YgpN2ZUrrhV1556HeaGt+d61tjf36vV9qE3g1y3AhanM9pcv/ZDgbOYcIUZknLguYkaapQqihkxJT+TJEH4Ao3JwJocxUQO9axDA7esJ4SRSO3DFZx5bzM0imXeg43MVcoiljvvxHKPEoLJFQE6COKCIhXtDTXlSaYIx3NBUcagEjAfKwxpSrBiU2sgnFLbE8QTlCKs7PBXUieTqaS4UE/SjFN1ZUqrwtlY2FyTghYuCA+HS5Rii3NyiUUcIx5q/7R/1G0dmoE3tHa32W1DX5ErFURaXlKF7SS2K95OgdRqnrbvomB7uwyseDff7w30AzKmXDePW42xKaRpnxzMMmnfirw7JMePj07+t1qBfdD+0Owdd02RGZIIZUz9W94ywb0KFyH3iVyWsryU3GaqCVn+NZ2vyc0uwPuNs1rVq1frH99VGp3GfGE2wBvwFmwDD+yCBjgEHdADGHwBX8F38MP55vxyfjvX89D1tcWSvQYrx/nzF2b3cYc=</latexit> dmin 
+
+<latexit sha1_base64="+IErzmYExvyQOBaCClEuVvi0j6E=">AAAEQnicjVPNattAEN5E/UndP6c99rLUBJKLkUxxkp5sHJcEQnCJHQcsY1arlb3NaldoV03Mso/Sp2mP7QP0FXorufbQle3gWCS0C0Kj+eab+Wa0EySMSuW6P9fWnQcPHz3eeFJ6+uz5i5flzVdnUmQpJj0smEjPAyQJo5z0FFWMnCcpQXHASD+4aOV4/zNJJRW8q6YJGcZozGlEMVLWNSrvbvmBYKGcxvalO2b0advdKW2FI+3HSE3SWCOaGlO65YgpN2ZUrrhV1556HeaGt+d61tjf36vV9qE3g1y3AhanM9pcv/ZDgbOYcIUZknLguYkaapQqihkxJT+TJEH4Ao3JwJocxUQO9axDA7esJ4SRSO3DFZx5bzM0imXeg43MVcoiljvvxHKPEoLJFQE6COKCIhXtDTXlSaYIx3NBUcagEjAfKwxpSrBiU2sgnFLbE8QTlCKs7PBXUieTqaS4UE/SjFN1ZUqrwtlY2FyTghYuCA+HS5Rii3NyiUUcIx5q/7R/1G0dmoE3tHa32W1DX5ErFURaXlKF7SS2K95OgdRqnrbvomB7uwyseDff7w30AzKmXDePW42xKaRpnxzMMmnfirw7JMePj07+t1qBfdD+0Owdd02RGZIIZUz9W94ywb0KFyH3iVyWsryU3GaqCVn+NZ2vyc0uwPuNs1rVq1frH99VGp3GfGE2wBvwFmwDD+yCBjgEHdADGHwBX8F38MP55vxyfjvX89D1tcWSvQYrx/nzF2b3cYc=</latexit> dmin 
+
+<latexit sha1_base64="+IErzmYExvyQOBaCClEuVvi0j6E=">AAAEQnicjVPNattAEN5E/UndP6c99rLUBJKLkUxxkp5sHJcEQnCJHQcsY1arlb3NaldoV03Mso/Sp2mP7QP0FXorufbQle3gWCS0C0Kj+eab+Wa0EySMSuW6P9fWnQcPHz3eeFJ6+uz5i5flzVdnUmQpJj0smEjPAyQJo5z0FFWMnCcpQXHASD+4aOV4/zNJJRW8q6YJGcZozGlEMVLWNSrvbvmBYKGcxvalO2b0advdKW2FI+3HSE3SWCOaGlO65YgpN2ZUrrhV1556HeaGt+d61tjf36vV9qE3g1y3AhanM9pcv/ZDgbOYcIUZknLguYkaapQqihkxJT+TJEH4Ao3JwJocxUQO9axDA7esJ4SRSO3DFZx5bzM0imXeg43MVcoiljvvxHKPEoLJFQE6COKCIhXtDTXlSaYIx3NBUcagEjAfKwxpSrBiU2sgnFLbE8QTlCKs7PBXUieTqaS4UE/SjFN1ZUqrwtlY2FyTghYuCA+HS5Rii3NyiUUcIx5q/7R/1G0dmoE3tHa32W1DX5ErFURaXlKF7SS2K95OgdRqnrbvomB7uwyseDff7w30AzKmXDePW42xKaRpnxzMMmnfirw7JMePj07+t1qBfdD+0Owdd02RGZIIZUz9W94ywb0KFyH3iVyWsryU3GaqCVn+NZ2vyc0uwPuNs1rVq1frH99VGp3GfGE2wBvwFmwDD+yCBjgEHdADGHwBX8F38MP55vxyfjvX89D1tcWSvQYrx/nzF2b3cYc=</latexit> dmin 
+
+<latexit sha1_base64="H/OZc+i1yAsLrQIMxmJgNyeSzb0=">AAAEEnicjVPNbtpAEN7g/qT0L0mPvayKKpELslMgoScQoUokFFEFQipsofV6Dausdy3vOgmy/BTtsX2R3qpe+wJ9jr5Al5+IYIHakVaanW++mW/HHjdkVCrT/L2VMx48fPR4+0n+6bPnL17u7O5dSBFHmPSwYCK6dJEkjHLSU1QxchlGBAUuI333qjnF+9ckklTwrpqExAnQiFOfYqR06FM0pEWbKLQ/3CmYJbNSKx8eQLNUMa1a+Z12arWjcrUCrZI5swJYWGe4m/tjewLHAeEKMyTlwDJD5SQoUhQzkubtWJIQ4Ss0IgPtchQQ6SQzxSl8qyMe9EWkD1dwFr3PSFAg5SRwdWaA1FhmsWlwLTaNKCGYXBGQuG6QUaT8IyehPIwV4XguyI8ZVAJOxwQ9GhGs2EQ7CEdUvwniMYoQVnqYK6XD8URSnOknacypuk3zq8LZSOha44wWLgj3nCVKscY5ucEiCBD3Evu8f9ptnqQDy9F+t9FtQVuRW+X6ibyhCutJFAvWfobUbJy31lGw/ltSWLDu7u9TaLtkRHnSaDfrozRTpnV2PKuU2Frk+pQp3j49+99uGfZx60Oj1+6mWaZHfBQz9W95ywIbFS5SNolcttK8iNxnqjFZfrUk1Wtytwtws3NxULKqperHcqHeqc8XZhu8Bm9AEVjgENTBCeiAHsAgAJ/BV/DN+GJ8N34YP+epua3Fkr0CK2b8+gv32F2V</latexit> ri(⌘)
+
+<latexit sha1_base64="EGOhh72+UQ2exRO8CsnIVheX9FM=">AAAED3icjVNLbtswEGWsflL3l7TLbogaBZyNIaW2E3dlw3GRAEbgIv4EsASDoiibDUUKItXEEHSHdtlepLui2x6h5+gFSn8Cx4KNdgACw3nzZh5HGjdkVCrT/L2TM+7df/Bw91H+8ZOnz57v7b/oSxFHmPSwYCK6dJEkjHLSU1QxchlGBAUuIwP3qjnDB59IJKngXTUNiROgMac+xUjpUD8a0aJ1MNormCWzUisfHUKzVDGtWvmtdmq143K1Aq2SObcCWFpntJ/7Y3sCxwHhCjMk5dAyQ+UkKFIUM5Lm7ViSEOErNCZD7XIUEOkkc7kpfKMjHvRFpA9XcB69y0hQIOU0cHVmgNREZrFZcCM2iyghmFwTkLhukFGk/GMnoTyMFeF4IciPGVQCzmYEPRoRrNhUOwhHVL8J4gmKEFZ6kmulw8lUUpzpJ2nMqbpJ8+vC2VjoWpOMFi4I95wVSrHGObnGIggQ9xL7YnDWbZ6mQ8vRfrfRbUFbkRvl+om8pgrrSRQL1kGG1GxctDZRsP5VUliwbu/vUmi7ZEx50mg36+M0U6Z1fjKvlNha5OaUGd4+O//fbhn2Set9o9fuplmmR3wUM/VveasCWxUuU7aJXLXSvIjcZaoJWX21JNVrcrsLcLvTPyxZ1VL1Q7lQ79QXC7MLXoHXoAgscATq4BR0QA9g8BF8Bl/BN+OL8d34YfxcpOZ2lkv2EqyZ8esvY/xcEg==</latexit> ri(1) 
+
+<latexit sha1_base64="EGOhh72+UQ2exRO8CsnIVheX9FM=">AAAED3icjVNLbtswEGWsflL3l7TLbogaBZyNIaW2E3dlw3GRAEbgIv4EsASDoiibDUUKItXEEHSHdtlepLui2x6h5+gFSn8Cx4KNdgACw3nzZh5HGjdkVCrT/L2TM+7df/Bw91H+8ZOnz57v7b/oSxFHmPSwYCK6dJEkjHLSU1QxchlGBAUuIwP3qjnDB59IJKngXTUNiROgMac+xUjpUD8a0aJ1MNormCWzUisfHUKzVDGtWvmtdmq143K1Aq2SObcCWFpntJ/7Y3sCxwHhCjMk5dAyQ+UkKFIUM5Lm7ViSEOErNCZD7XIUEOkkc7kpfKMjHvRFpA9XcB69y0hQIOU0cHVmgNREZrFZcCM2iyghmFwTkLhukFGk/GMnoTyMFeF4IciPGVQCzmYEPRoRrNhUOwhHVL8J4gmKEFZ6kmulw8lUUpzpJ2nMqbpJ8+vC2VjoWpOMFi4I95wVSrHGObnGIggQ9xL7YnDWbZ6mQ8vRfrfRbUFbkRvl+om8pgrrSRQL1kGG1GxctDZRsP5VUliwbu/vUmi7ZEx50mg36+M0U6Z1fjKvlNha5OaUGd4+O//fbhn2Set9o9fuplmmR3wUM/VveasCWxUuU7aJXLXSvIjcZaoJWX21JNVrcrsLcLvTPyxZ1VL1Q7lQ79QXC7MLXoHXoAgscATq4BR0QA9g8BF8Bl/BN+OL8d34YfxcpOZ2lkv2EqyZ8esvY/xcEg==</latexit> ri(1) 
+
+<latexit sha1_base64="yjmVWV3Wq1Cxx0GsvzUZZ52JOhw=">AAAEFHicjVPLbtNAFJ3GPEp4tbBkMyJCSjeRnZK2YZUoDWqlqApq0lSKrWg8HjtDxzOWZ0wbWf4MWMKPsENs2fMd/ACTR5XGSgQjWTq+5557j+/4uhGjUpnm762Cce/+g4fbj4qPnzx99nxn98WFFEmMSR8LJuJLF0nCKCd9RRUjl1FMUOgyMnCvWlN+8InEkgreU5OIOCEKOPUpRkqHhvHoY9kOUBiivdFOyaxUa2b9sArNSs206rV9DUzzqF6zoKXB9JTA4nRHu4U/tidwEhKuMENSDi0zUk6KYkUxI1nRTiSJEL5CARlqyFFIpJPOPGfwjY540BexfriCs+hdRYpCKSehqzNDpMYyz02Da7lpRAnB5IqB1HXDnCPlHzkp5VGiCMdzQ37CoBJwOijo0ZhgxSYaIBxT/U0Qj1GMsNLjXCkdjSeS4lw/SRNO1U1WXDXOAqFrjXNeuCDcc5YsxZrn5BoLfTPcS+3zwWmvdZINLUfjXrPXhrYiN8r1U3lNFdaTKJesvZyo1Txvr5Ng/b9ksGTdvr/LoO2SgPK02Wk1gixXpn12PKuU2trk+pQp3zk9+99uOfVx+32z3+lleaVHfJQw9W97ywIbHS5SNplcttK6mNxVqjFZ3lqa6TW53QW4GVxUK9ZB5eDD21Kj25gvzDZ4BV6DMrDAIWiAE9AFfYCBAJ/BV/DN+GJ8N34YP+epha3Fkr0EK8f49RfqsF5g</latexit> rj ( )
+
+<latexit sha1_base64="yjmVWV3Wq1Cxx0GsvzUZZ52JOhw=">AAAEFHicjVPLbtNAFJ3GPEp4tbBkMyJCSjeRnZK2YZUoDWqlqApq0lSKrWg8HjtDxzOWZ0wbWf4MWMKPsENs2fMd/ACTR5XGSgQjWTq+5557j+/4uhGjUpnm762Cce/+g4fbj4qPnzx99nxn98WFFEmMSR8LJuJLF0nCKCd9RRUjl1FMUOgyMnCvWlN+8InEkgreU5OIOCEKOPUpRkqHhvHoY9kOUBiivdFOyaxUa2b9sArNSs206rV9DUzzqF6zoKXB9JTA4nRHu4U/tidwEhKuMENSDi0zUk6KYkUxI1nRTiSJEL5CARlqyFFIpJPOPGfwjY540BexfriCs+hdRYpCKSehqzNDpMYyz02Da7lpRAnB5IqB1HXDnCPlHzkp5VGiCMdzQ37CoBJwOijo0ZhgxSYaIBxT/U0Qj1GMsNLjXCkdjSeS4lw/SRNO1U1WXDXOAqFrjXNeuCDcc5YsxZrn5BoLfTPcS+3zwWmvdZINLUfjXrPXhrYiN8r1U3lNFdaTKJesvZyo1Txvr5Ng/b9ksGTdvr/LoO2SgPK02Wk1gixXpn12PKuU2trk+pQp3zk9+99uOfVx+32z3+lleaVHfJQw9W97ywIbHS5SNplcttK6mNxVqjFZ3lqa6TW53QW4GVxUK9ZB5eDD21Kj25gvzDZ4BV6DMrDAIWiAE9AFfYCBAJ/BV/DN+GJ8N34YP+epha3Fkr0EK8f49RfqsF5g</latexit> rj ( )
+
+<latexit sha1_base64="k3nv33qm6GGizruPx+1sQkXB9gA=">AAAED3icjVPLbtNAFJ3WPEp4tbBkMyJCSjeRHUjbsEqUBrVSVAU1j0qxFY3H42Ta8YzlGdNGlv8BlvAj7BBbPoHv4AcYJ6nSWIlgJEtn7rnn3uNrXzdkVCrT/L21bdy7/+DhzqPC4ydPnz3f3XvRlyKOMOlhwUR04SJJGOWkp6hi5CKMCApcRgbuVTPjB59IJKngXTUNiROgMac+xUjpUD8aXZas/dFu0SxXqmbtsALNctW0atW3GpjmUa1qQUuD7BTB4nRGe9t/bE/gOCBcYYakHFpmqJwERYpiRtKCHUsSInyFxmSoIUcBkU4ys5vCNzriQV9E+uEKzqJ3FQkKpJwGrs4MkJrIPJcF13JZRAnB5IqBxHWDnCPlHzkJ5WGsCMdzQ37MoBIwmxH0aESwYlMNEI6ofieIJyhCWOlJrpQOJ1NJca6fpDGn6iYtrBpnY6FrTXJeuCDcc5YsxZrn5BqLIEDcS+zzwWm3eZIOLUfjbqPbgrYiN8r1E3lNFdaTKBWt/Zyo2ThvrZNg/auksGjd3t+n0HbJmPKk0W7Wx2muTOvseFYpsbXJ9SkZ3z49+99uOfVx60Oj1+6meaVHfBQz9W97ywIbHS5SNplcttK6iNxVqglZfrUk1WtyuwtwM+hXytZB+eDju2K9U58vzA54BV6DErDAIaiDE9ABPYDBJfgMvoJvxhfju/HD+DlP3d5aLNlLsHKMX38BJBFcAA==</latexit> rj (1) Fig. 4: Illustration of all three cases for the minimum distance dmin between two cone-spheres, corresponding to the solution of Eq. (1). (a) The minimizer of fair (η, γ ) is an interior stationary point, i.e., 0 < η < 1 and 0 < γ < 1, the minimum distance is attained between interior points of the two line segments. (b) The minimum distance is attained at one endpoint, shown here at P i(1) . (c) The minimizer is attained at two active bounds, shown here at the endpoints P i(1) and P j (1) .
+
+Fig. 5: An optimal configuration of a five-module plat-form that satisfies wrench feasibility while respecting intra-platform airflow exposure constraints, with the corresponding representative graph shown on the right. using the smooth approximations 
+
+max {a, b } ≈ 12 (a + b + p(a − b)2 + ϵ),
+
+min {a, b } ≈ 12 (a + b − p(a − b)2 + ϵ).
+
+The bounded pair (η0, γ 0) is the first evaluation candidate. If the global minimum lies on an edge, the restriction of 
+
+fair becomes a one-dimensional quadratic whose minimizer is given by the corresponding stationary point bounded in 
+
+[0 , 1] . For the two edges η1 ∈ { 0, 1}, we have 
+
+γ1 = − (Cη 1 + E)B
+
+2B2 + ϵ .
+
+For the other two edges γ2 ∈ { 0, 1}, we have 
+
+η2 = − (Cγ 2 + D)A
+
+2A2 + ϵ .
+
+We bound these four edge candidates in [0 , 1] 2 in the same manner. Finally, together with the four corners, we obtain nine candidates, producing a finite set Sij ⊂ [0 , 1] 2 for the module pair i and j.To embed the clearance constraint into a gradient-based nonlinear program, we approximate the discrete minimum over a finite candidate set by a smooth log-sum-exp aggre-gation, 
+
+LSE β (f, S) := − 1
+
+β log 
+
+X
+
+ξ∈S 
+
+exp   − βf (ξ) , (3) where β > 0 controls the approximation accuracy, larger 
+
+β yields a closer approximation to the true minimum while remaining smooth. Using Eq. (3), the airflow non-overlap constraints are enforced by 
+
+eϕij (β) = LSE β (fair , Sij ) ≥ 0, 1 ≤ i < j ≤ n. 
+
+This construction avoids introducing additional decision vari-ables (η, γ ) for each module pair and removes the need for inner-loop iterative distance computations, while providing a smooth constraint compatible with gradient-based methods. The end-effector position pE is allowed to vary in R3,subject to non-collision constraints with the platform. For each module i, we define a spherical exclusion region centered at its COM with radius lc, yielding the constraint 
+
+∥oi − pE ∥2 = ∥pi − p′
+
+E ∥2 ≥ l2
+
+c .
+
+Let α := [α0, . . . , α n]⊤ ∈ Rn+1 . Together with the wrench feasibility conditions, inter-module airflow con-straints, and end-effector non-collision constraints, we pose the modular reconfiguration design as the following nonlin-ear optimization problem: 
+
+min 
+
+u1,..., uK , α, p′
+
+E
+
+KX
+
+k=1 
+
+λk∥uk∥22 (4) s.t. eϕij (β) ≥ 0, ∀ 1 ≤ i < j ≤ n
+
+∥pi − p′
+
+E ∥2 ≥ l2
+
+c , ∀ i = 1 , . . . , n 
+
+A(α, p′
+
+E )uk = bk(p′
+
+E ), ∀ k = 1 , . . . , K 
+
+0 ≤ uk ≤ umax , ∀ k = 1 , . . . , K 
+
+− π/ 2 ≤ α ≤ π/ 2.
+
+Here, uk and α are bounded element-wise, p′
+
+E ∈ R3, and 
+
+λk > 0 is a constant weight for task k.We use a simple task wrench set for illustration, two target wrenches applied at the end-effector, W E =(a) (b)  
+
+> (c) (d)
+
+Fig. 6: Four examples using five-module platforms, with the corresponding configuration graphs shown on the right. Yellow rectangles indicate connectors that are not connected but are blocked for use. (a) An optimal configuration satisfying a target-side spherical local envelope constraint. (b) An optimal configuration satisfying a capsule directional envelope constraint with fixed segment direction [1 , 0, 0] ⊤. (c) An optimal configuration satisfying a half-space exterior envelope constraint with a parameterized axis dcon , where pE is aligned with the plane normal. (d) An optimal configuration satisfying a conical exterior envelope constraint, where pE is aligned with the cone axis. 
+
+{[0 .5mtg, 0, 0.5mtg, 0, 0, 0] ⊤, [0 , 0.5mtg, 0.5mtg, 0, 0, 0] ⊤},and an additional target wrench [0 , 0, m tg, 0, 0, 0] ⊤ applied directly at the platform COM to enforce hovering capability. We solve Eq. (4) with Ipopt [24,25]. The optimal feasible solution using 5 modules is shown in Fig. 5. Notably, the optimal end-effector position does not necessarily coincide with the platform COM. Because the objective minimizes overall control effort, an off-center placement can yield a lower cost for the same end-effector wrench than aplacement at the COM. 
+
+B. Local envelope 
+
+To represent a local envelope , a task-specific volume can be used, such as a sphere, box or other irregular shape. For our system, we choose a sphere of radius rsph > 0 that locally encloses the end-effector as the target-side airflow exposure constraint. This requires that the sphere centered at pE does not intersect any cone-sphere envelope of the platform. This case is a special instance of Eq. (2), where one cone-sphere reduces to a single sphere. We take the cone-sphere of module i, keeping P i(η) and ri(η) unchanged, and set P j (γ) = pE and rj (γ) = rsph . This yields a one-dimensional quadratic fsph (η), and the candidate set reduces to three points: one stationary point obtained from 
+
+∇fsph (η) = 0 , and the two endpoints η ∈ { 0, 1}. Denote this set by Si, sph . Using Eq. (3), we enforce the local envelope 
+
+exposure requirement by adding the following constraints to Eq. (4): 
+
+eϕi, sph (β) = LSE β (fsph , Si, sph ) ≥ 0, 1 ≤ i ≤ n. 
+
+For the same wrench set in Section III-A, an optimal con-figuration example with 5 modules is shown in Fig. 6a. 
+
+C. Directional envelope 
+
+To adapt the modular platform to tasks with directional envelope airflow constraints, we represent the prescribed motion path by a union of line segments. Sweeping the local sphere defined in Section III-B along each segment yields a capsule. Consequently, the overall directional envelope is modeled as a union of capsules. Consider the cone-sphere envelope of module i and one capsule in the directional envelope . The corresponding non-intersection condition is another special case of fair (η, γ ),where the capsule has constant radius. Specifically, for a capsule starting at pE with segment direction dcap , we set 
+
+P j (γ) = pE + γdcap , rj (γ) = rsph ,which yields a bivariate quadratic fcap (η, γ ). The same KKT-based candidate enumeration as in Section III-A applies, resulting in nine candidates collected in Si, cap . For each capsule, we add the following constraints using Eq. (3) to the optimization problem Eq. (4): 
+
+eϕi, cap (β) = LSE β (fcap , Si, cap ) ≥ 0, 1 ≤ i ≤ n. 
+
+As an illustration, we set dcap = [1 , 0, 0] ⊤ and solve the directional envelope problem for 5 modules using the same target wrench set as in Section III-A. One optimal solution is shown in Fig. 6b. Additional capsules can be incorporated by adding further segments, e.g., with dcap = [1 , 1, −1] ⊤, an example solution is shown in Fig. 1. Note that the segment direction need not be specified a priori. For instance, it can be parameterized using the end-effector position, e.g., dcap =
+
+lcap pE /∥pE ∥, where lcap is a scaling constant. 
+
+D. Exterior envelope 
+
+An exterior envelope is used when low airflow exposure must be guaranteed throughout the surrounding workspace, while allowing rotor-induced flow only within a limited re-gion. Similar to the previous two categories, the exterior en-velope can be instantiated according to the task and platform. As a representative realization, motivated by long-reach aerial manipulators [4], we constrain the platform’s critical rotor-induced flow to remain inside an infinite cone with apex located at the end-effector. Equivalently, the exterior envelope is defined as the space outside this cone. The cone half-angle controls the restrictiveness, a smaller half-angle reduces the allowed flow region near the target and provides stronger protection for the surroundings. However, tightening this constraint typically requires increasing the separation between the end-effector and the platform COM, which can reduce wrench feasibility. This trade-off between target-side airflow exposure and wrench feasibility is therefore central to the design of modular aerial manipulators, particularly for long-reach operation [4]. For a cone with apex at pE , axis given by the unit vector dcon , and half-angle θcon ∈ (0 , π/ 2] , we consider each sphere P i(η) with radius ri(η) along the cone-sphere envelope of module i. Denote qi(η) := P i(η)−pE , we have the orthogonal component of qi(η) to the cone axis as 
+
+ρi(η) = qi(η) −  d⊤
+
+> con
+
+qi(η)dcon .
+
+A sufficient condition for the sphere to lie inside the cone is that it does not extend behind the apex along the axis direction, and that it remains at least a distance ri(η) inside the conical surface. This can be enforced by 
+
+d⊤
+
+> con
+
+qi(η) − ri(η) ≥ 0, (5) 
+
+d⊤
+
+> con
+
+qi(η) sin θcon − ∥ ρi(η)∥ cos θcon − ri(η) ≥ 0. (6) Since P i(η) and ri(η) are affine in η, the left-hand side of Eq. (5) is affine in η, and its minimum over η ∈ [0 , 1] 
+
+occurs at an endpoint η ∈ { 0, 1}. For θcon ∈ (0 , π/ 2] , we have cos θcon ≥ 0. Since the Euclidean norm is convex, the left-hand side of Eq. (6) is therefore concave in η, hence its 10 20 30 40 50 60 70 80 90 100 Number of modules n
+
+> 10 0
+> 10 1
+> 10 2
+> 10 3
+> 10 4Solve time per core ( s)
+> No target airflow constraint Spherical local envelope Capsule directional envelope Conical exterior envelope
+
+Fig. 7: Scaling experiments under four constraint settings us-ing 10 target wrenches, reported every 10 modules. For each 
+
+n, the distributions are offset horizontally for visualization. minimum also occurs at an endpoint. It is therefore sufficient to enforce Eqs. (5) and (6) by evaluating only the endpoints 
+
+η ∈ {0, 1}, and to include the resulting inequalities as constraints in Eq. (4). Similar to Section III-C, the cone axis 
+
+dcon can be specified by the task as a fixed direction or parameterized based on the end-effector placement. In our examples, we set dcon = −pE /∥pE ∥ and choose θcon =60 ◦, as illustrated in Fig. 6d. By adjusting the cone half-angle θcon , the restrictiveness can be tuned. In the limiting case θcon = π/ 2, the cone boundary reduces to a plane, and an example solution is shown in Fig. 6c. IV. E XPERIMENTS 
+
+We first evaluate the scalability of the proposed frame-work. For each trial, we randomly generate 9 target end-effector wrenches. The target forces along the x and y
+
+axes are sampled as ±20 % of the total weight mtg, while the z-axis force is sampled from [0 .8mtg, 1.2mtg]. The target torques are sampled within ±20 % of the characteristic torque magnitude larm mtg. In addition, we include a gravity-compensation wrench applied at the platform COM in FB ,
+
+[0 , 0, m tg, 0, 0, 0] ⊤. For each module count from 10 to 100 ,we select 50 non-isomorphic configurations as in [11] and evaluate the solver runtime on an AMD EPYC 7702P proces-sor. Results are shown in Fig. 7, indicating that the proposed method scales to large assemblies. We further observe that for a fixed number of modules the runtime remains in a similar range across different airflow constraint categories. To further evaluate the effectiveness of the proposed airflow constraints, we conduct an ablation study in which the airflow non-overlap constraints are removed from Eq. (4). To avoid physical collisions between modules, we instead impose a minimum separation constraint ∥oi − oj ∥2 =
+
+∥pi − pj ∥2 ≥ r2m. We report three metrics to quantify the severity of airflow interference. First, for each colliding module pair, we report the intersection depth as a percentage of the theoretical maximum possible overlap, 2( rair +∆ rair ).Second, since airflow collisions may involve more than two modules, multiple cone-sphere envelopes can intersect and form a connected collision cluster. We therefore report the distribution of the maximum colliding cluster size over all trials. Third, we quantify how frequently airflow interfer-ence occurs by reporting the distribution of the number of 0
+
+25 
+
+50 
+
+75 
+
+100 Pairwise interference depth (%) 
+
+10 20 30 40 50 60 70 80 90 100 Number of modules n
+
+10 
+
+20 
+
+30 
+
+40 
+
+50 Maximum size of colliding clusters 
+
+040 80 120 160 Number of colliding pairs Fig. 8: Ablation study of optimal configurations obtained without airflow constraints, using three metrics to quantify the severity of airflow interference. colliding module pairs. The results are shown in Fig. 8. We observe that the maximum interference level is frequently reached for different n, although the corresponding distri-butions vary across configurations. Moreover, large collision clusters, often involving approximately n/ 2 modules, occur in many trials. This indicates severe intra-platform aerody-namic interference when airflow constraints are omitted. In addition, the number of colliding pairs increases with n and remains high across different configurations. Since airflow interaction between two quadrotors has been shown to affect the generated thrust and torque [2], these results further motivate future experimental studies on airflow interactions involving multiple quadrotors. V. CONCLUSION In this work, we propose a target-side airflow exposure cat-egorization for aerial manipulation. Building on this catego-rization, we develop an optimization-based design framework that jointly optimizes modular platform reconfiguration, end-effector placement, and both target-side and intra-platform airflow constraints. The resulting approach enables task-adaptive aerial manipulation while accounting for realistic rotor-induced airflow exposure requirements. In future work, we plan to build a physical aerial platform to evaluate the method in real-world experiments. REFERENCES [1] H. Zhong, J. Liang, Y. Chen, H. Zhang, J. Mao, and Y. Wang, “Prototype, modeling, and control of aerial robots with physical interaction: A review,” IEEE Transactions on Automation Science and Engineering , vol. 22, pp. 3528–3542, 2025. [2] A. Kiran, N. Ayanian, and K. Breuer, “Influence of static and dynamic downwash interactions on multi-quadrotor systems,” in Proceedings of Robotics: Science and Systems , Los Angeles, CA, USA, June 2025. [3] A. Nikou, G. C. Gavridis, and K. J. Kyriakopoulos, “Mechanical design, modelling and control of a novel aerial manipulator,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) ,2015, pp. 4698–4703. [4] A. Suarez, F. Real, V. M. Vega, G. Heredia, A. Rodriguez-Casta˜ no, and A. Ollero, “Compliant bimanual aerial manipulation: Standard and long reach configurations,” IEEE Access , vol. 8, pp. 88 844–88 865, 2020. [5] H. Cao, J. Shen, Y. Zhang, Z. Fu, C. Liu, S. Sun, and S. Zhao, “Proximal cooperative aerial manipulation with vertically stacked drones,” Nature , vol. 646, no. 8085, pp. 576–583, 2025. [6] L. Bauersfeld, K. Muller, D. Ziegler, F. Coletti, and D. Scaramuzza, “Robotics meets fluid dynamics: A characterization of the induced airflow below a quadrotor as a turbulent jet,” IEEE Robotics and Automation Letters , vol. 10, no. 2, pp. 1241–1248, 2025. [7] R. Zhang, D. Zhang, and M. W. Mueller, “Proxfly: Robust control for close proximity quadcopter flight via residual reinforcement learning,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) , 2025, pp. 13 683–13 689. [8] J. A. Preiss, W. H¨ onig, N. Ayanian, and G. S. Sukhatme, “Downwash-aware trajectory planning for large quadrotor teams,” in 2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2017, pp. 250–257. [9] M. Hamandi, A. M. Ali, K. Kyriakopoulos, A. Tzes, and F. Khorrami, “An omnidirectional non-tethered aerial prototype with fixed uni-directional thrusters,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) , 2025, pp. 8649–8655. [10] Y. Su, C. Chu, M. Wang, J. Li, L. Yang, Y. Zhu, and H. Liu, “Downwash-aware control allocation for over-actuated UAV plat-forms,” in 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2022, pp. 10 478–10 485. [11] M. Li and H. Koeppl, “Downwash-aware configuration optimization for modular aerial systems,” in 2026 IEEE International Conference on Robotics and Automation (ICRA) , 2026, in press. [12] H.-N. Nguyen, S. Park, J. Park, and D. Lee, “A novel robotic platform for aerial manipulation using quadrotors as rotating thrust generators,” 
+
+IEEE Transactions on Robotics , vol. 34, no. 2, pp. 353–369, 2018. [13] Y. Su, Z. Jiao, Z. Zhang, J. Zhang, H. Li, M. Wang, and H. Liu, “Flight structure optimization of modular reconfigurable UAVs,” in 
+
+2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2024, pp. 4556–4562. [14] B. Gabrich, D. Salda˜ na, and M. Yim, “Finding structure configurations for flying modular robots,” in 2021 IEEE/RSJ International Confer-ence on Intelligent Robots and Systems (IROS) , 2021, pp. 6970–6976. [15] J. Xu and D. Salda˜ na, “Finding optimal modular robots for aerial tasks,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , 2023, pp. 11 922–11 928. [16] M. Hamandi, F. Usai, Q. Sabl´ e, N. Staub, M. Tognon, and A. Franchi, “Design of multirotor aerial vehicles: A taxonomy based on input allocation,” The International Journal of Robotics Research , vol. 40, no. 8-9, pp. 1015–1044, 2021. [17] Y. Yu, K. Wang, X. Meng, J. Du, J. Sun, G. Lai, and Y. Zhang, “Optimal design of integrated aerial platforms with passive joints,” 
+
+IEEE Robotics and Automation Letters , vol. 10, no. 10, pp. 10 538– 10 545, 2025. [18] M. Ryll, G. Muscio, F. Pierri, E. Cataldi, G. Antonelli, F. Caccav-ale, D. Bicego, and A. Franchi, “6D interaction control with aerial robots: The flying end-effector paradigm,” The International Journal of Robotics Research , vol. 38, no. 9, pp. 1045–1062, 2019. [19] R. Veenstra, A. Ali, C. Gabellieri, and A. Franchi, “6d physical interaction with an omnidirectional aerial robot,” Drones , vol. 10, no. 2, 2026. [20] M. Orsag, C. Korpela, S. Bogdan, and P. Oh, “Dexterous aerial robots—mobile manipulation using unmanned aerial systems,” IEEE Transactions on Robotics , vol. 33, no. 6, pp. 1453–1466, 2017. [21] Y. S. Sarkisov, M. J. Kim, D. Bicego, D. Tsetserukou, C. Ott, A. Franchi, and K. Kondak, “Development of SAM: cable-suspended aerial manipulator,” in 2019 International Conference on Robotics and Automation (ICRA) , 2019, pp. 5323–5329. [22] H. Das, G. Zambella, and C. Ott, “Whole-body stabilization of a cable-suspended multirotor platform carrying a slung load,” IEEE Transactions on Automation Science and Engineering , vol. 22, pp. 22 337–22 355, 2025. [23] J. Nocedal and S. J. Wright, Numerical optimization . New York, NY: Springer New York, 2006. [24] A. W¨ achter and L. T. Biegler, “On the implementation of an interior-point filter line-search algorithm for large-scale nonlinear program-ming,” Mathematical programming , vol. 106, no. 1, pp. 25–57, 2006. [25] J. A. Andersson, J. Gillis, G. Horn, J. B. Rawlings, and M. Diehl, “CasADi: a software framework for nonlinear optimization and opti-mal control,” Mathematical Programming Computation , vol. 11, no. 1, pp. 1–36, 2019.

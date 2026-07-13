@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-13T21:28:01.322918+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.09548v1",
+      "source": "arxiv",
+      "title": "Task-Adaptive Design of Modular Aerial Manipulators Under Airflow Exposure Constraints",
+      "abstract": "Aerial manipulation with multirotor platforms enables physical interaction in complex environments, but rotor-induced airflow remains a critical limitation for tasks involving airflow-sensitive targets or surroundings. This paper presents an optimization-based design framework for modular aerial manipulators that jointly considers task wrench feasibility, end-effector placement, and airflow exposure constraints. We first introduce a novel categorization of target-side airflow tolerance and formulate the corresponding exposure requirements as geometric constraints. To efficiently model rotor-induced airflow, we introduce a compact cone-sphere envelope that approximates the spreading structure of a quadrotor's airflow while preserving computational tractability for optimization. Building on this formulation, we propose a reconfiguration optimization that adapts a modular aerial manipulator to diverse task wrench requirements while enforcing both target-side airflow exposure and intra-platform airflow interference constraints. Unlike prior designs that assume a fixed end-effector location, the proposed framework optimizes the end-effector placement together with the platform configuration. Scalability experiments and ablation studies validate the effectiveness of the proposed framework.",
+      "authors": [
+        "Mengguang Li",
+        "Heinz Koeppl"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-10T15:58:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.09548v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "aerial manipulator design and airflow constraints",
+      "llm_evidence_cn": "空中机械臂设计与气流约束",
+      "llm_evidence": "空中机械臂设计与气流约束",
+      "canonical_evidence": "空中机械臂设计与气流约束",
+      "llm_tldr_en": "This paper presents an optimization-based design framework for modular aerial manipulators that considers task wrench feasibility, end-effector placement, and airflow exposure constraints, using a cone-sphere envelope to model rotor-induced airflow.",
+      "llm_tldr_cn": "空中机械臂在多旋翼平台上实现物理交互，但旋翼气流限制了其在敏感环境中的应用。本文提出了一种优化设计框架，同时考虑任务力可行性、末端执行器位置和气流暴露约束，采用锥球包络模型近似四旋翼气流分布。该方法为模块化空中机械臂提供任务自适应设计。实验验证了框架的有效性，表明能够满足不同气流耐受等级的应用需求。该工作对空中操纵的实际部署有重要意义。",
+      "llm_tldr": "空中机械臂在多旋翼平台上实现物理交互，但旋翼气流限制了其在敏感环境中的应用。本文提出了一种优化设计框架，同时考虑任务力可行性、末端执行器位置和气流暴露约束，采用锥球包络模型近似四旋翼气流分布。该方法为模块化空中机械臂提供任务自适应设计。实验验证了框架的有效性，表明能够满足不同气流耐受等级的应用需求。该工作对空中操纵的实际部署有重要意义。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.05939v1",
+      "source": "arxiv",
+      "title": "Intercepting an Agile Target with Net-Carrying Drones using Competitive Multi-Agent Reinforcement Learning",
+      "abstract": "This article presents a solution to intercept an agile drone by a team of agile drone carrying catching nets. We formulate the problem as a competitive Multi-Agent Reinforcement Learning (MARL) task. To address the problem of nonstationarity and catastrophic forgetting of agents overfitting to the current opponent strategy, we train the pursuers and the evader using Multi-Agent Proximal Policy Optimization (MAPPO) with Prioritized Fictitious Self Play (PFSP). We train the agents in a high-fidelity simulator using low-level control commands, collective thrust and body rates (CTBR), to achieve agile flights for both the pursuers and the evader. We compare the performance of the trained policies in terms of catch rate, time to catch and crash rates, against heuristic baselines and show that our solution outperforms them. Ablation studies show that PFSP lead to more robust policies that can adapt to different opponent strategies, and that a low-level control commands are crucial for learning performing strategies in the pursuit-evasion task. Finally, a qualitative analysis of the learned behaviours highlights the emergence of cooperative tactics among the pursuers.",
+      "authors": [
+        "Timothée Gavin",
+        "Murat Bronz"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-07T07:41:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.05939v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-agent RL for intercepting agile drones with net-carrying drones",
+      "llm_evidence_cn": "多智能体强化学习用于携带网兜的无人机拦截敏捷目标",
+      "llm_evidence": "多智能体强化学习用于携带网兜的无人机拦截敏捷目标",
+      "canonical_evidence": "多智能体强化学习用于携带网兜的无人机拦截敏捷目标",
+      "llm_tldr_en": "Uses competitive multi-agent reinforcement learning (MAPPO with PFSP) to train pursuer drones carrying nets to intercept an agile evader drone, achieving high catch rate in simulation.",
+      "llm_tldr_cn": "本文针对用携带网兜的无人机拦截敏捷目标的问题，采用竞争性多智能体强化学习方法（MAPPO+优先虚构自对弈），在低层控制命令下训练无人机实现敏捷飞行。仿真实验展示了较高的捕获率，证明了方法的有效性，为空中物理交互提供了新范式。",
+      "llm_tldr": "本文针对用携带网兜的无人机拦截敏捷目标的问题，采用竞争性多智能体强化学习方法（MAPPO+优先虚构自对弈），在低层控制命令下训练无人机实现敏捷飞行。仿真实验展示了较高的捕获率，证明了方法的有效性，为空中物理交互提供了新范式。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulation using reinforcement learning",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
