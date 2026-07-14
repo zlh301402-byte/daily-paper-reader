@@ -1,0 +1,392 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-14T21:39:12.334760+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.09042v1",
+      "source": "arxiv",
+      "title": "Learning More from Less: Reinforcement Learning from Hindsight",
+      "abstract": "Reinforcement learning (RL) is increasingly used to post-train vision-language-action (VLA) models, but every update consumes robot rollouts that are slow and costly to collect, making sample efficiency a central concern. Manipulation tasks typically provide only sparse rewards, so a weak policy fails almost every rollout early in training and has little to learn from, even when those failures execute coherent behavior. Such a failure, however, is a success at a different task. We present Learning from Hindsight (LfH), which brings hindsight relabeling to RL post-training of VLAs by scoring failed rollouts against the tasks they actually achieved. A single vision-language model relabels both the instruction and the reward, proposing a hindsight instruction for a group of failed rollouts and scoring how well each satisfies it, and the policy trains on the relabeled and original rollouts jointly. Because VLAs generalize across language, relabeling in language lets the policy learn more from the same trajectories. On out-of-distribution LIBERO-PRO tasks, where standard RL improves only slowly, LfH achieves $5\\times$ improvement in sample efficiency, and outperforms a dense progress-reward baseline. The gains hold across VLA backbones and on a physical Franka robot.",
+      "authors": [
+        "Iris Xu",
+        "Sunshine Jiang",
+        "John Marangola",
+        "Nitish Dashora",
+        "Richard Li",
+        "Thomas Liu",
+        "Zexue He",
+        "Yuheng Zhi",
+        "Alex Pentland",
+        "Pulkit Agrawal",
+        "Zhang-Wei Hong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-10T02:17:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.09042v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL for manipulation tasks, matches requirement 1",
+      "llm_evidence_cn": "强化学习用于操作任务，符合需求1",
+      "llm_evidence": "强化学习用于操作任务，符合需求1",
+      "canonical_evidence": "强化学习用于操作任务，符合需求1",
+      "llm_tldr_en": "Proposes Learning from Hindsight (LfH) which applies hindsight relabeling to RL post-training of VLA models, improving sample efficiency in manipulation tasks.",
+      "llm_tldr_cn": "针对视觉-语言-动作（VLA）模型在操作任务中强化学习样本效率低的问题，提出Learning from Hindsight（LfH）方法，通过对失败轨迹进行事后重新标记，将失败视为其他任务的成功，从而有效利用失败数据。实验表明该方法显著提高了样本效率和任务成功率，为强化学习在机器人操作中的应用提供了新的思路。",
+      "llm_tldr": "针对视觉-语言-动作（VLA）模型在操作任务中强化学习样本效率低的问题，提出Learning from Hindsight（LfH）方法，通过对失败轨迹进行事后重新标记，将失败视为其他任务的成功，从而有效利用失败数据。实验表明该方法显著提高了样本效率和任务成功率，为强化学习在机器人操作中的应用提供了新的思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10892v1",
+      "source": "arxiv",
+      "title": "A Single Diffusion-Policy Controller for Multi-Task Block Pushing with Zero-Shot Sim-to-Real Transfer",
+      "abstract": "Diffusion policies have shown promising empirical performance in representing and learning complex maneuvers for robots using behavior cloning (BC). In this paper, we explore training diffusion policies from scratch using reinforcement learning (RL) for multi-task robotic manipulation. Specifically, we aim to train a single diffusion policy for block-pushing tasks with multiple shapes. The proposed framework features a simple policy loss function, which is a reweighted evidence lower bound used in BC-based diffusion policy training and can seamlessly serve as the policy learning module in RL algorithms. To address the exploration challenges arising from the absence of demonstrations, we incorporate reverse curriculum generation and objective-centric representations. Combined with the expressiveness of diffusion policies, our design supports learning of multi-task block-pushing policies in our sparse-reward simulation setting. We further evaluate whether the trained diffusion policy transfers in zero-shot to real-world tasks under varying environmental conditions including goal positions, block shapes, block weights and surface friction, providing evidence that this pipeline can transfer to our real-world block-pushing setup under the tested variations.",
+      "authors": [
+        "Haitong Ma",
+        "Haldun Balim",
+        "Yang Hu",
+        "Bo Dai",
+        "Na Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-12T19:48:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.10892v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL-trained diffusion policy for multi-task robot manipulation",
+      "llm_evidence_cn": "强化学习训练的扩散策略用于多任务机器人操作",
+      "llm_evidence": "强化学习训练的扩散策略用于多任务机器人操作",
+      "canonical_evidence": "强化学习训练的扩散策略用于多任务机器人操作",
+      "llm_tldr_en": "Trains a single diffusion policy via RL for multi-task block pushing, achieving zero-shot sim-to-real transfer.",
+      "llm_tldr_cn": "针对多任务机器人操作，提出利用强化学习从头训练单一扩散策略的方法，采用重加权证据下界作为策略损失函数，并结合逆课程生成实现无演示探索，在积木推动任务上实现零样本仿真到现实迁移。",
+      "llm_tldr": "针对多任务机器人操作，提出利用强化学习从头训练单一扩散策略的方法，采用重加权证据下界作为策略损失函数，并结合逆课程生成实现无演示探索，在积木推动任务上实现零样本仿真到现实迁移。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.06388v1",
+      "source": "arxiv",
+      "title": "Learning to Throw Objects Safely in Multi-Obstacle Environments",
+      "abstract": "Robotic throwing enables fast and efficient object placement beyond the robot's immediate workspace, but reliable throwing in cluttered environments remains underexplored. Existing approaches, such as TossingBot, learn throwing strategies from visual input but assume obstacle-free settings. In this paper, we address the problem of throwing objects into a target basket while avoiding obstacles placed randomly in the scene. We introduce a potential field state representation that compactly encodes both basket attraction and obstacle repulsion on a fixed-size grid, enabling reinforcement learning (RL) policies to generalize across arbitrary numbers and configurations of obstacles. The policy is initialized from kinesthetic demonstrations and optimized in simulation using three state-of-the-art RL algorithms (SAC, DDPG, TD3). Among these, SAC achieves the most consistent performance across scenarios. We compare the potential field representation against explicit state encodings and demonstrate that it achieves higher success rates and better scalability to unseen obstacle configurations. Real-robot experiments with unseen throwable objects confirm robust sim-to-real transfer, achieving up to $90\\%$ success in cluttered scenes. These results demonstrate that PFR provides a practical and robust representation for safe and efficient robotic throwing in unstructured environments. A video showcasing our experiments is available at: https://youtu.be/ZZnJf8ua2dE",
+      "authors": [
+        "Mohammadreza Kasaei",
+        "Klemen Voncina",
+        "Hamidreza Kasaei"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-07T15:24:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.06388v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL for robotic throwing with obstacle avoidance",
+      "llm_evidence_cn": "强化学习用于机器人投掷物体并避开障碍物",
+      "llm_evidence": "强化学习用于机器人投掷物体并避开障碍物",
+      "canonical_evidence": "强化学习用于机器人投掷物体并避开障碍物",
+      "llm_tldr_en": "Proposes RL policy with potential field representation for safe throwing in cluttered environments.",
+      "llm_tldr_cn": "针对杂乱环境下的机器人投掷任务，提出一种基于势场状态表示的强化学习方法，将吸引力和排斥力编码为固定大小网格，使策略能够泛化至任意障碍物配置，通过演示初始化并仿真优化实现了安全投掷。",
+      "llm_tldr": "针对杂乱环境下的机器人投掷任务，提出一种基于势场状态表示的强化学习方法，将吸引力和排斥力编码为固定大小网格，使策略能够泛化至任意障碍物配置，通过演示初始化并仿真优化实现了安全投掷。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.09336v1",
+      "source": "arxiv",
+      "title": "Shortcut Trajectory Planning for Efficient Offline Reinforcement Learning",
+      "abstract": "Diffusion-based trajectory planners have shown strong performance in offline reinforcement learning, but their iterative denoising process often incurs high inference cost. Consistency-based planners reduce the number of sampling steps, yet they typically rely on a two-stage teacher--student distillation pipeline that increases training cost and may introduce instability. We propose Shortcut Trajectory Planning (STP), an offline model-based reinforcement learning framework that incorporates shortcut models as efficient trajectory generators. STP trains a conditional shortcut trajectory model in a single stage, supports adjustable one-step and few-step inference through step-size conditioning, and selects candidate plans using a critic augmented with feasibility-aware correction. Across standard D4RL benchmarks, including locomotion, navigation, manipulation, and dexterous control tasks, STP achieves strong performance while simplifying the training pipeline for fast generative planning.",
+      "authors": [
+        "Guanquan Wang",
+        "Yoshimasa Tsuruoka"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-07-10T12:17:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.09336v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "offline reinforcement learning trajectory planning method potentially applicable to drone manipulator control",
+      "llm_evidence_cn": "离线强化学习轨迹规划方法，可潜在适用于无人机机械臂控制",
+      "llm_evidence": "离线强化学习轨迹规划方法，可潜在适用于无人机机械臂控制",
+      "canonical_evidence": "离线强化学习轨迹规划方法，可潜在适用于无人机机械臂控制",
+      "llm_tldr_en": "Shortcut Trajectory Planning (STP) is an offline model-based RL framework with a single-stage trained shortcut model for efficient one-step/few-step trajectory generation, reducing inference and training cost while maintaining performance.",
+      "llm_tldr_cn": "针对离线强化学习中轨迹规划的计算成本高或训练不稳定的问题，本文提出Shortcut Trajectory Planning (STP)框架，通过单阶段训练的条件捷径轨迹模型实现高效规划，支持可调节的一步和少步推理，并使用评论家筛选候选轨迹。实验表明，STP在多个离线RL基准任务上显著降低了推理和训练开销，同时保持了竞争力。该方法可作为通用轨迹规划器，有望应用于机器人操作和无人机机械臂控制等场景。",
+      "llm_tldr": "针对离线强化学习中轨迹规划的计算成本高或训练不稳定的问题，本文提出Shortcut Trajectory Planning (STP)框架，通过单阶段训练的条件捷径轨迹模型实现高效规划，支持可调节的一步和少步推理，并使用评论家筛选候选轨迹。实验表明，STP在多个离线RL基准任务上显著降低了推理和训练开销，同时保持了竞争力。该方法可作为通用轨迹规划器，有望应用于机器人操作和无人机机械臂控制等场景。",
+      "llm_tags": [
+        "query:drone-arm:composite"
+      ],
+      "matched_query_tag": "query:drone-arm:composite",
+      "matched_query_text": "Papers central to 强化学习与无人机机械臂、过驱动无人机与机械臂相关论文, especially work that connects or combines: reinforcement learning for robot arm control; unmanned aerial vehicle with robotic arm; aerial manipulation using reinforcement learning; deep reinforcement learning for aerial manipulation; aerial manipulator dynamics and control; over-actuated drone control with manipulator; reinforcement learning for overactuated UAV manipulator; reinforcement learning for drone manipulator control; over actuated drones with robotic arms research; aerial manipulation using deep reinforcement learning methods.",
+      "matched_requirement_id": "req-composite-drone-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.09866v1",
+      "source": "arxiv",
+      "title": "Robo-ValueRL: Reliable Value Estimation for Offline-to-Online Reinforcement Learning",
+      "abstract": "Offline-to-online reinforcement learning is promising for generalizable robotic manipulation, yet its full-stack complexity obscures reproduction and diagnosis. Within such systems, value estimation plays a central role in prioritizing heterogeneous data for policy improvement. Despite its importance, the central question remains underexplored: how value-function reliability shapes policy optimization in offline-to-online reinforcement learning. To answer this question, we propose Robo-ValueRL, a unified framework that enables reliable value estimation and systematically traces its downstream effects on policy pretraining and online improvement. Concretely, Robo-ValueRL learns a history-conditioned value estimator and evaluates its reliability through global-progress and local-preference metrics. These resulting value estimates are propagated into quality-conditioned consistency-policy pretraining and a residual adaptation module on online rollouts, providing a unified testbed for analyzing how value reliability shapes downstream policy performance. Across 240 hours of offline demonstrations and over 3,000 online rollout trajectories, our extensive experiments show that downstream performance is strongly associated with value reliability. Reliable value functions provide better action-quality estimates, allowing value-guided offline RL to scale more effectively than quality-agnostic behavior cloning, and stabilize online improvement by prioritizing high-quality rollout data. Integrating reliable value guidance through offline pretraining with online improvement, our system achieves 86% success on millimeter-level precise chip insertion and 84% on generalizable block disassembly. We hope these findings highlight the importance of value-guided data utilization for effective policy improvement from heterogeneous robotic experience.",
+      "authors": [
+        "Wenke Xia",
+        "Pei Ren",
+        "Wenbo Yu",
+        "Yizhuo Zhang",
+        "Jifan Li",
+        "Yixue Zhang",
+        "Yinuo Zhao",
+        "Qingyang Gao",
+        "Jianlong Fu",
+        "Jian Tang",
+        "Ji-Rong Wen",
+        "Zhengping Che",
+        "Di Hu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-10T18:01:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.09866v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL for generalizable robotic manipulation",
+      "llm_evidence_cn": "强化学习用于通用机器人操作",
+      "llm_evidence": "强化学习用于通用机器人操作",
+      "canonical_evidence": "强化学习用于通用机器人操作",
+      "llm_tldr_en": "Proposes Robo-ValueRL for reliable value estimation in offline-to-online RL for robotic manipulation.",
+      "llm_tldr_cn": "针对离线到在线强化学习中的价值估计可靠性问题，提出Robo-ValueRL框架，通过历史条件价值估计器提升策略预训练和在线改进效果，实验验证了其有效性，为通用机器人操作提供了可靠的价值学习方案。",
+      "llm_tldr": "针对离线到在线强化学习中的价值估计可靠性问题，提出Robo-ValueRL框架，通过历史条件价值估计器提升策略预训练和在线改进效果，实验验证了其有效性，为通用机器人操作提供了可靠的价值学习方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.09590v1",
+      "source": "arxiv",
+      "title": "PAC-ACT: Post-training Actor-Critic for Action Chunking Transformers",
+      "abstract": "Precision industrial contact manipulation requires reliable robot policies under pose perturbations and contact-force constraints. Vision-language-action models offer broad generalization but often introduce high inference latency and GPU-memory cost, while vision-action chunking policies are more suitable for real-time industrial control. However, these policies are usually trained by behavior cloning and suffer from distribution shift in contact-rich tasks. This paper proposes PAC-ACT, a reinforcement-learning post-training framework for pretrained Action Chunking Transformer policies. PAC-ACT reformulates policy optimization at the chunk level, constructs an ACT-transferred actor-critic architecture, and introduces a hybrid behavior-prior constraint to preserve the pretrained action distribution during online fine-tuning. Experiments on industrial precision-contact benchmarks show that PAC-ACT improves task success, contact stability, and force safety while retaining low latency and low GPU-memory usage. On the Contour task, PAC-ACT significantly reduces peak contact force and decreases the proportion of force readings above 60 N by 46 times. Sparse-reward ablations further show that the proposed behavior-prior constraint enables effective exploration under randomized initial poses.",
+      "authors": [
+        "Yujie Pang",
+        "Zudong Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-10T16:42:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.09590v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL post-training for action chunking transformer policies in contact-rich tasks, relevant to robot arm control",
+      "llm_evidence_cn": "针对接触丰富任务的行动分块变换器策略的强化学习后训练，适用于机械臂控制",
+      "llm_evidence": "针对接触丰富任务的行动分块变换器策略的强化学习后训练，适用于机械臂控制",
+      "canonical_evidence": "针对接触丰富任务的行动分块变换器策略的强化学习后训练，适用于机械臂控制",
+      "llm_tldr_en": "Proposes PAC-ACT, a reinforcement-learning post-training framework for pretrained Action Chunking Transformer policies to address distribution shift in contact-rich industrial manipulation.",
+      "llm_tldr_cn": "本文针对工业接触操纵中行为克隆训练的策略易受分布偏移影响的问题，提出PAC-ACT框架。该框架在分块级别重新定义策略优化，构建ACT迁移的演员-评论家架构，并引入混合行为先验约束。实验证明PAC-ACT能有效提升策略在接触任务中的鲁棒性与准确性，适用于精密工业操纵。",
+      "llm_tldr": "本文针对工业接触操纵中行为克隆训练的策略易受分布偏移影响的问题，提出PAC-ACT框架。该框架在分块级别重新定义策略优化，构建ACT迁移的演员-评论家架构，并引入混合行为先验约束。实验证明PAC-ACT能有效提升策略在接触任务中的鲁棒性与准确性，适用于精密工业操纵。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10132v1",
+      "source": "arxiv",
+      "title": "TAC-LOCO: Unified Whole-Body Control for Quadrupedal TACtile-Informed LOCO-Manipulation",
+      "abstract": "Dynamic loco-manipulation requires legged robots to coordinate whole-body motion while maintaining stable physical interaction with grasped objects under uncertain external forces. While tactile sensing has been widely studied for robotic manipulation, its role in dynamic whole-body control remains largely unexplored. Existing works without tactile feedback commonly grasp firmly rather than regulate the grasp according to the interaction. We propose TAC-LOCO, a tactile-augmented unified reinforcement learning framework that encodes tactile array observations from compliant grippers into a compact latent representation and joins it with proprioception for unified control of the legs, arm, and gripper. With effective grasp stability reward design, the policy learns to simultaneously track body velocity and end-effector trajectories, moderate grasp force, and prevent object slip under both gradual load changes and sudden release events. We deploy the policy zero-shot on a Unitree Go2 with an Interbotix WidowX 250 arm and tactile gripper, demonstrating dynamic tactile-informed loco-manipulation under varying external interactions, achieving a 47% reduction in grasping force and an object drop rate of less than 1%.",
+      "authors": [
+        "Muqun Hu",
+        "Yuhao Zhou",
+        "Kabir Ray Malik",
+        "Chi Lin",
+        "Won Suk Lee",
+        "Yu She",
+        "Yan Gu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-11T05:45:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.10132v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL framework for unified arm and gripper control, matches requirement 1",
+      "llm_evidence_cn": "统一控制手臂和夹爪的强化学习框架，符合需求1",
+      "llm_evidence": "统一控制手臂和夹爪的强化学习框架，符合需求1",
+      "canonical_evidence": "统一控制手臂和夹爪的强化学习框架，符合需求1",
+      "llm_tldr_en": "TAC-LOCO proposes a tactile-augmented RL framework for unified whole-body control of quadrupeds including arm and gripper, using latent tactile representations and grasp stability rewards.",
+      "llm_tldr_cn": "针对四足机器人动态操作中需要协调全身运动并保持抓取稳定性的问题，提出TAC-LOCO框架，通过触觉增强的强化学习将触觉阵列观测编码为紧凑隐变量，与本体感受联合控制腿部、手臂和夹爪。实验证明该方法显著提高了操作稳定性和适应性，为具身智能体的统一控制提供了新方案。",
+      "llm_tldr": "针对四足机器人动态操作中需要协调全身运动并保持抓取稳定性的问题，提出TAC-LOCO框架，通过触觉增强的强化学习将触觉阵列观测编码为紧凑隐变量，与本体感受联合控制腿部、手臂和夹爪。实验证明该方法显著提高了操作稳定性和适应性，为具身智能体的统一控制提供了新方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11041v1",
+      "source": "arxiv",
+      "title": "PAKE: Learning Whole-Body Loco-Manipulation with Partial Kinematic Embeddings",
+      "abstract": "Loco-manipulation has recently shown promising capabilities; however, achieving high-precision control, managing the high-dimensional action space induced by many degrees of freedom (DoFs), and fully exploiting the inherent redundancy of whole-body systems remain challenging. In this paper, we propose a novel whole-body control framework that effectively addresses these challenges by decomposing the complex loco-manipulation problem into partial reference motion generation and low-level imitation control. We introduce a new Kinematic Normalizing Flow (KNF) model, trained on a large-scale kinematic dataset, that generates diverse yet feasible partial reference motions. A high-level controller is then trained to navigate the KNF's latent space to exploit redundant solutions, while a low-level controller ensures physically feasible and accurate motion execution. We validate our approach on the quadrupedal robot equipped with a six-DoF robotic arm. In simulation, experimental results show that our approach significantly outperforms state-of-the-art methods in terms of tracking accuracy and feasible workspace coverage. For hardware deployment, we evaluate the system over 24 episodes across 8 different mobile loco-manipulation tasks. The system achieves end-effector pose-tracking errors of 4.5 cm and 0.14 rad, while maintaining accurate locomotion tracking with linear and angular velocity errors of 0.1 m/s and 0.01 rad/s, respectively, outperforming competitive baselines. Our method represents a practical and powerful solution for accurate and generalized whole-body loco-manipulation in high-DoF robotic systems, with promising potential for diverse downstream robotic tasks.",
+      "authors": [
+        "Zhengmao He",
+        "Moonkyu Jung",
+        "Hyeongjun Kim",
+        "Jiseong Lee",
+        "Hui Zhang",
+        "Jemin Hwangbo",
+        "Jie Song"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-13T03:12:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.11041v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Whole-body control with RL for manipulation",
+      "llm_evidence_cn": "全身控制结合强化学习进行操作",
+      "llm_evidence": "全身控制结合强化学习进行操作",
+      "canonical_evidence": "全身控制结合强化学习进行操作",
+      "llm_tldr_en": "PAKE decomposes whole-body loco-manipulation into partial motion generation and imitation control using Kinematic Normalizing Flow, enabling high-precision control.",
+      "llm_tldr_cn": "针对全身移动操作面临的精确控制和维度灾难问题，本文提出PAKE框架，通过运动学归一化流生成多样化可用的部分参考运动，并训练高层控制器在潜空间中导航以实现底层模仿控制。该方法有效利用了系统冗余，在多种操作任务上实现了高精度控制，为复杂机器人系统控制提供了新思路。",
+      "llm_tldr": "针对全身移动操作面临的精确控制和维度灾难问题，本文提出PAKE框架，通过运动学归一化流生成多样化可用的部分参考运动，并训练高层控制器在潜空间中导航以实现底层模仿控制。该方法有效利用了系统冗余，在多种操作任务上实现了高精度控制，为复杂机器人系统控制提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10369v1",
+      "source": "arxiv",
+      "title": "VINE: Taming Generative Control Policies for Reinforcement Learning",
+      "abstract": "Flow-matching policies have emerged as an effective policy parameterization for robot learning. They iteratively generate actions from noise, enabling highly expressive modeling of complex and multimodal action distributions. However, prior works observed that scaling these policies with value-gradient reinforcement learning (RL) often leads to training instability. Existing methods attribute this instability to iterative generation and therefore avoid end-to-end value-gradient optimization by sacrificing iterative generation, high expressiveness, or value-gradient optimization. Contrary to prior belief, we show the instability does not stem from iterative generation itself, but from the vanilla sampling strategy originally designed for behavior cloning, which becomes brittle under value-gradient RL. Motivated by this insight, we propose VINE, an RL-oriented sampling method that enables stable end-to-end value-gradient optimization for flow-matching policies. Instead of following a single flow trajectory, VINE reconstructs a new interpolation state at every denoising step, creating a stable differentiable path for value-gradient propagation while remaining compatible with the original flow-matching denoising process. As a result, VINE preserves the expressiveness and iterative generation of flow-matching without sacrificing end-to-end value-gradient optimization. Despite performing end-to-end backpropagation through all ten denoising steps, VINE achieves stable policy improvement and consistently outperforms state-of-the-art RL methods on the OGBench offline RL benchmark and real-world robotic manipulation task. Videos are available on our website: https://agibottech.github.io/vine.",
+      "authors": [
+        "Rushuai Yang",
+        "Zhuo Han",
+        "Houlin Li",
+        "Hecheng Wang",
+        "Zhichao Wu",
+        "Rui Zhang",
+        "Zhaowei Zhang",
+        "Zihong Chen",
+        "Xiaohan Yan",
+        "Chiming Liu",
+        "Yi Chen",
+        "Wei Shan",
+        "Maoqing Yao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-11T15:45:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.10369v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "improves RL training of flow-matching policies for robot learning",
+      "llm_evidence_cn": "改进了强化学习训练流匹配策略的方法，适用于机器人学习",
+      "llm_evidence": "改进了强化学习训练流匹配策略的方法，适用于机器人学习",
+      "canonical_evidence": "改进了强化学习训练流匹配策略的方法，适用于机器人学习",
+      "llm_tldr_en": "Shows instability in RL training of generative policies is due to sampling strategy, proposes VINE to enable stable end-to-end value-gradient optimization.",
+      "llm_tldr_cn": "针对流匹配策略在强化学习中的训练不稳定问题，发现根源在于采样策略而非迭代生成，提出VINE方法实现端到端值梯度优化，在机器人学习任务上验证了稳定性和高性能。",
+      "llm_tldr": "针对流匹配策略在强化学习中的训练不稳定问题，发现根源在于采样策略而非迭代生成，提出VINE方法实现端到端值梯度优化，在机器人学习任务上验证了稳定性和高性能。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
