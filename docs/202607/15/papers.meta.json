@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-15",
+  "date": "2026-07-15",
+  "generated_at": "2026-07-15T21:31:45",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/15/2607.12924v1-knowledge--and-gradient-guided-reinforcement-learning-for-parametrized-action-markov-decision-processes",
+      "section": "quick",
+      "title_en": "Knowledge- and Gradient-Guided Reinforcement Learning for Parametrized Action Markov Decision Processes",
+      "authors": "Jonas Ehrhardt, René Heesch, Oliver Niggemann",
+      "date": "2026-07-14",
+      "pdf": "https://arxiv.org/pdf/2607.12924v1",
+      "score": "7.0",
+      "evidence": "参数化动作强化学习可用于机器人臂控制",
+      "tldr": "在参数化动作马尔可夫决策过程（PAMDP）中，强化学习面临样本效率低下的问题，因为现有方法通常采用单步估计参数。KGRL算法创新性地利用Datalog知识库推导出当前状态下的可行动作和参数范围，从而剪枝动作空间并约束参数。通过梯度引导的参数优化循环，KGRL在训练和部署中估计最优参数，并记录激活规则提供局部解释。在多个PAMDP环境上，KGRL在样本效率和回合回报上均超越当前基线，显著提升了学习效率。",
+      "tags": "query:drone-arm",
+      "abstract_en": "In this paper, we study Reinforcement Learning in Parametrized Action Markov Decision Processes (PAMDP), where each decision consists of a symbolic action and numerical parameters. In such settings Reinforcement Learning algorithms typically determine parameters with one-shot estimators, which makes their training sample inefficient. Though in most PAMDP environments explicit but incomplete knowledge (e.g., rules, safety constraints, or expert heuristics) is available, it is rarely directly used to increase the sample-efficiency of training Reinforcement Learning agents. We step into this gap and propose our novel Neuro-Symbolic Knowledge- and Gradient-Guided Reinforcement Learning (KGRL) algorithm. KGRL uses domain knowledge in a Datalog knowledge base to derive the set of applicable actions and feasible parameters for a given state. This allows it to prune non-applicable actions from the decision-space and constrain the parameter spaces of the remaining actions. We then use a gradient-based parameter refinement loop to estimate the optimal parameters during training and deployment of the agent. By recording activated rules along the trajectory, KGRL additionally provides local procedural explanations on the pruning of actions and constraining of parameters. Overall, KGRL guides the agent's exploration and deployment toward feasible and constraint-aware decisions, while increasing sample efficiency during training. KGRL outperforms state-of-the-art RL baselines for PAMDPs in both, sample efficiency and episodic return.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.10706v1-action-map-policy-learning-3d-closed-loop-manipulation-via-pixel-classification",
+      "section": "quick",
+      "title_en": "Action Map Policy: Learning 3D Closed-loop Manipulation via Pixel Classification",
+      "authors": "Haojie Huang, Zhang Ye, Linfeng Zhao, Boce Hu, Mingxi Jia, Yu Qi, Ahmed Agha, Dian Wang, Robert Platt, Robin Walters",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10706v1",
+      "score": "6.0",
+      "evidence": "基于像素分类的3D操作策略学习方法",
+      "tldr": "机器人学习面临动作空间高维、长时域和多模态优化等挑战。现有方法在动作表示与损失函数间存在权衡。本文提出Action Map Policy (AMP)，将3D闭环操作策略学习转化为图像空间的分类问题。通过将3D动作投影到相机图像平面，将每个像素位置作为离散类别，在控制维度爆炸的同时保持多模态能力，并支持毫米级精度。AMP可单次前向传播预测整个动作块，无需复杂噪声调度和迭代去噪，推理速度显著快于扩散策略。在多种操作任务中，AMP取得了更高成功率、更快推理速度和更强空间推理能力。",
+      "tags": "query:drone-arm",
+      "abstract_en": "The action space poses a major challenge in robot learning, since it is often high-dimensional, can span long time horizons, and frequently admits multi-modal optimal solutions. A good choice of action representation and loss function can help to address these concerns, but there are often trade offs. We propose Action Map Policy (AMP), which casts 3D closed-loop manipulation policy learning as a classification problem in image space. While classification has been an effective formulation in generative language models, applying it to robot action learning is difficult because naively discretizing high-dimensional continuous actions explodes the token vocabulary. Our key idea is to project 3D actions onto the camera image planes and treat each pixel location as a discrete class, thus controlling dimensionality while retaining multi-modality. This method supports millimeter-level precision for high-dimensional actions without requiring a prohibitively large vocabulary, while preserving fine-grained pixel-wise visual signals. Furthermore, it can predict the entire action chunk in a single forward pass, avoiding complex noise scheduling and iterative denoising while achieving substantially faster inference than diffusion policies. Experiments on various manipulation tasks show that AMP outperforms strong baselines, achieving higher success rates, faster inference, and enhanced spatial reasoning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.11874v1-a-minimalist-retargeting-guided-reinforcement-learning-recipe-for-dexterous-manipulation",
+      "section": "quick",
+      "title_en": "A Minimalist Retargeting-Guided Reinforcement Learning Recipe for Dexterous Manipulation",
+      "authors": "Yunhai Feng, Natalie Leung, Jiaxuan Wang, Lujie Yang, Haozhi Qi, Preston Culbertson",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11874v1",
+      "score": "6.0",
+      "evidence": "重定向引导的强化学习用于灵巧操作",
+      "tldr": "灵巧操作通常需要复杂接触动力学和接触模态调控。本文提出REGRIND，一种极简的重定向引导强化学习方案，仅需单个人类演示即可学习灵巧操作策略。该方法通过重定向保留手-物空间接触关系，训练残差RL策略跟踪物体关键点，并经过系统辨识实现零样本迁移到真实双手。在剪刀和螺丝刀等接触密集任务中产生流畅类人行为，揭示了仿真到现实迁移的关键因素。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Recent work in humanoid whole-body control has found success with a simple recipe: retarget human motion to robot kinematic references, then train policies via reinforcement learning (RL) to track them. But how does this recipe transfer to dexterous manipulation? The answer is not obvious, as manipulation involves complex, contact-rich dynamics and requires delicate regulation of contact modes and forces. We present REGRIND, a minimalist retargeting-guided RL pipeline that learns dexterous manipulation policies from a single human demonstration. REGRIND retargets human hand-object motion to a robot reference that preserves hand-object spatial and contact relationships, trains a residual RL policy in simulation to track object-centric keypoints along that reference, and transfers the resulting policy zero-shot to hardware with careful system identification. The resulting policies produce fluid, human-like behavior on two different multi-fingered hands across contact-rich tool-use tasks, including operating a pair of scissors and turning a screwdriver. Through systematic hardware experiments, we identify and analyze the key factors that govern sim-to-real transfer in dexterous manipulation, offering practical guidance for retargeting-based learning in contact-rich settings. Videos and code are available at https://yunhaifeng.com/REGRIND.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
