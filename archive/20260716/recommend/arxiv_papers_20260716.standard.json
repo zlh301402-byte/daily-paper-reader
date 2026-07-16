@@ -1,0 +1,261 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T19:58:28.362898+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.12931v1",
+      "source": "arxiv",
+      "title": "ExToken: Structured Exploration for Efficient Vision-Language-Action Reinforcement Fine-tuning",
+      "abstract": "Reinforcement Learning (RL) has demonstrated significant potential for improving Vision-Language-Action (VLA) models on complex manipulation tasks. However, its practical scalability remains severely limited by the substantial cost of environmental interactions. In this work, we first investigate the exploration stagnation bottleneck in current VLA-RL frameworks and reveal that trajectory diversity is fundamentally more important to sample efficiency than the sheer quantity of collected rollouts. Motivated by these insights, we introduce RL Exploration Token (ExToken), a simple yet general framework that condition VLA policies on discrete behavioral priors derived from offline demonstrations for structured exploration. By conditioning the policy on different tokens during rollout collection, ExToken encourages the agent to explore diverse behavioral modes, substantially improving state-action coverage and exploration efficiency. To bridge exploration during training with deterministic inference at deployment, ExToken further incorporates a state-conditioned token selector that adaptively predicts effective behavioral modes for unseen scenarios. Extensive experiments across simulated and real-world robotic manipulation tasks demonstrate that ExToken consistently accelerates convergence, improves task performance, and exhibits strong robustness under highly constrained interaction budgets.",
+      "authors": [
+        "Yilun Kong",
+        "Yunpeng Qing",
+        "Guozheng Ma",
+        "Haoyu Wang",
+        "Li Shen",
+        "Zhi Hou",
+        "Dacheng Tao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-14T16:04:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.12931v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "RL fine-tuning for vision-language-action models on complex manipulation tasks",
+      "llm_evidence_cn": "针对复杂操作任务的视觉-语言-动作模型强化学习微调",
+      "llm_evidence": "针对复杂操作任务的视觉-语言-动作模型强化学习微调",
+      "canonical_evidence": "针对复杂操作任务的视觉-语言-动作模型强化学习微调",
+      "llm_tldr_en": "Proposes ExToken to enhance exploration efficiency for RL fine-tuning of VLA models by conditioning on discrete behavioral priors.",
+      "llm_tldr_cn": "强化学习在微调视觉-语言-动作（VLA）模型时面临高交互成本。本文揭示了轨迹多样性比收集量更重要，并提出ExToken框架，通过从离线示范中提取离散行为先验来条件化VLA策略，实现结构化探索。实验表明，ExToken显著提高了样本效率，使复杂操作任务中的RL微调更加实用。",
+      "llm_tldr": "强化学习在微调视觉-语言-动作（VLA）模型时面临高交互成本。本文揭示了轨迹多样性比收集量更重要，并提出ExToken框架，通过从离线示范中提取离散行为先验来条件化VLA策略，实现结构化探索。实验表明，ExToken显著提高了样本效率，使复杂操作任务中的RL微调更加实用。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.09336v1",
+      "source": "arxiv",
+      "title": "Shortcut Trajectory Planning for Efficient Offline Reinforcement Learning",
+      "abstract": "Diffusion-based trajectory planners have shown strong performance in offline reinforcement learning, but their iterative denoising process often incurs high inference cost. Consistency-based planners reduce the number of sampling steps, yet they typically rely on a two-stage teacher--student distillation pipeline that increases training cost and may introduce instability. We propose Shortcut Trajectory Planning (STP), an offline model-based reinforcement learning framework that incorporates shortcut models as efficient trajectory generators. STP trains a conditional shortcut trajectory model in a single stage, supports adjustable one-step and few-step inference through step-size conditioning, and selects candidate plans using a critic augmented with feasibility-aware correction. Across standard D4RL benchmarks, including locomotion, navigation, manipulation, and dexterous control tasks, STP achieves strong performance while simplifying the training pipeline for fast generative planning.",
+      "authors": [
+        "Guanquan Wang",
+        "Yoshimasa Tsuruoka"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-07-10T12:17:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.09336v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Offline RL trajectory planning framework using shortcut models, efficient inference for robotic trajectory generation",
+      "llm_evidence_cn": "利用捷径模型的离线强化学习轨迹规划框架，高效推理适用于机器人轨迹生成",
+      "llm_evidence": "利用捷径模型的离线强化学习轨迹规划框架，高效推理适用于机器人轨迹生成",
+      "canonical_evidence": "利用捷径模型的离线强化学习轨迹规划框架，高效推理适用于机器人轨迹生成",
+      "llm_tldr_en": "Proposes Shortcut Trajectory Planning (STP), an offline RL framework with single-stage training and adjustable inference steps, enabling efficient trajectory generation for robots.",
+      "llm_tldr_cn": "该论文提出捷径轨迹规划（STP）框架，是一种离线模型强化学习方法。STP单阶段训练条件捷径轨迹模型，支持一步或几步推理，并通过评论家选择候选计划。在机器人轨迹规划任务中，STP比基于扩散的方法更高效，为无人机机械臂的离线轨迹优化提供了可行方案。",
+      "llm_tldr": "该论文提出捷径轨迹规划（STP）框架，是一种离线模型强化学习方法。STP单阶段训练条件捷径轨迹模型，支持一步或几步推理，并通过评论家选择候选计划。在机器人轨迹规划任务中，STP比基于扩散的方法更高效，为无人机机械臂的离线轨迹优化提供了可行方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11027v1",
+      "source": "arxiv",
+      "title": "SegDiff: Segmented Trajectory Diffusion for Consistent and Adaptive Robot Manipulation",
+      "abstract": "Imitation learning enables robots to acquire manipulation skills from demonstrations by mapping observations to actions. Existing approaches predict either short-horizon continuous action sequences or discrete keyposes. However, continuous prediction methods suffer from compounding errors due to short prediction horizons and struggle with multi-modal action distributions, whereas keypose-based methods necessitate an external planner, constraining real-time applicability. To address these challenges, we introduce SegDiff, a closed-loop visuomotor policy that integrates the strengths of both paradigms. SegDiff decomposes demonstrations into motion segments between keyposes and learns to predict the continuous trajectory from the current state to the next keypose, enabling long-horizon prediction with real-time refinement. Furthermore, we leverage the capability of diffusion models and DDIM inversion to propose a Dynamic Temporal Ensembling mechanism, which allows the policy to efficiently respond to dynamic environments and mitigate discontinuities caused by inconsistent multi-modal sampling. SegDiff demonstrates significant performance gains over existing approaches across various simulated and real-world scenarios, indicating its strong ability to reason over extended temporal dependencies while maintaining real-time adaptability and control stability.",
+      "authors": [
+        "Haidong Cao",
+        "Wenjun Cao",
+        "Quanhao Li",
+        "Sicheng Xie",
+        "Zhiying Du",
+        "Jiaqi Leng",
+        "Zuxuan Wu",
+        "Yu-Gang Jiang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-13T02:48:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.11027v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "trajectory diffusion for robot manipulation, combining short-horizon and keypose advantages",
+      "llm_evidence_cn": "机器人操作轨迹扩散，结合短时域和关键姿态优势",
+      "llm_evidence": "机器人操作轨迹扩散，结合短时域和关键姿态优势",
+      "canonical_evidence": "机器人操作轨迹扩散，结合短时域和关键姿态优势",
+      "llm_tldr_en": "SegDiff integrates continuous trajectory prediction and keypose decomposition for consistent and adaptive robot manipulation.",
+      "llm_tldr_cn": "现有机器人操作方法要么预测连续动作存在累积误差，要么依赖关键姿态需外部规划。本文提出SegDiff，将示范分解为运动段并学习从当前状态预测连续轨迹。该方法在闭环中实现一致自适应的操作，平衡了精度和实时性，在模拟和真实环境中验证了有效性。",
+      "llm_tldr": "现有机器人操作方法要么预测连续动作存在累积误差，要么依赖关键姿态需外部规划。本文提出SegDiff，将示范分解为运动段并学习从当前状态预测连续轨迹。该方法在闭环中实现一致自适应的操作，平衡了精度和实时性，在模拟和真实环境中验证了有效性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.13818v1",
+      "source": "arxiv",
+      "title": "Learning Robust Execution in Robotic Manipulation with Agentic Reinforcement Learning",
+      "abstract": "Robotic manipulation poses fundamental challenges due to uncertainty, long-horizon execution, and compounding errors, which can easily destabilize execution and lead to task failure. Although recent vision-language-action (VLA) models exhibit strong generalization, they typically lack explicit mechanisms to assess execution stability and to recover when execution deviates from its nominal behavior. In this paper, we propose: (1) two complementary metrics to assess execution quality at runtime, and (2) an agentic reinforcement learning framework that learns to restore effective execution through high-level decision-making rather than directly learning low-level actions. In this framework, an agentic policy reasons over recent execution history and selects among a small set of execution modes to regulate the execution process. Under execution degradation, it triggers appropriate recovery mechanisms to restore the robot to previously visited nominal states, enabling the task to continue. We evaluate the proposed method on the LIBERO benchmark, achieving up to a 13.7% improvement in success rate under standard settings and up to a 39.2% improvement under disturbance settings, demonstrating substantially enhanced execution robustness.",
+      "authors": [
+        "Xiaopeng Zhang",
+        "Yueyang Weng",
+        "Qi Liu",
+        "Yongjin Mu",
+        "Yanjie Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-15T13:25:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.13818v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "agentic RL framework for robust robotic manipulation execution",
+      "llm_evidence_cn": "智能体强化学习框架用于鲁棒机器人操控执行",
+      "llm_evidence": "智能体强化学习框架用于鲁棒机器人操控执行",
+      "canonical_evidence": "智能体强化学习框架用于鲁棒机器人操控执行",
+      "llm_tldr_en": "This paper proposes an agentic RL framework that learns to restore effective execution in robotic manipulation through high-level decision-making, using runtime metrics.",
+      "llm_tldr_cn": "针对机器人操控中不确定性、长周期执行和累积误差导致的执行不稳定问题，本文提出智能体强化学习框架，通过运行时评估执行质量的指标和高级决策来恢复有效执行，而不是直接学习底层动作。实验表明该方法在多种操控任务中提升了鲁棒性。",
+      "llm_tldr": "针对机器人操控中不确定性、长周期执行和累积误差导致的执行不稳定问题，本文提出智能体强化学习框架，通过运行时评估执行质量的指标和高级决策来恢复有效执行，而不是直接学习底层动作。实验表明该方法在多种操控任务中提升了鲁棒性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.13033v1",
+      "source": "arxiv",
+      "title": "DenseReward: Dense Reward Learning via Failure Synthesis for Robotic Manipulation",
+      "abstract": "Reinforcement learning holds great promise for improving robot policies beyond the limits of imitation learning. However, its practical adoption remains bottlenecked by the lack of reliable vision-language reward models that provide dense and informative feedback. Two key challenges remain: acquiring diverse failure data at scale and obtaining fine-grained reward signals beyond sparse trajectory-level success labels. Collecting failure trajectories typically requires laborious human effort, while pseudo-failures constructed by relabeling successful demonstrations fail to capture the diverse physical failure modes that arise during robot execution. Meanwhile, existing reward models often predict sparse binary or trajectory-level rewards, which provide limited guidance for efficient policy optimization. We introduce DenseReward, a dense robotic reward model that addresses both challenges. To train DenseReward, we develop an automated failure data generation pipeline that synthesizes physically realistic failure trajectories in simulation without human labeling, covering diverse failure modes such as collisions, missed grasps, object drops, and recovery behaviors. DenseReward predicts dense frame-level reward scores from visual observations and language instructions, enabling fine-grained estimation of task progress throughout an episode. Experiments show that DenseReward outperforms general-purpose VLMs and existing robotic reward models in dense reward prediction across both simulated and real-world manipulation. We further demonstrate that DenseReward provides effective reward guidance for downstream model predictive control and reinforcement learning. We release the dataset, trained reward models, and evaluation suite to support the development of failure-aware dense reward modeling for robot learning.",
+      "authors": [
+        "Yu Fang",
+        "Wanxi Dong",
+        "Jiaqi Liu",
+        "Yue Yang",
+        "Mingxiao Huo",
+        "Yao Mu",
+        "Huaxiu Yao",
+        "Li Erran Li",
+        "Daniel Szafir",
+        "Mingyu Ding"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-14T17:59:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.13033v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning reward model for robot manipulation",
+      "llm_evidence_cn": "用于机器人操纵的强化学习奖励模型",
+      "llm_evidence": "用于机器人操纵的强化学习奖励模型",
+      "canonical_evidence": "用于机器人操纵的强化学习奖励模型",
+      "llm_tldr_en": "Proposes DenseReward, a method to learn dense reward functions for RL by synthesizing diverse failure trajectories, improving robot policy learning.",
+      "llm_tldr_cn": "本文提出DenseReward，通过合成多样化失败轨迹来学习密集奖励函数，克服了强化学习中奖励稀疏和失败数据获取困难的瓶颈。该方法生成细粒度奖励信号，在机器人操纵任务中显著提升了策略学习效率。",
+      "llm_tldr": "本文提出DenseReward，通过合成多样化失败轨迹来学习密集奖励函数，克服了强化学习中奖励稀疏和失败数据获取困难的瓶颈。该方法生成细粒度奖励信号，在机器人操纵任务中显著提升了策略学习效率。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.13938v1",
+      "source": "arxiv",
+      "title": "Discriminative Barrier Functions for Safe Adversarial Imitation Learning from Observation",
+      "abstract": "Inverse Reinforcement Learning (IRL) algorithms are powerful tools for learning from and generalizing expert demonstrations, but they often rely on unconstrained exploration, rendering them unsafe for real-world deployment. Meanwhile, Control Barrier Functions (CBFs) can guarantee the safety of control systems, but the analytical design of CBFs can be time-consuming and esoteric. In this work, we address these limitations jointly by constraining reward function candidacy during IRL to the space of CBFs, yielding a formulation that exhibits safe online control with continuous experiential improvement. Crucially, this framework enables the data-driven recovery of barrier functions directly from unlabeled expert observations. We demonstrate that the recovered barrier function is robust to unsafe states entirely absent from the expert data. Furthermore, we benchmark our method against standard IRL baselines in a simulated navigation environment, demonstrating improved safety performance. Finally, we investigate the trade-offs of planning-based versus policy-based IRL methods across both simulation and a real world obstacle avoidance task.",
+      "authors": [
+        "Anubhav Vishwakarma",
+        "Bhaumik Mehta",
+        "Caleb Hsu",
+        "Byron Boots",
+        "Karen Leung",
+        "Tyler Han"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-15T15:20:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.13938v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uses barrier functions to constrain IRL reward, ensuring safe exploration; applicable to robot arm learning",
+      "llm_evidence_cn": "利用障碍函数约束逆强化学习奖励，确保安全探索；可用于机械臂学习",
+      "llm_evidence": "利用障碍函数约束逆强化学习奖励，确保安全探索；可用于机械臂学习",
+      "canonical_evidence": "利用障碍函数约束逆强化学习奖励，确保安全探索；可用于机械臂学习",
+      "llm_tldr_en": "Combines IRL with control barrier functions for safe learning from demonstration, enabling recovery of CBFs from unlabeled data. Transferable to robot arm control.",
+      "llm_tldr_cn": "该工作将逆强化学习与控制障碍函数结合，通过约束奖励函数空间保证在线控制的安全性，并且能够从无标签专家观测中数据驱动地恢复障碍函数。该方法为机械臂等机器人系统的安全模仿学习提供了新思路。",
+      "llm_tldr": "该工作将逆强化学习与控制障碍函数结合，通过约束奖励函数空间保证在线控制的安全性，并且能够从无标签专家观测中数据驱动地恢复障碍函数。该方法为机械臂等机器人系统的安全模仿学习提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
