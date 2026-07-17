@@ -1,0 +1,333 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-17T21:22:53.746770+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.14708v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for the Full Strawberry Harvesting Process: Obstacle Separation, Detachment, and Placement",
+      "abstract": "Severe occlusions and deformable plant structures introduce complex contact dynamics that challenge robotic strawberry harvesting. A policy-driven reinforcement learning (RL) framework with heuristic phase coordination was developed, in which obstacle separation, fruit detachment, and placement were formulated as a sequential decision-making task. A shared interaction-aware policy generated Cartesian motions across all task phases, while lightweight heuristic logic coordinated task progression and gripper events. A shared structured observation space was used to represent target, obstacle, end-effector, and task-context information. A hierarchical architecture combined the high-level policy with low-level Cartesian impedance control for compliant interaction. To support zero-shot sim-to-real transfer, feasibility-first observation alignment and domain randomization were adopted. The policy achieved success rates of 89.7% in simulation and 82.0% in real-world experiments. As the occlusion level increased from 1 to 5, the average execution time increased from 12.99 s to 21.73 s, reflecting greater interaction complexity. These results demonstrated effective transfer of interaction-aware harvesting behaviors to a structurally different robotic platform.",
+      "authors": [
+        "Changyou Miao",
+        "Teng Li",
+        "Ya Xiong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-16T08:16:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.14708v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses reinforcement learning for robotic arm control in strawberry harvesting",
+      "llm_evidence_cn": "使用强化学习控制机械臂进行草莓采摘",
+      "llm_evidence": "使用强化学习控制机械臂进行草莓采摘",
+      "canonical_evidence": "使用强化学习控制机械臂进行草莓采摘",
+      "llm_tldr_en": "Develops an RL framework with heuristic phase coordination for robotic strawberry harvesting, handling obstacle separation, detachment, and placement.",
+      "llm_tldr_cn": "针对草莓采摘中严重遮挡和变形植物结构带来的复杂接触动力学问题，本文提出一种基于策略的强化学习框架与启发式阶段协调，将障碍分离、果实摘取和放置建模为序列决策任务。共享的交互感知策略生成所有阶段的笛卡尔运动，启发式逻辑协调任务推进和夹爪事件。层次化架构结合高层策略与低层控制器，在实际采摘中展示了有效性和鲁棒性。",
+      "llm_tldr": "针对草莓采摘中严重遮挡和变形植物结构带来的复杂接触动力学问题，本文提出一种基于策略的强化学习框架与启发式阶段协调，将障碍分离、果实摘取和放置建模为序列决策任务。共享的交互感知策略生成所有阶段的笛卡尔运动，启发式逻辑协调任务推进和夹爪事件。层次化架构结合高层策略与低层控制器，在实际采摘中展示了有效性和鲁棒性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.09218v2",
+      "source": "arxiv",
+      "title": "TACTIC: Tactile and Vision Conditioned Contact-Centric Control for Whole-Arm Manipulation",
+      "abstract": "Whole-arm manipulation involves direct contact with the environment while the robot completes a task by distributing contact across multiple links as contacts form, slide, and break. This setting breaks common implicit assumptions in many learning-based manipulation pipelines: arm configuration tightly couples motion and contact forces, contact state is partially observed under occlusion, and purely learned rollouts can become physically inconsistent under distribution shift because many multi-link contact configurations are sparsely represented in the data. To address this, we propose TACTIC (Tactile and Vision Conditioned Contact-Centric Control), a receding-horizon controller for whole-arm manipulation. TACTIC uses a contact-centric hybrid predictive model that combines RGB-D, distributed tactile sensing, and a compact 2D proximity representation. The model couples a learned, action-conditioned latent dynamics model with analytical kinematics through contact Jacobians, enabling rollouts of future contact configurations and interaction forces. TACTIC integrates these rollouts into a sampling-based MPC planner with contact-aware action sampling: contact Jacobian-based projections steer sampled action sequences toward force-modulating directions, and objectives defined over predicted proximity and interaction forces trade task progress against whole-arm force regulation. We evaluate TACTIC in simulation against state-of-the-art model-based and model-free methods, and perform ablations that isolate the contribution of each design choice. TACTIC consistently outperforms other methods. We further demonstrate real-world performance on a robot with distributed tactile sensing across three whole-arm manipulation tasks that require multi-contact trajectories: turning over and repositioning a manikin, and goal-reaching in a 3D dynamic maze. Website: https://emprise.cs.cornell.edu/tactic",
+      "authors": [
+        "Rishabh Madan",
+        "Angchen Xie",
+        "Samantha Saak",
+        "Andres Blanco",
+        "Dohyeok Lee",
+        "Sarah Grace Brown",
+        "Yunting Yan",
+        "Mark Zolotas",
+        "Jose Barreiros",
+        "Tapomayukh Bhattacharjee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-10T09:08:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.09218v2",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "contact-centric control for whole-arm manipulation, applicable to robot arm control",
+      "llm_evidence_cn": "基于接触的全臂操作控制器，可应用于机器人手臂控制",
+      "llm_evidence": "基于接触的全臂操作控制器，可应用于机器人手臂控制",
+      "canonical_evidence": "基于接触的全臂操作控制器，可应用于机器人手臂控制",
+      "llm_tldr_en": "Proposes TACTIC, a receding-horizon controller for whole-arm manipulation using tactile and vision conditioned contact-centric control, handling multi-link contact interactions.",
+      "llm_tldr_cn": "本文提出TACTIC，一种基于触觉与视觉的滚动时域控制器，用于全臂操作。该控制器以接触为中心，通过接触图表示多连杆接触状态，结合触觉和视觉观测生成鲁棒控制序列，解决部分遮挡和分布偏移下的物理不一致性问题。",
+      "llm_tldr": "本文提出TACTIC，一种基于触觉与视觉的滚动时域控制器，用于全臂操作。该控制器以接触为中心，通过接触图表示多连杆接触状态，结合触觉和视觉观测生成鲁棒控制序列，解决部分遮挡和分布偏移下的物理不一致性问题。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.08948v1",
+      "source": "arxiv",
+      "title": "SplatCtrl: Perception-Action Coupling via Gaussian Scene Representations and Reactive Robot Control",
+      "abstract": "Robotic manipulators excel in structured environments but face substantial challenges in unstructured and dynamic settings. This paper presents SplatCtrl, a unified framework for real-time scene reconstruction and reactive robot motion generation to enable collision-free robotic arm control in previously unseen and continuously changing environments. Building on 3D Gaussian Splatting (3D-GS), we introduce a hybrid voxel-based filtering and dynamic Gaussian relocation strategy that supports efficient scene reconstruction from RGB-D streams while accommodating environmental changes. For safe and reactive control, we further propose a method for deriving continuous signed distance functions from isotropic Gaussians, providing stable and differentiable collision probability estimates that bridge classical distance fields with the modern implicit representation. These continuous distance metrics are incorporated into control barrier functions, resulting in a unified perception-action coupling framework that supports smooth and reliable real-time motion generation in response to scene changes. Experimental validation in simulation, on physical robot, and within shared human-robot workspace demonstrates the framework's effectiveness, achieving integrated scene reconstruction and reactive control in uncertain, and dynamic environments.",
+      "authors": [
+        "Siddarth Jain",
+        "Ho Jin Choi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-07-09T21:18:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.08948v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "perception-action coupling for collision-free robotic arm control using 3D Gaussian Splatting",
+      "llm_evidence_cn": "利用3D高斯溅射的感知-行动耦合实现无碰撞机械臂控制",
+      "llm_evidence": "利用3D高斯溅射的感知-行动耦合实现无碰撞机械臂控制",
+      "canonical_evidence": "利用3D高斯溅射的感知-行动耦合实现无碰撞机械臂控制",
+      "llm_tldr_en": "SplatCtrl combines 3D Gaussian Splatting with reactive control for real-time scene reconstruction and collision-free robotic arm motion in dynamic environments, deriving signed distance functions from Gaussians for safety.",
+      "llm_tldr_cn": "针对机械臂在非结构化动态环境中的控制难题，提出SplatCtrl框架，利用3D高斯溅射实现实时场景重建，并通过从各向同性高斯推导连续符号距离函数生成无碰撞反应运动。实验证明在未知动态环境中能有效避免碰撞，实现安全操作。",
+      "llm_tldr": "针对机械臂在非结构化动态环境中的控制难题，提出SplatCtrl框架，利用3D高斯溅射实现实时场景重建，并通过从各向同性高斯推导连续符号距离函数生成无碰撞反应运动。实验证明在未知动态环境中能有效避免碰撞，实现安全操作。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.11427v1",
+      "source": "arxiv",
+      "title": "EDAR: Learning Environment-Dependent Action Representations for Robotic Manipulation",
+      "abstract": "Learning effective action representations is critical for robotic manipulation, where raw control trajectories are often noisy, redundant, and difficult to model directly. Existing methods mainly encode the structure of the action stream itself, treating the role of actions in the environment as implicit. Yet manipulation is about changing the world: the same action segment can induce different outcomes under different scene contexts, making action semantics inherently environment-dependent. We propose EDAR, an Environment-Dependent Action Representation that grounds action tokens in both executable control structure and expected visual consequences. By coupling motor commands with their environment-conditioned effects, EDAR encourages the learned action space to capture interaction semantics rather than merely command-level patterns. Experiments on simulated and real-robot manipulation benchmarks demonstrate that EDAR improves downstream policy learning, especially in long-horizon manipulation. These results highlight the importance of grounding action representations in executable control structure and environment-conditioned visual change.",
+      "authors": [
+        "Yuecheng Xu",
+        "Tong Yang",
+        "Jingkai Jia",
+        "Chi Zhang",
+        "Xuelong Li",
+        "Wenqiang Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-13T11:31:53+00:00",
+      "link": "https://arxiv.org/pdf/2607.11427v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning environment-dependent action representations for robotic manipulation",
+      "llm_evidence_cn": "学习环境相关的动作表示用于机器人操作",
+      "llm_evidence": "学习环境相关的动作表示用于机器人操作",
+      "canonical_evidence": "学习环境相关的动作表示用于机器人操作",
+      "llm_tldr_en": "Proposes EDAR to learn action representations that are grounded in both motor commands and expected visual outcomes, improving manipulation performance by conditioning actions on environmental context.",
+      "llm_tldr_cn": "针对机器人操作中动作表示难以捕捉环境依赖性的问题，本文提出环境相关动作表示（EDAR），将动作语义与执行结构和预期视觉后果相结合。通过将电机指令与其环境条件化的效果耦合，EDAR促进了更有效的策略学习。实验结果表明，EDAR在多种操作任务上优于现有方法，特别是在需要环境感知的精细操作中。",
+      "llm_tldr": "针对机器人操作中动作表示难以捕捉环境依赖性的问题，本文提出环境相关动作表示（EDAR），将动作语义与执行结构和预期视觉后果相结合。通过将电机指令与其环境条件化的效果耦合，EDAR促进了更有效的策略学习。实验结果表明，EDAR在多种操作任务上优于现有方法，特别是在需要环境感知的精细操作中。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.10132v2",
+      "source": "arxiv",
+      "title": "TAC-LOCO: Unified Whole-Body Control for Quadrupedal TACtile-Informed LOCO-Manipulation",
+      "abstract": "Dynamic loco-manipulation requires legged robots to coordinate whole-body motion while maintaining stable physical interaction with grasped objects under uncertain external forces. While tactile sensing has been widely studied for robotic manipulation, its role in dynamic whole-body control remains largely unexplored. Existing works without tactile feedback commonly grasp firmly rather than regulate the grasp according to the interaction. We propose TAC-LOCO, a tactile-augmented unified reinforcement learning framework that encodes tactile array observations from compliant grippers into a compact latent representation and joins it with proprioception for unified control of the legs, arm, and gripper. With effective grasp stability reward design, the policy learns to simultaneously track body velocity and end-effector trajectories, moderate grasp force, and prevent object slip under both gradual load changes and sudden release events. We deploy the policy zero-shot on a Unitree Go2 with an Interbotix WidowX 250 arm and tactile gripper, demonstrating dynamic tactile-informed loco-manipulation under varying external interactions, achieving a 47% reduction in grasping force and an object drop rate of less than 1%.",
+      "authors": [
+        "Muqun Hu",
+        "Yuhao Zhou",
+        "Kabir Ray Malik",
+        "Chi Lin",
+        "Won Suk Lee",
+        "Yu She",
+        "Yan Gu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-11T05:45:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.10132v2",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL framework for whole-body control of a legged robot with arm and gripper",
+      "llm_evidence_cn": "用于四足机器人全身控制的强化学习框架，包含机械臂和夹爪",
+      "llm_evidence": "用于四足机器人全身控制的强化学习框架，包含机械臂和夹爪",
+      "canonical_evidence": "用于四足机器人全身控制的强化学习框架，包含机械臂和夹爪",
+      "llm_tldr_en": "Proposes TAC-LOCO, a tactile-augmented unified RL framework for dynamic loco-manipulation on quadrupedal robots, integrating tactile sensing for adaptive grasping.",
+      "llm_tldr_cn": "本文提出TAC-LOCO，一种触觉增强的统一强化学习框架，用于四足机器人的动态运动-操作。通过将触觉阵列编码为紧凑表征并与本体感觉结合，实现腿、臂、夹爪的统一控制，并利用抓取稳定性奖励实现自适应抓取调节。",
+      "llm_tldr": "本文提出TAC-LOCO，一种触觉增强的统一强化学习框架，用于四足机器人的动态运动-操作。通过将触觉阵列编码为紧凑表征并与本体感觉结合，实现腿、臂、夹爪的统一控制，并利用抓取稳定性奖励实现自适应抓取调节。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12109v1",
+      "source": "arxiv",
+      "title": "Exact Solutions to a Class of Constrained Optimal Control Problems via Lossless Convexification for Digital Control",
+      "abstract": "This article establishes a new numerically viable technique for solving a class of constrained, nonconvex, continuous-time optimal control problems (OCPs) for linear systems that commonly arise in aerial and aerospace applications. The lossless convexification technique is employed to translate the original nonconvex OCP with annular control magnitude constraints into a convex problem, and then by finitely parametrizing the control space with piecewise constant functions, an efficient numerical approach is established that guarantees exact solutions while ensuring the satisfaction of an uncountable family of constraints over a compact time interval. The effectiveness of the approach is demonstrated on a spacecraft landing problem involving three degrees of freedom (DoF), underscoring its potential for real-world aerospace guidance and control tasks.",
+      "authors": [
+        "Vaibhav Upadhyay",
+        "Siddhartha Ganguly",
+        "Debasish Chatterjee"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-07-13T19:37:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.12109v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "exact solutions to constrained optimal control for aerial applications",
+      "llm_evidence_cn": "面向航空应用的约束最优控制精确解法",
+      "llm_evidence": "面向航空应用的约束最优控制精确解法",
+      "canonical_evidence": "面向航空应用的约束最优控制精确解法",
+      "llm_tldr_en": "Establishes a lossless convexification technique for constrained nonconvex optimal control problems commonly arising in aerial and aerospace applications, demonstrated on a spacecraft example.",
+      "llm_tldr_cn": "本文针对航空与航天应用中常见的非凸约束最优控制问题，提出一种无损凸化技术。通过将非凸问题转化为凸问题，并结合分段常数控制参数化，实现了约束的精确满足与高效数值求解。以航天器控制为例验证了有效性。",
+      "llm_tldr": "本文针对航空与航天应用中常见的非凸约束最优控制问题，提出一种无损凸化技术。通过将非凸问题转化为凸问题，并结合分段常数控制参数化，实现了约束的精确满足与高效数值求解。以航天器控制为例验证了有效性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12924v2",
+      "source": "arxiv",
+      "title": "Knowledge- and Gradient-Guided Reinforcement Learning for Parametrized Action Markov Decision Processes",
+      "abstract": "In this paper, we study Reinforcement Learning in Parametrized Action Markov Decision Processes (PAMDP), where each decision consists of a symbolic action and numerical parameters. In such settings Reinforcement Learning algorithms typically determine parameters with one-shot estimators, which makes their training sample inefficient. Though in most PAMDP environments explicit but incomplete knowledge (e.g., rules, safety constraints, or expert heuristics) is available, it is rarely directly used to increase the sample-efficiency of training Reinforcement Learning agents. We step into this gap and propose our novel Neuro-Symbolic Knowledge- and Gradient-Guided Reinforcement Learning (KGRL) algorithm. KGRL uses domain knowledge in a Datalog knowledge base to derive the set of applicable actions and feasible parameters for a given state. This allows it to prune non-applicable actions from the decision-space and constrain the parameter spaces of the remaining actions. We then use a gradient-based parameter refinement loop to estimate the optimal parameters during training and deployment of the agent. By recording activated rules along the trajectory, KGRL additionally provides local procedural explanations on the pruning of actions and constraining of parameters. Overall, KGRL guides the agent's exploration and deployment toward feasible and constraint-aware decisions, while increasing sample efficiency during training. KGRL outperforms state-of-the-art RL baselines for PAMDPs in both, sample efficiency and episodic return.",
+      "authors": [
+        "Jonas Ehrhardt",
+        "René Heesch",
+        "Oliver Niggemann"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-14T15:57:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.12924v2",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "general RL method for parametrized actions, applicable to robot arm control",
+      "llm_evidence_cn": "面向参数化动作的通用强化学习方法，可用于机械臂控制",
+      "llm_evidence": "面向参数化动作的通用强化学习方法，可用于机械臂控制",
+      "canonical_evidence": "面向参数化动作的通用强化学习方法，可用于机械臂控制",
+      "llm_tldr_en": "Proposes KGRL, a neuro-symbolic RL algorithm for PAMDP that uses domain knowledge and gradient guidance to improve sample efficiency.",
+      "llm_tldr_cn": "针对参数化动作马尔可夫决策过程中强化学习样本效率低的问题，本文提出知识-梯度引导强化学习算法（KGRL），利用显式但不完全的领域知识（如规则、约束、启发式）与梯度信息相结合，在符号动作和数值参数空间中有效学习。KGRL在多个PAMDP环境中提升了样本效率和性能，为参数化动作控制任务提供了通用方法。",
+      "llm_tldr": "针对参数化动作马尔可夫决策过程中强化学习样本效率低的问题，本文提出知识-梯度引导强化学习算法（KGRL），利用显式但不完全的领域知识（如规则、约束、启发式）与梯度信息相结合，在符号动作和数值参数空间中有效学习。KGRL在多个PAMDP环境中提升了样本效率和性能，为参数化动作控制任务提供了通用方法。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14488v1",
+      "source": "arxiv",
+      "title": "Safe Execution of RL Policies Via Acceleration-Based CBF-QP Constraint Enforcement for Real-World Robotic Deployments",
+      "abstract": "Reinforcement Learning (RL) has demonstrated remarkable capabilities for solving complex robotic control problems, but its lack of safety guarantees severely limits deployment on hardware. In particular, as legged robots and manipulators often operate near safety-critical boundaries, out-of-distribution states can lead to failure upon deployment. To address this, we introduce Acc-CBF-QP, an acceleration-based Quadratic Program (QP) safety filter using Control Barrier Functions (CBFs) that constrains any RL policy onto a safe set at runtime without modifying training. The method applies to unconstrained and Safe-RL policies, and enforces joint position, velocity, torque, and collision constraints within a unified optimization framework. A key contribution is the formulation of RL+QP tasks that regulate deviation from the RL command when constraints would otherwise be violated. We introduce a TorqueTask, minimizing torque deviation, and a Forward Dynamics Task, minimizing induced acceleration deviation, thus providing principled control over safety-performance trade-offs. Experiments on a 7-DoF Kinova Gen3 manipulator and a 19-DoF Unitree H1 humanoid, both in simulation and on hardware, highlight substantial reductions in constraint violations. On the real H1 hardware, a Safe-RL policy alone yielded 10.04 violations/s, which were reduced by 92% to 0.80 violations/s when augmented with Acc-CBF-QP. On the Kinova Gen3, Acc-CBF-QP fully eliminated violations. Nominal task performance of the RL objective is preserved in violation-free regimes. Under aggressive velocity commands on H1, Acc-CBF-QP improves execution by preventing constraint-induced shutdowns, yielding longer survival times. The full pipeline is open-source.",
+      "authors": [
+        "Bastien Muraccioli",
+        "Alice Cariou",
+        "Pierre-Alexandre Leziart",
+        "Mathieu Celerier",
+        "Arnaud Demont",
+        "Gentiane Venture",
+        "Mehdi Benallegue"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-16T02:00:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.14488v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Safety filter for RL policies in robotic manipulators",
+      "llm_evidence_cn": "RL策略在机器人操作器中的安全过滤器",
+      "llm_evidence": "RL策略在机器人操作器中的安全过滤器",
+      "canonical_evidence": "RL策略在机器人操作器中的安全过滤器",
+      "llm_tldr_en": "Acc-CBF-QP introduces an acceleration-based safety filter using Control Barrier Functions to constrain RL policies onto a safe set at runtime, applicable to legged robots and manipulators.",
+      "llm_tldr_cn": "针对强化学习策略在机器人部署中的安全问题，提出了基于加速度的CBF-QP安全过滤器，在运行时将RL策略约束在安全集内，无需修改训练。方法适用于腿式机器人和操作器，能强制执行关节位置、速度、扭矩和碰撞约束。实验验证了其有效性。",
+      "llm_tldr": "针对强化学习策略在机器人部署中的安全问题，提出了基于加速度的CBF-QP安全过滤器，在运行时将RL策略约束在安全集内，无需修改训练。方法适用于腿式机器人和操作器，能强制执行关节位置、速度、扭矩和碰撞约束。实验验证了其有效性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

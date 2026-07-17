@@ -6,38 +6,46 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-16
-- 运行时间：2026-07-16 20:02:23 UTC
+- 最新运行日期：2026-07-17
+- 运行时间：2026-07-17 21:27:01 UTC
 - 运行状态：成功
-- 本次总论文数：6
+- 本次总论文数：8
 - 精读区：1
-- 速读区：5
+- 速读区：7
 
 ### 今日简报（AI）
-今日推荐6篇强化学习与机器人操作相关论文，精读1篇聚焦视觉-语言-动作的高效结构化探索。最值得关注的是《ExToken》提出的结构化探索方法（8.0分），以及离线强化学习中的捷径轨迹规划与鲁棒执行学习。建议优先精读精读论文以掌握前沿框架，再按兴趣速读其余三篇。
-- 详情：[/202607/16/README](/202607/16/README)
+今日聚焦机器人操作前沿，精读一篇强化学习全流程草莓采摘研究，速读三篇触觉视觉融合与控制表示论文。  
+最值得关注的是强化学习在复杂农业场景中的端到端解决方案，以及触觉-视觉联合控制实现全身操作。  
+建议关注机器人领域感知与动作耦合的最新进展，尤其适合从事农业自动化或灵巧操作研究的读者。
+- 详情：[/202607/17/README](/202607/17/README)
 
 ### 精读区论文标签
-1. [ExToken: Structured Exploration for Efficient Vision-Language-Action Reinforcement Fine-tuning](/202607/16/2607.12931v1-extoken-structured-exploration-for-efficient-vision-language-action-reinforcement-fine-tuning)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：针对复杂操作任务的视觉-语言-动作模型强化学习微调
+1. [Reinforcement Learning for the Full Strawberry Harvesting Process: Obstacle Separation, Detachment, and Placement](/202607/17/2607.14708v1-reinforcement-learning-for-the-full-strawberry-harvesting-process-obstacle-separation-detachment-and-placement)  
+   标签：评分：9.0/10、query:drone-arm
+   evidence：使用强化学习控制机械臂进行草莓采摘
 
 ### 速读区论文标签
-1. [Shortcut Trajectory Planning for Efficient Offline Reinforcement Learning](/202607/16/2607.09336v1-shortcut-trajectory-planning-for-efficient-offline-reinforcement-learning)  
+1. [TACTIC: Tactile and Vision Conditioned Contact-Centric Control for Whole-Arm Manipulation](/202607/17/2607.09218v2-tactic-tactile-and-vision-conditioned-contact-centric-control-for-whole-arm-manipulation)  
    标签：评分：7.0/10、query:drone-arm
-   evidence：利用捷径模型的离线强化学习轨迹规划框架，高效推理适用于机器人轨迹生成
-2. [Learning Robust Execution in Robotic Manipulation with Agentic Reinforcement Learning](/202607/16/2607.13818v1-learning-robust-execution-in-robotic-manipulation-with-agentic-reinforcement-learning)  
+   evidence：基于接触的全臂操作控制器，可应用于机器人手臂控制
+2. [EDAR: Learning Environment-Dependent Action Representations for Robotic Manipulation](/202607/17/2607.11427v1-edar-learning-environment-dependent-action-representations-for-robotic-manipulation)  
    标签：评分：7.0/10、query:drone-arm
-   evidence：智能体强化学习框架用于鲁棒机器人操控执行
-3. [SegDiff: Segmented Trajectory Diffusion for Consistent and Adaptive Robot Manipulation](/202607/16/2607.11027v1-segdiff-segmented-trajectory-diffusion-for-consistent-and-adaptive-robot-manipulation)  
+   evidence：学习环境相关的动作表示用于机器人操作
+3. [SplatCtrl: Perception-Action Coupling via Gaussian Scene Representations and Reactive Robot Control](/202607/17/2607.08948v1-splatctrl-perception-action-coupling-via-gaussian-scene-representations-and-reactive-robot-control)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：机器人操作轨迹扩散，结合短时域和关键姿态优势
-4. [DenseReward: Dense Reward Learning via Failure Synthesis for Robotic Manipulation](/202607/16/2607.13033v1-densereward-dense-reward-learning-via-failure-synthesis-for-robotic-manipulation)  
+   evidence：利用3D高斯溅射的感知-行动耦合实现无碰撞机械臂控制
+4. [TAC-LOCO: Unified Whole-Body Control for Quadrupedal TACtile-Informed LOCO-Manipulation](/202607/17/2607.10132v2-tac-loco-unified-whole-body-control-for-quadrupedal-tactile-informed-loco-manipulation)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：用于机器人操纵的强化学习奖励模型
-5. [Discriminative Barrier Functions for Safe Adversarial Imitation Learning from Observation](/202607/16/2607.13938v1-discriminative-barrier-functions-for-safe-adversarial-imitation-learning-from-observation)  
+   evidence：用于四足机器人全身控制的强化学习框架，包含机械臂和夹爪
+5. [Exact Solutions to a Class of Constrained Optimal Control Problems via Lossless Convexification for Digital Control](/202607/17/2607.12109v1-exact-solutions-to-a-class-of-constrained-optimal-control-problems-via-lossless-convexification-for-digital-control)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：利用障碍函数约束逆强化学习奖励，确保安全探索；可用于机械臂学习
+   evidence：面向航空应用的约束最优控制精确解法
+6. [Knowledge- and Gradient-Guided Reinforcement Learning for Parametrized Action Markov Decision Processes](/202607/17/2607.12924v2-knowledge--and-gradient-guided-reinforcement-learning-for-parametrized-action-markov-decision-processes)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：面向参数化动作的通用强化学习方法，可用于机械臂控制
+7. [Safe Execution of RL Policies Via Acceleration-Based CBF-QP Constraint Enforcement for Real-World Robotic Deployments](/202607/17/2607.14488v1-safe-execution-of-rl-policies-via-acceleration-based-cbf-qp-constraint-enforcement-for-real-world-robotic-deployments)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：RL策略在机器人操作器中的安全过滤器
 
 
 <div class="dpr-home-promo-card">
