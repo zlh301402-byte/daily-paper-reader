@@ -1,0 +1,65 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-18T20:44:55.279438+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.11167v1",
+      "source": "arxiv",
+      "title": "Pix2Act: Image-Space Manipulation Policies with Equivariant Augmentation",
+      "abstract": "Representing manipulation actions as 2D trajectories in the camera plane provides a compact and interpretable basis for learning complex 3D manipulation policies. However, it also creates challenges from out-of-frame trajectories and limited precision. We propose Pix2Act, an imitation learning method that addresses these challenges by generating continuous image-space keypoint trajectories in each camera plane and losslessly recovering end-effector poses via triangulation. This reformulates high-dimensional 3D control as a simpler, more learnable 2D prediction problem. Crucially, it aligns observations and actions in the same coordinate space, enabling equivariant transformations to jointly rotate individual camera images together with their image-space actions. We analyze the symmetry properties of this augmentation and design a network architecture that can fuse multiple camera views while respecting their per-view rotations. As a result, Pix2Act implicitly enlarges the support of the data distribution and learns invariant action structures across transformations, yielding improved generalization and overall performance. Across diverse simulated and real-world manipulation tasks, Pix2Act outperforms state-of-the-art baselines and remains robust under camera perturbations.",
+      "authors": [
+        "Haojie Huang",
+        "Linfeng Zhao",
+        "Haotian Liu",
+        "Zhang Ye",
+        "Si-Yuan Huang",
+        "Mingxi Jia",
+        "Boce Hu",
+        "Fangzhou Lin",
+        "Yu Qi",
+        "Dian Wang",
+        "Robin Walters",
+        "Robert Platt"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-13T07:03:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.11167v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "image-space manipulation policies for robot arm control",
+      "llm_evidence_cn": "图像空间机械臂操纵策略",
+      "llm_evidence": "图像空间机械臂操纵策略",
+      "canonical_evidence": "图像空间机械臂操纵策略",
+      "llm_tldr_en": "Proposes Pix2Act, an imitation learning method that generates continuous image-space keypoint trajectories and recovers 3D poses via triangulation for robotic manipulation.",
+      "llm_tldr_cn": "将三维机械臂控制简化为二维图像空间轨迹预测，可降低学习难度。该论文提出Pix2Act方法，在多个相机平面生成连续关键点轨迹，并通过三角测量恢复末端执行器位姿。该方法使观察与动作处于同一坐标空间，支持等变数据增强。实验证明Pix2Act在多种操纵任务中高效且鲁棒。",
+      "llm_tldr": "将三维机械臂控制简化为二维图像空间轨迹预测，可降低学习难度。该论文提出Pix2Act方法，在多个相机平面生成连续关键点轨迹，并通过三角测量恢复末端执行器位姿。该方法使观察与动作处于同一坐标空间，支持等变数据增强。实验证明Pix2Act在多种操纵任务中高效且鲁棒。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

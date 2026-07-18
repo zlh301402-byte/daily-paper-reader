@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-18",
+  "date": "2026-07-18",
+  "generated_at": "2026-07-18T20:46:00",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/18/2607.11167v1-pix2act-image-space-manipulation-policies-with-equivariant-augmentation",
+      "section": "quick",
+      "title_en": "Pix2Act: Image-Space Manipulation Policies with Equivariant Augmentation",
+      "authors": "Haojie Huang, Linfeng Zhao, Haotian Liu, Zhang Ye, Si-Yuan Huang, Mingxi Jia, Boce Hu, Fangzhou Lin, Yu Qi, Dian Wang, Robin Walters, Robert Platt",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11167v1",
+      "score": "7.0",
+      "evidence": "图像空间机械臂操纵策略",
+      "tldr": "现有方法将动作表示为2D轨迹，但存在帧外和精度挑战。Pix2Act通过生成连续图像空间关键点轨迹并三角化恢复末端执行器姿态，将3D控制简化为2D预测。利用等变增强联合旋转相机图像和动作，扩大数据分布支持并学习不变结构。在模拟和真实任务中优于基线，且对相机扰动鲁棒，提升了泛化能力。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Representing manipulation actions as 2D trajectories in the camera plane provides a compact and interpretable basis for learning complex 3D manipulation policies. However, it also creates challenges from out-of-frame trajectories and limited precision. We propose Pix2Act, an imitation learning method that addresses these challenges by generating continuous image-space keypoint trajectories in each camera plane and losslessly recovering end-effector poses via triangulation. This reformulates high-dimensional 3D control as a simpler, more learnable 2D prediction problem. Crucially, it aligns observations and actions in the same coordinate space, enabling equivariant transformations to jointly rotate individual camera images together with their image-space actions. We analyze the symmetry properties of this augmentation and design a network architecture that can fuse multiple camera views while respecting their per-view rotations. As a result, Pix2Act implicitly enlarges the support of the data distribution and learns invariant action structures across transformations, yielding improved generalization and overall performance. Across diverse simulated and real-world manipulation tasks, Pix2Act outperforms state-of-the-art baselines and remains robust under camera perturbations.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
