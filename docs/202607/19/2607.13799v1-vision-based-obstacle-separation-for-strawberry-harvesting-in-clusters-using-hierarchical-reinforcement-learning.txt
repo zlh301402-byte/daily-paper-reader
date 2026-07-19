@@ -1,0 +1,319 @@
+Title: Vision-Based Obstacle Separation for Strawberry Harvesting in Clusters Using Hierarchical Reinforcement Learning
+
+URL Source: https://arxiv.org/pdf/2607.13799v1
+
+Published Time: Thu, 16 Jul 2026 01:27:01 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Vision-Based Obstacle Separation for Strawberry Harvesting in Clusters Using Hierarchical Reinforcement Learning 
+
+Teng Li 1,2, Hanfei Shi 3, Chunjiang Zhao 1* and Ya Xiong 1*
+
+Abstract — Selective harvesting in clustered strawberry envi-ronments is challenging because ripe fruits are often occluded by surrounding unripe fruits, making direct grasping unreli-able. To address this problem, this paper proposes a hierarchical reinforcement learning framework, termed VGPA, which inte-grates a vision-guided decision mechanism and a Progressive Adaptive Exploration Strategy (PAES) for vision-based obstacle separation and harvesting. The task was decomposed into two sequential stages: obstacle separation and target grasping. At the high level, the vision-guided mechanism improved option selection and accelerated policy convergence. At the low level, PAES improved exploration efficiency and training stability during continuous control learning. In simulation experiments, the learned policy achieved a success rate of 96.7%. In addition, sim-to-real transfer experiments on a self-developed parallel robot showed that the proposed method achieved success rates ranging from 71.7% to 88.3%, outperforming direct picking while requiring only 1.22 s more average harvesting time. These results verified the effectiveness, generalization ability, and practical potential of the proposed method for robotic harvesting in complex clustered environments. 
+
+I. INTRODUCTION In recent years, the demand for automated fruit and vegetable harvesting has grown rapidly with the increas-ing demand for labor-saving agricultural production [1]. For cluster-growing crops such as strawberries, tomatoes, grapes, and cherries, harvesting requires selectively picking ripe fruits without damaging surrounding unripe ones [2]. Achieving reliable selective harvesting has therefore become a key challenge in agricultural robotics. Most existing studies addressed this problem through obstacle avoidance. For example, in tomato harvesting, deep reinforcement learning combined with spatial pose modeling has been used to determine an appropriate grasp posture for the end-effector [3]. In guava harvesting, obstacle detection and shape approximation were combined with an LSTM-based DDPG method to generate collision-free paths in configuration space [4]. These approaches were effective when obstacles were sparse and sufficient free space is avail-able. However, in real clustered harvesting environments,                  
+
+> This work was supported by the Innovation Ability Project of Beijing Academy of Agricultural and Forestry Sciences (BAAFS) (KJCX20240321), the Outstanding Youth Foundation of BAAFS (YKPY2025007), the Haidian District Bureau of Agriculture and Rural Affairs, and the NSFC Excellent Young Scientists Fund (overseas). (* Corresponding Au-thor: Chunjiang Zhao
+
+zhaocj@nercita.org.cn; Ya Xiong, yaxiong@nercita.org.cn ) 
+
+> 1The Intelligent Equipment Research Center, Beijing Academy of Agri-culture and Forestry Sciences, Beijing 100097, China.
+> 2School of Intelligence Science and Technology, University of Science and Technology Beijing, Beijing 100083, China
+> 3Happy Elements Ltd., Beijing 100094, China.
+> Fig. 1. Top: A target strawberry cluster in the initial observation, where the target strawberry is surrounded by obstacles. Bottom (left to right): The robot learns to push away the obstacles and finally grasp the target.
+
+ripe fruits were often tightly surrounded by unripe fruits or foliage, leaving little room for collision-free access. As a result, passive obstacle avoidance alone is often insufficient. As illustrated in Fig. 1, the target strawberry is frequently enclosed by nearby obstacles, making direct grasping diffi-cult and motivating the need for obstacle separation before harvesting. To overcome this limitation, active obstacle separation can be used to push or separate obstacles before grasping. Compared with simple obstacle avoidance, this strategy allowed the robot to access targets that would otherwise be unreachable. Xiong et al. [5] proposed a 3D vision-based ob-stacle separation strategy that combined horizontal pushing, vertical pushing, and dragging to improve harvesting success. Williams et al. [6] introduced a DRM-based deep reinforce-ment learning framework integrating Cartesian impedance control and a custom Mujoco simulation environment to reduce the sim-to-real gap. Although active obstacle separation has shown promise, clearance and grasping form an interdependent multi-stage process, and coordinating them efficiently remains challeng-ing. Hierarchical reinforcement learning (HRL) is well suited to such long-horizon sequential tasks. Xu [7] proposed a goal-conditioned HRL framework for push-and-grasp coor-dination in cluttered environments. Ren [8] introduced a arXiv:2607.13799v1 [cs.RO] 15 Jul 2026 dual-function push-and-grasp strategy within a hierarchical framework. Yang et al. [9] employed HRL to combine learned parameterized manipulation primitives and adopted a two-stage training process to improve both precise grasping and push-and-grasp coordination. To address these challenges, this paper proposes an obstacle-separation harvesting method based on hierarchical reinforcement learning. When the target strawberry was occluded, the robotic arm first cleared the obstructing fruits and then performed stable grasping of the target. Based on this idea, we developed the VGPA framework to improve the efficiency and robustness of clustered strawberry harvesting. The main contributions are as follows:  
+
+> •
+
+A vision-guided hierarchical reinforcement learning framework was developed to coordinate obstacle sep-aration and target grasping for long-horizon strawberry harvesting tasks under severe occlusion.  
+
+> •
+
+A progressive adaptive exploration strategy (PAES) was introduced to dynamically regulate low-level explo-ration according to the learning progress, improving the stability and efficiency of hierarchical policy learning.  
+
+> •
+
+The proposed framework achieved robust sim-to-real transfer and consistently outperformed direct picking under different occlusion conditions. II. RELATED WORK 
+
+A. Option learning 
+
+Option learning represents a classical paradigm in re-inforcement learning, which enhances exploration and ex-ploitation by training sub-policies under sparse reward set-tings. Directly addressing complex and long-horizon tasks remains highly challenging, thus making option-based ap-proaches particularly appealing in robotic learning. Sutton et al. [10] introduced the option framework, which consisted of an initial set, intra-option policies, and termination con-ditions. This framework abstracted policy learning into a hierarchical structure, where high-level policies were respon-sible for selecting options while low-level policies executed primitive actions. Building on the actor–critic paradigm, Bacon et al. [11] proposed the option-critic architecture, which employed gradient-based optimization to jointly learn option policies, termination functions, and value functions across two temporal scales. This automated option discovery enabled efficient handling of complex problems. Following this, a variety of option-based reinforcement learning algo-rithms have been developed, including option-driven methods [12] and the universal option framework [13]. Nevertheless, despite these advances, option learning still suffers from challenges such as non-stationarity and limited efficiency. The primary problem addressed in this study was related to HRL. For the long-term sequence problem of straw-berry picking, where occlusions complicated grasping, HRL demonstrated considerable potential. However, HRL itself suffers from two inherent issues: difficulty in converging high-level policies during parallel training, and challenges in learning low-level tasks and achieving generalization. 
+
+B. Push and Grasp 
+
+Certain fruits and vegetables (e.g., strawberries, tomatoes) often grow in clusters, where ripe fruits may be obscured by unripe fruits or foliage. Single-grasp operations struggled to harvest without damaging unripe fruits; thus, pre-grasp clearance actions like pushing were required to expose and make targets accessible. Push-and-grasp constituted a long-sequence decision and control problem: Xu et al. [7] pro-posed a goal-conditioned hierarchical reinforcement learning framework for learning push-and-grasp cooperative policies in cluttered environments. Ren et al. [8] designed a dual-function strategy that efficiently coordinated pushing and grasping actions to address both goal-independent and goal-directed tasks. Wang et al. [14] employed the vision-based hierarchical coordination strategy HCLM for coordinating specific action primitives. However, these methods [15], [16], [17] were predominantly validated in constrained tabletop environments, posing challenges for direct transfer to agri-cultural settings. Fruit distribution is three-dimensional, supports and con-straints are weak, plants are deformable, and safety con-straints are stringent. Selective harvesting requires tight coupling with subsequent three-dimensional path planning. HRL provides a natural paradigm for addressing agricultural tasks that require both obstacle separation and grasping. Within this framework, the high-level policy was responsible for temporal decision-making and sub-goal selection (i.e., deciding when to clear and when to grasp), while the low-level controllers specialized in executing safe pushing actions for obstacle separation and robust grasping strategies for fruit harvesting. This hierarchical decomposition not only reduced the complexity of learning in highly cluttered environments but also better accommodated the intrinsic requirement of se-lective harvesting—performing proactive obstacle separation before executing a stable grasp. III. M ETHOD 
+
+To address the clustered strawberry harvesting task, we proposed VGPA, a hierarchical reinforcement learning framework that combines visual guidance with progressive exploration, as illustrated in Fig. 2. In the proposed frame-work, the robot interacted with the environment through a hierarchical goal-conditioned policy. The high-level policy planned the task by selecting options according to the current environmental state and the high-level goal, where each op-tion corresponded to a low-level sub-objective. The low-level policy then executed continuous robotic actions based on environmental observations and the assigned sub-objective. As the low-level policy interacted with the environment, the state was updated step by step, and once the current sub-objective was achieved, the high-level policy issued a new option. The resulting high-level and low-level transitions were stored in their corresponding replay buffers for training. During training, mini-batches of transitions were sampled from the replay buffers to update the model parameters. The high-level policy was optimized using DIOL, while the low-level policy was trained using DDPG [18]. In addition, Fig. 2. Overall architecture of the proposed VGPA framework. The RGB-D observation was first processed by YOLOv11 to detect and localize the target strawberry and surrounding obstacles. Based on the perceived occlusion state, the high-level policy selected an option (obstacle separation or grasping) with the assistance of the vision-guided module. The low-level policy then generated continuous control actions using PAES and DDPG, while HER improved sample efficiency through goal relabeling. The resulting actions were executed by the robot to perform obstacle separation and target grasping, and the interaction data were stored for hierarchical policy training. 
+
+HER was employed at the low level to improve sample efficiency in goal-conditioned continuous control. At the high level, visual guidance accelerated option learning and improved decision efficiency. At the low level, PAES was introduced to improve exploration efficiency and stabilize hierarchical training by adaptively adjusting the exploration behavior according to the training progress. The overall training procedure of VGPA was summarized in Algorithm 1. 
+
+A. Image processing 
+
+The image processing included the detection and localiza-tion of ripe strawberries and the determination of obstacles near each target. The image processing pipeline consisted of two steps: (1) object detection and localization based on pre-trained deep learning models, and (2) obstacle calculation. We employed a YOLOv11 [19] object detection network to output rectangular bounding boxes for strawberries along with their classification (ripe/unripe). For each detected bounding box, we calculated the center pixel coordinates and obtained the corresponding depth value from the PyBul-let [20] camera’s depth map. Subsequently, using the inverse transformation of the camera’s projection matrix and view matrix, we back-projected the pixel coordinates into three-dimensional space. This yielded the strawberries’ 3D posi-tions within the simulated world coordinate system, which we then used for subsequent robotic arm motion planning. In obstacle calculation for elevated strawberry harvesting, we defined a region of interest (ROI) around the target strawberry, primarily located below and in its surrounding area—corresponding to the position where the robotic arm performed the swallowing motion. If other strawberries were detected within this ROI, the positional information was incorporated into the state representation. 
+
+B. Vision-Guided Module 
+
+To improve the learning efficiency of the high-level policy and alleviate non-stationarity during hierarchical training, we introduced a vision-guided module to assist option selection. 
+
+Algorithm 1 VGPA: Vision-Guided Progressive Adaptive Exploration Strategy  
+
+> 1:
+
+for epoch = 1 to M 1 do  
+
+> 2:
+
+for episode = 1 to M 2 do  
+
+> 3:
+
+Sample a high-level goal gH 
+
+> 4:
+
+if current episode ∈ VG episodes then  
+
+> 5:
+
+Obtain an option ot as a low-level subgoal  
+
+> 6:
+
+else  
+
+> 7:
+
+Sample an option ot as a low-level subgoal  
+
+> 8:
+
+end if  
+
+> 9:
+
+for step = 1 to M 3 do  
+
+> 10:
+
+Sample a low-level goal gL 
+
+> 11:
+
+from the high-level policy πH 
+
+> 12:
+
+while not low-level subgoal achieved do  
+
+> 13:
+
+Sample aL ∼ πL(· | s, g L) with PAES  
+
+> 14:
+
+Execute aL and observe s′ 
+
+> 15:
+
+Store transition (s, a L, r, s ′, g L) 
+
+> 16:
+
+s ← s′ 
+
+> 17:
+
+end while  
+
+> 18:
+
+for all transitions (˜ s, ˜aL, ˜r, ˜s′, g L) 
+
+> 19:
+
+in the episode do  
+
+> 20:
+
+Sample hindsight goal gLf from achieved  
+
+> 21:
+
+states  
+
+> 22:
+
+Store (˜ s, ˜aL, ˜r′, ˜s′, g Lf ) with HER  
+
+> 23:
+
+end for  
+
+> 24:
+
+end for  
+
+> 25:
+
+Perform optimization steps with DDPG  
+
+> 26:
+
+Perform optimization steps with DIOL  
+
+> 27:
+
+end for  
+
+> 28:
+
+Update the parameters of VG and PAES according to Eqs. (3) and (4).  
+
+> 29:
+
+end for This module provided high-level decision guidance by es-timating the occlusion status of the target strawberry from visual observations. Specifically, it adjusted the proportion of vision-guided options derived from image processing and options generated by the learned high-level policy. During the early stage of training, a larger proportion of vision-guided episodes was used to provide reliable option supervision, thereby reducing non-stationarity and accelerat-ing the convergence of the high-level policy. As the success rate of the high-level policy increases, the proportion of vision-guided episodes was gradually reduced, allowing the policy to rely more on its own learned decisions. The training schedule of the high-level policy is illustrated in Fig. 3. Training was divided into epochs, and each epoch contained 
+
+M2 interaction episodes. The vision-guided module adap-tively determined the number of guided episodes according to the learning progress of the high-level policy, thereby balancing vision-guided supervision and RL-based option selection.            
+
+> D=
+> j
+> αmax −(αmax −αmin )·11+exp( −k·(τ−τ0))
+> 
+> ·e−λ·EMA( sr h)·M2
+> k
+
+(3) where, M2 denoted the total number of episodes in each epoch. αmax and αmin represented the upper and lower bounds of the demonstration ratio, ensuring that the number of guided episodes remains within a reasonable range. τ
+
+denotes the current epoch index, τ0 is the inflection point of the curriculum schedule, and k controls the steepness of the logistic decay curve. Together, these parameters determine how the reliance on visual guidance decreases progressively as training proceeds. In addition, sr h denoted the success rate of the high-level policy, and EMA( sr h) is its exponentially smoothed value used to reduce stochastic fluctuations. The parameter λ scaled the influence of high-level performance, such that a higher success rate accelerates the reduction of vision-guided episodes.  
+
+> Fig. 3. The structure of VG at the high level.
+
+C. Progressive Adaptive Exploration Strategy (PAES) 
+
+An adaptive exploration strategy, PAES, was designed for hierarchical reinforcement learning to regulate exploration behaviors according to the learning progress of different manipulation stages. As discussed above, when training different levels of policies in parallel within a hierarchical reinforcement learning system, the stochastic exploration behavior of lower-level policies could introduce delayed instability, which resulted in non-stationary transitions in the MDPs of higher-level structures. Previous work typically addressed this issue by training the upper- and lower-level networks separately, keeping the lower-level policy fixed during high-level training. Although effective, such separated training was costly, especially when data collection was expensive (e.g., in real-world tasks or complex simulations). Another representative method, HAC [21], modified higher-level transitions by assuming the lower-level policy was al-ready optimal; however, this did not fundamentally eliminate non-stationarity. In this work, PAES was designed as a stage-aware adaptive exploration strategy for low-level continuous control, aiming to improve the stability of hierarchical policy learning rather than simply increasing exploration. Instead of relying on a fixed exploration schedule, it regulated the balance among random exploration, guided action sampling, and policy-driven execution according to the learning progress of each stage. Specifically, the agent’s action selection in PAES consisted of three mechanisms. First, with probability αj , the agent sampled an action uniformly from the action space A,enabling global and aggressive exploration. Second, with probability γj , the agent executed a guiding policy πg (s)
+
+learned from a previously mastered stage and perturbed the action with Gaussian noise N (0 , (κσ j )2), allowing the agent to enter effective state regions more efficiently. Third, with probability 1 − αj − γj , the agent executed the current-stage policy πj (s) with Gaussian noise N (0 , σ 2 
+
+> j
+
+) added to the action, which supported fine-grained local exploration. The overall behavior policy is defined as follows:                           
+
+> πP AES (a|s) =
+> 
+> a∼Uniform( A),αj,a∼πg(s) + N(0 ,(κσ j)2),γj,a∼πj(s) + N(0 , σ 2
+> j),1−αj−γj.
+
+(4) During training, PAES adaptively updated its exploration parameters according to the learning status of each stage. The random action probability and noise scale are updated as follows: 
+
+αj,e +1 = cα
+
+ 1 − Se[j]; σj,e +1 = cσ
+
+ 1 − Se[j], (5) where, Se[j] denotes the smoothed success rate of stage j
+
+after the e-th training epoch, and cα, c σ ∈ (0 , 1] are upper-bound constants. Meanwhile, the guiding probability was determined by the performance gap between the previously mastered stage and the current stage: 
+
+## γj = clip 
+
+## 
+
+## cg ·  Se[g] − Se[j]
+
+> +
+
+## , γ min , γ max 
+
+## 
+
+## , (6) where, g denotes the highest mastered stage index, and 
+
+γmin , γ max are the lower and upper bounds of the guiding probability. Through this adaptive mechanism, PAES gradually re-shaped the exploration behavior throughout training. At the beginning of training, when the success rates were close to zero, large random action probability and noise variance were assigned to ensure sufficient global exploration. During inter-mediate stages, when a previous stage has been mastered but the current stage remains unstable, the guiding probability increased, enabling the agent to make greater use of effective prior policies and reach high-value regions more efficiently. As training converges and the success rate approached one, 
+
+αj , σj , and γj gradually decreased toward zero, so the agent increasingly relied on stable policy execution. In this way, PAES improved sample efficiency and training stability by adapting the action-sampling behavior during training, while keeping the original reward definition and optimization objective unchanged. 
+
+D. Reward Function 
+
+Since our task was a two-stage obstacle separation and grasping task, we represented high-level goals as two-dimensional vectors gH = ( gL 
+
+> 1
+
+, gL 
+
+> 2
+
+). The vector (1,0) indicated that the low-level goal gL 
+
+> 1
+
+should be achieved, while (0, 1) indicated that the low-level goal gL 
+
+> 2
+
+should be achieved. The high-level reward function was defined simply by checking whether the desired high-level goal was achieved, using element-wise equality with the actual achieved goal g⟨, as shown in the following equation. 
+
+rH =
+
+ 0, gH = g⟨
+
+−1, gH̸ = g⟨ (7) In low-level tasks, the reward function comprised distance and pose rewards, combined through weighting to simulta-neously ensure precision and stability of movements. Both employed sparse rewards: when the distance was below the set threshold, the reward was 0; otherwise, it was -1. A reward of 0 was given when the end-effector’s orientation maintained an angle within ±10° relative to the vertical direction, and -1 otherwise, ensuring the gripper maintains an appropriate posture. In summary, the low-level reward was a weighted sum of two components: the distance reward and the posture reward, weighted at 0.7 and 0.3 respectively. This effectively constrained and optimized the low-level pushing and grasping actions. 
+
+rp =
+
+(
+
+0, 0.04 ≤ (obs − to − tar )x ≤ 0.045 
+
+−1, otherwise (8) 
+
+rg =
+
+(
+
+0, 0.0 ≤ (ee − to − tar ) ≤ 0.01 
+
+−1, otherwise (9) 
+
+rpose (θ) = 
+
+(
+
+0, |θ| ≤ 10 ◦
+
+−1, otherwise (10) IV. EXPERIMENTS 
+
+A. Experiment setup and training 
+
+To evaluate the efficacy of the proposed method, this paper conducted simulation experiments within the PyBullet [20] framework based on the Bullet engine. The simulation environment was established by modeling strawberry racks and strawberries in SolidWorks and then exporting them into the simulator. Multiple representative occlusion scenarios were constructed, including cases where the target fruit was occluded by a single unripe fruit and cases where it was simultaneously occluded by multiple fruits, in order to sys-tematically evaluate the performance of the proposed method under different levels of task complexity. The high-level and low-level reinforcement learning policies were implemented using DIOL and DDPG, respectively. Both the actor and critic networks adopted fully connected architectures, with ReLU as the activation function and Adam as the optimizer. The learning rate was set to 1 × 10 −3. The batch size for experience replay was 256, and the replay buffer size was 1×
+
+10 6. The model was trained for 300 epochs, with each epoch consisting of 100 episodes and each episode containing 200 steps. Training was conducted over 100 distinct scenarios to improve the robustness and generalization ability of the learned policy. Based on the simulation validation, real-world experiments were further carried out to evaluate the transferability of the learned policy in practical settings. The real-world platform employed a hybrid robotic arm (LingXtend) [22] to perform strawberry harvesting under occlusion. As shown in Fig. 4, the developed strawberry harvesting robot was deployed for on-site validation in the glasshouse of Cuihu Agriculture Technology Co., Ltd. in Beijing. To reduce the influence of structural differences between the simulation and the real robotic system on policy transfer, both policy train-ing and transfer were performed in the end-effector action space. Specifically, end-effector pose control was adopted as a unified interface, enabling the learned policy to be effectively transferred from the simulation platform to the real robotic system. By combining simulation and real-world experiments, the effectiveness of the proposed method was further validated. 
+
+B. Simulation Results and Analysis 
+
+1) Comparison with the HAC: We compared this approach with Hierarchical Actor-Critic (HAC), a representative hier-archical reinforcement learning baseline. HAC was particu-larly suited to multi-objective tasks, as it imposed objective constraints on policies across all levels of the hierarchical structure, thereby enabling flexible sub-goal decomposition and execution.The HAC baseline was implemented under the same experimental settings described above. As shown in Fig. 5, the proposed VGPA achieved a high-level success rate of 96.7% and a low-level success rate of 97.54%, demon-strating stable and efficient learning across the hierarchy. In contrast, HAC agents showed significantly lower per-formance, with only 7.77% high-level success and 35.22% Fig. 4. Field test of the strawberry harvesting robot (HarvestFlex) in a greenhouse environment (Beijing Cuihu Agriculture Technology Co., Ltd.). 
+
+low-level success. This large performance gap indicated that HAC agents were mostly limited to completing the initial obstacle separation task and struggled to accomplish the full clearance-and-grasp sequence.  
+
+> Fig. 5. Success rate training curves for HAC and VGPA.
+
+2) Ablation studies: This section performs ablation exper-iments on the proposed components to validate the effective-ness of each module within the hierarchical content-driven planning VGPA framework. The experimental results are shown in Fig. 6. Compared to the proposed VGPA method, both NO-PAES and NO-VG showed certain shortcomings. Notably, NO-VG lagged significantly behind VGPA dur-ing the early learning phase of high-level strategies, con-firming that vision-guided strategies effectively assist high-level strategies in selecting the correct option, thereby sub-stantially enhancing their learning efficiency. Concurrently, PAES mitigated instability in high-low layer training by adaptively reducing the exploration ratio and introducing an adaptive guidance mechanism, thereby accelerating the convergence of the low-level strategy. The combination of these approaches yielded a marked improvement in the overall performance of the hierarchical strategy.  
+
+> Fig. 6. The ablation results for VG and PAES modules.
+
+3) Real-world Experiments: The experiments were carried out in clustered strawberry environments under three repre-sentative occlusion conditions: slight occlusion, moderate oc-clusion, and dense occlusion. In the slight occlusion setting, the obstacle strawberry was mainly located on one side of the target fruit, and two common cases were considered: the obstacle was positioned near the middle side of the target, or it was located in the lower-middle region beneath the target. In the moderate occlusion setting, the obstacle strawberry was mainly distributed in the lower-middle region of the target, while additional side occlusion was also present. In the dense occlusion setting, one or more obstacle strawberries were located beneath the target fruit, and lateral occlu-sion from both sides could also occur. For each occlusion condition, 20 different scenes were constructed, and each scene was tested in three repeated trials. Representative real-world harvesting examples under slight, moderate, and dense occlusion conditions are shown in Fig. 7. A direct picking strategy was adopted as the baseline, in which the robot directly attempted to grasp the target fruit without performing any prior obstacle-separation operation. In relatively simple scenarios, where the target fruit was sufficiently exposed and the occlusion was weak, this method could complete the harvesting task. However, under more complex occlusion conditions, it encountered significant difficulties, indicating clear limitations in handling severe occlusion and dense interference. In contrast, the proposed obstacle-separation-based har-vesting method first removed or pushed aside the fruits obstructing the target before executing the grasping action. This created a more feasible approach space for the end-effector and reduced the occlusion of the target fruit. As shown in Table I, the proposed method achieved success rates of 88.3%, 80.0%, and 71.7% under slight, moderate, and dense occlusion, respectively, consistently outperforming the direct picking baseline, which achieved 75.7%, 58.3%, and 45.0% in the corresponding scenarios. Overall, the proposed method achieved an average success rate of 80.0%, compared with 59.7% for direct picking. The grasping time reported included the complete execution pipeline, including target recognition, motion planning, and grasp execution, and was measured from the beginning of visual recognition to the end of fruit picking. Although the average grasping time of our method (4.15 s) was longer than that of direct picking (2.93 s), the proposed strategy provided substantially higher robustness and reliability in cluttered environments. These results demonstrated that the learned policy can be effectively transferred from simulation to the real robotic system and Fig. 7. Real-world harvesting examples under different occlusion conditions. Rows (a), (b), and (c) correspond to slight, moderate, and dense occlusion scenarios, respectively. From left to right, columns (1)–(5) illustrate the initial scene, target detection, obstacle pushing, push completion, and final grasping. 
+
+achieves more reliable harvesting performance than direct picking in challenging clustered strawberry scenarios. We further compared the proposed method with a Vision-Language Model (VLM)-based method developed in our group, which used a large language model for action plan-ning [23]. As shown in Table I, the VLM method achieved slightly higher success rates across all occlusion conditions, indicating stronger generalization. However, its execution time (7.23 s) was substantially longer than that of the proposed method (4.15 s). This suggested that, although the VLM-based method improved adaptability, the proposed RL-based method achieved a better trade-off between harvesting success and execution efficiency. Nevertheless, several failures were still observed in the real-world experiments. First, severe occlusion affected target perception and localization. Second, variations in the size and shape of real strawberries introduced additional uncertainty during manipulation, which could also lead to harvesting failure. Third, in some complex occlusion scenarios, the cur-rent push-and-grasp strategy could swallow both the obstacle strawberry and the target strawberry at the same time during the swallowing motion, leading to harvesting failure. These observations indicate that relying solely on the push-and-grasp strategy still has certain limitations.             
+
+> TABLE I COMPARISON OF HARVESTING PERFORMANCE UNDER DIFFERENT OCCLUSION LEVELS
+> Method Scene Success Rate Average Grasp Time (s)
+> Direct Picking Slight Occlusion 75.7% 2.63s Moderate Occlusion 58.3% Dense Occlusion 45.0% Ours Slight Occlusion 88.3% 4.15s Moderate Occlusion 80.0% Dense Occlusion 71.7% VLM Slight Occlusion 90.0% 7.23s Moderate Occlusion 81.0% Dense Occlusion 80.0%
+
+V. CONCLUSIONS This paper proposed a hierarchical reinforcement learn-ing framework for selective strawberry harvesting in clus-tered environments with severe occlusion. By integrating vision-guided decision-making and adaptive exploration, the proposed method improved policy learning stability and harvesting performance. Experimental results demonstrated that the learned policy can be successfully transferred from simulation to a real robotic system and consistently outper-formed the direct picking strategy under different occlusion conditions. Although the proposed simulation environment covered representative occlusion scenarios encountered in clustered strawberry harvesting, it still simplified certain characteristics of real agricultural environments, such as fruit deformation, peduncle flexibility, and complex interactions among neighboring fruits. The proposed framework provided a practical solution for selective harvesting in densely clus-tered strawberry environments. Future work will further reduce the sim-to-real gap by incorporating more realistic deformable plant models and more diverse occlusion scenarios, while improving policy transferability and refining the obstacle-separation strategy. VI. ACKNOWLEDGMENT The accompanying video demonstrating both simulation and real-world experiments can be found at: https:// youtu.be/zHSrkjB_unE .REFERENCES [1] Vishal Meshram, Kailas Patil, Vidula Meshram, Dinesh Hanchate, and SD Ramkteke. Machine learning in agriculture domain: A state-of-art survey. Artificial Intelligence in the Life Sciences , 1:100010, 2021. [2] Yuanyue Ge, Ya Xiong, Gabriel Lins Tenorio, and P˚ al Johan From. Fruit localization and environment perception for strawberry harvest-ing robots. IEEE access , 7:147642–147652, 2019. [3] Yajun Li, Qingchun Feng, Yifan Zhang, Chuanlang Peng, Yuhang Ma, Cheng Liu, Mengfei Ru, Jiahui Sun, and Chunjiang Zhao. Peduncle collision-free grasping based on deep reinforcement learning for tomato harvesting robot. Computers and Electronics in Agriculture ,216:108488, 2024. [4] Francisco Yandun, Tanvir Parhar, Abhisesh Silwal, David Clifford, Zhiqiang Yuan, Gabriella Levine, Sergey Yaroshenko, and George Kantor. Reaching pruning locations in a vine using a deep rein-forcement learning policy. In 2021 IEEE International Conference on Robotics and Automation (ICRA) , pages 2400–2406. IEEE, 2021. [5] Ya Xiong, Yuanyue Ge, and P˚ al Johan From. An improved obsta-cle separation method using deep learning for object detection and tracking in a hybrid visual control loop for fruit picking in clusters. 
+
+Computers and Electronics in Agriculture , 191:106508, 2021. [6] Emlyn Williams and Athanasios Polydoros. Zero-shot sim-to-real reinforcement learning for fruit harvesting. arXiv preprint arXiv:2505.08458 , 2025. [7] Kechun Xu, Hongxiang Yu, Qianen Lai, Yue Wang, and Rong Xiong. Efficient learning of goal-oriented push-grasping synergy in clutter. 
+
+IEEE Robotics and Automation Letters , 6(4):6337–6344, 2021. [8] Dafa Ren, Shuang Wu, Xiaofan Wang, Yan Peng, and Xiaoqiang Ren. Learning bifunctional push-grasping synergistic strategy for goal-agnostic and goal-oriented tasks. In 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 2909– 2916. IEEE, 2023. [9] Shih-Min Yang, Martin Magnusson, Johannes A Stork, and Todor Stoyanov. Learning extrinsic dexterity with parameterized manipu-lation primitives. In 2024 IEEE International Conference on Robotics and Automation (ICRA) , pages 5404–5410. IEEE, 2024. [10] Richard S Sutton, Doina Precup, and Satinder Singh. Between mdps and semi-mdps: A framework for temporal abstraction in reinforce-ment learning. Artificial intelligence , 112(1-2):181–211, 1999. [11] Pierre-Luc Bacon, Jean Harb, and Doina Precup. The option-critic architecture. In Proceedings of the AAAI conference on artificial intelligence , volume 31, 2017. [12] Jesse Zhang, Haonan Yu, and Wei Xu. Hierarchical reinforce-ment learning by discovering intrinsic options. arXiv preprint arXiv:2101.06521 , 2021. [13] Xintong Yang, Ze Ji, Jing Wu, Yu-Kun Lai, Changyun Wei, Guoliang Liu, and Rossitza Setchi. Hierarchical reinforcement learning with universal policies for multistep robotic manipulation. IEEE Transac-tions on Neural Networks and Learning Systems , 33(9):4727–4741, 2021. [14] Hecheng Wang, Lizhe Qi, Ziheng Wang, Jiankun Ren, Wei Li, and Yunquan Sun. Hierarchical visual policy learning for long-horizon robot manipulation in densely cluttered scenes. In 2025 IEEE International Conference on Robotics and Automation (ICRA) , pages 1149–1155. IEEE, 2025. [15] Amin Berjaoui Tahmaz, Ravi Prakash, and Jens Kober. Impedance primitive-augmented hierarchical reinforcement learning for sequential tasks. In 2025 IEEE International Conference on Robotics and Automation (ICRA) , pages 10973–10979. IEEE, 2025. [16] Dinh-Cuong Hoang, Johannes A Stork, and Todor Stoyanov. Context-aware grasp generation in cluttered scenes. In 2022 International Conference on Robotics and Automation (ICRA) , pages 1492–1498. IEEE, 2022. [17] Wenxuan Zhou and David Held. Learning to grasp the ungraspable with emergent extrinsic dexterity. In Conference on Robot Learning ,pages 150–160. PMLR, 2023. [18] Timothy P Lillicrap, Jonathan J Hunt, Alexander Pritzel, Nicolas Heess, Tom Erez, Yuval Tassa, David Silver, and Daan Wierstra. Continuous control with deep reinforcement learning. arXiv preprint arXiv:1509.02971 , 2015. [19] Meili Sun, Shimin Hu, Chunjiang Zhao, and Ya Xiong. Light-resilient visual regression of strawberry ripeness for robotic harvesting. 
+
+Computers and Electronics in Agriculture , 241:111169, 2026. [20] Erwin Coumans and Yunfei Bai. Pybullet quickstart guide. ed: PyBullet Quickstart Guide. https://docs. google. com/document/u/1/d ,2021. [21] Andrew Levy, George Konidaris, Robert Platt, and Kate Saenko. Learning multi-level hierarchies with hindsight. arXiv preprint arXiv:1712.00948 , 2017. [22] Yang Chen, Zhonghua Miao, Yuanyue Ge, Sen Lin, Liping Chen, and Ya Xiong. Design and control of a novel six-degree-of-freedom hybrid robotic arm. In 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 3597–3604. IEEE, 2024. [23] Quan Zhao, Yuanyue Ge, Hui Zhao, and Ya Xiong. Active obstacle separation: Vision-language model (vlm) driven clearing decisions for robotic harvesting. Smart Agricultural Technology , page 102037, 2026.

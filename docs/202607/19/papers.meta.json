@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-19",
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T20:58:07",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/19/2607.13799v1-vision-based-obstacle-separation-for-strawberry-harvesting-in-clusters-using-hierarchical-reinforcement-learning",
+      "section": "quick",
+      "title_en": "Vision-Based Obstacle Separation for Strawberry Harvesting in Clusters Using Hierarchical Reinforcement Learning",
+      "authors": "Teng Li, Hanfei Shi, Chunjiang Zhao, Ya Xiong",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13799v1",
+      "score": "6.0",
+      "evidence": "分层强化学习用于障碍分离与抓取",
+      "tldr": "簇生草莓环境中成熟果实常被未成熟果实遮挡，直接抓取不可靠。提出层次强化学习框架VGPA，包含视觉引导决策机制和渐进自适应探索策略，将任务分解为障碍分离与目标抓取。仿真成功率96.7%，真实机器人成功率达71.7%-88.3%，平均耗时仅增加1.22秒。验证了该方法在复杂簇生环境中机器人采摘的有效性与泛化能力。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Selective harvesting in clustered strawberry environments is challenging because ripe fruits are often occluded by surrounding unripe fruits, making direct grasping unreliable. To address this problem, this paper proposes a hierarchical reinforcement learning framework, termed VGPA, which integrates a vision-guided decision mechanism and a Progressive Adaptive Exploration Strategy (PAES) for vision-based obstacle separation and harvesting. The task was decomposed into two sequential stages: obstacle separation and target grasping. At the high level, the vision-guided mechanism improved option selection and accelerated policy convergence. At the low level, PAES improved exploration efficiency and training stability during continuous control learning. In simulation experiments, the learned policy achieved a success rate of 96.7%. In addition, sim-to-real transfer experiments on a self-developed parallel robot showed that the proposed method achieved success rates ranging from 71.7% to 88.3%, outperforming direct picking while requiring only 1.22~s more average harvesting time. These results verified the effectiveness, generalization ability, and practical potential of the proposed method for robotic harvesting in complex clustered environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.13882v1-learning-forward--reverse-skills-from-a-single-unfinished-demonstration-for-constrained-manipulation-tasks",
+      "section": "quick",
+      "title_en": "Learning Forward & Reverse Skills from a Single Unfinished Demonstration for Constrained Manipulation Tasks",
+      "authors": "Yexin Hu, Haoyi Zheng, Johannes Heidersberger, Dongheui Lee",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13882v1",
+      "score": "6.0",
+      "evidence": "从单个演示学习约束操作",
+      "tldr": "现有学习从演示方法需要多个完整演示，且不支持反向技能执行，难以处理接触丰富的约束操纵任务。本文提出一种单次演示框架，将演示分解为非接触和接触阶段，非接触动作用动态运动基元编码，接触动作用基于几何驱动扭转方向分割的螺旋运动基元序列表示。执行时通过导纳引导位姿修正和速度调节，支持超越演示轨迹长度的任务完成和反向执行。在钉插入、电池插入、开锁和螺丝驱动任务中成功率和鲁棒性优于基线方法。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Learning from demonstration (LfD) enables robots to learn manipulation skills directly from expert demonstrations but remains challenging for contact-rich tasks involving geometric constraints and force interaction. Existing approaches typically require multiple complete demonstrations and do not support reverse skill execution. In this paper, we present a unified one-shot framework for constrained manipulation that learns both forward and reverse execution from a single, possibly unfinished demonstration. Our method decomposes demonstrations into non-contact and contact phases, with non-contact motion encoded with dynamic movement primitives (DMP), and contact motion represented as a sequence of screw motion primitives segmented by our proposed geometry-driven twist-direction segmentation algorithm. During execution, screw primitives are executed sequentially under admittance-guided pose correction and speed regulation, enabling task completion beyond the demonstrated trajectory length as well as reverse skill execution without additional learning data. Experiments on peg insertion, battery insertion, lock opening, and screw driving tasks demonstrate improved success rates and robustness over segmentation and one-shot trajectory learning baselines. Details are available on the project website: https://tuwien-asl.github.io/LfD-Screw/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

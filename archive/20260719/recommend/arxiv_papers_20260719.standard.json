@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-19T20:57:13.287739+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.13799v1",
+      "source": "arxiv",
+      "title": "Vision-Based Obstacle Separation for Strawberry Harvesting in Clusters Using Hierarchical Reinforcement Learning",
+      "abstract": "Selective harvesting in clustered strawberry environments is challenging because ripe fruits are often occluded by surrounding unripe fruits, making direct grasping unreliable. To address this problem, this paper proposes a hierarchical reinforcement learning framework, termed VGPA, which integrates a vision-guided decision mechanism and a Progressive Adaptive Exploration Strategy (PAES) for vision-based obstacle separation and harvesting. The task was decomposed into two sequential stages: obstacle separation and target grasping. At the high level, the vision-guided mechanism improved option selection and accelerated policy convergence. At the low level, PAES improved exploration efficiency and training stability during continuous control learning. In simulation experiments, the learned policy achieved a success rate of 96.7%. In addition, sim-to-real transfer experiments on a self-developed parallel robot showed that the proposed method achieved success rates ranging from 71.7% to 88.3%, outperforming direct picking while requiring only 1.22~s more average harvesting time. These results verified the effectiveness, generalization ability, and practical potential of the proposed method for robotic harvesting in complex clustered environments.",
+      "authors": [
+        "Teng Li",
+        "Hanfei Shi",
+        "Chunjiang Zhao",
+        "Ya Xiong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-15T13:07:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.13799v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical RL for obstacle separation and grasping",
+      "llm_evidence_cn": "分层强化学习用于障碍分离与抓取",
+      "llm_evidence": "分层强化学习用于障碍分离与抓取",
+      "canonical_evidence": "分层强化学习用于障碍分离与抓取",
+      "llm_tldr_en": "Proposes VGPA, a hierarchical RL framework for vision-based obstacle separation and strawberry harvesting, using option selection and adaptive exploration.",
+      "llm_tldr_cn": "该论文提出VGPA分层强化学习框架，用于簇状草莓采摘中的视觉障碍分离与目标抓取。高层通过视觉引导机制优化选项选择加速收敛，低层采用渐进自适应探索策略提升训练稳定性。方法可推广至其他需要障碍物分离的抓取场景如空中操作。",
+      "llm_tldr": "该论文提出VGPA分层强化学习框架，用于簇状草莓采摘中的视觉障碍分离与目标抓取。高层通过视觉引导机制优化选项选择加速收敛，低层采用渐进自适应探索策略提升训练稳定性。方法可推广至其他需要障碍物分离的抓取场景如空中操作。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.13882v1",
+      "source": "arxiv",
+      "title": "Learning Forward & Reverse Skills from a Single Unfinished Demonstration for Constrained Manipulation Tasks",
+      "abstract": "Learning from demonstration (LfD) enables robots to learn manipulation skills directly from expert demonstrations but remains challenging for contact-rich tasks involving geometric constraints and force interaction. Existing approaches typically require multiple complete demonstrations and do not support reverse skill execution. In this paper, we present a unified one-shot framework for constrained manipulation that learns both forward and reverse execution from a single, possibly unfinished demonstration. Our method decomposes demonstrations into non-contact and contact phases, with non-contact motion encoded with dynamic movement primitives (DMP), and contact motion represented as a sequence of screw motion primitives segmented by our proposed geometry-driven twist-direction segmentation algorithm. During execution, screw primitives are executed sequentially under admittance-guided pose correction and speed regulation, enabling task completion beyond the demonstrated trajectory length as well as reverse skill execution without additional learning data. Experiments on peg insertion, battery insertion, lock opening, and screw driving tasks demonstrate improved success rates and robustness over segmentation and one-shot trajectory learning baselines. Details are available on the project website: https://tuwien-asl.github.io/LfD-Screw/.",
+      "authors": [
+        "Yexin Hu",
+        "Haoyi Zheng",
+        "Johannes Heidersberger",
+        "Dongheui Lee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-15T14:31:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.13882v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "constrained manipulation learning from single demonstration",
+      "llm_evidence_cn": "从单个演示学习约束操作",
+      "llm_evidence": "从单个演示学习约束操作",
+      "canonical_evidence": "从单个演示学习约束操作",
+      "llm_tldr_en": "Presents a one-shot framework for learning forward and reverse constrained manipulation skills from a single unfinished demonstration, using DMPs and screw motion primitives.",
+      "llm_tldr_cn": "该论文提出一种统一的一次性学习框架，从单个可能未完成的演示中学习约束操作任务的正反向技能。非接触阶段使用动态运动基元，接触阶段使用螺旋运动基元。方法降低了演示要求，支持双向执行。可迁移至空中机械臂操作场景。",
+      "llm_tldr": "该论文提出一种统一的一次性学习框架，从单个可能未完成的演示中学习约束操作任务的正反向技能。非接触阶段使用动态运动基元，接触阶段使用螺旋运动基元。方法降低了演示要求，支持双向执行。可迁移至空中机械臂操作场景。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
