@@ -1,0 +1,182 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T20:33:14.884570+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.15935v1",
+      "source": "arxiv",
+      "title": "Learning Reach-Avoid Task with Reinforcement Learning: Vectorized Simulation and Benchmark",
+      "abstract": "Deep reinforcement learning (DRL) has a longstanding tradition in addressing the reach-avoid task problem, especially for controlling robotic arms. While this task serves as a baseline environment within the research community, the ability of DRL to effectively learn the each-avoid task in complex and realistic scenarios beyond simplified and restricted tabletop settings remains uncertain. In this paper, we present, for the first time, a comprehensive benchmark for the reachavoid task that accurately captures real-world complexities without simplifications. We demonstrate a diverse range of settings for robotic arm reach-avoid task, which can be used for evaluating DRL research. We achieved this by utilizing the MuJoCo MJX physics engine and parallelizing both the simulation environment and DRL algorithms using the Brax library. We achieved state-of-the-art results with success rates of 96.1% (UR5e) and 98.8% (Franka Emika Robot) for the reach task and 86.8% (UR5e) and 95.2% (Franka) for the static reachavoid task. Our results indicate that while in previous works DRL agents could solve, for example, a reach task in a simplified setting perfectly, their agents performance collapses when evaluated in realistic scenarios. Overall, this work identifies that additional research is still required to claim the successful resolution of the robotic arm reach-avoid task using DRL. The environment and benchmarking code is available as open source at the following link",
+      "authors": [
+        "Jonas Weihing",
+        "Shahram Eivazi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-07-17T13:18:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.15935v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reinforcement learning for robotic arm control",
+      "llm_evidence_cn": "强化学习用于机械臂控制",
+      "llm_evidence": "强化学习用于机械臂控制",
+      "canonical_evidence": "强化学习用于机械臂控制",
+      "llm_tldr_en": "Presents a comprehensive benchmark for robotic arm reach-avoid tasks using deep RL, enabling evaluation in realistic scenarios with MuJoCo MJX.",
+      "llm_tldr_cn": "该论文针对机械臂的到达-避开任务，利用深度强化学习提出了一个全面的基准测试平台，通过MuJoCo MJX物理引擎模拟真实世界的复杂性，解决了现有基准过于简化的局限性，为评估DRL在复杂环境中控制机械臂的能力提供了标准化的测试环境。",
+      "llm_tldr": "该论文针对机械臂的到达-避开任务，利用深度强化学习提出了一个全面的基准测试平台，通过MuJoCo MJX物理引擎模拟真实世界的复杂性，解决了现有基准过于简化的局限性，为评估DRL在复杂环境中控制机械臂的能力提供了标准化的测试环境。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.13653v1",
+      "source": "arxiv",
+      "title": "Exploratory, Communicative, and Deployable: Vision-Driven Embodied Agents for Open-World Mobile Manipulation",
+      "abstract": "Real-world deployment of embodied agents requires active exploration, visual grounding, and interactive intent disambiguation. However, existing frameworks often rely on privileged simulator states or assume complete instructions, bypassing realistic deployment challenges. To bridge this gap, we present REAL, an agentic framework for open-world mobile manipulation. REAL establishes sim-to-real-consistent environment APIs without oracle perception and integrates a simulated user to enable human-in-the-loop interaction. Within this environment, we design diverse task compositions to drive data collection, supervised fine-tuning, and online reinforcement learning, systematically optimizing agent performance. To comprehensively evaluate this approach, we introduce REAL-Bench, a benchmark spanning 241 tasks across active exploration, visual distraction, articulated manipulation, and interactive disambiguation.   Experimental results demonstrate that our trained agent outperforms leading commercial closed-source VLMs on interactive tasks with a 56.9% success rate. Further empirical analysis reveals that our hierarchical training pipeline successfully aligns the model's tool-use capabilities while maintaining robust open-vocabulary reasoning under extended exploration horizons. Finally, we deploy and evaluate our framework on a physical dual-arm mobile robot, where it achieves a 78.3% end-to-end success rate over 60 real-world episodes. These physical trials demonstrate robust zero-shot transferability to unseen household scenarios, validating that our sim-to-real-consistent design successfully bridges the reality gap for long-horizon mobile manipulation. Code is available at https://github.com/InternRobotics/REAL.",
+      "authors": [
+        "Boyu Mi",
+        "Mengchen Ma",
+        "Yifei Yao",
+        "Xing Gao",
+        "Junting Chen",
+        "Yangzi Li",
+        "Zihou Zhu",
+        "Guohao Li",
+        "Zhenfei Yin",
+        "Tai Wang",
+        "Yao Mu",
+        "Jiangmiao Pang",
+        "Hanqing Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-15T09:55:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.13653v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses online reinforcement learning for open-world mobile manipulation tasks involving robotic arm",
+      "llm_evidence_cn": "使用在线强化学习进行开放世界移动操作任务，涉及机械臂控制",
+      "llm_evidence": "使用在线强化学习进行开放世界移动操作任务，涉及机械臂控制",
+      "canonical_evidence": "使用在线强化学习进行开放世界移动操作任务，涉及机械臂控制",
+      "llm_tldr_en": "Presents REAL, an agentic framework for open-world mobile manipulation that uses online RL to train vision-driven embodied agents.",
+      "llm_tldr_cn": "针对真实世界部署中具身智能体缺乏探索和交互能力的问题，提出REAL框架。建立Sim-to-Real一致的环境API，集成模拟用户进行人机交互，并设计多样化任务组合驱动在线强化学习。在多种操作任务上性能显著提升，为开放世界移动操作提供了可行的强化学习方案，可直接迁移至空中机械臂场景。",
+      "llm_tldr": "针对真实世界部署中具身智能体缺乏探索和交互能力的问题，提出REAL框架。建立Sim-to-Real一致的环境API，集成模拟用户进行人机交互，并设计多样化任务组合驱动在线强化学习。在多种操作任务上性能显著提升，为开放世界移动操作提供了可行的强化学习方案，可直接迁移至空中机械臂场景。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.14393v1",
+      "source": "arxiv",
+      "title": "An offline approach to fNIRS-guided reinforcement learning for robot behavior",
+      "abstract": "Human-in-the-loop Reinforcement Learning has become a popular approach to training, finetuning, and aligning robot behavior with user preferences. Our paper explores the feasibility of using brain signals via functional near-infrared spectroscopy (fNIRS) to modulate robot learning in simulation. We compare agents trained on passive (observational) versus active (demonstrative) interaction tasks, and test multiple methods for enhancing the RL algorithm with the neural signal, focusing on parameter augmentation rather than replacement. We further examine how model granularity and noise affect agent learning. Our results show that this framework is effective: the neural signal improves learning when augmenting trajectory priorities and state-action q-values. Additionally, the framework learns successfully from offline data, offering a practical alternative for settings where real-time BCI setups are impractical or only limited data is available.",
+      "authors": [
+        "Julia Santaniello",
+        "Madelaine Brower",
+        "Benson Jiang",
+        "Donatello Sassaroli",
+        "Robert Jacob",
+        "Jivko Sinapov"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-15T22:12:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.14393v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reinforcement learning for robot behavior using brain signals",
+      "llm_evidence_cn": "利用脑信号的强化学习用于机器人行为",
+      "llm_evidence": "利用脑信号的强化学习用于机器人行为",
+      "canonical_evidence": "利用脑信号的强化学习用于机器人行为",
+      "llm_tldr_en": "This paper explores fNIRS-guided reinforcement learning to modulate robot behavior, showing that neural signals can improve learning when augmenting trajectory priorities and state-action pairs.",
+      "llm_tldr_cn": "该论文探索利用功能性近红外光谱脑信号指导强化学习以调整机器人行为。在仿真中比较主动与被动交互，通过参数增强方式融合神经信号。结果表明神经信号在增强轨迹优先级和状态-动作对时能提升学习效果，为RL在机器人控制中增加新模态提供了思路。",
+      "llm_tldr": "该论文探索利用功能性近红外光谱脑信号指导强化学习以调整机器人行为。在仿真中比较主动与被动交互，通过参数增强方式融合神经信号。结果表明神经信号在增强轨迹优先级和状态-动作对时能提升学习效果，为RL在机器人控制中增加新模态提供了思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.16177v1",
+      "source": "arxiv",
+      "title": "Physics-enhanced reinforcement learning for real-time optimal control of dynamical systems",
+      "abstract": "Reinforcement learning (RL) has recently emerged as a promising feedback control strategy for nonlinear and complex dynamical systems. However, RL algorithms are sample inefficient and require a large number of interaction with the environment to synthesize optimal control strategies. Consequently, applications of RL are typically limited to sparse sensors and actuators due to the curse of dimensionality entailed by the exploration-exploitation dilemma in high-dimensional spaces. In this work, we bridge RL and traditional optimal control for dynamical system with a novel Physics-EnhAnced Reinforcement Learning (PEARL) paradigm tailored to the control of high-dimensional and parametric dynamical systems, exploiting the differentibility of their dynamics. Specifically, PEARL employs an actor-adjoint algorithm that leverages automatic differentiation to compute policy gradients over short horizons and adjoint-based sensitivities of future returns approximated via neural networks, significantly reducing the number of environment interactions, while mitigating long-term gradient instabilities. Through two challenging parametric navigation problems in unsteady flows, we show that PEARL (i) effectively exploits differentiable environments to outperform state-of-the-art RL algorithms, (ii) is sample efficient, thanks to the physics-guided policy learning, (iii) generalizes across multiple scenarios, which is crucial when dealing with parametric systems, and (iv) enables scaling RL to high-dimensional state and action spaces, without requiring low-dimensional state representations or multi-agent strategies.",
+      "authors": [
+        "Matteo Tomasetto",
+        "Nicolò Botteghi",
+        "Gabriele Bruni",
+        "Andrea Manzoni"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "math.OC"
+      ],
+      "published": "2026-07-17T17:56:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.16177v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "physics-enhanced reinforcement learning for optimal control of dynamical systems; applicable to robot arm control",
+      "llm_evidence_cn": "物理增强强化学习用于动力系统最优控制；可应用于机械臂控制",
+      "llm_evidence": "物理增强强化学习用于动力系统最优控制；可应用于机械臂控制",
+      "canonical_evidence": "物理增强强化学习用于动力系统最优控制；可应用于机械臂控制",
+      "llm_tldr_en": "PEARL bridges RL and optimal control by incorporating physics knowledge, achieving sample-efficient real-time control for high-dimensional dynamical systems, applicable to robot arms and UAVs.",
+      "llm_tldr_cn": "该论文针对强化学习在高维动力系统中采样效率低的问题，提出物理增强强化学习范式PEARL。通过融合物理知识与最优控制，PEARL能够高效合成控制策略，适用于机械臂和无人机等系统。实验验证了其在参数化动力系统上的实时控制优势，为无人机机械臂控制提供了可迁移方法。",
+      "llm_tldr": "该论文针对强化学习在高维动力系统中采样效率低的问题，提出物理增强强化学习范式PEARL。通过融合物理知识与最优控制，PEARL能够高效合成控制策略，适用于机械臂和无人机等系统。实验验证了其在参数化动力系统上的实时控制优势，为无人机机械臂控制提供了可迁移方法。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
