@@ -6,32 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-20
-- 运行时间：2026-07-20 20:37:10 UTC
+- 最新运行日期：2026-07-21
+- 运行时间：2026-07-21 20:56:02 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：1
+- 本次总论文数：5
+- 精读区：2
 - 速读区：3
 
 ### 今日简报（AI）
-今日精读1篇速读3篇，重点聚焦强化学习在机器人避碰、实时控制及行为学习中的应用。最值得关注的是精读文章《Learning Reach-Avoid Task with Reinforcement Learning》，该工作提出了向量化仿真基准。建议优先关注强化学习与物理模型结合的方向（如Physics-enhanced RL），实用价值较高。
-- 详情：[/202607/20/README](/202607/20/README)
+今天精读2篇高分论文，速读3篇，聚焦机器人操作与强化学习前沿。最值得关注的是基于视觉语言动作模型的长程操作前瞻残差RL，以及接触丰富操作中的数据驱动方法。建议优先精读这两篇，深入理解其技术细节与实验设计。
+- 详情：[/202607/21/README](/202607/21/README)
 
 ### 精读区论文标签
-1. [Learning Reach-Avoid Task with Reinforcement Learning: Vectorized Simulation and Benchmark](/202607/20/2607.15935v1-learning-reach-avoid-task-with-reinforcement-learning-vectorized-simulation-and-benchmark)  
+1. [Foresight Residual RL for Long-Horizon Robot Manipulation with Vision-Language-Action Models](/202607/21/2607.16506v1-foresight-residual-rl-for-long-horizon-robot-manipulation-with-vision-language-action-models)  
+   标签：评分：9.0/10、query:drone-arm
+   evidence：残差强化学习用于长时域机器人操作结合视觉-语言-动作模型
+2. [Data and Learning Where it Matters for Contact-Rich Manipulation](/202607/21/2607.15982v1-data-and-learning-where-it-matters-for-contact-rich-manipulation)  
    标签：评分：8.0/10、query:drone-arm
-   evidence：强化学习用于机械臂控制
+   evidence：离线深度强化学习用于接触密集操作
 
 ### 速读区论文标签
-1. [Exploratory, Communicative, and Deployable: Vision-Driven Embodied Agents for Open-World Mobile Manipulation](/202607/20/2607.13653v1-exploratory-communicative-and-deployable-vision-driven-embodied-agents-for-open-world-mobile-manipulation)  
+1. [HCPG-Flow:Hierarchical Contact-Progress Guidance for Flow-Policy Robot Manipulation](/202607/21/2607.17651v1-hcpg-flowhierarchical-contact-progress-guidance-for-flow-policy-robot-manipulation)  
    标签：评分：7.0/10、query:drone-arm
-   evidence：使用在线强化学习进行开放世界移动操作任务，涉及机械臂控制
-2. [Physics-enhanced reinforcement learning for real-time optimal control of dynamical systems](/202607/20/2607.16177v1-physics-enhanced-reinforcement-learning-for-real-time-optimal-control-of-dynamical-systems)  
+   evidence：基于SAC流策略的机械臂强化学习控制
+2. [Generalize and Guide: Decomposing Rewards for Few-Shot Inverse Reinforcement Learning](/202607/21/2607.17760v1-generalize-and-guide-decomposing-rewards-for-few-shot-inverse-reinforcement-learning)  
    标签：评分：7.0/10、query:drone-arm
-   evidence：物理增强强化学习用于动力系统最优控制；可应用于机械臂控制
-3. [An offline approach to fNIRS-guided reinforcement learning for robot behavior](/202607/20/2607.14393v1-an-offline-approach-to-fnirs-guided-reinforcement-learning-for-robot-behavior)  
+   evidence：逆强化学习用于机器人臂任务
+3. [Certifiable Safe Model-Based Reinforcement Learning with Control-Affine Dynamics Approximation](/202607/21/2607.16501v1-certifiable-safe-model-based-reinforcement-learning-with-control-affine-dynamics-approximation)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：利用脑信号的强化学习用于机器人行为
+   evidence：基于安全模型强化学习，可应用于机器人臂控制
 
 
 <div class="dpr-home-promo-card">
