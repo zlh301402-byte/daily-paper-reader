@@ -6,35 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-21
-- 运行时间：2026-07-21 20:56:02 UTC
+- 最新运行日期：2026-07-22
+- 运行时间：2026-07-22 20:17:11 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：2
-- 速读区：3
+- 本次总论文数：1
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今天精读2篇高分论文，速读3篇，聚焦机器人操作与强化学习前沿。最值得关注的是基于视觉语言动作模型的长程操作前瞻残差RL，以及接触丰富操作中的数据驱动方法。建议优先精读这两篇，深入理解其技术细节与实验设计。
-- 详情：[/202607/21/README](/202607/21/README)
+1. 今日速读1篇论文《AC-VLA》，关注利用组合学习增强视觉-语言-动作模型在分布外场景下的鲁棒性。
+2. 核心方向：组合式表示可有效提升模型应对未见动作的执行能力；关键结论在于结构化分解优于端到端学习。
+3. 推荐进一步探索组合学习在VLA中的模块化设计，并关注其实际部署时的泛化边界。
+- 详情：[/202607/22/README](/202607/22/README)
 
 ### 精读区论文标签
-1. [Foresight Residual RL for Long-Horizon Robot Manipulation with Vision-Language-Action Models](/202607/21/2607.16506v1-foresight-residual-rl-for-long-horizon-robot-manipulation-with-vision-language-action-models)  
-   标签：评分：9.0/10、query:drone-arm
-   evidence：残差强化学习用于长时域机器人操作结合视觉-语言-动作模型
-2. [Data and Learning Where it Matters for Contact-Rich Manipulation](/202607/21/2607.15982v1-data-and-learning-where-it-matters-for-contact-rich-manipulation)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：离线深度强化学习用于接触密集操作
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [HCPG-Flow:Hierarchical Contact-Progress Guidance for Flow-Policy Robot Manipulation](/202607/21/2607.17651v1-hcpg-flowhierarchical-contact-progress-guidance-for-flow-policy-robot-manipulation)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：基于SAC流策略的机械臂强化学习控制
-2. [Generalize and Guide: Decomposing Rewards for Few-Shot Inverse Reinforcement Learning](/202607/21/2607.17760v1-generalize-and-guide-decomposing-rewards-for-few-shot-inverse-reinforcement-learning)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：逆强化学习用于机器人臂任务
-3. [Certifiable Safe Model-Based Reinforcement Learning with Control-Affine Dynamics Approximation](/202607/21/2607.16501v1-certifiable-safe-model-based-reinforcement-learning-with-control-affine-dynamics-approximation)  
+1. [AC-VLA: Robust Out-of-Distribution Action Execution via Compositional Learning](/202607/22/2607.15714v1-ac-vla-robust-out-of-distribution-action-execution-via-compositional-learning)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：基于安全模型强化学习，可应用于机器人臂控制
+   evidence：组合学习提升视觉-语言-动作模型在操作中的分布外泛化，适用于机器人臂控制
 
 
 <div class="dpr-home-promo-card">
