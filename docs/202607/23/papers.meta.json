@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-23",
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T21:36:09",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/23/2607.19708v1-contact-persistent-full-actuation-for-aerial-physical-interaction",
+      "section": "deep",
+      "title_en": "Contact-Persistent Full Actuation for Aerial Physical Interaction",
+      "authors": "Abhimanyu Khadga, Abhinav Sinha, Shashi Ranjan Kumar",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.19708v1",
+      "score": "9.0",
+      "evidence": "过驱动无人机空中物理交互控制",
+      "tldr": "全驱动无人机在持续接触交互中，部分力矩被任务消耗，仅剩余力矩可用于稳定。本文提出接触持久全驱动框架，通过可行力矩多面体与剩余边界半径量化驱动能力。理论证明接触持久全驱动等价于任务力矩位于多面体内部，并给出边界判定与分配策略。实验表明全行秩不足以保证接触可行性，中等倾角设计可最大化剩余力矩。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Fully actuated unmanned aerial vehicles (UAVs) are usually certified through rank conditions on a control-allocation matrix or through free-flight tracking performance. For aerial physical interaction, this certification may be incomplete. During sustained contact, part of the available wrench is consumed by the interaction task, and only the residual wrench remains available for stabilization, disturbance rejection, and maneuvering. This paper introduces a control-theoretic framework for \\emph{contact-persistent full actuation}. A rigid-body model on $\\R^{3}\\times\\SO\\left(3\\right)$ is combined with a morphology-dependent wrench map that captures fixed-tilt, variable-tilt, coaxial, and overactuated multirotor architectures. We define feasible wrench sets under actuator limits, residual wrench sets under task loading, and residual authority margins that strengthen the usual rank-based notion of full actuation. The main result shows that contact-persistent full actuation is equivalent to interiority of the task wrench in the constrained feasible wrench polytope, and that the residual authority radius is exactly the distance to the polytope boundary. We further introduce a signed residual-margin certificate for infeasible and boundary cases, a slack-maximizing allocation certificate, and a robust implementability condition that can be used as a margin-aware safety filter. Numerical evaluation on an abstract tilted hexarotor shows that full row rank alone does not imply feasible contact operation. Intermediate tilt angles preserve residual authority during pushing, whereas small or excessive tilts fail because of lateral-force deficiency or hover-margin loss.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/23/2607.16313v1-generalist-ai-control-towards-multi-purpose-adaptive-algorithms",
+      "section": "quick",
+      "title_en": "Generalist AI Control: Towards Multi-purpose Adaptive Algorithms",
+      "authors": "Klinsmann Agyei, Pouria Sarhadi",
+      "date": "2026-07-14",
+      "pdf": "https://arxiv.org/pdf/2607.16313v1",
+      "score": "7.0",
+      "evidence": "提出通用控制器应对不同动力学系统，可应用于空中机械手控制",
+      "tldr": "传统控制器针对特定系统设计，缺乏跨系统泛化能力。本文提出通用控制器，采用注意力机制和掩码的动态状态空间表示，单网络处理不同阶数和动态的系统。在25个多样系统（包括不稳定、非最小相位等）上训练，模型学习跨系统控制策略，在扰动和噪声下性能媲美LQI控制器。为通用控制策略提供了可行方案。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Traditional controllers are designed for specific systems and do not transfer across different system orders and dynamics. We present a Generalist Controller, a learning-based controller capable of controlling systems of varying orders and dynamics. The approach introduces a novel dynamic state-space representation using attention mechanisms with masking, enabling a single neural network, trained in one shot, to handle systems with different dimensions without architectural modifications by assigning a system tag to each system. We generated 314,630 demonstrations from 25 diverse systems, including stable, unstable, minimum-phase, and non-minimum-phase dynamics, spanning linear and nonlinear systems from autonomous underwater and aerospace vehicles to mechanical systems and chemical processes. The model learns cross-system control strategies through multi-scale temporal processing and a mixture-of-experts architecture. Simulation results demonstrate that the proposed generalist controller achieves comparable performance to system-specific LQI controllers across all tested systems, including challenging cases such as non-minimum-phase and unstable dynamics, whilst generalising to unseen operating conditions including actuator saturation, noise, disturbance, and reference trajectories not encountered during training. This work represents a significant step towards generalist control policies within a defined family of dynamical systems, demonstrating effective control across a range of single-input single-output (SISO) systems of varying order and dynamics using a single learned policy without system-specific tuning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/23/2607.19628v1-hypember-hypernetwork-based-ensemble-for-robust-policy-learning-of-parametrized-dynamical-systems",
+      "section": "quick",
+      "title_en": "HypEMBER: Hypernetwork-based Ensemble for Robust Policy Learning of Parametrized Dynamical Systems",
+      "authors": "Nicolò Botteghi, Gabriele Pascali, Urban Fasel, Andrea Manzoni",
+      "date": "2026-07-21",
+      "pdf": "https://arxiv.org/pdf/2607.19628v1",
+      "score": "7.0",
+      "evidence": "超网络集成用于参数化动力系统的鲁棒强化学习策略",
+      "tldr": "参数化动力系统面临高维状态空间、模型不确定和测量噪声等挑战，标准强化学习方法鲁棒性差。本文提出HypEMBER框架，结合超网络生成参数依赖的策略和价值函数，实现不同动力学模式间的泛化；同时采用集成学习量化认知不确定性，改进探索策略。在Kuramoto-Sivashinsky方程和粒子导航任务上，HypEMBER相比SOTA方法显著提升训练稳定性和样本效率，对测量噪声和参数误设表现出更强的鲁棒性。该方法为参数化系统的鲁棒控制提供了有效方案。",
+      "tags": "query:drone-arm",
+      "abstract_en": "In this work we investigate reinforcement learning (RL) as a framework for the robust control of parametrized dynamical systems in presence of measurements and model uncertainties. High-dimensional state spaces, expensive numerical solvers, the partial knowledge of the governing equations, and the dependence on physical parameters that may be uncertain or difficult to estimate accurately, make the use of standard RL approaches computationally unfeasible. Indeed, lack of robustness and poor generalization across parameter variations are further amplified in presence of noisy or incomplete measurements, ultimately hampering control performance. To address these challenges, we introduce HypEMBER, a novel RL framework based on the combination of hypernetworks and ensemble learning. In the proposed approach, both the policy and value functions are represented through hypernetworks that generate the weights of the underlying models conditioned on the physical parameters of the system, thereby enabling parametric generalization across different dynamical regimes. In addition, an ensemble of policy and value approximators is employed to quantify epistemic uncertainty, leading to improved exploration strategies and enhanced robustness during and after training. The performance of the proposed framework is assessed on two representative parametrized control problems: (i) the one-dimensional Kuramoto-Sivashinsky equation and (ii) a particle-navigation task in a two-dimensional time-dependent gyre flow, focusing on robustness with respect to measurement noise and parameter misspecification. Numerical results demonstrate that HypEMBER consistently improves training stability and sample efficiency, while achieving superior robustness to uncertainties affecting both the system dynamics and the available observations, in comparison with state-of-the-art RL methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,802 @@
+Title: Contact-Persistent Full Actuation for Aerial Physical Interaction
+
+URL Source: https://arxiv.org/pdf/2607.19708v1
+
+Published Time: Thu, 23 Jul 2026 00:21:57 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Contact-Persistent Full Actuation for Aerial Physical Interaction 
+
+Abhimanyu Khadga, Abhinav Sinha, Senior Member, IEEE , and Shashi Ranjan Kumar, Senior Member, IEEE 
+
+Abstract —Fully actuated unmanned aerial vehicles (UAVs) are usually certified through rank conditions on a control-allocation matrix or through free-flight tracking performance. For aerial physical interaction, this certification may be in-complete. During sustained contact, part of the available wrench is consumed by the interaction task, and only the residual wrench remains available for stabilization, disturbance rejection, and maneuvering. This paper introduces a control-theoretic framework for contact-persistent full actuation . A rigid-body model on R3 × SO (3) is combined with a morphology-dependent wrench map that captures fixed-tilt, variable-tilt, coaxial, and overactuated multirotor architectures. We define feasible wrench sets under actuator limits, residual wrench sets under task loading, and residual authority margins that strengthen the usual rank-based notion of full actuation. The main result shows that contact-persistent full actuation is equivalent to interiority of the task wrench in the constrained feasible wrench polytope, and that the residual authority radius is exactly the distance to the polytope boundary. We further introduce a signed residual-margin certificate for infeasible and boundary cases, a slack-maximizing allocation certificate, and a robust implementability condition that can be used as a margin-aware safety filter. Numerical evaluation on an abstract tilted hexarotor shows that full row rank alone does not imply feasible contact operation. Intermediate tilt angles preserve residual authority during pushing, whereas small or excessive tilts fail because of lateral-force deficiency or hover-margin loss. 
+
+Index Terms —Fully actuated UAVs, aerial physical inter-action, control allocation, residual wrench authority, actuator constraints, contact-rich robotics. 
+
+I. I NTRODUCTION 
+
+Multirotor UAVs have become standard platforms for agile robotics because they are mechanically simple, hover-capable, and easy to deploy. Conventional coplanar multi-rotors, however, are underactuated. The propellers produce nearly parallel thrust directions, and lateral acceleration is ob-tained by reorienting the body. This coupling is acceptable for free-flight trajectory tracking [1], [2], but it is restrictive when the vehicle must maintain a desired attitude while exerting forces on the environment. Fully actuated and overactuated multirotors address this limitation by using fixed tilted rotors, active tilting rotors, noncoplanar propeller arrangements, coaxial thrust-vectoring designs, or aerodynamic surfaces to generate a six-dimensional wrench [1]–[8]. 
+
+A. Khadga and A. Sinha are with the Guidance, Autonomy, Learning, and Control for Intelligent Systems (GALACxIS) Lab, Department of Aerospace Engineering and Engineering Mechanics, University of Cincinnati, OH 45221, USA (e-mails: khadgaau@mail.uc.edu, abhinav.sinha@uc.edu). S. R. Kumar is with the Intelligent Systems and Control (ISaC) Lab, Department of Aerospace Engineering, Indian Institute of Technology Bombay, Powai, Mumbai 400076, India (email: srk@aero.iitb.ac.in). 
+
+The literature on fully actuated aerial vehicles has developed along three closely related lines. The first line is architectural wherein tilted-propeller hexarotors, overactuated quadrotors, omnidirectional octorotors, and morphing/variable-tilt vehicles have been designed to de-couple force generation from attitude and to enlarge the attainable wrench set [3]–[6], [9], [10]. The second line is interaction-oriented wherein fully actuated aerial robots have been used as flying end-effectors, contact-inspection systems, omnidirectional manipulation platforms, and heavy-object pushing vehicles [11]–[18]. The third line concerns alloca-tion and implementation wherein modern schemes account for task priority, actuator limits, singularities, overactuation, power dynamics, and saturation avoidance [9], [15], [19]. Despite these advances, most certification arguments still focus on rank, wrench-generation ability, tracking perfor-mance, or force-control performance for a specific exper-iment. These criteria are necessary but not sufficient for sustained contact-rich operation. During physical interaction, part of the feasible wrench set is consumed by hover, pushing, bracing, or end-effector loading, and the remaining portion must still support stabilization, disturbance rejection, and maneuvering. Thus, the relevant question is not solely whether a desired contact wrench is feasible, but whether it is feasible while preserving a nonzero stabilizing wrench margin. This paper is built around the following observation. The common condition of having the rank of the allocation matrix equal to six certifies structural wrench generation, but it does not certify contact-rich operation under actuator bounds. A fully actuated UAV may have rank six and still fail to push, brace, or reject disturbances if the required task wrench lies near the boundary of the feasible wrench set. For example, a horizontal pushing task consumes lateral force authority while gravity compensation consumes vertical authority. If the corresponding actuator allocation is close to saturation, the vehicle may have no meaningful wrench margin left for stabilizing perturbations. Hence, contact-rich actuation should be evaluated by the dimension of the wrench map, as well as by the residual wrench set left after task loading. The contribution of this paper is an actuation-theoretic certification framework for contact-rich fully actuated UAVs. Unlike rank-based tests, the proposed framework certifies whether a contact task leaves a nonzero residual wrench neighborhood for stabilization and disturbance rejection under actuator limits. First, we formulate morphology-arXiv:2607.19708v1 [cs.RO] 22 Jul 2026 dependent feasible wrench polytopes for a broad class of tilted, coaxial, variable-tilt, and overactuated multirotors. Second, we define contact-persistent full actuation as atask-relative interiority property of the constrained feasible wrench set. Third, we derive exact and computable residual-authority certificates, including signed margins, task-set mar-gins, and allocation-slack bounds. Fourth, we derive robust implementability and margin-aware filtering conditions that connect residual authority to closed-loop wrench feasibility. Finally, we show through a tilted-hexarotor study that rank-six allocation can still fail under sustained pushing, and that intermediate or task-adaptive tilt choices maximize residual stabilizing authority. The paper is intentionally hardware-independent. It pro-vides a way to ask, before building a prototype, whether a candidate fully actuated UAV morphology is suitable for sus-tained contact-rich operation. The resulting residual authority metric is also compatible with later work on morphology-aware allocation, saturation-aware control, and safety filters. II. M ODELING AND FEASIBLE WRENCH SETS 
+
+Consider a UAV modeled as a rigid body evolving on 
+
+R3×SO (3). Let p, v ∈ R3 be the inertial position and velocity, 
+
+R ∈ SO (3) be the rotation matrix from body to inertial coordinates, and 𝝎 ∈ R3 be the body angular velocity. The dynamics of the UAV can be written as 
+
+¤p = v, (1a) 
+
+𝑚 ¤v = −𝑚𝑔 e3 + Rf + d 𝑓 , (1b) 
+
+¤R = R𝑆 (𝝎 ) , (1c) 
+
+J ¤𝝎 = −𝝎 × J𝝎 + 𝝉 + d𝜏 , (1d) where 𝑚 > 0 is the mass, J = J⊤ > 0 is the inertia matrix, 
+
+𝑔 > 0 is gravitational acceleration, e3 = [0 0 1 ]⊤, f and 𝜏 
+
+denotes the body-frame control force and torque, and d 𝑓 and 
+
+d𝜏 denote unmodeled external effects. The map 𝑆 : R3 →
+
+R3×3 is the skew-symmetric operator satisfying 𝑆 (x) y = x×y
+
+for all x, y ∈ R3. The body wrench is 
+
+w = f⊤ 𝝉 ⊤⊤ ∈ R6. (2) We assume that the vehicle has 𝑁 thrust-generating modules. The 𝑖 th module is located at r𝑖 ∈ R3 in body coordinates and produces thrust magnitude 𝜆 𝑖 ≥ 0 along the unit direction 
+
+b𝑖 (𝜶 𝑖 ) ∈ R3. Here 𝜶 𝑖 denotes architecture-dependent vari-ables such as fixed tilt angles, servo tilt angles, or local rotor-frame orientation variables. The force and torque generated by module 𝑖 are modeled as 
+
+f𝑖 = 𝜆 𝑖 b𝑖 (𝜶 𝑖 ) , (3) 
+
+𝝉 𝑖 = r𝑖 × 𝜆 𝑖 b𝑖 (𝜶 𝑖 ) + 𝜎 𝑖 𝑐 𝑖 𝜆 𝑖 b𝑖 (𝜶 𝑖 ) , (4) where 𝑐 𝑖 ≥ 0 is a drag-to-thrust coefficient and 𝜎 𝑖 ∈ {− 1, 1}
+
+is the spin direction. Therefore, 
+
+w =
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+ b𝑖 (𝜶 𝑖 )
+
+𝑆 (r𝑖 ) b𝑖 (𝜶 𝑖 ) + 𝜎 𝑖 𝑐 𝑖 b𝑖 (𝜶 𝑖 )
+
+
+
+𝜆 𝑖 . (5) Let 𝝀 = [𝜆 1 · · · 𝜆 𝑁 ]⊤ and let 𝜶 collect all morphology vari-ables. Then, (5) is written compactly as w = M (𝜶 ) 𝝀 , where 
+
+M (𝜶 ) ∈ R6× 𝑁 is the allocation matrix. The actuator vector is constrained by 𝝀 ∈ Λ := 𝝀 ∈ R𝑁 : 𝝀 min ≤ 𝝀 ≤ 𝝀 max , where inequalities are componentwise. The morphology satisfies 
+
+𝜶 ∈ A , where A is compact. For a fixed morphology, the feasible wrench set is 
+
+W ( 𝜶 ) := w ∈ R6 : w = M (𝜶 ) 𝝀 , 𝝀 ∈ Λ . (6) 
+
+Definition 1 (Constrained Full Actuation) . For a given op-erating wrench w0, the UAV is constrained fully actuated at 
+
+(𝜶 , w0) if w0 ∈ int (W ( 𝜶 )) .At this stage, it is important to distinguish Definition 1 from the condition rank (M) = 6. Rank is a structural prop-erty of M (𝜶 ), whereas constrained full actuation depends on actuator bounds and on the location of the operating wrench inside W ( 𝜶 ).III. C ONTACT -P ERSISTENT FULL ACTUATION 
+
+Let wtask ∈ R6 be the wrench committed to a contact task, such as pushing or bracing. The residual wrench set is 
+
+Wres (𝜶 , wtask ) := Δw ∈ R6 : wtask + Δw ∈ W ( 𝜶 ) . (7) The set Wres contains the stabilizing and disturbance-rejection wrenches that remain after task loading. 
+
+Definition 2 (Contact-persistent Full Actuation) . Given 𝜖 > 0
+
+and wtask , the UAV is contact-persistently fully actuated at 𝜶 
+
+with margin 𝜖 if B𝜖 (06) ⊆ W res (𝜶 , wtask ), where B𝜖 (06) =
+
+{𝜁 ∈ R6 : ∥𝜁 ∥ ≤ 𝜖 }.
+
+Assumption 1. For the fixed morphology under consideration, 
+
+rank (M (𝜶 )) = 6, and 𝜆 𝑖, min < 𝜆 𝑖, max for all 𝑖 ∈ { 1, . . . , 𝑁 }.
+
+Lemma 1 (Feasible Wrench Geometry) . Under Assump-tion 1, W ( 𝜶 ) is a compact, convex, full-dimensional poly-tope in R6.Proof. The set Λ is a compact convex box. Its image under the linear map 𝝀 ↦ → M (𝜶 ) 𝝀 is compact and convex. Since 
+
+M (𝜶 ) has full row rank, the image contains a nonempty open set in R6. Since a linear image of a polytope is a polytope, the claim follows. □
+
+Here and throughout, 𝜕 W ( 𝜶 ) denotes the topological boundary of W ( 𝜶 ). Since W ( 𝜶 ) is compact under Assump-tion 1, this is equivalently 𝜕 W ( 𝜶 ) = W ( 𝜶 ) \ int (W ( 𝜶 )) .
+
+Proposition 1 (Insufficiency of Rank) . Assumption 1 does not imply that every desired wrench w𝑑 ∈ R6 is feasible. Moreover, if w𝑑 ∈ 𝜕 W ( 𝜶 ), then no 𝜖 > 0 satisfies 
+
+B𝜖 (w𝑑 ) ⊆ W ( 𝜶 ).Proof. Since Λ is compact, W ( 𝜶 ) is compact and cannot equal R6. Hence some wrenches are infeasible even though the allocation map is full row rank. If w𝑑 lies on the boundary of W ( 𝜶 ), every open ball centered at w𝑑 contains points outside W ( 𝜶 ). □Theorem 1 (Residual Authority and Interiority) . Let wtask ∈W ( 𝜶 ). There exists 𝜖 > 0 such that B𝜖 (06) ⊆Wres (𝜶 , wtask ) if and only if wtask ∈ int (W ( 𝜶 )) . Moreover, the largest residual authority radius is 
+
+𝜖 ★ (𝜶 , wtask ) = dist (wtask , 𝜕 W ( 𝜶 )) . (8) 
+
+Proof. From (7), B𝜖 (06) ⊆ W res (𝜶 , wtask ) if and only if 
+
+wtask + B𝜖 (06) ⊆ W ( 𝜶 ). Equivalently, B𝜖 (wtask ) ⊆ W ( 𝜶 ).Such an 𝜖 > 0 exists exactly when wtask is an interior point, and the largest such 𝜖 is the distance from wtask to the boundary. □
+
+If W ( 𝜶 ) has the half-space representation 
+
+W ( 𝜶 ) =
+
+n
+
+w ∈ R6 : a⊤ 
+
+> 𝑗
+
+w ≤ 𝑏 𝑗 , 𝑗 = 1, . . . , 𝑞 
+
+o
+
+, (9) then (8) becomes 
+
+𝜖 ★ (𝜶 , wtask ) = min  
+
+> 𝑗 ∈ { 1,...,𝑞 }
+
+𝑏 𝑗 − a⊤ 
+
+> 𝑗
+
+wtask 
+
+a 𝑗 
+
+. (10) Thus, contact-rich actuation can be certified by a distance-to-boundary computation. For later use, it is useful to define a signed version of this margin. In particular, if (9) is available, define 
+
+𝜑 W (𝜶 , w) := min  
+
+> 𝑗 ∈ { 1,...,𝑞 }
+
+𝑏 𝑗 − a⊤ 
+
+> 𝑗
+
+w
+
+a 𝑗 
+
+. (11) Then 𝜑 W (𝜶 , w) > 0 if and only if w ∈ int (W ( 𝜶 )) , while 
+
+𝜑 W (𝜶 , w) < 0 means that at least one actuator-induced half-space constraint is violated. Hence, unlike the unsigned distance dist (w, 𝜕 W ( 𝜶 )) , the signed margin does not assign a positive value to infeasible exterior points. 
+
+Corollary 1 (Signed-Margin Robust Ball) . Assume that 
+
+W ( 𝜶 ) admits the half-space representation (9) . For any 
+
+w0 ∈ R6 and any 𝜖 ≥ 0,
+
+B𝜖 (w0) ⊆ W ( 𝜶 ) ⇐= 𝜑 W (𝜶 , w0) ≥ 𝜖 . (12) 
+
+Moreover, if w0 ∈ W ( 𝜶 ), then the largest admissible Eu-clidean ball centered at w0 has radius max {0, 𝜑 W (𝜶 , w0)} .Proof. For any point w0 + Δw with ∥Δw∥ ≤ 𝜖 , each half-space constraint satisfies a⊤ 
+
+> 𝑗
+
+(w0 + Δw) ≤ a⊤ 
+
+> 𝑗
+
+w0 + a 𝑗 𝜖 . If (12) holds, then a⊤ 
+
+> 𝑗
+
+w0 + a 𝑗 𝜖 ≤ 𝑏 𝑗 for all 𝑗 , so the ball is contained in W ( 𝜶 ). The maximal-radius statement follows by minimizing the normalized half-space slack. □
+
+The exact boundary of W ( 𝜶 ) may be expensive to con-struct for large overactuated systems. The next result gives a computable lower bound directly from actuator slack. 
+
+Theorem 2 (Interior Allocation Certificate) . Let R𝑀 ∈ R𝑁 ×6
+
+satisfy M (𝜶 ) R𝑀 = I6. Suppose there exists 𝝀 0 ∈ int (Λ)
+
+such that M (𝜶 ) 𝝀 0 = wtask . Define 
+
+𝛿 ∞ (𝝀 0) = min 
+
+> 𝑖
+
+𝜆 0,𝑖 − 𝜆 𝑖, min , 𝜆 𝑖, max − 𝜆 0,𝑖 . (13) 
+
+Then the UAV is contact-persistently fully actuated with a margin of at least 
+
+𝜖 cert = 𝛿 ∞ (𝝀 0)∥R𝑀 ∥2→∞ 
+
+, (14) 
+
+where ∥R𝑀 ∥2→∞ := sup 𝜁 ≠0 ∥R𝑀 𝜁 ∥∞ /∥ 𝜁 ∥.Proof. For any Δw satisfying ∥Δw∥ ≤ 𝜖 cert , set Δ𝝀 = R𝑀 Δw.Then M (𝜶 ) ( 𝝀 0 + Δ𝝀 ) = wtask + Δw. Moreover, ∥Δ𝝀 ∥∞ ≤
+
+𝛿 ∞ (𝝀 0), so 𝝀 0 + Δ𝝀 ∈ Λ. Hence wtask + Δw ∈ W ( 𝜶 ) for all such Δw. □
+
+Corollary 2 (Slack-Maximizing Allocation Certificate) . For a fixed morphology and a desired task wrench wtask , consider 
+
+ 𝝀 ★, 𝛿 ★ ∈ arg max 
+
+> 𝝀 , 𝛿
+
+𝛿 (15) 
+
+s.t. M (𝜶 ) 𝝀 = wtask ,
+
+𝝀 min + 𝛿 1 ≤ 𝝀 ≤ 𝝀 max − 𝛿 1,𝛿 ≥ 0.
+
+The problem is a linear program. If 𝛿 ★ > 0, then wtask ∈
+
+int (W ( 𝜶 )) and the UAV is contact-persistently fully actu-ated. In addition, for any right inverse R𝑀 of M (𝜶 ), the allocation 𝝀 ★ certifies the residual margin 
+
+𝜖 slack = 𝛿 ★
+
+∥R𝑀 ∥2→∞ 
+
+. (16) 
+
+Proof. The constraints of (15) enforce 𝛿 ★ ≤ 𝛿 ∞
+
+ 𝝀 ★. If 
+
+𝛿 ★ > 0, then 𝝀 ★ ∈ int (Λ) and M (𝜶 ) 𝝀 ★ = wtask . Applying Theorem 2 with 𝝀 0 = 𝝀 ★ gives (16). □
+
+Let T ⊂ R6 be a compact set of task wrenches. The UAV is uniformly contact-persistently fully actuated over T with margin 𝜖 > 0 if B𝜖 (06) ⊆ W res (𝜶 , w) for all w ∈ T .
+
+Theorem 3 (Uniform Residual Authority) . For compact T ,a positive uniform residual margin exists if and only if T ⊂ 
+
+int (W ( 𝜶 )) . The largest uniform margin is 
+
+𝜖 ★ 
+
+> T
+
+(𝜶 ) = dist (T , 𝜕 W ( 𝜶 )) . (17) 
+
+Proof. Pointwise existence follows from Theorem 1. If T ⊂ 
+
+int (W ( 𝜶 )) and T is compact, then T has positive distance from the closed set 𝜕 W ( 𝜶 ). This distance is precisely the largest uniform ball radius that can be placed around every 
+
+w ∈ T while remaining in W ( 𝜶 ). □
+
+The margin (17) has a direct closed-loop interpretation. Suppose a high-level controller requests 
+
+w𝑑 (𝑡 ) = wtask (𝑡 ) + wstab (𝑡 ) , (18) where wstab is the stabilization and disturbance-rejection wrench. If wtask (𝑡 ) ∈ T and ∥wstab (𝑡 )∥ < 𝜖 ★ 
+
+> T
+
+(𝜶 ) for all 
+
+𝑡 , then w𝑑 (𝑡 ) ∈ W ( 𝜶 ) for all 𝑡 . Thus, residual authority gives a controller-agnostic feasibility layer. Any pose or force controller whose stabilizing wrench remains inside the residual ball is implementable without violating actuator bounds. Corollary 3 (Robust Implementability and Margin-Aware Filtering) . Assume that W ( 𝜶 ) admits (9) . Let ¯𝑤 stab ≥ 0
+
+and ¯𝑤 unc ≥ 0 be bounds on the stabilization wrench and the unmodeled interaction wrench, respectively. If 
+
+inf  
+
+> w∈ T
+
+𝜑 W (𝜶 , w) ≥ ¯𝑤 stab + ¯𝑤 unc , (19) 
+
+then every commanded wrench of the form 
+
+w𝑑 = wtask + wstab + wunc ; wtask ∈ T , (20) 
+
+with ∥wstab ∥ ≤ ¯𝑤 stab and ∥wunc ∥ ≤ ¯𝑤 unc belongs to W ( 𝜶 ).Furthermore, a desired task command wcmd can be filtered by the convex program 
+
+w★ 
+
+> cmd
+
+∈ arg min 
+
+> w∈ C
+
+∥w − wcmd ∥2 (21) 
+
+s.t. a⊤ 
+
+> 𝑗
+
+w ≤ 𝑏 𝑗 − 𝜖 req a 𝑗 , 𝑗 = 1, . . . , 𝑞, 
+
+where 𝜖 req = ¯𝑤 stab + ¯𝑤 unc and C is any convex set encoding task-level contact-force limits. The filter projects the desired wrench onto the set of commands that preserve the required stabilizing and uncertainty margin. Proof. Condition (19) implies that the ball of radius ¯𝑤 stab +
+
+¯𝑤 unc centered at each w ∈ T lies in W ( 𝜶 ) by Corol-lary 1. The feasibility of all admissible w𝑑 follows from the triangle inequality. The constraints in (21) are affine half-space tightenings of (9). Hence, the filtered command satisfies 𝜑 W
+
+
+
+𝜶 , w★
+
+> cmd
+
+
+
+≥ 𝜖 req . □
+
+IV. M ORPHOLOGY -A WARE EVALUATION 
+
+Force and torque have different units, so numerical com-parison is performed in normalized wrench coordinates. Let 
+
+𝐹 0 > 0 and ℓ0 > 0 be characteristic force and length scales, and define D𝑤 = blkdiag 
+
+ 1
+
+𝐹 0
+
+I3, 1
+
+ℓ0 𝐹 0
+
+I3
+
+
+
+and z =
+
+D𝑤 w. The normalized allocation map and wrench set are 
+
+z = A (𝜶 ) 𝝀 and A (𝜶 ) = D𝑤 M (𝜶 ), where Z ( 𝜶 ) =
+
+{z : z = A (𝜶 ) 𝝀 , 𝝀 ∈ Λ}. The normalized residual margin is evaluated using the signed margin of the normalized polytope. Thus, for feasible interior task wrenches it equals 
+
+dist (ztask , 𝜕 Z ( 𝜶 )) , whereas infeasible exterior points receive negative margin. Here 𝜕 Z ( 𝜶 ) denotes the topological bound-ary of Z ( 𝜶 ).To represent a broad class of morphologies, consider 𝑁 thrust modules arranged on acircle of radius ℓ. Let 𝜓 𝑖 = 2𝜋 (𝑖 − 1)
+
+𝑁 with 
+
+r𝑖 = ℓ cos (𝜓 𝑖 ) sin (𝜓 𝑖 ) 0⊤. Let the radial and tangential unit vectors be e𝑟 ,𝑖 = cos (𝜓 𝑖 ) sin (𝜓 𝑖 ) 0⊤
+
+and e𝑡 ,𝑖 = − sin (𝜓 𝑖 ) cos (𝜓 𝑖 ) 0⊤, respectively. Ageneric tilted thrust direction is 
+
+b𝑖 (𝛾 𝑖 , 𝜂 𝑖 ) = cos (𝛾 𝑖 ) e3 + sin (𝛾 𝑖 )  cos (𝜂 𝑖 ) e𝑟 ,𝑖 + sin (𝜂 𝑖 ) e𝑡 ,𝑖 
+
+ .
+
+(22) The coplanar case corresponds to 𝛾 𝑖 = 0. A fixed-tilt design corresponds to constant 𝛾 𝑖 and 𝜂 𝑖 . A variable-tilt design allows (𝛾 𝑖 , 𝜂 𝑖 ) to be selected inside admissible limits.     
+
+> 𝑧 1
+> 𝑧 2
+> ztask
+> 𝜖 ★
+> Z ( 𝜶 )
+> 𝜕 Z ( 𝜶 )
+> B𝜖 ★(ztask )
+
+Fig. 1: Conceptual illustration of residual authority in a two-dimensional projection of the normalized wrench polytope. The task wrench is contact-persistently feasible only if a nonzero neighborhood of radius 𝜖 ★ remains inside Z( 𝜶 ).
+
+Proposition 2 (Coplanar Residual Deficiency) . If all thrust directions are parallel to e3, then rank (M) ≤ 4. Hence, no six-dimensional residual ball can be contained in the feasible wrench set. Proof. All force columns lie in span {e3 }. The moment arms generate roll and pitch torques through r𝑖 × e3, and drag contributes yaw torque. Therefore, the column span has at most one force dimension and three torque dimensions. □
+
+For contact tasks, define the directional pushing set in normalized coordinates as 
+
+Tpush =
+
+
+
+D𝑤 
+
+  𝑚𝑔 e3
+
+03
+
+
+
++
+
+𝐹 n
+
+𝝉 𝑐 
+
+  
+
+: 𝐹 ∈ [ 0, 𝐹 max ] , ∥𝝉 𝑐 ∥ ≤ 𝜏 max 
+
+
+
+,
+
+(23) where n ∈ S2 is the desired pushing direction. The signed task margin is 
+
+𝜑 ★ 
+
+> push
+
+(𝜶 ) := inf 
+
+> z∈ T push
+
+𝜑 Z (𝜶 , z) , (24) where 𝜑 Z is the normalized analogue of (11). The contact-persistent margin is positive if and only if 𝜑 ★ 
+
+> push
+
+(𝜶 ) > 0, and the certified residual radius is 𝜖 ★ 
+
+> push
+
+(𝜶 ) = max 
+
+n
+
+0, 𝜑 ★ 
+
+> push
+
+(𝜶 )
+
+o
+
+.A morphology-selection problem is therefore 
+
+𝜶 ★ ∈ arg max 
+
+> 𝜶 ∈ A
+
+𝜑 ★ 
+
+> push
+
+(𝜶 ) , (25) subject to hover feasibility and actuator constraints. For a prescribed residual margin 𝜖 0 > 0, the maximum certified push force is 
+
+𝐹 ★ 
+
+> push
+
+= sup 
+
+n
+
+𝐹 max : 𝜑 ★ 
+
+> push
+
+(𝜶 ; 𝐹 max , 𝜏 max ) ≥ 𝜖 0
+
+o
+
+. (26) This is different from maximum horizontal force since it explicitly reserves a six-dimensional residual stabilization margin. The residual authority margin can be computed in several equivalent ways depending on the representation of the feasi-ble wrench set. If an 𝐻 -representation of Z ( 𝜶 ) is available, that is, if the polytope is written as the intersection of finitely many half spaces a⊤ 
+
+> 𝑗
+
+z ≤ 𝑏 𝑗 , the signed normalized margin for a sample z0 is obtained directly as 
+
+𝜑 Z (𝜶 , z0) = min 
+
+> 𝑗
+
+𝑏 𝑗 − a⊤ 
+
+> 𝑗
+
+z0
+
+a 𝑗 
+
+. (27) Positive values certify interiority, zero identifies boundary contact, and negative values identify infeasible task wrenches. For an overactuated architecture, one can avoid explicit polytope construction by using directional reachability. Given a unit direction d ∈ R6, define 
+
+𝑠 ★ (z0, d) = max  
+
+> 𝑠, 𝝀
+
+𝑠 (28) subject to A (𝜶 ) 𝝀 = z0 + 𝑠 d with 𝝀 ∈ Λ and 𝑠 ≥ 0.Then 𝑠 ★ (z0, d) is the distance one can move from z0 in the direction d before leaving the feasible set. The exact radius can be written as inf ∥d∥=1 𝑠 ★ (z0, d). If D is a finite set of unit directions, the sampled quantity 
+
+ˆ𝜖 𝑧 (z0) = min  
+
+> d∈ D
+
+𝑠 ★ (z0, d) (29) is a directional diagnostic rather than, by itself, a conservative certificate of the Euclidean ball, because the minimum is taken over fewer directions than the unit sphere. A cer-tified finite-direction implementation requires either an 𝐻 -representation, the actuator-slack certificate in Theorem 2, or an explicit direction-net covering error. For a sampled task set ST = {z1, . . . , z𝑁 𝑠 } ⊂ T push , the sampled directional task margin is 
+
+ˆ𝜖 push = min    
+
+> 𝑘 ∈ { 1,..., 𝑁 𝑠 }
+
+ˆ𝜖 𝑧 (z𝑘 ) . (30) This computation is useful as a design diagnostic when 𝑁 > 
+
+6, when M (𝜶 ) has nontrivial null-space redundancy, or when the actuator bounds include additional power, rate, or health constraints. In the square full-rank case, the exact closed-form expression used in Section V is recovered from the inverse allocation map. The same metric can distinguish a fixed morphology from a task-adaptive morphology. Let 𝜑 (𝜶 , z) := 𝜑 Z (𝜶 , z) denote the signed normalized margin. For a task set T𝑧 , the best fixed morphology margin is 
+
+𝜖 ★ 
+
+> fix
+
+= sup 
+
+> 𝜶 ∈ A
+
+inf 
+
+> z∈ T 𝑧
+
+𝜑 (𝜶 , z) , (31) whereas the best task-adaptive quasi-static margin is 
+
+𝜖 ★ 
+
+> ad
+
+= inf 
+
+> z∈ T 𝑧
+
+sup 
+
+> 𝜶 ∈ A
+
+𝜑 (𝜶 , z) . (32) 
+
+Proposition 3 (Non-reduction of Pointwise Authority Under Task-Adaptive Morphology) . For any compact task set T𝑧 
+
+and admissible morphology set A, 𝜖 ★ 
+
+> ad
+
+≥ 𝜖 ★
+
+> fix
+
+.Proof. The claim is the standard minimax inequality 
+
+sup 
+
+> 𝜶 ∈ A
+
+inf 
+
+> z∈ T 𝑧
+
+𝜑 (𝜶 , z) ≤ inf 
+
+> z∈ T 𝑧
+
+sup 
+
+> 𝜶 ∈ A
+
+𝜑 (𝜶 , z) . (33) 
+
+□
+
+Proposition 3 should be interpreted carefully. It is aquasi-static actuation statement, not a claim about closed-loop performance with tilt servos. A dynamic variable-tilt implementation must also preserve residual authority during transients, satisfy tilt-rate limits, and avoid singular configu-rations. Nevertheless, the result identifies the attractiveness of morphology adaptation for contact-rich UAVs as it can align the feasible wrench polytope with the current task direction while still reserving stabilizing authority. V. N UMERICAL EVALUATION 
+
+The numerical study evaluates the signed residual-authority framework on an abstract symmetric hexarotor. The objective is to isolate the distinction among structural rank, task feasibility, residual stabilization authority, and margin-aware command modification. The study is not intended as a validation of a particular airframe. The parameters represent a small aerial physical-interaction platform. The mass follows the scale of the coaxial-tiltrotor pushing experiments in [15], whereas the arm length, drag-to-thrust coefficient, and rotor limit are representative design-scale values. All contact forces and torques are normalized by 𝑚𝑔 and ℓ𝑚𝑔 , respectively, so the reported results should be interpreted as morphology and authority trends rather than hardware-specific performance predictions. The parameters are 𝑁 = 6, 𝑚 = 3.3 kg , ℓ = 0.35 m ,
+
+𝑐 𝜏 = 0.025 m , and 0 ≤ 𝜆 𝑖 ≤ 13 N for 𝑖 = 1, . . . , 6. The wrench normalization uses 𝐹 0 = 𝑚𝑔 and ℓ0 = ℓ. Unless stated otherwise, the pushing direction is n = e1, the normalized force satisfies 𝜌 = 𝐹 /( 𝑚𝑔 ) ∈ [ 0, 0.15 ], and the normalized contact-torque uncertainty satisfies ∥ 𝝁 ∥ ≤ 0.04 , where 𝝁 =
+
+𝝉 𝑐 /( ℓ𝑚𝑔 ). The required residual margin is 𝜖 0 = 0.025 .For fixed-tilt cases, the alternating mixed-tilt pattern is 𝛾 𝑖 =
+
+𝛾, 𝜂 𝑖 = (− 1)𝑖 +1 𝜋 
+
+4 ; 𝑖 = 1, . . . , 6. This pattern provides a representative full-rank geometry for evaluating the proposed quantities. Whenever A (𝜶 ) is nonsingular, define B = A−1
+
+and denote the 𝑖 th row of B by 𝜷 ⊤ 
+
+> 𝑖
+
+. For a normalized wrench 
+
+z0, the unique allocation is 𝝀 0 = Bz 0. Its exact pointwise signed margin is 
+
+𝜑 Z (𝜶 , z0) = min 
+
+> 𝑖
+
+( 𝜆 𝑖, max − 𝜆 0,𝑖 
+
+𝜷 𝑖 
+
+, 𝜆 0,𝑖 − 𝜆 𝑖, min 
+
+𝜷 𝑖 
+
+)
+
+. (34) Thus, positive, zero, and negative values indicate strict inte-riority, boundary contact, and infeasibility, respectively. For the continuous pushing set, let 
+
+z =zℎ + 𝜌 n⊤ 0⊤
+
+> 3
+
+⊤ + 0⊤ 
+
+> 3
+
+𝝁 ⊤⊤ , zℎ = e⊤ 
+
+> 3
+
+0⊤
+
+> 3
+
+⊤ .
+
+(35) Partitioning 𝜷 𝑖 = 𝜷 ⊤ 
+
+> 𝑖, 𝑓
+
+𝜷 ⊤
+
+> 𝑖, 𝜏
+
+⊤, the exact worst-case lower and upper actuator slacks over 𝜌 ∈ [ 0, 𝜌 max ] and ∥ 𝝁 ∥ ≤ 𝜇 max TABLE I: Distinguishing morphology classes based on the residual-authority framework.                                      
+
+> Morphology class Structural property Residual-authority behavior Design implication Coplanar multirotor rank (M)≤4for parallel thrust axes No six-dimensional residual wrench ball at fixed attitude Contact requires body reorienta-tion or task relaxation Fixed-tilt fully actuated multirotor Can satisfy rank (M)=6Positive margin only when the task set lies strictly inside W
+> Tilt angle must balance lateral au-thority and hover efficiency Overactuated fixed morphology 𝑁 >6with null-space redun-dancy Allocation can trade tracking, power, and residual margin Redundancy should be used to maximize distance from saturation Variable-tilt morphology M(𝜶 )changes with morphology Task-adaptive margins can improve di-rectional contact capacity Requires dynamic allocation with servo constraints Task-biased contact morphology Full rank or overactuated near a preferred direction High best-direction authority but pos-sibly anisotropic Useful for persistent pushing, bracing, or inspection along known normals
+
+TABLE II: Signed residual authority for 𝜌 max = 0.15 and 
+
+𝜇 max = 0.04 . The certified force 𝐹 ★ 
+
+> push
+
+preserves 𝜖 0 = 0.025 .                                      
+
+> 𝛾 (deg) rank (A)Feasible? 𝜑 ★
+> push 𝐹 ★
+> push /𝑚𝑔
+> 04No –010 6No −0.0782 0.0238 20 6No −0.0231 0.0873 30 6Yes 0.0295 0.1564 36 6Yes 0.0500 0.1879 37 6Yes 0.0499 0.1883 40 6Yes 0.0474 0.1860 50 6Yes 0.0164 0.1335
+
+are 
+
+𝑠 − 
+
+> 𝑖
+
+=𝜷 ⊤ 
+
+> 𝑖
+
+zℎ + min 
+
+n
+
+0, 𝜌 max 𝜷 ⊤ 
+
+> 𝑖, 𝑓
+
+n
+
+o
+
+− 𝜇 max 𝜷 𝑖, 𝜏 − 𝜆 𝑖, min ,
+
+(36) 
+
+𝑠 + 
+
+> 𝑖
+
+=𝜆 𝑖, max − 𝜷 ⊤ 
+
+> 𝑖
+
+zℎ − max 
+
+n
+
+0, 𝜌 max 𝜷 ⊤ 
+
+> 𝑖, 𝑓
+
+n
+
+o
+
+− 𝜇 max 𝜷 𝑖, 𝜏 .
+
+(37) The exact signed task-set margin and the corresponding nonnegative residual radius are therefore 
+
+𝜑 ★ 
+
+> push
+
+= min 
+
+> 𝑖
+
+min 𝑠 − 
+
+> 𝑖
+
+, 𝑠 +
+
+> 𝑖
+
+𝜷 𝑖 
+
+, 𝜖 ★ 
+
+> push
+
+= max 
+
+n
+
+0, 𝜑 ★
+
+> push
+
+o
+
+. (38) All task-set values below use the continuous torque ball analytically; no finite sampling of contact-torque directions is used. 
+
+A. Morphology Sweep and Directional Adaptation 
+
+Table II and Fig. 2a show that the coplanar morphology is rank deficient, while the low-tilt cases 𝛾 = 10 ◦ and 
+
+𝛾 = 20 ◦ are rank six but have negative signed task mar-gins. The prescribed task becomes feasible near 𝛾 = 24 .3◦
+
+and loses feasibility again near 𝛾 = 53 .1◦. Requiring the stronger margin 𝜑 ★ 
+
+> push
+
+≥ 𝜖 0 restricts the useful interval to approximately 29 .1◦ ≤ 𝛾 ≤ 48 .0◦. The maximum signed task margin is approximately 0.05 at 𝛾 = 36 .2◦, whereas the certified pushing force peaks at approximately 0.1883 𝑚𝑔 
+
+near 𝛾 = 37 .1◦. These different optima reflect the distinction between maximizing the margin for a prescribed task set and maximizing admissible task magnitude subject to aprescribed residual margin. The comparison in Fig. 2b further shows that numerical conditioning alone is not a task-feasibility certificate. The smallest singular value remains positive for every nonzero tilt in the sweep and reaches its maximum near 𝛾 = 42 .2◦,yet the signed task margin is negative for both small and excessive tilts. Hence, rank and singular-value information describe structural wrench generation, whereas 𝜑 ★ 
+
+> push
+
+captures task loading, actuator bounds, hover demand, and contact uncertainty simultaneously. Directional effects are evaluated using n (𝜃 ) =cos (𝜃 ) sin (𝜃 ) 0⊤ for 𝜃 ∈ [0, 2𝜋 ]. For the fixed morphology 𝛾 = 37 ◦,
+
+0.1667 ≤ 𝐹 ★ 
+
+> push
+
+(𝜃 )
+
+𝑚𝑔 ≤ 0.2003 , (39) with mean 0.1820 . Selecting 𝛾 ∈ [ 0◦, 60 ◦] pointwise for each direction changes the range to 
+
+0.1667 ≤ 𝐹 ★ 
+
+> push
+
+(𝜃 )
+
+𝑚𝑔 ≤ 0.2630 , (40) with mean 0.1978 .As shown in Fig. 3, task-adaptive tilt selection increases the mean certified capacity by approximately 8.7% and the best-direction capacity by approximately 31 .3% , while preserving the same required residual margin. The mini-mum directional capacities are nearly unchanged, indicating that adaptation primarily enlarges authority along favorable task directions rather than uniformly expanding the worst-direction capability. 
+
+B. Signed-Margin and Robust-Loading Validation 
+
+The signed-margin sweep varies the requested force limit over 𝜌 max ∈ [0, 0.30 ] for 𝛾 ∈ {10 ◦, 20 ◦, 30 ◦, 36 ◦, 50 ◦ }.Unlike the nonnegative residual radius, the signed quantity continues below zero and therefore shows the severity of infeasibility. For example, at 𝛾 = 36 ◦, the task-set margin reaches 𝜖 0 at 𝜌 max = 0.1879 and reaches the feasibility boundary at 𝜌 max = 0.2259 . For 𝛾 = 10 ◦, these thresholds reduce to 0.0238 and 0.0543 , respectively. The certified limits reported in Table II are therefore precisely the intersections with 𝜑 ★ 
+
+> push
+
+= 𝜖 0, rather than maximum-force values obtained without reserving stabilization authority. (a) Signed task margin and certified pushing force. (b) Smallest singular value and signed task margin. 
+
+Fig. 2: Tilt-angle study. The signed margin detects task infeasibility even when the allocation map remains full rank and well conditioned. 
+
+Fig. 3: Certified directional pushing capacity for the fixed morphology 𝛾 = 37 ◦ and a task-adaptive morphology with 
+
+𝛾 ∈ [ 0◦, 60 ◦].The two-parameter map in Fig. 4b exposes the force– torque tradeoff. At the nominal loading pair (𝜌 max , 𝜇 max ) =
+
+(0.15 , 0.04 ), the signed task margin is 0.05 . For 𝜇 max =
+
+0.04 , the 𝜖 0 and zero-margin force boundaries occur at 
+
+𝜌 max = 0.1879 and 𝜌 max = 0.2259 , respectively. Conversely, at 𝜌 max = 0.15 , the required-margin boundary occurs near 
+
+𝜇 max = 0.0789 . This map gives a design chart for allocating residual authority among contact force, contact-torque uncer-tainty, and stabilization demand. The robust implementability condition in Corollary 3 is also evaluated with ¯𝑤 stab = 0.020 and ¯𝑤 unc = 0.015 . Since 
+
+¯𝑤 stab + ¯𝑤 unc =0.035 < 𝜑 ★ 
+
+> push
+
+= 0.05 , (41) the complete task set remains feasible under all perturbations within the prescribed stabilization and uncertainty balls. A 20 ,000 -sample Monte Carlo check over the continuous task set and both perturbation balls produced no actuator-feasibility violations. This randomized check is used only as a numerical sanity test; the guarantee follows from the deterministic signed-margin condition. 
+
+C. Allocation Certificate and Margin-Aware Filtering 
+
+For the representative point 𝛾 = 36 ◦, 𝜌 = 0.15 , and 𝝁 = 03,the exact allocation is 
+
+𝝀 0 = 6.515 10 .098 3.240 6.823 10 .253 3.086 ⊤ N,
+
+(42) with normalized usages 
+
+𝝀 0
+
+𝜆 max 
+
+= 0.501 0.777 0.249 0.525 0.789 0.237 ⊤ .
+
+(43) The minimum actuator slack is 2.747 N . For this symmetric square architecture, the allocation is unique and all rows of A−1 have the same Euclidean norm. Consequently, the slack certificate equals the exact pointwise margin over the plotted force range; at 𝜌 = 0.15 , both give approximately 
+
+0.0757 . The equality is architecture-specific. In a general overactuated system, Corollary 2 provides a lower bound whose tightness depends on the selected right inverse and the slack-maximizing allocation. The margin-aware filter is evaluated at 𝛾 = 36 ◦ using raw commands 𝜌 cmd ∈ [0, 0.32 ] and 𝜖 req = 𝜖 0. The un-filtered command reaches the required-margin boundary at approximately 𝜌 cmd = 0.2270 and becomes infeasible near 
+
+𝜌 cmd = 0.2650 . The filter is inactive below the required-margin boundary. Above it, the command is projected onto the tightened wrench polytope and the filtered signed margin remains exactly at or above 0.025 . Thus, the filter rejects (a) Signed task margin versus requested pushing force. -0.05 00.05 0.1 0.15 (b) Robust force–torque feasibility map at 𝛾 = 36 ◦.
+
+Fig. 4: Signed-margin validation under increasing contact loading. The solid zero contour identifies feasibility loss, while the 𝜖 0 contour identifies the admissible set with reserved stabilization authority.  
+
+> (a) Exact pointwise margin and actuator-slack certificate. (b) Raw and margin-filtered command margins.
+
+Fig. 5: Validation of the computable allocation certificate and the margin-aware wrench filter. only the portion of the requested wrench that would consume the reserved stabilization authority, rather than waiting until actuator infeasibility occurs. VI. D ISCUSSION AND FUTURE CONTROL PROBLEMS 
+
+The results also expose several open control-theoretic problems that merit further investigation. The certificates above show how residual authority can be embedded in real-time allocation and filtering, but several dynamic issues remain. First, the static margin should be combined with closed-loop pose and force dynamics to derive stability con-ditions under saturated allocation. Second, the morphology variable can be treated as a slow control input, producing a co-design problem in which 𝜶 is selected to maximize residual authority while the fast thrust allocation tracks the desired wrench. Third, for variable-tilt platforms, transient feasibility must account for servo-rate limits and possible loss of rank during reconfiguration. Finally, margin-aware safety filters for aerial physical interaction should enforce not only contact-force feasibility, but also preservation of the residual wrench authority required for stabilization. The framework also clarifies a design tradeoff. Fixed tilts improve lateral force capability but may reduce vertical thrust efficiency. Variable tilt improves task adaptation but introduces servo dynamics, rate constraints, and possible transient authority loss. These effects are not captured by the static polytope alone. However, the residual authority margin provides the baseline constraint that any dynamic morphology controller must preserve. VII. C ONCLUSIONS 
+
+This paper introduced contact-persistent full actuation as a residual wrench authority property for fully actuated UAVs in contact-rich tasks. The proposed framework replaces the purely rank-based view of full actuation with a constraint-aware condition based on the feasible wrench polytope. The main result shows that a task wrench admits nonzero six-dimensional residual authority if and only if it lies in the inte-rior of the feasible wrench set, and that the maximum residual authority radius is the distance to the polytope boundary. A computable allocation-margin certificate, a signed-margin ro-bust feasibility condition, and a task-set uniform version were derived. Numerical evaluation on an abstract tilted hexarotor showed that rank-six allocation can still be insufficient for pushing tasks, and that intermediate or adaptive tilt choices can preserve residual stabilization authority. Future work will integrate these margins into saturation-aware allocation, dynamic tilt control, and safety-certified aerial physical in-teraction. REFERENCES [1] R. Rashad, J. Goerres, R. Aarts, J. B. C. Engelen, and S. Stramigioli, “Fully actuated multirotor UAVs: A literature review,” IEEE Robotics & Automation Magazine , vol. 27, no. 3, pp. 97–107, 2020. [2] M. Hamandi, F. Usai, Q. Sabl´ e, N. Staub, M. Tognon, and A. Franchi, “Design of multirotor aerial vehicles: A taxonomy based on input allocation,” The International Journal of Robotics Research , vol. 40, no. 8–9, pp. 1015–1044, 2021. [3] S. Rajappa, M. Ryll, H. H. B¨ ulthoff, and A. Franchi, “Modeling, control and design optimization for a fully-actuated hexarotor aerial vehicle with tilted propellers,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) , 2015, pp. 4006–4013. [4] M. Ryll, H. H. B¨ ulthoff, and P. R. Giordano, “A novel overactuated quadrotor unmanned aerial vehicle: Modeling, control, and experimen-tal validation,” IEEE Transactions on Control Systems Technology ,vol. 23, no. 2, pp. 540–556, 2015. [5] D. Brescianini and R. D’Andrea, “Design, modeling and control of an omni-directional aerial vehicle,” in 2016 IEEE International Conference on Robotics and Automation (ICRA) , 2016, pp. 3261–3266. [6] ——, “An omni-directional multirotor vehicle,” Mechatronics , vol. 55, pp. 76–93, 2018. [7] R. Rashad, P. Kuipers, J. Engelen, and S. Stramigioli, “Design, modeling, and geometric control on SE(3) of a fully-actuated hexarotor for aerial interaction,” 2017. [8] D. Kotarski, P. Piljek, J. Kasa´ c, and D. Majeti´ c, “Performance analysis of fully actuated multirotor unmanned aerial vehicle configurations with passively tilted rotors,” Applied Sciences , vol. 11, no. 18, p. 8786, 2021. [9] M. Allenspach, K. Bodie, M. Brunner, L. Rinsoz, Z. Taylor, M. Kamel, R. Siegwart, and J. Nieto, “Design and optimal control of a tiltrotor micro-aerial vehicle for efficient omnidirectional flight,” The Interna-tional Journal of Robotics Research , 2020. [10] M. Ryll, D. Bicego, M. Giurato, M. Lovera, and A. Franchi, “FAST-Hex: A morphing hexarotor: Design, mechanical implementation, control and experimental validation,” IEEE/ASME Transactions on Mechatronics , vol. 27, no. 3, 2022. [11] S. Park, J. Lee, J. Ahn, M. Kim, J. Her, G.-H. Yang, and D. Lee, “ODAR: Aerial manipulation platform enabling omnidirec-tional wrench generation,” IEEE/ASME Transactions on Mechatronics ,vol. 23, no. 4, pp. 1907–1918, 2018. [12] M. Ryll, G. Muscio, F. Pierri, E. Cataldi, G. Antonelli, F. Caccav-ale, D. Bicego, and A. Franchi, “6D interaction control with aerial robots: The flying end-effector paradigm,” The International Journal of Robotics Research , vol. 38, no. 9, pp. 1045–1062, 2019. [13] K. Bodie, M. Brunner, M. Pantic, S. Walser, P. Pf¨ andler, U. Angst, R. Siegwart, and J. Nieto, “An omnidirectional aerial manipulation platform for contact-based inspection,” in Robotics: Science and Sys-tems XV , 2019. [14] K. Bodie, M. Brunner, M. Pantic, S. Walser, P. Pf¨ andler, U. M. Angst, R. Y. Siegwart, and J. I. Nieto, “Active interaction force control for contact-based inspection with a fully actuated aerial vehicle,” IEEE Transactions on Robotics , vol. 37, no. 3, pp. 709–722, 2021. [15] S. Hwang, D. Lee, C. Kim, and H. J. Kim, “Autonomous heavy object pushing using a coaxial tiltrotor,” IEEE Transactions on Automation Science and Engineering , 2024. [16] T. Hui, E. Cuniato, M. Pantic, M. Tognon, M. Fumagalli, and R. Sieg-wart, “Passive aligning physical interaction of fully-actuated aerial vehicles for pushing tasks,” 2024. [17] R. Veenstra, A. Ali, C. Gabellieri, and A. Franchi, “6D physical interaction with an omnidirectional aerial robot,” Drones , vol. 10, no. 2, p. 129, 2026. [18] J. Lin, S. Ji, Y. Wu, T. Wu, Z. Han, and F. Gao, “FLOAT drone: A fully-actuated coaxial aerial robot for close-proximity operations,” 2025. [19] E. Cuniato, M. Allenspach, T. Stastny, H. Oleynikova, R. Siegwart, and M. Pantic, “Allocation for omnidirectional aerial robots: Incorporating power dynamics,” 2024.
