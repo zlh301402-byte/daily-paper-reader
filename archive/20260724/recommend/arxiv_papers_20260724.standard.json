@@ -1,0 +1,131 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-24T21:18:07.461131+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21145v1",
+      "source": "arxiv",
+      "title": "Deep Reinforcement Learning for Adaptive Gain Tuning in Control of Teleoperation Manipulators with Joint Flexibility and Time-Varying Delays",
+      "abstract": "Bilateral teleoperation systems that include joint flexibility better reflect real robotic systems used in surgery, space, and rehabilitation. However, joint flexibility together with time-varying communication delays makes it difficult to maintain stable and coordinated motion between the master and slave robots. To address this, we propose a hybrid control method that combines a stable Proportional-plus-Damping (P+d) controller with a model-free deep reinforcement learning agent based on the Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm. The P+d controller provides basic stability under bounded delays, while the learning agent adjusts and tunes the remote-side proportional and damping gains in real time to reduce vibrations and improve tracking. Stability is guaranteed for bounded time-varying delays using Lyapunov-Krasovskii analysis. The approach provides a practical solution for teleoperation systems facing both joint flexibility and uncertain network delays.",
+      "authors": [
+        "Armin Attarzadeh",
+        "Mohammad Ali Ghaemifar",
+        "Alireza Khanzadeh",
+        "Soheil Ganjefar"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-23T10:25:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.21145v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "deep reinforcement learning for teleoperation manipulator control",
+      "llm_evidence_cn": "深度强化学习用于遥操作机械臂控制",
+      "llm_evidence": "深度强化学习用于遥操作机械臂控制",
+      "canonical_evidence": "深度强化学习用于遥操作机械臂控制",
+      "llm_tldr_en": "proposes a hybrid P+d and TD3 RL method for adaptive gain tuning in teleoperation manipulators with joint flexibility and time-varying delays.",
+      "llm_tldr_cn": "该文针对关节柔性和时变时延下的遥操作机械臂控制难题，提出将P+d控制器与TD3深度强化学习相结合的混合方法。P+d保证基础稳定性，强化学习自适应调参提升跟踪性能。实验表明该方法在不同时延下均能保持稳定并实现高精度跟踪。为柔性关节机械臂的远程控制提供了新的解决方案。",
+      "llm_tldr": "该文针对关节柔性和时变时延下的遥操作机械臂控制难题，提出将P+d控制器与TD3深度强化学习相结合的混合方法。P+d保证基础稳定性，强化学习自适应调参提升跟踪性能。实验表明该方法在不同时延下均能保持稳定并实现高精度跟踪。为柔性关节机械臂的远程控制提供了新的解决方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.17981v1",
+      "source": "arxiv",
+      "title": "Information-Based Exploration via Random Features for Reinforcement Learning",
+      "abstract": "Representation learning has enabled classical exploration strategies to be extended to deep Reinforcement Learning (RL), but often makes algorithms more complex and theoretical guarantees harder to establish. We introduce Random Feature Information Gain (RFIG), grounded in Bayesian kernel methods theory, which uses random Fourier features to approximate information gain and compute exploration bonuses in non-countable spaces. We provide error bounds on information gain approximation and avoid the black-box aspects of neural network-based uncertainty estimation, for optimism-based exploration. We present practical details that make RFIG scalable to deep RL scenarios, enabling smooth integration into standard deep RL algorithms. Experimental evaluation across diverse control and navigation tasks demonstrates that RFIG achieves competitive performance with well-established deep exploration methods while offering superior theoretical interpretation.",
+      "authors": [
+        "Waris Radji",
+        "Odalric-Ambrym Maillard"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-20T14:15:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.17981v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "General reinforcement learning exploration method applicable to robot arm control",
+      "llm_evidence_cn": "通用的强化学习探索方法，可应用于机械臂控制",
+      "llm_evidence": "通用的强化学习探索方法，可应用于机械臂控制",
+      "canonical_evidence": "通用的强化学习探索方法，可应用于机械臂控制",
+      "llm_tldr_en": "Introduces Random Feature Information Gain (RFIG) for exploration in deep RL, using random Fourier features to approximate information gain with theoretical bounds.",
+      "llm_tldr_cn": "深度强化学习中的探索策略通常依赖神经网络不确定性估计，缺乏理论保证且算法复杂。本文提出随机特征信息增益（RFIG）方法，基于贝叶斯核函数理论，利用随机傅里叶特征近似信息增益并计算探索奖励。该方法提供了信息增益近似的误差界，避免了神经网络不确定性估计的黑箱问题，可平滑集成到标准深度强化学习算法中，为机械臂等连续控制任务的探索提供了可扩展的解决方案。",
+      "llm_tldr": "深度强化学习中的探索策略通常依赖神经网络不确定性估计，缺乏理论保证且算法复杂。本文提出随机特征信息增益（RFIG）方法，基于贝叶斯核函数理论，利用随机傅里叶特征近似信息增益并计算探索奖励。该方法提供了信息增益近似的误差界，避免了神经网络不确定性估计的黑箱问题，可平滑集成到标准深度强化学习算法中，为机械臂等连续控制任务的探索提供了可扩展的解决方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17476v1",
+      "source": "arxiv",
+      "title": "Disturbance-Aware Flight for Aerial Robots in Narrow Space",
+      "abstract": "Autonomous flight of aerial robots in narrow space remains challenging due to strong aerodynamic disturbances and limited flying space. Existing approaches mainly address aerodynamic disturbances at the control level, while motion planning typically relies on geometric constraints and fixed speed limits, leading to conservative or unsafe behaviors in confined environments. This paper presents a disturbance-aware planning and control framework (DAPCF) that integrates online disturbance estimation into the planning-control loop for quadrotor flight in narrow space. First, the dual-loop observers estimate 6-degree-of-freedom disturbance forces and torques in real time based on odometry and motor speed measurements. Then, a disturbance risk function is introduced that adaptively modulates the reference speed of the planner based on disturbance estimation, reducing velocity when disturbances exceed a threshold and restoring it under low-disturbance conditions. Finally, a motor-dynamics-based nonlinear model predictive controller (MDNMPC) with disturbance compensation is designed to ensure robust trajectory tracking under perturbed conditions. Experiments demonstrate that a quadrotor with a diagonal length of 0.39~m can traverse straight, sloped, and curved tunnels as narrow as 0.6~m, outperforming human pilots in both success rate and flight efficiency.",
+      "authors": [
+        "Lei Qiang",
+        "Tianyu He",
+        "Chenyang Sun",
+        "Xurui Liu",
+        "Miao Wang",
+        "Xiaobin Zhou"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-20T01:58:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.17476v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "aerial robot dynamics and disturbance-aware control, transferable to aerial manipulator systems",
+      "llm_evidence_cn": "空中机器人动力学与扰动感知控制，可迁移至空中机械臂系统",
+      "llm_evidence": "空中机器人动力学与扰动感知控制，可迁移至空中机械臂系统",
+      "canonical_evidence": "空中机器人动力学与扰动感知控制，可迁移至空中机械臂系统",
+      "llm_tldr_en": "Disturbance-aware planning and control framework for quadrotors in narrow space, integrating online disturbance estimation to improve safety and performance.",
+      "llm_tldr_cn": "针对狭窄空间气动扰动影响飞行安全的问题，提出扰动感知规划控制框架，通过双环观测器实时估计六自由度扰动力矩，并设计扰动风险函数融入运动规划。在四旋翼上实验表明，该方法在狭窄空间飞行中比传统方法更安全高效，为空中机器人鲁棒控制提供了新思路。",
+      "llm_tldr": "针对狭窄空间气动扰动影响飞行安全的问题，提出扰动感知规划控制框架，通过双环观测器实时估计六自由度扰动力矩，并设计扰动风险函数融入运动规划。在四旋翼上实验表明，该方法在狭窄空间飞行中比传统方法更安全高效，为空中机器人鲁棒控制提供了新思路。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
