@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-13",
+  "date": "2026-09-13",
+  "generated_at": "2026-09-13T21:10:13",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/13/2609.07114v1-observer-based-robust-control-for-an-aerial-manipulator-system-under-unknown-external-disturbances",
+      "section": "deep",
+      "title_en": "Observer-Based Robust Control for an Aerial Manipulator System under Unknown External Disturbances",
+      "authors": "Mayank Pandey, Sneha Gajbhiye",
+      "date": "2026-09-07",
+      "pdf": "https://arxiv.org/pdf/2609.07114v1",
+      "score": "9.0",
+      "evidence": "由四旋翼与机械臂组成的空中机械臂系统建模与鲁棒控制",
+      "tldr": "针对四旋翼与机械臂组成的空中机械臂系统在未知外部扰动下的控制难题，本文建立了一种简化动力学模型，将系统解耦为锁定子系统与形状空间子系统。由于机械耦合，第一子系统的常值有界扰动会转化为第二子系统的时变状态相关扰动，威胁系统稳定性。为此，提出一种基于连续非线性扰动观测器的反馈控制律，实现各子系统独立控制并消除交叉耦合。仿真验证了该方法在实际工况下的有效性，为空中机械臂的鲁棒控制提供了新思路。",
+      "tags": "query:drone-arm",
+      "abstract_en": "This paper addresses the mathematical modeling and control of an aerial manipulator system comprising a quadrotor as the uncrewed aerial vehicle and a robotic arm as the manipulator. The dynamic model is established by identifying the overall center-of-mass velocity and the system's orientation as constraints, yielding a simplified, two-decoupled subsystems: a locked (overall translation) subsystem and a shape-space (actuation or overall rotation) subsystem, both subjected to external disturbances. Since the system is mechanically coupled, a critical challenge arises where constant bounded disturbances in the first subsystem manifest as time-varying, state-dependent disturbances in the second subsystem. Given that the quadrotor is inherently unstable, the movement of the robotic manipulator (RM) during flight can further jeopardize the stability of the entire QRM system if these disturbances and coupling effects are not effectively managed. To address this, we present a continuous nonlinear disturbance observer-based feedback control law, which enables the independent control of each subsystem while systematically eliminating cross-coupling effects. The efficacy of the proposed controller is validated through multiple simulations emulating practical operating conditions, thereby substantiating its real-world applicability and highlighting the core contributions of this work.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/13/2609.11661v1-contact-aware-incremental-model-predictive-control-for-an-underactuated-aerial-manipulator",
+      "section": "deep",
+      "title_en": "Contact-Aware Incremental Model Predictive Control for an Underactuated Aerial Manipulator",
+      "authors": "Darwin Liu, Tamas Keviczky, Sihao Sun",
+      "date": "2026-09-10",
+      "pdf": "https://arxiv.org/pdf/2609.11661v1",
+      "score": "9.0",
+      "evidence": "面向欠驱动空中机械臂及其机载机械臂的控制框架",
+      "tldr": "针对欠驱动空中机械臂接触作业时位置与法向力难协同控制的问题，本文提出接触感知增量模型预测控制框架。方法将NMPC用于小穿透深度下末端位置与法向力精确跟踪，并用全身INDI增强摩擦与气动扰动下的鲁棒性。在四旋翼单连杆一自由度臂上完成仿真与实机空中书写，覆盖斜面、多参考力、变摩擦与风扰。结果表明，无需全驱动平台、复杂臂或专用力/力矩传感器，即可实现五自由度末端位姿与接触力同时跟踪。",
+      "tags": "query:drone-arm",
+      "abstract_en": "We present a robust contact-aware control framework for aerial writing on an underactuated platform. The framework combines nonlinear model predictive control (NMPC) for accurate end-effector position and normal-force tracking at small reference penetration depths, with consistent performance across controller tunings, with whole-body incremental nonlinear dynamic inversion (INDI) for robustness to frictional and aerodynamic disturbances during contact. The proposed controllers are validated on a quadrotor-based aerial manipulator with a rigid, single-link, one-degree-of-freedom (DoF) arm in simulation and real-world experiments. The aerial writing experiments span vertical and inclined surfaces, multiple reference forces, different friction conditions, and wind disturbances. The results demonstrate that robust simultaneous five-DoF end-effector pose and contact-force tracking is achievable on a standard underactuated quadrotor with a simple, rigid, single-link arm, without requiring a fully actuated platform, a complex arm, or dedicated force/torque sensing.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/13/2609.06522v1-knowledge-guided-hierarchical-policy-learning-for-high-precision-cylindrical-assembly-under-tight-tolerances",
+      "section": "quick",
+      "title_en": "Knowledge-Guided Hierarchical Policy Learning for High-Precision Cylindrical Assembly under Tight Tolerances",
+      "authors": "Binbin Lian, Xinyu Liu, Tao Sun",
+      "date": "2026-09-06",
+      "pdf": "https://arxiv.org/pdf/2609.06522v1",
+      "score": "6.0",
+      "evidence": "用强化学习(TD3)结合行为克隆进行机械臂装配控制",
+      "tldr": "针对170mm圆柱件、0.1mm紧公差的高精度装配难题，提出知识引导的分层策略学习框架。下层用行为克隆融入专家经验并引入TD3提升稳定性，上层以启发式规则动态调整决策，先在仿真中安全训练再迁移真机。奖励曲线500回合内收敛，对初始条件、位姿误差及高斯噪声更鲁棒，真机装配轨迹更平滑、波动更小，验证了仿真到现实迁移的有效性。",
+      "tags": "query:drone-arm",
+      "abstract_en": "A hybrid hierarchical learning framework is proposed to achieve high-precision assembly of 170mm cylindrical components with tolerance of 0.1mm. The lower-level network integrates expert experience through Behavior Cloning (BC), giving the robot human-like intuition, and incorporates the Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm to enhance training stability and robustness. The upper-level network dynamically adjusts the lower-level decisions based on heuristic rules, ensuring flexibility in operations. A simulated model is constructed to learn before transferring to real world. An efficient and safe training is allowed. Comparisons show that the reward curve converges within 500 episodes, indicating high learning efficiency. It also demonstrates better adaptability to initial conditions and pose errors, achieving satisfactory success rates even under extreme conditions. Moreover, the method exhibits good stability under Gaussian noise interference. In the real world, the assembly trajectory of the cylindrical segment shows smoother motion and less fluctuation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
