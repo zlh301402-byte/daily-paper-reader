@@ -1,0 +1,285 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-13T12:22:57.683453+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2608.17819v1",
+      "source": "arxiv",
+      "title": "Effector-Centric NMPC of Tiltable-Multirotors for Offset-Free Omnidirectional Aerial Manipulation",
+      "abstract": "Aerial manipulation extends robotic operations to previously inaccessible aerial environments. Unlike arm-equipped aerial systems, tiltable-multirotors can directly generate six-degree-of-freedom wrenches through their flight bases, enabling both efficient movement and omnidirectional operation by tilting the thrust direction.   This work presents a design analysis and a wrench-based control framework for tiltable-multirotors in aerial manipulation. We show that a four-rotor tiltable configuration provides a balance between interference-free propeller sizing and hovering efficiency across different attitudes, and its null-space redundancy is crucial for traversing singular configurations under physical constraints. We further show that an upward end-effector placement yields a favorable trade-off between geometric clearance and available wrench. To address disturbances, we propose a dual strategy consisting of a modified integral term for model error and an acceleration-based estimator for external wrenches. Building on these insights, we develop an effector-centric nonlinear model predictive control (NMPC) framework that integrates design choices, singularity handling, and disturbance compensation into a unified formulation.   The proposed framework runs fully onboard at 100 Hz on a custom-built tiltable-quadrotor. Real-world experiments, including a 90-deg step cartwheel rotation, whiteboard pushing, and continuous 360-deg valve turning, demonstrate the feasibility of wrench-based omnidirectional manipulation with singularity traversal on a one-DoF-per-arm tiltable-quadrotor.",
+      "authors": [
+        "Jinjie Li",
+        "Yicheng Chen",
+        "Johannes Kübel",
+        "Haokun Liu",
+        "Junichiro Sugihara",
+        "Moju Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-18T14:18:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.17819v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "wrench-based control framework for tiltable-multirotors in aerial manipulation",
+      "llm_evidence_cn": "面向空中操作的倾斜多旋翼力旋量控制框架",
+      "llm_evidence": "面向空中操作的倾斜多旋翼力旋量控制框架",
+      "canonical_evidence": "面向空中操作的倾斜多旋翼力旋量控制框架",
+      "llm_tldr_en": "Presents a design analysis and wrench-based effector-centric NMPC framework for tiltable multirotors that generate six-DOF wrenches directly, achieving offset-free omnidirectional aerial manipulation and exploiting null-space redundancy to traverse singularities.",
+      "llm_tldr_cn": "针对带臂空中系统难以高效完成六自由度物理交互的问题，本文研究可倾斜多旋翼的空中操作能力，提出以执行器为中心的力旋量非线性模型预测控制框架，并分析四旋翼倾斜构型在桨间干扰与悬停效率间的平衡。结果表明该构型可利用零空间冗余在物理约束下穿越奇异位形，实现无偏移的全向空中操作，为空中操作平台的设计与控制提供了一体化方案。",
+      "llm_tldr": "针对带臂空中系统难以高效完成六自由度物理交互的问题，本文研究可倾斜多旋翼的空中操作能力，提出以执行器为中心的力旋量非线性模型预测控制框架，并分析四旋翼倾斜构型在桨间干扰与悬停效率间的平衡。结果表明该构型可利用零空间冗余在物理约束下穿越奇异位形，实现无偏移的全向空中操作，为空中操作平台的设计与控制提供了一体化方案。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.21735v1",
+      "source": "arxiv",
+      "title": "Safety-Critical Bilateral Teleoperation for Omnidirectional Aerial Manipulation Using Force-Sensorless Haptic Feedback",
+      "abstract": "This paper presents a safety-critical bilateral teleoperation framework for omnidirectional aerial manipulators that integrates visual and force-sensorless haptic wrench feedback. Unlike existing approaches that either rely on onboard force/torque sensors or use model-dependent wrench estimates, which may become unreliable under model uncertainties or induce unintended feedback during free-flight, our method implements a hierarchical safety filter based on control barrier functions to avoid such limitations. The safety filter, being the key contribution, explicitly accounts for tracking errors arising from physical interaction between the aerial manipulator and its surroundings while enforcing thrust limits, a factor overlooked despite its critical importance for flight safety. This safety filter adjusts the command from the operator to ensure safe and stable aerial manipulation and avoid motor saturation. The adjustment made by the filter is mapped to haptic feedback, which is intuitive to the operator and conveys information on physical interaction and impending motor saturation. By actual experiments with a hexarotor-based omnidirectional aerial manipulator, we demonstrate that the proposed method avoids haptic feedback during free-flight, provides directionally consistent feedback under physical interaction, and can be operated for diverse manipulative tasks. Moreover, an ablation study further shows that the saturation filter improves interaction stability by explicitly preventing motor saturation and informing the operator of corrective actions.",
+      "authors": [
+        "Yubin Kim",
+        "Jinwoo Lee",
+        "Yongjun You",
+        "H. Jin Kim",
+        "Jeonghyun Byun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-22T02:35:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.21735v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "safety-critical bilateral teleoperation for omnidirectional aerial manipulators",
+      "llm_evidence_cn": "全向空中机械臂的安全双边遥操作与力反馈",
+      "llm_evidence": "全向空中机械臂的安全双边遥操作与力反馈",
+      "canonical_evidence": "全向空中机械臂的安全双边遥操作与力反馈",
+      "llm_tldr_en": "Presents a safety-critical bilateral teleoperation framework for omnidirectional aerial manipulators using visual and force-sensorless haptic feedback, with a control-barrier-function safety filter handling interaction tracking errors and thrust limits.",
+      "llm_tldr_cn": "全向空中机械臂在物理交互中需要安全且直观的遥操作，但现有方法依赖机载力/力矩传感器或模型相关力估计，在模型不确定或自由飞行时可能失效并产生误反馈。本文提出安全关键的双边遥操作框架，融合视觉与无力传感器触觉力反馈，并采用基于控制屏障函数的层次化安全滤波器显式处理交互引起的跟踪误差与推力限制。该框架在保证安全约束的同时提升空中操作的交互性能，为空中机械臂的安全遥操作提供了新思路。",
+      "llm_tldr": "全向空中机械臂在物理交互中需要安全且直观的遥操作，但现有方法依赖机载力/力矩传感器或模型相关力估计，在模型不确定或自由飞行时可能失效并产生误反馈。本文提出安全关键的双边遥操作框架，融合视觉与无力传感器触觉力反馈，并采用基于控制屏障函数的层次化安全滤波器显式处理交互引起的跟踪误差与推力限制。该框架在保证安全约束的同时提升空中操作的交互性能，为空中机械臂的安全遥操作提供了新思路。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "physical interaction control of aerial robots",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00641v1",
+      "source": "arxiv",
+      "title": "AM-Bench: A Modular Simulation Suite and Benchmark for Aerial Manipulation Policy Learning",
+      "abstract": "Standardized benchmarks have played a central role in advancing robot manipulation learning, yet most focus on ground-supported manipulation systems, which limits their applicability to dynamics-critical domains such as aerial manipulation (AM). AM presents distinct system-level challenges, including environmental disturbances, coupled dynamics between the manipulator and floating base, and constrained degrees of freedom. Consequently, task performance depends jointly on robot embodiment, low-level control, and high-level policy design. We introduce AM-Bench, a modular simulation suite and benchmark for multirotor-based AM policy learning. AM-Bench includes representative embodiments spanning underactuated, fully actuated, and overactuated systems, 12 tasks across contact, transport, and constrained interaction, configurable aerodynamic disturbances and actuator saturation, standard low-level controllers, and baseline policy-learning algorithms. Unlike prior manipulation benchmarks that primarily emphasize end-to-end policy performance, AM-Bench enables system-level evaluation of how embodiment, control, disturbances, and policy choices interact. We demonstrate its diagnostic value through three simulation studies spanning high-level policies, policy--control interfaces, and embodiments, together with real-world validation of modeled effects and a hardware test of the learning pipeline.",
+      "authors": [
+        "Yutong Wang",
+        "Dongjae Lee",
+        "Xiaofeng Guo",
+        "Yuanzhu Zhan",
+        "Yufei Jiang",
+        "Bavin Saravanan",
+        "Muqing Cao",
+        "Jia Xie",
+        "Chenyang Mao",
+        "Sebastian Scherer",
+        "Junyi Geng",
+        "Guanya Shi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-01T03:20:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.00641v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "modular simulation suite and benchmark for multirotor aerial manipulation policy learning",
+      "llm_evidence_cn": "面向多旋翼空中操作策略学习的模块化仿真套件与基准",
+      "llm_evidence": "面向多旋翼空中操作策略学习的模块化仿真套件与基准",
+      "canonical_evidence": "面向多旋翼空中操作策略学习的模块化仿真套件与基准",
+      "llm_tldr_en": "AM-Bench is a modular simulation suite and benchmark for multirotor aerial manipulation policy learning, covering underactuated, fully actuated and over-actuated embodiments, and jointly evaluating embodiment, low-level control and high-level policy design.",
+      "llm_tldr_cn": "现有机器人操作学习基准多面向地面支撑系统，难以覆盖空中操作中环境扰动、机械臂与浮动基座耦合动力学以及自由度受限等系统级挑战，导致任务性能同时受本体、低层控制与高层策略影响却缺乏统一评测。本文提出AM-Bench，一个面向多旋翼空中操作策略学习的模块化仿真套件与基准，涵盖欠驱动、全驱动与过驱动等多种代表性构型。该基准提供统一环境以联合评估机器人本体、低层控制与高层策略设计对任务性能的影响。其贡献在于为动力学敏感的空中操作研究提供标准化、可复现的比较平台。",
+      "llm_tldr": "现有机器人操作学习基准多面向地面支撑系统，难以覆盖空中操作中环境扰动、机械臂与浮动基座耦合动力学以及自由度受限等系统级挑战，导致任务性能同时受本体、低层控制与高层策略影响却缺乏统一评测。本文提出AM-Bench，一个面向多旋翼空中操作策略学习的模块化仿真套件与基准，涵盖欠驱动、全驱动与过驱动等多种代表性构型。该基准提供统一环境以联合评估机器人本体、低层控制与高层策略设计对任务性能的影响。其贡献在于为动力学敏感的空中操作研究提供标准化、可复现的比较平台。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.07114v1",
+      "source": "arxiv",
+      "title": "Observer-Based Robust Control for an Aerial Manipulator System under Unknown External Disturbances",
+      "abstract": "This paper addresses the mathematical modeling and control of an aerial manipulator system comprising a quadrotor as the uncrewed aerial vehicle and a robotic arm as the manipulator. The dynamic model is established by identifying the overall center-of-mass velocity and the system's orientation as constraints, yielding a simplified, two-decoupled subsystems: a locked (overall translation) subsystem and a shape-space (actuation or overall rotation) subsystem, both subjected to external disturbances. Since the system is mechanically coupled, a critical challenge arises where constant bounded disturbances in the first subsystem manifest as time-varying, state-dependent disturbances in the second subsystem. Given that the quadrotor is inherently unstable, the movement of the robotic manipulator (RM) during flight can further jeopardize the stability of the entire QRM system if these disturbances and coupling effects are not effectively managed. To address this, we present a continuous nonlinear disturbance observer-based feedback control law, which enables the independent control of each subsystem while systematically eliminating cross-coupling effects. The efficacy of the proposed controller is validated through multiple simulations emulating practical operating conditions, thereby substantiating its real-world applicability and highlighting the core contributions of this work.",
+      "authors": [
+        "Mayank Pandey",
+        "Sneha Gajbhiye"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-07T06:56:46+00:00",
+      "link": "https://arxiv.org/pdf/2609.07114v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "modeling and control of aerial manipulator with quadrotor and robotic arm",
+      "llm_evidence_cn": "四旋翼与机械臂构成的空中机械臂建模与控制",
+      "llm_evidence": "四旋翼与机械臂构成的空中机械臂建模与控制",
+      "canonical_evidence": "四旋翼与机械臂构成的空中机械臂建模与控制",
+      "llm_tldr_en": "This paper models an aerial manipulator made of a quadrotor and a robotic arm, decoupling it into translation and shape-space subsystems, and designs observer-based robust control to reject unknown external disturbances.",
+      "llm_tldr_cn": "针对四旋翼搭载机械臂的空中机械臂系统在未知外部扰动下的建模与控制难题，本文通过将系统整体质心速度与姿态作为约束，把强耦合动力学简化为锁定子系统与形状空间子系统两个解耦部分。作者揭示了第一子系统的常值有界扰动会在第二子系统中表现为时变状态相关扰动这一耦合挑战，并据此提出基于观测器的鲁棒控制方法。该工作为受扰空中机械臂的动力学建模与抗扰控制提供了可复用的框架，有助于提升空中作业的稳定性与精度。",
+      "llm_tldr": "针对四旋翼搭载机械臂的空中机械臂系统在未知外部扰动下的建模与控制难题，本文通过将系统整体质心速度与姿态作为约束，把强耦合动力学简化为锁定子系统与形状空间子系统两个解耦部分。作者揭示了第一子系统的常值有界扰动会在第二子系统中表现为时变状态相关扰动这一耦合挑战，并据此提出基于观测器的鲁棒控制方法。该工作为受扰空中机械臂的动力学建模与抗扰控制提供了可复用的框架，有助于提升空中作业的稳定性与精度。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "modeling and control of multirotor with onboard manipulator",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.11661v1",
+      "source": "arxiv",
+      "title": "Contact-Aware Incremental Model Predictive Control for an Underactuated Aerial Manipulator",
+      "abstract": "We present a robust contact-aware control framework for aerial writing on an underactuated platform. The framework combines nonlinear model predictive control (NMPC) for accurate end-effector position and normal-force tracking at small reference penetration depths, with consistent performance across controller tunings, with whole-body incremental nonlinear dynamic inversion (INDI) for robustness to frictional and aerodynamic disturbances during contact. The proposed controllers are validated on a quadrotor-based aerial manipulator with a rigid, single-link, one-degree-of-freedom (DoF) arm in simulation and real-world experiments. The aerial writing experiments span vertical and inclined surfaces, multiple reference forces, different friction conditions, and wind disturbances. The results demonstrate that robust simultaneous five-DoF end-effector pose and contact-force tracking is achievable on a standard underactuated quadrotor with a simple, rigid, single-link arm, without requiring a fully actuated platform, a complex arm, or dedicated force/torque sensing.",
+      "authors": [
+        "Darwin Liu",
+        "Tamas Keviczky",
+        "Sihao Sun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-10T15:03:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.11661v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "contact-aware NMPC and INDI control for an underactuated aerial manipulator with a robotic arm",
+      "llm_evidence_cn": "面向欠驱动空中机械臂的接触感知NMPC与INDI控制",
+      "llm_evidence": "面向欠驱动空中机械臂的接触感知NMPC与INDI控制",
+      "canonical_evidence": "面向欠驱动空中机械臂的接触感知NMPC与INDI控制",
+      "llm_tldr_en": "A contact-aware control framework for an underactuated aerial manipulator combines NMPC for end-effector position and normal-force tracking with whole-body INDI for robustness to disturbances, validated in aerial writing experiments.",
+      "llm_tldr_cn": "针对欠驱动空中机械臂在接触作业中易受摩擦和气动扰动、末端力位跟踪困难的问题，本文提出一种接触感知控制框架，将非线性模型预测控制与全身增量非线性动态逆相结合。前者负责末端位置与法向力跟踪，后者提升接触过程中的鲁棒性。作者在搭载单自由度刚性机械臂的四旋翼平台上开展仿真与实机空中书写实验，涵盖垂直与倾斜表面及多种参考力。结果表明该框架能实现稳定的力位跟踪，为空中机器人物理交互作业提供了新思路。",
+      "llm_tldr": "针对欠驱动空中机械臂在接触作业中易受摩擦和气动扰动、末端力位跟踪困难的问题，本文提出一种接触感知控制框架，将非线性模型预测控制与全身增量非线性动态逆相结合。前者负责末端位置与法向力跟踪，后者提升接触过程中的鲁棒性。作者在搭载单自由度刚性机械臂的四旋翼平台上开展仿真与实机空中书写实验，涵盖垂直与倾斜表面及多种参考力。结果表明该框架能实现稳定的力位跟踪，为空中机器人物理交互作业提供了新思路。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "aerial manipulation control strategies",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.18507v1",
+      "source": "arxiv",
+      "title": "An Experimental Study of Downwash Effects on a Continuum Manipulator Integrated with a Multirotor UAV",
+      "abstract": "Continuum arm aerial manipulation systems leverage soft-manipulator compliance and dexterity for tasks in confined or hazardous environments, but propeller downwash can degrade performance, particularly near walls and the ground. This effect remains uncharacterized for continuum manipulators. This letter experimentally studies downwash-induced kinematic deviations of a tendon-driven continuum manipulator integrated with a multirotor platform. Under still-air conditions, the CM is compared with a constant-curvature (CC) model. Downwash- induced end-effector pose deviations are then quantified relative to the mean still-air experimental baseline at four propeller throttle levels in free space, and at maximum throttle near a wall, and near the ground. Vertical position and yaw show the largest deviations and are amplified by ground effect. A CC-guided Gaussian process regression (GPR) residual model is learned from experimental data that improves forward pose prediction RMSE (position by 89-95%, orientation by 47-79%), and support compensation-oriented, downwash-aware modeling of continuum arm aerial manipulation systems.",
+      "authors": [
+        "Anuraj Uthayasooriyan",
+        "Krishna Manaswi Digumarti",
+        "ernando Vanegas",
+        "Felipe Gonzalez"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-19T03:54:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.18507v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "continuum manipulator integrated with multirotor UAV aerial manipulation",
+      "llm_evidence_cn": "连续体机械臂与多旋翼无人机集成的空中操作",
+      "llm_evidence": "连续体机械臂与多旋翼无人机集成的空中操作",
+      "canonical_evidence": "连续体机械臂与多旋翼无人机集成的空中操作",
+      "llm_tldr_en": "Continuum arm aerial manipulation offers compliance and dexterity but propeller downwash degrades performance, which remains uncharacterized for continuum arms. This letter experimentally quantifies downwash-induced kinematic deviations of a tendon-driven continuum manipulator on a multirotor, providing baseline data for modeling and compensation.",
+      "llm_tldr_cn": "连续体机械臂空中操作结合软体机械臂的柔顺性与灵活性，适合狭窄或危险环境作业，但旋翼下洗气流会降低其性能，且这一问题此前尚未被表征。本文针对绳驱动连续体机械臂与多旋翼平台的集成系统，在静止空气中与恒曲率模型对比，并在四种油门水平及近壁最大油门条件下量化下洗引起的末端位姿偏差。实验揭示了下洗对连续体机械臂运动学的影响规律，为空中操作系统的建模与补偿控制提供了实验依据。",
+      "llm_tldr": "连续体机械臂空中操作结合软体机械臂的柔顺性与灵活性，适合狭窄或危险环境作业，但旋翼下洗气流会降低其性能，且这一问题此前尚未被表征。本文针对绳驱动连续体机械臂与多旋翼平台的集成系统，在静止空气中与恒曲率模型对比，并在四种油门水平及近壁最大油门条件下量化下洗引起的末端位姿偏差。实验揭示了下洗对连续体机械臂运动学的影响规律，为空中操作系统的建模与补偿控制提供了实验依据。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "modeling and control of multirotor with onboard manipulator",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.21879v1",
+      "source": "arxiv",
+      "title": "Vision-Guided Morphing Quadcopter for Multi-Geometry Payload Transport through Narrow Passages",
+      "abstract": "Aerial payload transport using multirotor unmanned aerial vehicles is challenging because payload geometry, contact interaction, grasp stability, flight control, and narrow-passage traversal are strongly coupled during pickup and transport. Object-specific grippers often cannot adapt their footprint or grasp geometry when the payload shape or passage width changes. This paper presents a vision-guided morphing quadcopter for multi-geometry payload transport through narrow passages. The proposed platform uses four hybrid arm-leg structures that function as both landing supports and grasping members. A centrally placed actuator drives a tendon-based morphing mechanism, enabling all four arms to synchronously retract or expand for object grasping, footprint reduction, and post-transport release. Onboard vision estimates the payload geometry and passage width, while endpoint force feedback is used to confirm grasp contact during payload engagement. A phase-wise mission planner, PID-based flight stabilization, and morphology-adaptive grasp controller are implemented in a MuJoCo simulation environment. The framework is evaluated using box, cylindrical, and spherical payloads, representing flat-faced, rolling-curved, and fully curved contact conditions. Across the three cases, the simulated system completes the pickup-transport-release sequence with a maximum RMS position error of 0.31 m, a final drop-zone error below 0.18 m, a compact grasp footprint of 0.09-0.21 m2, and a footprint reduction of 75.0-89.7 percent. The results demonstrate that a single-actuator morphing quadcopter can adapt its grasp footprint for the transport of payloads with different geometries while reducing its overall footprint for narrow-passage traversal.",
+      "authors": [
+        "Aashish Sahu",
+        "Shriram Hari",
+        "R. Prasanth Kumar"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-22T09:45:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.21879v1",
+      "tags": [
+        "keyword:aerial-arm",
+        "query:aerial-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "morphing quadcopter with hybrid arm-leg grasping members for aerial payload transport and contact interaction",
+      "llm_evidence_cn": "带混合臂腿抓取机构的变形四旋翼用于空中载荷运输与接触交互",
+      "llm_evidence": "带混合臂腿抓取机构的变形四旋翼用于空中载荷运输与接触交互",
+      "canonical_evidence": "带混合臂腿抓取机构的变形四旋翼用于空中载荷运输与接触交互",
+      "llm_tldr_en": "This paper tackles aerial payload transport where grasp geometry and narrow-passage traversal are coupled, proposing a vision-guided morphing quadcopter whose four hybrid arm-leg structures serve as both landing supports and grasping members driven by a tendon-based morphing mechanism.",
+      "llm_tldr_cn": "针对多旋翼空中运输中载荷几何形状、抓取稳定性与狭窄通道穿越相互耦合、且专用夹爪难以适应形状变化的难题，本文提出一种视觉引导的变形四旋翼平台。该平台采用四个兼具起落支撑与抓取功能的混合臂腿结构，由中央执行器通过腱驱动变形机构带动四臂同步收展，从而适配不同载荷与通道宽度。研究面向抓取与运输全过程，展示了对多几何形状载荷的适应能力，为空中机器人的抓取操作与通道穿越提供了新思路。",
+      "llm_tldr": "针对多旋翼空中运输中载荷几何形状、抓取稳定性与狭窄通道穿越相互耦合、且专用夹爪难以适应形状变化的难题，本文提出一种视觉引导的变形四旋翼平台。该平台采用四个兼具起落支撑与抓取功能的混合臂腿结构，由中央执行器通过腱驱动变形机构带动四臂同步收展，从而适配不同载荷与通道宽度。研究面向抓取与运输全过程，展示了对多几何形状载荷的适应能力，为空中机器人的抓取操作与通道穿越提供了新思路。",
+      "llm_tags": [
+        "query:aerial-arm"
+      ],
+      "matched_query_tag": "query:aerial-arm",
+      "matched_query_text": "grasping and manipulation with aerial robot manipulators",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

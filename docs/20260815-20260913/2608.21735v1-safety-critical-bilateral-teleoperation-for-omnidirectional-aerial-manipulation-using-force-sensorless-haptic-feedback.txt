@@ -1,0 +1,599 @@
+Title: Safety-Critical Bilateral Teleoperation for Omnidirectional Aerial Manipulation Using Force-Sensorless Haptic Feedback
+
+URL Source: https://arxiv.org/pdf/2608.21735v1
+
+Published Time: Tue, 25 Aug 2026 00:26:18 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Safety-Critical Bilateral Teleoperation for Omnidirectional Aerial Manipulation Using Force-Sensorless Haptic Feedback 
+
+Yubin Kim 1, Jinwoo Lee 1, Yongjun You 1, H. Jin Kim 2, and Jeonghyun Byun 3
+
+Abstract — This paper presents a safety-critical bilateral tele-operation framework for omnidirectional aerial manipulators that integrates visual and force-sensorless haptic wrench feed-back. Unlike existing approaches that either rely on onboard force/torque sensors or use model-dependent wrench estimates, which may become unreliable under model uncertainties or induce unintended feedback during free-flight, our method implements a hierarchical safety filter based on control barrier functions to avoid such limitations. The safety filter, being the key contribution, explicitly accounts for tracking errors arising from physical interaction between the aerial manip-ulator and its surroundings while enforcing thrust limits, a factor overlooked despite its critical importance for flight safety. This safety filter adjusts the command from the operator to ensure safe and stable aerial manipulation and avoid motor saturation. The adjustment made by the filter is mapped to haptic feedback, which is intuitive to the operator and conveys information on physical interaction and impending motor saturation. By actual experiments with a hexarotor-based omnidirectional aerial manipulator, we demonstrate that the proposed method avoids haptic feedback during free-flight, provides directionally consistent feedback under physical interaction, and can be operated for diverse manipulative tasks. Moreover, an ablation study further shows that the saturation filter improves interaction stability by explicitly preventing motor saturation and informing the operator of corrective actions. 
+
+I. INTRODUCTION Aerial manipulators (AMs) are a promising platform for remote operations by combining the maneuverability of aerial vehicles with the versatility of attached robotic manipulators. Therefore, there have been numerous studies to utilize their maneuverability, including non-destructive inspection [1], door opening [2], plug pulling [3], window cleaning [4], wall painting [5], and emergency escape by window breaking [6]. Although a number of studies have been conducted on the fully autonomous control of AMs [7], [8], bilateral tele-operation remains necessary to leverage human-in-the-loop adaptability, especially in previously unknown environments. In this regard, there have been several approaches on the                 
+
+> This work was supported by the Agency For Defense Development Grant Funded by the Korean Government(UI257004JD)
+> 1The authors are with the Department of Aerospace Engineer-ing, Seoul National University, Seoul, South Korea.
+
+{oopuppy, jinwoolee0728, dbys34 }@snu.ac.kr   
+
+> 2The author is with the Department of Aerospace Engineering, Au-tomation and System Research Institute (ASRI), and Institute of Advanced Aerospace Technology (IAAT), Seoul National University, Seoul, South Korea.
+
+hjinkim@snu.ac.kr                 
+
+> 3The author is with the Automation and System Research Institute (ASRI), Seoul National University, Seoul, South Korea.
+
+quswjdgus97@snu.ac.kr 
+
+Fig. 1. Illustration of our haptic-based bilateral teleoperation for an omnidirectional aerial manipulator (remote environment) teleoperated by a human operator through a haptic master device (local environment). 
+
+bilateral teleoperation of aerial manipulators that leverage sensory feedback such as 2D/3D visual feedback [9], Mixed Reality (MR)/Virtual Reality (VR) interfaces [10], [11], or haptic feedback [12], [13]. These works have paved the way towards precise, safe, and transparent teleoperation of AMs with adequate sensory feedback. In particular, for tasks involving physical interaction, hap-tic feedback plays an important role in enhancing the trans-parency of the teleoperation. The straightforward solution is the attachment of the force/torque (FT) sensors on both AMs and haptic devices; however, we aim to avoid this solution to maintain the minimum sensor configuration of our framework. Meanwhile, existing FT-sensorless haptic feed-back approaches have typically relied on model-dependent, momentum-based wrench estimation, which might become unreliable under model uncertainties. Furthermore, in terms of transparency, providing the operator with clear and re-liable cues of physical interaction is more imperative than accurately measuring or estimating the interaction wrench. On the other hand, complying with thrust limits is crucial for the safe operation of aerial manipulators but is frequently overlooked. Moreover, informing the operator of impending motor saturation facilitates safety in performing aerial ma-nipulative tasks. For that end, we introduce an FT-sensorless bilateral tele-operation framework, requiring no FT sensors on either the AM or the master device, for an omnidirectional aerial ma-nipulator. It employs a hierarchical safety filter that adjusts the commanded pose and generates haptic feedback based on (i) tracking errors induced by physical interaction and (ii) thrust limits, promoting safer and more stable interaction. The feedback remains directionally coherent regardless of the vehicle’s attitude, letting the operator intuitively exploit the system’s omnidirectionality. arXiv:2608.21735v1 [cs.RO] 22 Aug 2026 A. Related Works 
+
+In [14], a bilateral teleoperation method for an AM using haptic feedback is proposed and validated in simulation, and in [15], a seven-degree-of-freedom (DoF) robotic manipula-tor is used to command the full pose of an AM. A semi-autonomous teleoperation framework for a push-and-slide task using vision and force feedback from the vehicle is introduced in [16]. However, these works rely on FT sensors to directly measure and render interaction wrenches to the operator. To maintain the minimal sensor configuration of the tele-operation frameworks, there exist several studies on bilateral teleoperation of AMs using haptic feedback that do not require FT sensors on the aerial vehicle’s end-effector. In [17], aerial drilling via teleoperation is presented, where interaction forces are inferred using current measurements from a servo-actuated drill manipulator mounted on the aerial vehicle. However, this approach is limited to estimating only the vertical force acting on the drill bit. In [18] and [19], interaction wrenches acting on AMs are estimated using momentum-based wrench estimators. Nevertheless, due to model uncertainties such as mass, inertia, and thrust-model errors, the estimated wrench may drift or fluctuate even when there is no physical interaction. Meanwhile, [20] and [21] utilize the control wrench computed by the tracking controller of the AM as haptic feedback, rather than directly estimating the interaction wrench. However, this method may lead to unintended residual haptic feedback even when the operator has no intention of interaction, since a nonzero tracking error may persist unless the operator intentionally commands to reduce it. Moreover, motor saturation has rarely been incorporated into bilateral teleoperation of AMs, despite being critical for flight safety during physical interaction. Finally, fully omnidirectional aerial manipulation has also been explored in teleoperation. For example, [22] and [23] propose a teleoperation method for fully omnidirectional aerial manipulation and validates it by turning a valve while maintaining vertical flight. However, the hand-worn interface used in this work focuses on motion-based teleoperation and does not provide haptic wrench feedback, which may limit the achievable transparency during physical interaction. To the best of our knowledge, no previous work si-multaneously incorporates: (i) motor thrust limits, (ii) FT-sensorless haptic feedback, and (iii) fully omnidirectional aerial manipulation. 
+
+B. Contributions 
+
+To summarize, the main contributions of this paper are as follows:  
+
+> •
+
+The first bilateral teleoperation framework for omni-directional aerial manipulation using vision and haptic feedback that explicitly accounts for motor thrust limits.  
+
+> •
+
+The design of a safety filter that adjusts the desired pose of the AM based on the tracking error and motor thrust limits; this filter guarantees thrust feasibility while pre-serving task performance as much as possible, thereby preventing motor saturation during physical interaction.   
+
+> Fig. 2. Three-dimensional models of (a) the AM and (b) the master device, including their corresponding body frames, with motor indices labeled on the AM.
+> •
+
+The design of an FT-sensorless haptic feedback method reflecting the adjustments to the commanded pose; this method eliminates the need of FT sensors while preserving informative interaction cues.  
+
+> •
+
+Hardware demonstrations of the proposed framework through actual experiments, including both static and dynamic physical interaction. 
+
+C. Outline 
+
+Section II outlines the overall structure of the bilateral teleoperation framework. Section III describes the control method implemented in the master device, while Section IV details the safety filter used for generating haptic feedback from the aerial manipulator. In Section V, experimental results validating the performance of the proposed framework are presented. II. B ILATERAL TELEOPERATION FRAMEWORK 
+
+A. Notations and Coordinate Frames 
+
+The symbol e3 ∈ R3 is used to represent the unit vector [0; 0; 1] , while In indicates the n × n identity matrix. Estimates of physical quantities are distinguished by the hat symbol ˆ(·). Also, the rotation from F1 to F2 is denoted by rotation matrix F2 
+
+> F1
+
+R ∈ SO (3) .The 2-norm of a vector is represented by ∥·∥ , while the weighted 2-norm with weighting matrix W is denoted by 
+
+∥·∥ W . The Moore-Penrose pseudoinverse of a matrix X is written as X†. For vectors a, b ∈ R3, the skew-symmetric operator (·)× is defined such that a×b = a × b. The inverse of the skew-symmetric operation is represented by the vee operator (·)∨.Relevant coordinate frames include the world inertial frame W, the AM body frame B1, and the master device end-effector frame B2, which are depicted in Fig. 2. 
+
+B. Outline 
+
+The overall architecture of the proposed bilateral teleop-eration framework is illustrated in Fig. 3. The framework is composed of two primary components: a robotic manipulator that functions as the master device of the teleoperation sys-tem and an omnidirectional aerial manipulator with tiltable rotor arms that serves as the slave robot. Fig. 3. Outline of the teleoperation framework. 
+
+The master device is driven by an admittance con-troller with a combined wrench input consisting of the estimated external wrench at the end-effector, ˆwext =[ˆf ext ; ˆ τ ext ] ∈ R6, and the safety-filter feedback wrench, 
+
+wf ilt = [ f f ilt ; τ f ilt ] ∈ R6. Here, ˆwext denotes an estimate of the true external wrench wext = [ f ext ; τ ext ] ∈ R6 applied to the end-effector. The resulting deviation of the current end-effector pose from its neutral pose is then mapped to the twist command ξc ∈ R6 for the AM. On the AM side, the twist command translated from the master device is processed through a hierarchical safety filter. In the first stage (the interaction filter), the command twist is modified to satisfy tracking error constraints, in effect se-curing command compliance with the AM’s interactions and generating a feedback wrench that reflects this interaction with the environment. The second stage (the saturation filter) further adjusts the command to ensure that motor thrust limits are not violated, producing a corresponding feedback wrench associated with motor saturation. The wrenches from both stages are combined to form the overall feedback wrench, 
+
+wf ilt , which is translated back to the master device. The command modified by the hierarchical safety filter is integrated with the current pose of the AM to generate the desired pose T d ∈ SE (3) , desired twist ξd ∈ R6, and desired spatial acceleration ˙ξd ∈ R6. Based on T d, ξd, and 
+
+˙ξd, the gRITE (Geometric Robust Integration Integral of the tanh of the Error) controller [7] together with geometric allocation [24] computes the thrust magnitudes and rotor tilt angles necessary to track the desired state. III. M ASTER DEVICE 
+
+A. Dynamics 
+
+The robotic manipulator that acts as the master device of the teleoperation framework can be modeled as a single open chain of rigid bodies connected by nm revolute joints. Let 
+
+q ∈ Rnm denote the joint angles; then the Euler-Lagrange equation of motion of the master device is derived as follows: 
+
+M (q)¨ q + C(q, ˙q) ˙ q + g(q) = τ [jnt ] + JTee (q)wext (1) where M (q) and C(q, ˙q) ∈ Rnm×nm are the inertial matrix and the matrix containing Coriolis and centrifugal effects factorized by Christoffel symbols, respectively, g(q) ∈ Rnm
+
+is the generalized gravitational vector, and τ [jnt ] ∈ Rnm
+
+are the command joint torques. The geometric Jacobian of the end-effector, Jee (q) ∈ R6×nm , relates the end-effector twist ξ[ee ] ∈ R6 to the joint velocities ˙q ∈ Rnm as ξ[ee ] =
+
+Jee (q) ˙ q.
+
+B. External Wrench Estimation 
+
+For the admittance control of the master device’s end-effector, the external wrench wext exerted by the operator is required. To avoid incorporating FT sensors into the framework, the external wrench is estimated following the approach in [25], as described below: 
+
+ˆwext = ( JTee (q)) †h
+
+KE
+
+p(t) − p(0) 
+
+−
+
+Z t
+
+> 0
+
+(τ [jnt ] + CT (q, ˙q) − g(q) + JTee (q) ˆ wext )ds 
+
+i
+
+(2) where KE ∈ Rnm×nm is a positive diagonal gain matrix and p = M (q) ˙ q is the generalized momentum. 
+
+C. Admittance Control 
+
+As introduced in [15], we utilize an admittance controller combined with a low-level joint controller to guarantee compliance with respect to the human operator’s interaction wrench and haptic feedback from the AM. To this end, given the estimated external wrench ˆwext and the feedback wrench 
+
+wf ilt , we first formulate the dynamics of the desired end-effector pose as follows: 
+
+M t ¨p[ee ] 
+
+> d
+
++ Ct ˙p[ee ] 
+
+> d
+
++ P t(p[ee ] 
+
+> d
+
+− p[ee ]0 ) = ˆf ext + f f ilt 
+
+M r ˙Ω[ee ] 
+
+> d
+
++ Cr Ω[ee ] 
+
+> d
+
++ P r e[ee ] 
+
+> R
+
+= B2 
+
+> W
+
+RT (ˆ τ ext + τ f ilt )
+
+(3) where 
+
+e[ee ] 
+
+> R
+
+= 12 (B2 
+
+> W
+
+RT  
+
+> 0B2
+> W
+
+Rd − B2 
+
+> W
+
+RTd B2 
+
+> W
+
+R0)
+
+with B2 
+
+> W
+
+Rd and B2 
+
+> W
+
+R0 ∈ SO (3) denoting the rotation matri-ces corresponding to the end-effector’s desired and neutral orientation. Additionally, p[ee ] 
+
+> d
+
+and Ω[ee ] 
+
+> d
+
+∈ R3 represent the desired end-effector position and desired angular velocity, respectively, and p0 ∈ R3 is the neutral position of the end-effector. The design matrices M t, Ct, P t, M r , Cr , P r ∈
+
+R3×3 are selected so that the end-effector exhibits the be-havior of a prescribed mass-spring-damper system anchored at its neutral pose. The joint angles corresponding to the desired end-effector pose obtained from (3) are computed by an iterative inverse kinematics (IK) algorithm with null-space projection to man-age the kinematic redundancy of the master device. 
+
+D. Master Command Generation 
+
+The master twist command, ξc, is computed by mapping the deviation of the master device’s end-effector pose with respect to its neutral configuration. In our framework, we used a linear deadband mapping shown below: 
+
+ξc,i =
+
+(
+
+0 |e[ee ] 
+
+> i
+
+| ≤ li
+
+KM,i (e[ee ] 
+
+> i
+
+− li sgn( e[ee ] 
+
+> i
+
+)) |e[ee ] 
+
+> i
+
+| > l i
+
+,i ∈ { 1, 2, · · · , 6} (4) where e[ee ] = [ p[ee ] 
+
+> d
+
+− p[ee ]0 ; e[ee ] 
+
+> R
+
+], KM ∈ R6×6 is a positive diagonal gain matrix, and l ∈ R6 is a vector contain-ing deadbands for each wrench component. By introducing deadbands in (4), we ensure that a nonzero twist command is generated only when the master device’s end-effector pose deviates sufficiently from the neutral configuration. Furthermore, ξc is selectively gated according to the active control mode. Specifically, only the relevant translational and/or rotational components are transmitted to the slave in the position-only, attitude-only, full 6-DoF, and position+yaw modes. Hereafter, ξc refers to this gated command. IV. O MNIDIRECTIONAL AERIAL MANIPULATOR 
+
+In this section, we introduce our two-stage hierarchical safety filter that adjusts the command twist of the AM, ξc,to (i) provide interaction that is consistent with constraints imposed by the AM’s surroundings and (ii) prevent motor saturation. The first stage is an interaction filter that adjusts the command twist sent from the master device such that tracking-error constraints are satisfied, thus providing a com-mand consistent with interactions made with the surround-ings. The saturation filter of the second stage further modifies the command adjusted by the interaction filter so that thrust limits are met. The interaction filter generates a haptic feedback wrench reflecting the aerial manipulator’s interaction with its sur-roundings, whereas the saturation filter produces a feedback wrench associated with motor saturation. Both filters are formulated as quadratic programs (QPs) subject to control barrier function (CBF) constraints, as detailed below. 
+
+A. Preliminary: Affine Mappings in Aerial Manipulator Dy-namics 
+
+Prior to formulating the interaction and saturation filters, the closed-loop error dynamics of our omnidirectional aerial manipulator equipped with tiltable rotors need to be derived. According to [7], the control wrench w is locally affine to the desired spatial acceleration ˙ξd:
+
+w = w0 + G ˙ξd (5) where w0 collects all terms independent of ˙ξd and G ∈ R6×6
+
+is known locally. Actuator allocation [24] produces planar thrusts for each rotor from the control wrench: 
+
+[T 1; · · · ; T nr ] = B†w, T i ≜
+
+Ti cos θi
+
+Ti sin θi
+
+
+
+∈ R2 (6) where nr is the number of rotors; Ti, θ i ∈ R are rotor thrust magnitudes and angles, respectively; and B ∈ R6×2nr is the thrust allocation matrix. By substituting (6) for (5), the thrust vector of rotor i becomes affine in ˙ξd:
+
+T i = Ai ˙ξd + bi,
+
+Ai ≜ EiB†G ∈ R2×6, bi ≜ EiB†w0 ∈ R2 (7) Here, Ei ∈ R2×2nr selects the two rows associated with the 
+
+ith rotor. 
+
+B. 1st Stage: The Interaction Filter 
+
+To enforce compliance with constraints imposed by the AM’s interaction with its surroundings, the interaction filter modifies the master command twist ξc into twist ξ1 ≜
+
+[v1; Ω1] ∈ R6, where v1 and Ω1 are decision variables. 
+
+1) Error dynamics: Suppose that p ∈ R3 and B1 
+
+> W
+
+R ∈
+
+SO (3) represent the current pose of the aerial manipulator, while pd ∈ R3 and B1 
+
+> W
+
+Rd ∈ SO (3) represent the desired pose computed by integrating master command twist ξc to the current pose. The associated tracking errors are defined as 
+
+ep ≜ p − pd, eR ≜ 12 (ΨT − Ψ)∨, eΩ ≜ Ω − ΨΩ 1 (8) where Ψ ≜ B1 
+
+> W
+
+RT B1 
+
+> W
+
+Rd.The position error ep evolves as 
+
+˙ep = v − v1, (9) where v ∈ R3 is the current linear velocity of the aerial ma-nipulator. Furthermore, the time derivative of eR is related to the angular-velocity error eΩ defined in (8) by the kinematic relationship 
+
+˙eR = E(Ψ)eΩ, E(Ψ) ≜ 12 (tr( Ψ)I3 − ΨT ) (10) It is noted that the decision variables, v1 and Ω1, enter our formulation through the error dynamics (9) and (10). 
+
+2) Filter Design: Bounds on the position and attitude tracking errors are enforced via soft CBFs. For position errors, we let the admissible position-error bounds be 
+
+ep,i ∈ [−e[M ] 
+
+> p,i
+
+, e [M ] 
+
+> p,i
+
+], i ∈ { x, y, z }. (11) Therefore, the control barrier functions with respect to the position errors are defined as follows: 
+
+h−
+
+> p,i
+
+(ep) ≜ ep,i + e[M ] 
+
+> p,i
+
+, h+
+
+> p,i
+
+(ep) ≜ e[M ] 
+
+> p,i
+
+− ep,i . (12) Now consider inequalities 
+
+˙h± 
+
+> p,i
+
++ αph± 
+
+> p,i
+
+≥ − δ±
+
+> p,i
+
+, δ± 
+
+> p,i
+
+≥ 0 (13) where αp ∈ R is a tuning parameter that dictates the convergence rate of the constraint and δ± 
+
+> p,i
+
+∈ R+ is a slack variable. Since ˙ep = v − v1, (13) is rearranged with respect to v1 as follows: 
+
+v1,i ≤ vi + αp(ep,i + e[M ] 
+
+> p,i
+
+) + δ−
+
+> p,i
+
+v1,i ≥ vi + αp(ep,i − e[M ] 
+
+> p,i
+
+) − δ+
+
+> p,i
+
+. (14) Regarding attitude errors, let θR > 0 denote the admissible attitude-error radius; then the associated CBF is defined as 
+
+hR(eR) ≜ θ2 
+
+> R
+
+− ∥ eR∥2. (15) Using (10), we have 
+
+˙hR = −2eTR ˙eR = −2eTRE(Ψ)( Ω − ΨΩ 1). (16) Hence, enforcing the condition 
+
+˙hR + αRhR ≥ − δR, δR ≥ 0 (17) where αR, δ R ∈ R are a tuning parameter and a slack variable, respectively, an affine inequality of Ω1 is obtained as follows: 
+
+2eTRE(Ψ)ΨΩ 1 ≥ 2eTRE(Ψ)Ω − αRhR − δR. (18) Finally, with the CBF inequalities (14) and (18) the interaction filter is constructed as a CBF-QP formulation as follows: 
+
+(ξ∗
+
+> 1
+
+, δ∗) = arg min  
+
+> ξ1
+> δ≥0
+> 12
+
+∥ξ1 − ξc∥2  
+
+> We
+
++ 12 ∥δ∥2 
+
+> Wδ
+
+s.t. (14) , (18) 
+
+(19) where δ ≜ [δ−
+
+> p,x
+
+, δ +
+
+> p,x
+
+, · · · , δ − 
+
+> p,z
+
+, δ + 
+
+> p,z
+
+, δ R]T ∈ R7, while 
+
+W e ∈ R6×6 and W δ ∈ R7×7 are weights for command deviation and penalization on constraint relaxation, respec-tively. Here, W δ is set small to keep the error bounds loose for interaction feedback. 
+
+C. 2nd Stage: The Saturation Filter 
+
+The second stage of our hierarchical safety filter, the saturation filter, prevents motor saturation by adjusting the output of the interaction filter by generating a jerk input 
+
+¨ξ2 ∈ R6 that complies with motor thrust limits. 
+
+1) Nominal acceleration/jerk to reach the first-stage ve-locity reference: The output twist of the interaction filter, ξ∗
+
+> 1
+
+,is used as a reference in the formulation of the saturation filter. Specifically, the nominal desired acceleration ˙ξnom 
+
+required for reaching the velocity reference is defined as: 
+
+˙ξnom ≜ 1
+
+> Tc1
+
+(ξ∗ 
+
+> 1
+
+− ξe) (20) where ξe is the current desired twist and Tc1 > 0 represents a time constant. Using (20), the nominal jerk ¨ξnom is defined as follows: 
+
+¨ξnom ≜ 1
+
+> Tc2
+
+( ˙ξnom − ˙ξe) (21) where ˙ξe is the time derivative of ξe and Tc2 > 0 is another time constant. The saturation filter calculates the jerk ¨ξ2
+
+that minimally deviates from ¨ξnom while enforcing thrust constraints. 
+
+2) Filter Design: We enforce the hard bound ∥T i∥ ≤ 
+
+Ti,max for ∀i ∈ { 1, · · · , n r } by defining the control barrier function concerning thrust limits as: 
+
+hT,i ( ˙ξ2) ≜ T 2 
+
+> i,max
+
+− ∥ T i( ˙ξ2)∥2. (22) From (7), there exists a matrix Ai ∈ R2×6 such that 
+
+˙T i = Ai¨ξ2 (23) and consequently, ˙hT,i is derived as follows: 
+
+˙hT,i = −2T Ti ˙T i = −2( Ai ˙ξ + bi)T Ai¨ξ2. (24) Therefore, with a class-K function αT,i hT,i − γT ,i  
+
+> hT ,i
+
+≥ 0 ∀t ≥
+
+0, the CBF condition is formulated as follows: 
+
+˙hT,i + αT,i hT,i − γT ,i  
+
+> hT ,i
+
+≥ 0, (25) with tuning parameters αT,i and γT,i ∈ R. Then, (25) yields a linear inequality with respect to decision variable ¨ξ2 as: 
+
+2T Ti Ai¨ξ2 ≤
+
+αT,i (T 2 
+
+> i,max
+
+− ∥ Ti∥2) − γT ,i   
+
+> (T2
+> i,max −∥ Ti∥2)
+
+. (26) Based on the linear inequality (26), we formulate the QP expressing the saturation filter as follows: 
+
+¨ξ∗ 
+
+> 2
+
+= arg min  
+
+> ¨ξ2
+> 12
+
+∥¨ξ2 − ¨ξnom ∥2 
+
+> Ws
+
+s.t. (26) 
+
+(27) where W s ∈ R6×6 is a weighting matrix. The jerk ¨ξ∗
+
+> 2
+
+resulting from (27) is used to update desired acceleration 
+
+˙ξd, twist ξd, and pose T d.
+
+D. Haptic Feedback Wrench Generation 
+
+Since the master device is driven at the accelera-tion/wrench level, the corrections implemented by the in-teraction and saturation filters must be converted to an acceleration/wrench signal. Recall from (5) that G maps a spatial acceleration to the corresponding control wrench expressed in the body frame B1. We therefore express each filter correction as an acceleration cue and render it through the same G. The velocity-level adjustment made by the interaction filter is transformed into feedback wrench 
+
+wf ilt, 1 ∈ R6 based on an acceleration cue a1 ∈ R6:
+
+wf ilt, 1 = Ga 1, a1 ≜ 1 
+
+> Th
+
+(ξ∗ 
+
+> 1
+
+− ξc) (28) where Th > 0 is a time constant. Similarly, the jerk-level modification of the saturation filter is converted to feedback wrench wf ilt, 2 ∈ R6 as follows: 
+
+wf ilt, 2 = Ga 2, a2 ≜ Th(¨ξ∗ 
+
+> 2
+
+− ¨ξnom ). (29) The feedback wrenches wf ilt, 1 and wf ilt, 2 are linearly summed to form the total feedback wrench wf ilt :
+
+wf ilt = K1wf ilt, 1 + K2wf ilt, 2. (30) Here, K1 and K2 ∈ R6×6 are user-defined positive diagonal matrices, with K2 > K1 to emphasize the saturation feedback. V. E XPERIMENTAL RESULTS 
+
+A. Experimental Setup 
+
+The master device is a robotic manipulator based on the FACTR hardware [26]. The slave device is a hexarotor-based omnidirectional tiltrotor, hereafter simply referred to as the AM. The AM is equipped with KDE2315XF-965 brushless motors, APC 6 ×4×3.2 propellers, and Dynamixel XM430-W210-T servo motors. An RGB camera, oCam-5CRO-U-M, is mounted to provide visual feedback, and a 0-DoF manipulator is rigidly attached to the vehicle for manipulation. The flight controller is a Pixhawk 6C running PX4, and an ASUS NUC13 serves as the onboard computer running Robot Operating System 2 (ROS 2) to control the actuators. State estimation is obtained by fusing motion-capture measurements from an OptiTrack system with IMU data from the Pixhawk. The overall control loop runs at 
+
+1/∆T = 200 Hz and the filter implementation uses finite-difference approximations with sampling period ∆T ; accord-ingly, we set Tc1 = Tc2 = Th = ∆ T and propagate the desired states via discrete-time numerical integration. Unless otherwise specified, the position-error bound is set to e[M ] 
+
+> p,i
+
+= 0.025 m for i ∈ {x, y, z } and the Fig. 4. The behaviors of the AM and master device during free-flight using haptic feedback generated by (a) the momentum-based wrench estimation [2], [27] and (b) the proposed method. Note that (a) exhibits unintended drift while hovering, whereas (b) remains stable.       
+
+> Fig. 5. Comparison between the momentum-based wrench esti-mation and the proposed haptic feedback method. In this figure, we let ∆denote the deviation from the initial value, and ϕ,θ, and ψ
+> represent the roll, pitch, and yaw angles of the AM, respectively.
+
+attitude-error bound is set to θR = 5◦. The omnidi-rectionality test uses a relaxed attitude bound of θR =10 ◦. The feedback gains in (30) are fixed as K1 =diag([0 .02 , 0.02 , 0.02 , 0.01 , 0.01 , 0.01]) and K2 = 5 K1.In Section V.C, K1 and K2 are increased by a factor of 5 to improve the visibility of the rendered haptic feedback. 
+
+B. Comparative Experiments on Haptic Feedback from AM 
+
+In this section, we compare our proposed FT-sensorless method for generating haptic feedback with a momentum-based wrench estimation baseline under nominal hovering conditions, as illustrated in Fig. 4. In our implementation of the baseline, we adopt different disturbance-observer (DOB) designs for translation and rotation, following [2] and [27], respectively. To isolate the feedback generated solely by the slave side, the experiments are conducted without the operator interacting with the master device. When the haptic       
+
+> Fig. 6. The behaviors of the AM and master device when the AM is manually displaced from its desired pose by pulling. It can be observed that the end-effector of the master device moves in accordance with the AM’s deviation from the desired pose.
+> Fig. 7. Measured wrench feedback under externally induced AM pose deviations. In this figure, ϕ,θ, and ψrepresent the roll, pitch, and yaw angles of the AM, respectively.
+
+feedback is calculated from the momentum-based wrench estimation, the average estimated wrench under the nominal hovering condition is first computed, then only the deviation from this average value is fed back to the master device. As shown in Fig. 5(a), with the baseline method, it is noted that the estimated wrench drifts over time even during the hovering condition. Accordingly, unintended linear and an-gular velocity commands at the master device are generated so that the AM keeps deviating from the hovering condition, thereby further amplifying the estimation drift. In situations when an operator is present, such drifting feedback would continuously disturb the operator even during the free-flight (i.e., even in the absence of physical interaction between the AM and its surroundings). This is because the momentum-based wrench estimation interprets the interaction wrench as a lumped disturbance including the wrench from physical interaction, aerodynamic effects, and model uncertainties. By contrast, the proposed method generates wrench feed-back only when the tracking error exceeds a prescribed threshold. Therefore, under nominal hovering conditions, where the tracking error remains within the allowable bound, no wrench feedback is transmitted to the operator. This prevents unintended feedback during free-flight while pre-serving haptic feedback during physical interaction. More-over, the proposed feedback method allows the operator to perceive external disturbances acting on the AM, such as Fig. 8. Snapshots and wrench feedback results from (a) cart pulling, (b) plug pulling, and (c) push-and-slide.  
+
+> Fig. 9. The AM lifting up the box during the pick-and-place task, along with the corresponding pose and haptic feedback wrenches.
+
+sudden wind gusts or impacts, even when the system is not engaged in a manipulation task, extending the transparency of the teleoperation framework. 
+
+C. Validation of Proposed Feedback 
+
+To validate the proposed feedback method, we examine the behavior of the master device when the slave is externally displaced from its desired pose as shown in Fig. 6. In Fig. 7, we can observe that the proposed method generates wrench feedback that aligns with the direction of the induced devi-ation. This result demonstrates that the proposed approach effectively conveys external interaction cues to the master device in an intuitive and directionally coherent manner. 
+
+D. Demonstration of Various Tasks 
+
+To evaluate our teleoperation framework in diverse scenar-ios involving static and dynamic physical interactions, we  
+
+> Fig. 10. Ablation study on the saturation filter conducted with a static pushing scenario.
+
+conduct three tasks—cart pulling, plug pulling, and push-and-slide—as shown in Fig. 8. We observe that the feedback wrench is aligned with the expected directions of physical interaction during manipulation. The successful completion of these tasks demonstrates that the proposed framework can reliably convey interaction cues to the operator across different manipulation scenarios. 
+
+E. Validation of Omnidirectionality 
+
+To validate the omnidirectionality of the AM, we conduct a pick-and-place task. The operator must approach and pick the target object in a near-vertical direction since the object (handled box) is placed between two tall obstacles, as shown in Fig. 9. The AM successfully hooks and lifts up the box, and then transports it to the takeoff position. 
+
+F. Ablation Study on Saturation Filter 
+
+To show the efficacy of considering motor saturation, we conduct an ablation study on the saturation filter with a static pushing scenario, which may readily violate thrust limits. For both experiments with and without the saturation filter, the interaction filter is enabled and the operator commanded a constant linear velocity of 0.15 m/s in the x direction. As shown in Fig. 10(a), when the saturation filter is disabled, the sustained velocity command along the x direction drives motors #3 and #4 into saturation. As a result, a substantial deviation in the y direction occurs, which in turn destabi-lizes the AM. In contrast, in Fig. 10(b), we can observe that the saturation filter successfully constrains the motor thrusts near the saturation region. It is mentioned that the saturation threshold is set with a safety margin, because strict enforcement of the hard bound may not always be guaranteed due to discretization in implementation. From the perspective of haptic feedback, Fig. 10(b) also indicates that the saturation filter generates force feedback in the −x, −y, and −z directions, implying that the desired position of the AM was adjusted in those directions. Also, from the thrust of motor #3, which operates closest to saturation since it is located at the front-right side of the AM, we can observe that our saturation filter seamlessly shifts the desired position slightly toward the −x, −y, and −z
+
+directions to alleviate the load on this motor while preserving flight stability. These results demonstrate that the saturation filter prevents motor saturation and destabilization while providing informative cues on the direction of the corrective action, guiding the operator away from unsafe commands. VI. C ONCLUSIONS 
+
+In this work, we present a force-sensorless bilateral tele-operation framework for omnidirectional aerial manipulators that integrates visual and haptic feedback. A two-stage hierarchical safety filter enforces tracking error and motor thrust constraints and maps filter induced command adjust-ments into haptic cues, enabling perception of both physical interaction and impending motor saturation without onboard FT sensors. Hardware experiments show that, compared to momentum-based wrench estimation, the proposed approach suppresses unintended feedback during free flight while remaining responsive and directionally consistent under in-teraction, enabling multiple manipulation tasks. The ablation study further confirms that the saturation filter mitigates motor saturation and improves stability while providing informative corrective feedback. Future work will focus on formal stability analysis and systematic user studies. ACKNOWLEDGMENT 
+
+The authors would like to thank Yeonjoon Kim for design-ing the hexarotor-based omnidirectional tiltrotor platform. REFERENCES [1] R. Watson, M. Kamel, D. Zhang, G. Dobie, C. MacLeod, S. G. Pierce, and J. Nieto, “Dry coupled ultrasonic non-destructive evaluation using an over-actuated unmanned aerial vehicle,” IEEE Transactions on Automation Science and Engineering , vol. 19, no. 4, pp. 2874–2889, 2021. [2] D. Lee, H. Seo, I. Jang, S. J. Lee, and H. J. Kim, “Aerial manipulator pushing a movable structure using a dob-based robust controller,” IEEE Robotics and Automation Letters , vol. 6, no. 2, pp. 723–730, 2020. [3] J. Byun, D. Lee, H. Seo, I. Jang, J. Choi, and H. J. Kim, “Stability and robustness analysis of plug-pulling using an aerial manipulator,” in 2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2021, pp. 4199–4206. [4] Y. Sun, Z. Jing, P. Dong, J. Huang, W. Chen, and H. Leung, “A switchable unmanned aerial manipulator system for window-cleaning robot installation,” IEEE Robotics and Automation Letters , vol. 6, no. 2, pp. 3483–3490, 2021. [5] P. Susbielle, J. Dumon, and A. Hably, “Pointillism wall painting drone using bouncing frequency control,” IEEE Robotics and Automation Letters , 2025. [6] D. Fan, L. Xu, J. Wang, J. Jia, K. Guo, and X. Yu, “Dynamic interaction enables quadrotor uav to break windows,” IEEE/ASME Transactions on Mechatronics , 2026. [7] D. Lee, B. Kim, and H. J. Kim, “Autonomous aerial manipulation at arbitrary pose in se (3) with robust control and whole-body planning,” 
+
+The International Journal of Robotics Research , 2025. [8] Z. Wen, Y. Liao, Y. Liu, X. Chen, and W. Meng, “Full body motion control for aerial manipulation based on critical dynamic constraints,” 
+
+IEEE Robotics and Automation Letters , 2025. [9] J. Lee, R. Balachandran, Y. S. Sarkisov, M. De Stefano, A. Coelho, K. Shinde, M. J. Kim, R. Triebel, and K. Kondak, “Visual-inertial telepresence for aerial manipulation,” in 2020 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2020, pp. 1222–1229. [10] M. Allenspach, T. K¨ otter, R. B¨ ahnemann, M. Tognon, and R. Siegwart, “Design and evaluation of a mixed reality-based human-robot interface for teleoperation of omnidirectional aerial vehicles,” in 2023 Interna-tional Conference on Unmanned Aircraft Systems (ICUAS) . IEEE, 2023, pp. 1168–1174. [11] D. Kim and P. Y. Oh, “Toward avatar-drone: A human-embodied drone for aerial manipulation,” in 2021 International Conference on Unmanned Aircraft Systems (ICUAS) . IEEE, 2021, pp. 567–574. [12] S. Stramigioli, R. Mahony, and P. Corke, “A novel approach to haptic tele-operation of aerial robot vehicles,” in 2010 IEEE International Conference on Robotics and Automation . IEEE, 2010, pp. 5302– 5308. [13] G. Gioioso, M. Mohammadi, A. Franchi, and D. Prattichizzo, “A force-based bilateral teleoperation framework for aerial robots in contact with the environment,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2015, pp. 318–324. [14] M. Mohammadi, A. Franchi, D. Barcelli, and D. Prattichizzo, “Cooper-ative aerial tele-manipulation with haptic feedback,” in 2016 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) .IEEE, 2016, pp. 5092–5098. [15] M. Allenspach, N. Lawrance, M. Tognon, and R. Siegwart, “Towards 6dof bilateral teleoperation of an omnidirectional aerial vehicle for aerial physical interaction,” in 2022 International Conference on Robotics and Automation (ICRA) . IEEE, 2022, pp. 9302–9308. [16] S. D’Angelo, M. Selvaggio, V. Lippiello, and F. Ruggiero, “Semi-autonomous unmanned aerial manipulator teleoperation for push-and-slide inspection using parallel force/vision control,” Robotics and Autonomous Systems , vol. 186, p. 104912, 2025. [17] D. Kim and P. Y. Oh, “Human-drone interaction for aerially manipu-lated drilling using haptic feedback,” in 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2020, pp. 9774–9780. [18] J. Byun, D. Eom, and H. J. Kim, “Haptic-based bilateral teleoperation of aerial manipulator for extracting wedged object with compensa-tion of human reaction time,” in 2024 International Conference on Unmanned Aircraft Systems (ICUAS) . IEEE, 2024, pp. 624–630. [19] J. Mellet, M. Allenspach, E. Cuniato, C. Pacchierotti, R. Siegwart, and M. Tognon, “Evaluation of human-robot interfaces based on 2d/3d visual and haptic feedback for aerial manipulation,” Journal of Intelligent & Robotic Systems , vol. 111, no. 3, p. 104, 2025. [20] A. Coelho, H. Singh, K. Kondak, and C. Ott, “Whole-body bilateral teleoperation of a redundant aerial manipulator,” in 2020 IEEE In-ternational Conference on Robotics and Automation (ICRA) . IEEE, 2020, pp. 9150–9156. [21] A. Coelho, Y. Sarkisov, X. Wu, H. Mishra, H. Singh, A. Dietrich, A. Franchi, K. Kondak, and C. Ott, “Whole-body teleoperation and shared control of redundant robots with applications to aerial manip-ulation,” Journal of Intelligent & Robotic Systems , vol. 102, no. 1, p. 14, 2021. [22] J. Li, J. Li, K. Kaneko, H. Liu, L. Shu, and M. Zhao, “Six-dof hand-based teleoperation for omnidirectional aerial robots,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2025, pp. 15 482–15 488. [23] K. Kaneko, J. Sugihara, K. Sugihara, M. Kitagawa, K. Nagato, and M. Zhao, “A teleoperation framework for an articulated aerial robot with full dof mapping of base pose and joint angles,” in 
+
+2026 IEEE/SICE International Symposium on System Integration (SII) ,2026, pp. 245–250. [24] M. Kamel, S. Verling, O. Elkhatib, C. Sprecher, P. Wulkop, Z. Taylor, R. Siegwart, and I. Gilitschenski, “The voliro omniorientational hexa-copter: An agile and maneuverable tiltable-rotor aerial vehicle,” IEEE Robotics & Automation Magazine , vol. 25, no. 4, pp. 34–44, 2018. [25] A. De Luca, A. Albu-Schaffer, S. Haddadin, and G. Hirzinger, “Collision detection and safe reaction with the dlr-iii lightweight manipulator arm,” in 2006 IEEE/RSJ International Conference on Intelligent Robots and Systems , 2006, pp. 1623–1630. [26] J. J. Liu, Y. Li, K. Shaw, T. Tao, R. Salakhutdinov, and D. Pathak, “Factr: Force-attending curriculum training for contact-rich policy learning,” Robotics: Science and Systems (RSS) , 2025. [27] S. Kim, S. Choi, H. Kim, J. Shin, H. Shim, and H. J. Kim, “Robust control of an equipment-added multirotor using disturbance observer,” 
+
+IEEE Transactions on Control Systems Technology , vol. 26, no. 4, pp. 1524–1531, 2018.

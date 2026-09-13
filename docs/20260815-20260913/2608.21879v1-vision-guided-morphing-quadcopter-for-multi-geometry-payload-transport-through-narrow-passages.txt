@@ -1,0 +1,152 @@
+Title: Vision-Guided Morphing Quadcopter for Multi-Geometry Payload Transport through Narrow Passages
+
+URL Source: https://arxiv.org/pdf/2608.21879v1
+
+Published Time: Tue, 25 Aug 2026 00:32:44 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Vision-Guided Morphing Quadcopter for Multi-Geometry Payload Transport through Narrow Passages 
+
+Aashish Sahu, Shriram Hari, and R. Prasanth Kumar 
+
+Department of Mechanical and Aerospace Engineering Indian Institute of Technology Hyderabad 
+
+Hyderabad, India 
+
+{me22resch11011, me22btech11023 }@iith.ac.in, rpkumar@mae.iith.ac.in 
+
+Abstract —Aerial payload transport using multirotor un-manned aerial vehicles is challenging because payload geometry, contact interaction, grasp stability, flight control, and narrow-passage traversal are strongly coupled during pickup and trans-port. Conventional quadcopters with fixed landing structures or object-specific grippers often cannot adapt their footprint or grasp geometry when the payload shape or passage width changes. This paper presents a vision-guided morphing quad-copter for multi-geometry payload transport through narrow passages. The proposed platform uses four hybrid arm–leg structures that function as both landing supports and grasping members. A centrally placed actuator drives a tendon-based morphing mechanism, enabling all four arms to synchronously retract or expand for object grasping, footprint reduction, and post-transport release. Onboard vision estimates the payload geometry and passage width, while endpoint force feedback is used to confirm grasp contact during payload engagement. A phase-wise mission planner, PID-based flight stabilization, and morphology-adaptive grasp controller are implemented in a MuJoCo simulation environment. The framework is evaluated using box, cylindrical, and spherical payloads, representing flat-faced, rolling-curved, and fully curved contact conditions. Across the three cases, the simulated system completes the pickup– transport–release sequence with a maximum RMS position error of 0.31 m, final drop-zone error below 0.18 m, compact grasp footprint of 0.09–0.21 m2, and footprint reduction of 75.0– 89.7%. The results demonstrate that a single-actuator morphing quadcopter can adapt its grasp footprint for different payload geometries while reducing its effective width for narrow-passage transport. 
+
+Index Terms —Morphing quadcopter, aerial grasping, pay-load transport, narrow-passage traversal, vision-guided grasping, tendon-driven mechanism, force feedback, MuJoCo simulation. 
+
+I. I NTRODUCTION 
+
+Multirotor unmanned aerial vehicles (UAVs) have evolved from passive sensing platforms into active aerial robotic systems capable of inspection, payload transport, grasping, perching, and physical interaction. Their hovering capability, maneuverability, and access to cluttered or human-inaccessible environments make them suitable for indoor logistics, disaster response, industrial inspection, and constrained-space robotic missions. However, aerial payload grasping remains chal-lenging because flight stability, payload contact, grasp force, center-of-mass variation, rotor disturbances, and navigation constraints are strongly coupled during pickup and transport [1]–[3]. Unlike ground manipulators, aerial robots must main-tain stable flight while simultaneously interacting with objects and compensating for payload-induced disturbances. Existing aerial grasping systems commonly use rigid grip-pers, robotic arms, hooks, suction devices, compliant grip-pers, or other task-specific end-effectors. Vision-based aerial grasping improves object localization and alignment [4], while compliant and soft grippers improve tolerance to contact uncertainty during payload engagement [5], [6]. Nevertheless, many approaches remain dependent on known grasp points, specific payload geometries, or dedicated gripper mechanisms. This limits their ability to handle different object shapes using the same platform. A box provides flat faces and edge contacts, a cylinder introduces rolling contact, and a sphere provides no stable planar grasping surface. Therefore, a fixed gripper may not reliably transport multiple payload geometries without redesign, additional actuation, or complex grasp replanning. A second limitation of conventional quadcopters is their fixed physical footprint. In narrow indoor passages, such as windows, corridors, door frames, collapsed structures, and industrial openings, the full rotor-to-rotor span can restrict safe traversal. Morphing and reconfigurable quadrotors address this issue by changing their frame geometry during flight and have shown potential for narrow-gap traversal, obstacle-rich navi-gation, and compact flight [7]–[9]. However, most morphing-UAV studies focus mainly on navigation, whereas aerial grasp-ing studies generally use a separate gripper for object pickup. The integrated problem of multi-geometry payload grasping and narrow-passage transport using the same morphology-adaptive quadcopter structure remains less explored. Geometric caging offers a useful grasping principle because the object is constrained inside a controlled contact enve-lope instead of relying only on exact force-closure contact points [10], [11]. This is attractive for aerial transport, where contact uncertainty, rotor disturbance, and payload motion can make precise grasping difficult. However, aerial caging requires a lightweight and synchronized mechanism that does not increase actuation complexity. A single-actuator morphing structure that can serve as both landing support and grasping arXiv:2608.21879v1 [cs.RO] 22 Aug 2026 Fig. 1: System architecture of the proposed vision-guided morphing quadcopter for multi-geometry payload grasping and narrow-passage transport. The framework integrates onboard perception, phase-wise mission planning, single-actuator tendon-driven morphology adaptation, endpoint force feedback, and closed-loop flight control in MuJoCo. mechanism is therefore suitable for compact aerial manipula-tion. To address these gaps, this paper presents a vision-guided morphing quadcopter for multi-geometry payload transport through narrow passages. The proposed quadcopter uses four hybrid arm–leg structures that function as landing supports during touchdown and as grasping members during payload engagement. A centrally located motor drives a tendon/thread-based mechanism, enabling all four arms to retract or expand synchronously using one actuator. During free flight, the vehicle remains in an open configuration for stability and rotor clearance. During grasping, the central motor retracts the tendon mechanism so that the hybrid arm–leg members move inward and form a compact caging-style grasp. During narrow-passage transport, the same morphology change reduces the effective vehicle footprint. The proposed framework integrates onboard vision, end-point force feedback, phase-wise trajectory generation, morphology-adaptive grasping, and PID-based flight stabiliza-tion in MuJoCo [12]. The camera estimates payload size, shape, and passage width, while force sensors at the arm end-points verify contact during grasping. The system is evaluated using box, cylindrical, and spherical payloads, representing flat-faced, rolling-curved, and fully curved contact conditions. By combining single-actuator morphology adaptation, hybrid arm–leg grasping, vision-guided alignment, and force-aware payload engagement, the proposed approach provides a com-pact solution for aerial payload transport through narrow passages. II. S YSTEM ARCHITECTURE 
+
+The proposed system is a morphology-adaptive quadcopter equipped with four hybrid arm–leg structures. These members act as landing supports during touchdown and as grasping members during payload engagement. Unlike conventional aerial manipulators that require separate grippers or multiple actuators, the proposed design uses a centrally located motor to drive a tendon/thread-based mechanism. Rotation of the central motor synchronously retracts or expands all four arm– leg members, allowing the quadcopter to change its effective footprint during free flight, grasping, narrow-passage transport, and release. The overall framework consists of five connected layers: MuJoCo simulation, onboard perception, mission planning, morphology-adaptive grasping, and flight control, as shown in Fig. 1. The MuJoCo environment models the quadcopter body, four rotors, central morphing actuator, hybrid arm–leg mem-bers, contact interaction, corridor geometry, and three payload geometries: box, cylinder, and sphere. For all payloads, the UAV follows the same task sequence: takeoff, approach, align-ment, descent, grasping, grasp transport through the narrow passage, release, and final exit. The perception layer estimates both payload and environ-ment information. A downward-facing camera detects the pay-load using color-based segmentation, contour extraction, and bounding-box estimation, while the extracted contour provides approximate object size and shape information. A front-facing camera estimates the available passage width from the detected gap between obstacle boundaries. This enables the UAV to decide whether to remain in the open-flight configuration or reduce its footprint before entering the narrow passage. TABLE I: Key simulation and system parameters.                      
+
+> Parameter Value Simulation platform MuJoCo Vehicle type Morphing quadcopter Morphing mechanism Central motor with tendon/thread drive Hybrid members Four arm–leg structures Payload geometries Box, cylinder, sphere Pickup location, xo2.0 m Drop-zone location, xg5.0 m Initial height 0.5 m Nominal flight height 1.5 m Grasp height 0.7–0.9 m Maximum motor force, umax 15 N Morphing command range, θmax 1.7–2.0 rad Mission duration 45 s Perception method Camera-based contour detection Contact feedback Endpoint force sensing Control method PID position–attitude control
+
+The morphology-adaptive grasping layer converts percep-tion and force information into a central motor command. Dur-ing free flight, the arm–leg members remain open to preserve rotor clearance and stability. During payload engagement, the central actuator retracts the tendon/thread mechanism so that all four arm–leg members move inward and form a compact caging-style grasp around the payload. Endpoint force sensors near the arm tips confirm contact and verify sufficient payload confinement before transport. During release, the motor com-mand is reversed and the arm–leg members return to the open configuration. The morphing command is represented as 
+
+θm(t) = θmax s(t), (1) where θm(t) is the commanded morphing angle, θmax is the maximum morphing angle, and s(t) ∈ [0 , 1] is the mission-phase-dependent transition variable. When s(t) = 0 , the quad-copter remains open; as s(t) increases, the tendon mechanism retracts the arm–leg members and reduces the footprint for grasping and narrow-passage transport. During release, s(t)
+
+decreases and the structure expands again. The effective arm radius and grasp-footprint area are used to quantify morphology adaptation: 
+
+reff (t) = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+∥pgi (t) − pcom (t)∥, (2) 
+
+Ag (t) = Area  ConvHull {pxy g1 , p xy g2 , ..., p xy gN } . (3) Here, pgi is the position of the ith grasping point, pcom is the drone center of mass, and N is the number of grasping points. A reduction in reff and Ag indicates compact grasping morphology, which supports both payload confinement and footprint reduction during narrow-passage transport. III. M ETHODOLOGY AND CONTROL DESIGN 
+
+The objective is to transport a payload from the pickup loca-tion to the drop zone while adapting the quadcopter morphol-ogy according to payload geometry and passage width. The same control framework is used for box, cylindrical, and spher-ical payloads. Let the UAV position be pd = [ xd, y d, z d]T , and let the reference position generated by the mission planner be 
+
+pr = [ xr , y r , z r ]T . The position-tracking error is defined as 
+
+ep(t) = pr (t) − pd(t). (4) The mission planner generates phase-wise reference com-mands for takeoff, payload approach, visual alignment, de-scent, grasping, grasp transport, release, and final exit. During the scouting and alignment phase, the UAV performs a small circular search motion above the payload: 
+
+xr = xo + rs sin( ωst), yr = yo + rs cos( ωst), (5) where xo and yo denote the estimated payload location, and rs
+
+and ωs are the scouting radius and angular rate, respectively. After localization, the UAV centers above the payload and descends to the required grasping height. This phase-wise trajectory reduces abrupt motion near the object and improves alignment before contact. The onboard perception module estimates payload size, payload shape, and available passage width from camera feed-back. The payload contour is extracted from the downward-facing camera image, and the approximate object width Wo
+
+is obtained from the bounding box. The front-facing camera estimates the passage width Wp from the visible gap between obstacle boundaries. Based on these measurements, the desired effective footprint is selected as 
+
+Wd = min ( Wopen , W p − 2δp) , (6) where Wopen is the open-flight footprint and δp is the safety margin from the passage boundary. The desired grasp envelope is selected as 
+
+Wg = Wo + 2 δg , (7) where δg is the grasping clearance used to avoid excessive squeezing during arm closure. The morphology command is implemented using a single central motor connected to the four hybrid arm–leg mem-bers through a tendon/thread-driven mechanism. The phase-dependent morphing command defined in the system archi-tecture is used to retract or expand the arm–leg members. During free flight, the quadcopter remains in the open config-uration. During grasping, the central motor retracts the tendon mechanism, causing all four arm–leg members to move inward synchronously and form a compact caging-style grasp around the payload. During narrow-passage transport, the compact morphology reduces the effective vehicle footprint. During release, the motor command is reversed to expand the arms. Endpoint force sensors mounted at the arm tips are used as a contact-verification criterion during payload engagement. Let Fi(t) denote the measured contact force at the ith arm endpoint. The total grasp contact force is estimated as 
+
+Fg (t) = 
+
+> Nc
+
+X
+
+> i=1
+
+Fi(t), (8) Fig. 2: Multi-stage MuJoCo visualization of the proposed vision-guided morphing quadcopter during multi-geometry payload transport. The columns show approach, alignment, grasp transport, and release/exit phases for box, cylindrical, and spherical payloads. where Nc is the number of active contact points. A grasp is considered valid when the estimated contact force lies within a safe operating range: 
+
+Fmin ≤ Fg (t) ≤ Fmax . (9) Here, Fmin is the minimum force required to maintain payload confinement, and Fmax limits excessive compression of the payload. For a payload of mass mp, a conservative estimate of the minimum holding force is given by 
+
+Fmin ≥ mpgμN c
+
+, (10) where μ is the contact friction coefficient and g is the gravitational acceleration. The grasp-force margin is defined as 
+
+MF = Fg − Fmin . (11) A positive value of MF indicates that the contact condition is sufficient for payload confinement. In the present simulation, this force condition is used together with vision-based align-ment as a logical grasp-confirmation criterion, rather than as a separate force-optimization objective. Flight stabilization is achieved using a PID-based position– attitude controller. The altitude controller computes the total thrust demand as 
+
+T = mg + Kpz ez + Kiz 
+
+Z
+
+ez dt + Kdz ˙ez , (12) where m is the system mass and ez = zr − zd is the altitude error. Lateral position errors are converted into desired roll and pitch commands, while attitude corrections are distributed among the four rotors. The command for the ith rotor is given by 
+
+ui = sat 
+
+ T
+
+4 + ∆ uϕ,i + ∆ uθ,i + ∆ uψ,i 
+
+
+
+, (13) where ∆uϕ,i , ∆uθ,i , and ∆uψ,i are the roll, pitch, and yaw correction terms, respectively, and sat( ·) limits the motor command within the allowable range. The performance is evaluated using trajectory tracking, final drop-zone error, arm-radius reduction, grasp-footprint reduction, narrow-passage clearance, and X–Z flight path. The RMS tracking error is computed as 
+
+erms =
+
+vuut 1
+
+N
+
+> N
+
+X
+
+> k=1
+
+[( xr (k) − xd(k)) 2 + ( zr (k) − zd(k)) 2].
+
+(14) The footprint reduction and arm-radius reduction are defined as 
+
+RA = Aopen − Acompact 
+
+Aopen 
+
+× 100 , (15) 
+
+Rr = ropen − rcompact 
+
+ropen 
+
+× 100 . (16) The final drop-zone error is computed as 
+
+edrop =
+
+q
+
+(xp − xg )2 + ( zp − zg )2, (17) where xp and zp are the payload coordinates after release, and 
+
+xg and zg are the desired drop-zone coordinates. A trial is considered successful if the UAV localizes the payload, forms a compact grasp, transports the object through the narrow passage, releases it within the goal region, and exits without loss of stability. IV. S IMULATION RESULTS AND DISCUSSION 
+
+The proposed vision-guided morphing quadcopter was evaluated in MuJoCo for multi-geometry payload transport through narrow passages. Three payload geometries were considered: box, cylinder, and sphere, representing flat-faced, rolling-curved, and fully curved contact conditions, respec-tively. In all cases, the same mission sequence was executed: takeoff, approach, visual alignment, descent, morphology-adaptive grasping, grasp transport through the constrained passage, release at the drop zone, and final exit. The payload was initially placed near x = 2 m, and the drop zone was located near x = 5 m. Fig. 2 shows the stage-wise MuJoCo visualization of the task. During approach, the quadcopter remains in an open configuration to preserve rotor clearance and flight stability. During grasping, the central motor actuates the tendon/thread mechanism, causing the four hybrid arm–leg members to retract synchronously and form a compact caging-style grasp around the payload. This compact morphology reduces the effective vehicle footprint and enables grasp transport through the narrow passage. During release, the motor command is reversed, the arms expand, and the payload is released at the goal region. Fig. 3 presents the simulation responses for the three payloads, including position tracking, morphology adapta-tion, grasp-footprint modulation, and X–Z flight path. The UAV follows the commanded X- and Z-position references during approach, descent, grasping, transport, release, and final ascent. A small transient overshoot appears during grasp transport because payload contact, morphology change, and inertial coupling occur simultaneously. However, the vehicle remains stable and completes the pickup–transport–release sequence for all payload geometries. Table II summarizes the quantitative performance metrics. The proposed framework completes the task for all payloads with a maximum RMS position error of 0.31 m and final drop-zone error below 0.18 m. The grasp-footprint area decreases from 0.84–0.87 m 2 in the open configuration to 0.09–0.21 m 2
+
+in the compact grasping configuration, corresponding to a footprint reduction of 75.0–89.7%. This confirms that the single central actuator actively changes the grasp geometry and effective vehicle footprint, instead of operating as a fixed-frame quadcopter. The morphology and footprint responses confirm the tran-sition from open-flight morphology to compact grasping morphology during payload engagement and narrow-passage transport. After release, the grasp footprint increases again as the UAV returns to its open configuration. The X–Z flight paths verify the complete task behavior, including descent near the payload, ascent after grasping, forward transport, descent for release, and final exit. The endpoint force-feedback condition was used as a grasp-confirmation criterion before initiating the transport phase. In this study, the force condition verifies contact establishment and prevents premature transport before payload engagement. TABLE II: Quantitative performance summary for vision-guided morphology-adaptive payload transport.                                            
+
+> Metric Box Cylinder Sphere Task completion Yes Yes Yes Max Xovershoot (m) 0.54 0.50 0.56 Max Zovershoot (m) 0.08 0.07 0.09 RMS position error (m) 0.29 0.27 0.31 Final drop error (m) 0.14 0.16 0.18 Open arm radius (m) 0.65 0.70 0.64 Compact arm radius (m) 0.22 0.34 0.32 Arm-radius reduction (%) 66.2 51.4 50.0 Open footprint area (m 2)0.84 0.87 0.84 Minimum footprint area (m 2)0.09 0.09 0.21 Footprint reduction (%) 89.3 89.7 75.0 Minimum corridor width (m) 0.60 0.60 0.69
+
+The box payload provides stable face and edge contact, the cylindrical payload requires radial closure to reduce rolling tendency, and the spherical payload requires a wider compact grasp envelope because it has no flat contact surface. Despite these different contact conditions, the same hybrid arm–leg structure and single-actuator morphing strategy transports all three payloads. Overall, the results demonstrate that land-ing support, payload grasping, and footprint reduction can be integrated into one morphology-adaptive mechanism for constrained payload transport. V. C ONCLUSION AND FUTURE WORK 
+
+This paper presented a vision-guided morphing quadcopter for multi-geometry payload transport through narrow passages. The proposed platform uses four hybrid arm–leg structures that function as both landing supports and grasping members. A single central actuator drives a tendon/thread-based mech-anism to synchronously retract or expand all four arms, en-abling payload grasping, footprint reduction, narrow-passage transport, and payload release using the same mechanism. The framework was evaluated in MuJoCo using box, cylindrical, and spherical payloads. The simulation results showed successful pickup–transport–release performance for all three payload geometries. The maximum RMS position error was 0.31 m, the final drop-zone error remained be-low 0.18 m, and the grasp-footprint reduction reached 75.0– 89.7%. These results indicate that the proposed single-actuator morphology-adaptive design can provide shape-tolerant pay-load confinement while reducing the effective vehicle footprint for constrained-space transport. The proposed approach offers a compact alternative to object-specific aerial grippers and fixed-frame quadcopters for indoor logistics, narrow-passage payload transfer, and autonomous object deployment. Future work will focus on depth-based perception, contact-aware control, improved force regulation, disturbance modeling, and experimental validation using a physical morphing-quadcopter prototype with real payloads of different shapes, masses, and surface properties. REFERENCES [1] F. Ruggiero, V. Lippiello, and A. Ollero, “Aerial manipulation: A literature review,” IEEE Robotics and Automation Letters , vol. 3, no. 3, pp. 1957–1964, 2018. Fig. 3: Overall MuJoCo simulation results for the proposed vision-guided morphing quadcopter. Rows show position tracking, morphology adaptation, grasp-footprint modulation, and X–Z flight path. Columns show box, cylindrical, and spherical payloads. 
+
+[2] R. Ladig, H. Paul, R. Miyazaki, and K. Shimonomura, “Aerial manip-ulation using multirotor UAV: A review from the aspect of operating space and force,” Journal of Robotics and Mechatronics , vol. 33, no. 2, pp. 196–204, 2021. [3] J. Meng, J. Buzzatto, Y. Liu, and M. Liarokapis, “On aerial robots with grasping and perching capabilities: A comprehensive review,” Frontiers in Robotics and AI , vol. 8, p. 739173, 2022. [4] L. Lin, Y. Yang, H. Cheng, and X. Chen, “Autonomous vision-based aerial grasping for rotorcraft unmanned aerial vehicles,” Sensors , vol. 19, no. 15, p. 3410, 2019. [5] J. Fishman, S. Ubellacker, N. Hughes, and L. Carlone, “Dynamic grasping with a “soft” drone: From theory to practice,” in 2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) ,2021, pp. 4214–4221. [6] S. Ubellacker, A. Ray, J. M. Bern, J. Strader, and L. Carlone, “Aggressive aerial grasping using a soft drone with onboard perception,” arXiv preprint arXiv:2308.06351 , 2023. [7] S. Xing, X. Zhang, J. Tian, C. Xie, Z. Chen, and J. Sun, “Mor-phing quadrotors: Enhancing versatility and adaptability in drone applications—a review,” Drones , vol. 8, no. 12, p. 762, 2024. [8] A. Y. Shiferaw, B. Esakki, T. Pari, E. Elumalai, S. Mobayen, and A. Bartoszewicz, “Design and implementation of morphed multi-rotor vehicles with real-time obstacle detection and sensing system,” Sensors ,vol. 21, no. 18, p. 6192, 2021. [9] A. Daadi, Y. Bouzid, O. Araar, S. H. Derrouaoui, M. Dahmani, and G. Dellali, “Design, modeling and control of a reconfigurable serial quadrotor for agile aerial manipulation and navigation through narrow gaps,” The Aeronautical Journal , vol. 130, no. 1350, pp. 2600–2635, 2026. [10] S. Makita and W. Wan, “A survey of robotic caging and its applications,” 
+
+Advanced Robotics , vol. 31, no. 19–20, pp. 1071–1085, 2017. [11] D. Kim, Y. Maeda, and S. Komiyama, “Caging-based grasping of deformable objects for geometry-based robotic manipulation,” 
+
+ROBOMECH Journal , vol. 6, no. 3, 2019. [12] E. Todorov, T. Erez, and Y. Tassa, “MuJoCo: A physics engine for model-based control,” in 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems , 2012, pp. 5026–5033.

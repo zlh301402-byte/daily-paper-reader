@@ -1,0 +1,774 @@
+Title: An Experimental Study of Downwash Effects on a Continuum Manipulator Integrated with a Multirotor UAV
+
+URL Source: https://arxiv.org/pdf/2608.18507v1
+
+Published Time: Thu, 20 Aug 2026 00:29:40 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+PREPRINT VERSION OF AN IEEE ROBOTICS AND AUTOMATION LETTERS ARTICLE; FINAL VERSION AVAILABLE AT https://doi.org/10.1109/LRA.2026.3709580 1
+
+# An Experimental Study of Downwash Effects on a Continuum Manipulator Integrated with a Multirotor UAV 
+
+Anuraj Uthayasooriyan, Krishna Manaswi Digumarti, Fernando Vanegas, and Felipe Gonzalez 
+
+Abstract —Continuum arm aerial manipulation systems leverage soft-manipulator compliance and dexterity for tasks in confined or hazardous environments, but propeller downwash can degrade performance, particularly near walls and the ground. This effect remains uncharacterized for continuum manipulators. This letter experimentally studies downwash-induced kinematic deviations of a tendon-driven continuum manipulator integrated with a multirotor platform. Under still-air conditions, the CM is compared with a constant-curvature (CC) model. Downwash-induced end-effector pose deviations are then quantified relative to the mean still-air experimental baseline at four propeller throttle levels in free space, and at maximum throttle near a wall, and near the ground. Vertical position and yaw show the largest deviations and are amplified by ground effect. A CC-guided Gaussian process regression (GPR) residual model is learned from experimental data that improves forward pose prediction RMSE (position by 89-95 %, orientation by 47-79 %), and support compensation-oriented, downwash-aware modeling of continuum arm aerial manipulation systems. 
+
+Index Terms —Mechanics and Control, Tendon/Wire Mechanism. 
+
+I. I NTRODUCTION 
+
+# AERIAL manipulators are multi-rotor platforms designed to perform tasks, using devices attached to their bodies.They are especially useful in hard-to-reach, risky, or low-visibility environments [1]. Their use spans industrial inspections[2], carrying payloads, agricultural, and environmental sample collection [1]. Current research is focused on two main types of manipulators. Conventional designs use articulated manipu-lators or grippers [1], whereas recent designs use continuum manipulators (CM) or soft robotic grippers [3]–[5]. Despite their high load capacity, rigid-link arms struggle with dexterous, compliant motion along tortuous paths, which restricts their use in industrial inspection or environmental sampling. Continuum arm aerial manipulation systems (CAAMS) are comparatively less heavy and demonstrate high dexterity, compliance and maneuverability [4], [6]. 
+
+Manuscript received: January 14, 2026; Revised: April 10, 2026; Accepted: June 3, 2026. This paper was recommended for publication by Editor Yong-Lae Park upon evaluation of the Associate Editor and Reviewers’ comments. The authors wish to acknowledge the continued support from the Queensland University of Technology (QUT) through the QUT Centre for Robotics, the support of the Research Engineering Facility (REF) team and the senior technicians Steven Bulmer, Benjamin Brownlee, and Amir Moghaddam at QUT for the provision of expertise and research infrastructure, and the help from Julian Galvez (REF), and PhD researcher Dipraj Debnath. The authors are with the QUT Centre for Robotics, School of Electrical Engineering and Robotics, QUT, Brisbane, QLD 4000, Australia. Corresponding author: Anuraj Uthayasooriyan, uanuraj@hotmail.com, uthayaso@qut.edu.au .Digital Object Identifier (DOI): see top of this page. 385 
+
+Locking Mechanism 
+
+Markers for UAV 
+
+Markers for CM-Base 
+
+3× Cables (0.45 mm) 
+
+NiTi Backbone (1 mm) 
+
+> 24
+
+BLDC 
+
+2216 920KV  Holybro 
+
+X500 V2 
+
+1045 
+
+Propeller 
+
+Base Plate 
+
+Routing 
+
+Pulleys 
+
+Guide Disc 
+
+Actuation Compartment 
+
+XL430 Servo 
+
+(a) 
+
+> BILDA
+> 6A BEC
+> 12V 20A DC
+> Emergency
+> OptiTrack Motion Capture System
+> CM Pose via WiFi
+> Power
+> Data/Signal
+
+(b)  
+
+> Switch
+> WiFi
+> RPi 4B 8GB
+> 20.04
+> Transmitter
+> Radio QGround
+> Control 20.04
+> Ground Control Station (GCS)
+> Serial Com.
+> Power
+> Module
+> Power Dist.
+> Board
+> Radio
+> Reciever
+> Pixhawk 6x
+> Holybro X500 V2
+> Ethernet
+> WiFi
+> Power
+> XL430 servo
+> Daisy-chain
+> U2D2 +
+> Power Hub
+> CM
+
+Markers for EE 
+
+All dimensions are in mm 
+
+1 mm 
+
+Tendon guide 
+
+1.4 mm 
+
+> 24
+> d = 9.5
+> MAVROS /
+> MAVLink
+
+Driving 
+
+Pulleys: 𝑟 𝑚 =12 
+
+> Blheli S
+> ESC
+
+2216 
+
+920KV 
+
+Fig. 1: (a) The mechanical and (b) electrical system architec-tures of the CAAMS used for the experimental study. Because of its soft structure, the CM is highly susceptible to downwash (DW) (downward movement of air) from propellers. This is particularly relevant when operating near walls, frames, or the ground during inspection, maintenance, or sampling tasks. In these close-proximity regimes, downwash–surface interaction can intensify turbulence[7]–[9], degrading manipulator stability and end-effector (EE) accuracy. The study of CAAMS is relatively new and largely split between mechanical design and, dynamics and control. Control studies, model DW as a sinusoidal disturbance. There is thus a lack of experimental study and the incorporation of real-world data into mathematical models. On the design side, researchers have proposed tendon-driven continuum arms [10], ground-based tendon actuation for tethered CAAMS [11], [12], design and control of three-section continuum manipulators [13], [4], and eye–in–hand visual servoing for EE control [14]. The importance of disturbance estimation, compensation, and mitigation in aerial robots is evident in [15]–[17]. However, DW effects remain largely unexamined in the current CAAMS literature [9], [18], [19]. In this work, we experimentally characterize DW-induced pose deviations of a tendon-driven continuum manipulator on a multirotor UAV, together with a data-driven correction model. Under still-air conditions, the manipulator is benchmarked arXiv:2608.18507v1 [cs.RO] 19 Aug 2026 2{E}
+
+{B}
+
+{B}
+
+{U}
+
+> Model
+> Workspace (WS)
+> Sampling
+
+y
+
+x
+
+> Up
+
+z
+
+{W}
+
+(a) 
+
+> Bending Plane
+> C1
+> C2
+> C3
+
+𝑦 𝐵 
+
+𝑥 𝐵 
+
+d
+
+𝜙  𝜙 𝑖   
+
+> V: Vertical Slices P: Sample Points HS :Horizontal Slices
+
+| | (c)    
+
+> Airframe Attachment Region
+> (V5-V6) / Disturbed Region
+> Prop-1
+> Prop-3 Prop-2
+> Prop-4
+> P2
+> P3
+> P10
+> P11
+> P12
+> P1
+> P4 P5
+> P6
+> P7
+> P8
+> P9
+
+{B}
+
+𝒚 𝑩 
+
+𝒙 𝑩 
+
+> Vertical Slices
+> HS-4
+> HS-3
+> HS-2
+> HS-1
+> P1
+> P12
+> P37
+> P48
+
+𝒛 𝑩        
+
+> P11 P10 P9
+> P8
+> P7
+> P6
+> P5 P4
+> P3
+> P2
+> P47 P46 P45
+> P44
+> P43
+> P42
+> P41 P40
+> P39
+> P38
+> V1
+> V2
+> V3 V4 V5 V6
+> V7
+> V8
+> V9
+> V10 V11
+> V12
+
+{B}
+
+𝒚 𝑩 
+
+𝒙 𝑩     
+
+> {B}
+> 𝑦 𝐵
+> 𝑧 𝐵 𝑅 𝑒𝑥𝑝,𝑝 𝐵
+> 𝑅 𝑟𝑒𝑓,𝑝 𝐵
+> Δ𝛾 𝑝
+> {B}𝑥 𝐵
+> 𝑧 𝐵
+> 𝑅 𝑟𝑒𝑓,𝑝 𝐵
+> ∆𝛽 𝑝
+> {B}
+> 𝑅 𝑒𝑥𝑝,𝑝 𝐵
+> 𝑃 𝑒𝑥𝑝,𝑝 𝐵
+> 𝑅 𝑟𝑒𝑓,𝑝 𝐵
+> 𝑃 𝑟𝑒𝑓,𝑝
+> 𝐵
+> Yaw (𝑧 𝐵 )
+> Pitch (𝑦 𝐵 )Roll (𝑥 𝐵 )
+> 𝑒 𝑃
+> 𝑝𝑜𝑠
+> {B}𝑥 𝐵
+> 𝑦 𝐵
+> 𝑅 𝑒𝑥𝑝,𝑝 𝐵
+> 𝑅 𝑟𝑒𝑓,𝑝 𝐵
+> ∆𝛼 𝑝
+> 𝑅 𝑒𝑥𝑝,𝑝 𝐵
+
+(b) Airframe  attachments that create disturbed region 
+
+Fig. 2: (a) CAAMS with the CC workspace and frames: world {W }, UAV {U }, CM base {B}, and CM tip {E}. The inset triangle marks cables C1–C3. (b) Workspace sampling: the 3D workspace is divided into four horizontal slices (HS1–HS4) and 12 vertical slices (V1–V12) about ZB , whose intersections define points P 1–P 48 . The circular panel shows HS1 in top view with dashed vertical slices, propellers and Dashed-yellow shaded boxes: Airframe attachments causing flow disturbance. (c) Definition of position and orientation error between the expected {ref } and measured {exp } pose in {B}.against a constant-curvature (CC) model. Keeping the mean still-air experimental results as baseline, the DW-induced deviations are relatively evaluated. In parallel, a CC-guided Gaussian process regression (GPR) residual model is learned to improve forward pose prediction under still air and the DW. The contributions of this work are an experimental evaluation of DW effect from a multi-rotor UAV on: 1) An airborne continuum manipulator’s end effector pose accuracy when the system is in free-space and the additive torque variation of driving motors. 2) An airborne continuum manipulator’s end effector pose accuracy in the proximity of a wall and ground. 3) A CC-guided GPR residual model that compensates CC-to-prototype mismatch and improves forward pose prediction in still-air and downwash conditions. II. D ESIGN AND ARCHITECTURE 
+
+A. System architecture 
+
+Fig. 1 depicts the evaluated CAAMS: 1(a) shows the mechanical architecture, combining a Holybro X500 V2 quadrotor with a tendon-driven CM, and (b) the electrical architecture. A ground control station (GCS) communicates with an onboard Raspberry Pi 4B to send tendon-length commands to the CM’s EE. Both run ROS Noetic on Ubuntu 20.04, and QGroundControl provides flight-controller access. 
+
+B. Continuum manipulator 
+
+We adopt a single-section CM design inspired by [20], [21]. Its dimensions are given in Fig. 1(a), with a segment-length-to-tendon-guide-spacing ratio = 0.4, to improve CC approximation accuracy [3], [22]. The CM uses three braided microfilament thread tendons [23], spaced at 120 ◦ around a central backbone (nitinol (NEXMETAL)) and driven by three Dynamixel XL430-W250-T servos with pulleys of radius rm = 12 mm, reducing actuator count and mass compared with a four-tendon layout [3], [24]. The guide disks are 3D-printed PLA bonded with epoxy adhesive. 
+
+C. Kinematic model 
+
+The CM’s CC model follows [24], with axis orientations and cable alignment as in Fig. 2(a). The frames are {W } (world), 
+
+{U } (UAV), {B} (CM base), and {E} (CM tip). The x-axis of {B} aligns with cable 1 at the base, the CM extends along 
+
+−zB , and {E} is aligned with {B} in the rest configuration. The EE pose in {W } is given by TW E = TW U TU B TBE ,where TW U is estimated using the motion-capture system in Fig. 1(b), and TU B is fixed by design. The constant curvature model of the CM with an inextensible backbone is defined by curvature κ, bending plane angle ϕ measured from positive x–axis and length of the backbone ℓ. Defining cϕ = cos ϕ,
+
+sϕ = sin ϕ, cκℓ = cos( κℓ ), and sκℓ = sin( κℓ ), the pose of the EE in frame {B} is 
+
+TBE =
+
+
+
+cκℓ cϕ sϕ sκℓ cϕ 1 
+
+> κ
+
+(1 − cκℓ )cϕ
+
+cκℓ sϕ −cϕ sκℓ sϕ 1 
+
+> κ
+
+(1 − cκℓ )sϕ
+
+sκℓ 0 −cκℓ − 1 
+
+> κ
+
+sκℓ 
+
+0 0 0 1
+
+ . (1) For a symmetric layout with cable offset d and backbone length L, the CM kinematic parameters are functions of the cable-length actuation vector q = [ l1, l 2, l 3]T :
+
+ℓ(q) = L (2) 
+
+ϕ(q) = atan2 
+
+√3( l2 − l3), l 2 + l3 − 2l1
+
+
+
+(3) 
+
+κ(q) = 2
+
+d(l1 + l2 + l3)
+
+q
+
+l21 + l22 + l23 − l1l2 − l1l3 − l2l3
+
+(4) Here, li is the length of cable i, i = 1 , 2, 3. The tendon length change is ∆li = −Lκd cos( ϕi), where ϕi is the angular position of cable i at the base relative to the bending plane. For a pulley of radius rmi , a motor rotation ψi gives ∆li = rmi ψi.III. E XPERIMENTS 
+
+A. Experiment Design 
+
+We designed a bench–top study to benchmark the CM EE pose against its CC model without DW in Case (i), then evaluate three DW cases: free-space (ii), near-wall (iii), and near-ground (iv), as given in Table I. Case (ii) used four throttle levels as repeatable operating settings monitored in QGroundControl rather than absolute RPM control. Cases (iii) and (iv) were tested only at T 100 , assuming the worst-case condition for wall/ground proximity effects. 3Power 
+
+> supply line
+> Test bench
+
+(a) 
+
+> CM
+> Power
+> supply line
+> Emulated Ground
+> Reflective
+> markers
+
+(c) 
+
+> 48 cm
+> Ground-UAV
+> Wall effect experiment
+> 2 cm
+> 33.5 cm
+> Wall - UAV
+> Propeller tip - wall
+> Ground effect experiment
+
+(b) 
+
+> Emulated Wall
+> Free-space experiment
+> Airframe
+> Marker
+> Attachments
+
+Fig. 3: Bench-top experiment setups for (a)free-space (b) wall effect where a board is placed next to the CAAMS, and (c) ground effect where the UAV is close to a horizontal board. 
+
+B. Experiment Setup 
+
+We mounted the CAAMS onto the test bench shown in Fig. 3 while completely lock all 6DOF. A 12 V, 20 A DC supply powers the CAAMS. OptiTrack® motion-capture system tracks frames {U }, {B}, and {E} using the reflective markers. We used the configurations in Fig. 3(a) for Cases (i)–(ii), Fig. 3(b) for Case (iii), and Fig. 3(c) for Case (iv). For wall-effect tests, a flat board was placed parallel to the front rotors (Prop 1 and Prop 2 in Fig. 2(b)) at 2 cm beyond the rotor tip radius for a closer but safe operating condition. For ground-effect, a parallel horizontal board was placed beneath the UAV, with the CM tip just touching the surface and the board 48 cm below the propeller-arm plane (sampling/picking case). The manipulator is centrally mounted beneath the UAV hub, with arm-length-to-wheelbase ratio 385 /500 = 0 .77 and propeller-plane-to-EE distance ≈ 490 mm . Using 1045 propellers (R ≈
+
+127 mm) , the 525 mm board-to-propeller-plane distance gives 
+
+h/R ≈ 4.13 , indicating not an extreme classical ground-effect condition [8], but a near-ground DW–surface interaction. 
+
+C. Data Collection 
+
+TABLE I: Bench-top experiments under different cases          
+
+> Experiment Physical interpretation Throttle levels T% Case(i) No DW 0Case(ii) DW; No influence of wall/ground 25, 50, 75, 100 Case(iii) DW under the influence of wall 100 Case(iv) DW under the influence of ground 100
+
+We first sampled the theoretical workspace (WS) in Fig. 2(a), generated by Eq. (1), restricting the bending angle to ≤ 180 ◦
+
+to avoid propeller interference. As shown in Fig. 2(b), the WS was divided into 4–horizontal slices (HS1–HS4) and 12 vertical slices (V1–V12) with ϕ = 30 ◦, giving 48 sample points. Using the CC model (Section II-C), we precomputed the tendon lengths for these poses. The CAAMS was then remotely actuated to each pose, and for each case in Table I, all CAAMS frame poses and actuation variables were recorded in ROS .bag files. At each sample pose, based on observations, the CM was held for 10 seconds to allow the CM to settle and recorded the steady-state pose for next 10 seconds. Each experiment was repeated three times. 
+
+D. Evaluation of data 
+
+In Section IV, Case (i) assesses the prototype against the CC model, while Cases (ii)–(iv) use the still-air baseline to quantify DW-induced EE pose errors. For each sample at point P , pose errors are expressed in {B} using the Euclidean position error 
+
+epos  
+
+> p
+
+in (5) and scalar orientation error e◦ 
+
+> R,p
+
+in (7). Here, epos  
+
+> p
+
+is the measured–position’s Euclidean distance in mm, and e◦ 
+
+> R,p
+
+is the principal angle of the relative rotation Rrel ,p . For Case (i), the reference pose is from the CC model at the corresponding WS point. For Cases (ii)–(iv), the reference is the mean repeated Case (i) measurements at each WS point: positions are averaged linearly, orientations as unit quaternions using Markley’s method [25], and Euler components are obtained from (8). 
+
+1) Position error: As shown in Fig. 2(b),(c), at every workspace point P , let PB 
+
+> exp
+
+= [xB
+
+> exp ,p
+
+, y B
+
+> exp ,p
+
+, z B
+
+> exp ,p
+
+]⊤
+
+denote the measured EE position for the sample, and pB 
+
+> ref
+
+=[xB
+
+> ref ,p
+
+, y B
+
+> ref ,p
+
+, z B
+
+> ref ,p
+
+]⊤ denote the corresponding reference EE position. With ∆xp = xB 
+
+> exp ,p
+
+− xB
+
+> ref ,p
+
+, ∆yp = yB 
+
+> exp ,p
+
+− yB
+
+> ref ,p
+
+,and ∆zp = zB 
+
+> exp ,p
+
+− zB
+
+> ref ,p
+
+, the Euclidean position error is 
+
+epos  
+
+> p
+
+=
+
+q
+
+∆x2 
+
+> p
+
++ ∆ y2 
+
+> p
+
++ ∆ z2 
+
+> p
+
+, (5) 
+
+2) Orientation error: Let RB 
+
+> exp ,p
+
+∈ SO (3) and RB 
+
+> ref ,p
+
+∈
+
+SO (3) be the measured and reference EE orientations at the same WS point. Following [26], the relative rotation is 
+
+Rrel ,p =  RB
+
+> exp ,p
+
+−1 RB
+
+> ref ,p
+
+. (6) The scalar orientation error is defined as the principal rotation angle of Rrel ,p :
+
+eori R,p = ∠(Rrel ,p ) ∈ [0 , π ], e◦ 
+
+> R,p
+
+= 180 
+
+π eori R,p , (7) For qualitative interpretation, Rrel ,p is decomposed into extrinsic (fixed-axis) ZYX Euler angles [27], [28]: 
+
+∆αp ∆βp ∆γp
+
+⊤ = Euler extrinsic zyx (Rrel ,p ) , (8) where ∆α, ∆β, and ∆γ are the yaw–pitch–roll corrections (refer Fig. 2(c)) about the fixed base-frame axes zB , y B , x B ,respectively. Each component is wrapped to [−180 ◦, 180 ◦] to avoid angle discontinuities. Here, the yaw: azimuthal rotation about zB , pitch: tilt about yB , and roll: tilt about about xB .
+
+3) Mean and standard deviation (SD) used in plots: For each workspace point P with Np and the samples k, the plotted mean and SD are computed from the set of available scalar errors {ep,k }Np 
+
+> k=1
+
+(either epos  
+
+> p
+
+in (5) or e◦ 
+
+> R,p
+
+in (7)), with number of samples pooled for point p as 
+
+μp = 1
+
+NpNp
+
+X
+
+> k=1
+
+ep,k , (9) 
+
+σp =
+
+vuut 1
+
+NpNp
+
+X
+
+> k=1
+
+(ep,k − μp)2 (10) 
+
+E. CC-guided residual prediction from experimental data 
+
+The large mismatch between the as-built manipulator and the ideal CC model motivates an empirical correction model. 4
+
+GPR has been used for tendon-actuated soft-arm kinematics [29], residual robot calibration [30], and uncertainty-aware continuum-robot state estimation [31], supporting its use here as a physics-guided residual model. Our approach learns a correction to a CC prior over a reduced actuation space and evaluates end-effector pose prediction under still-air and DW. Here, rather than replacing the CC kinematics, GPR learns the position and orientation residuals from experimental data, providing a predictive, compensation-oriented model while retaining the nominal CC prior. The DW-induced errors reported in Section IV-B to IV-D remain defined relative to the mean still-air experimental baseline; the GPR model is used separately for forward prediction based on the CC prior. For each sample, one representative pose is computed from the measured data. Using the reduced actuation coordinates as 
+
+a = l2 +l3 −2l1 and b = √3( l2 −l3), and input x = [ a, b ]⊤, the CC workspace points are converted into continuous interpolants returning the nominal pose (ˆ pCC (x), ˆRCC (x)) . The residual targets are rp = pexp − ˆpCC and rr = log SO (3) ( ˆR⊤ 
+
+> CC
+
+Rexp ),with rp = [ rpx , r py , r pz ]⊤ and rr = [ rrx , r ry , r rz ]⊤. Six scalar GPR regressors are fitted to [rpx , r py , r pz , r rx , r ry , r rz ] using MATLAB fitrgp . Upon initial trials, hyperparameters are selected by grouped four-fold cross-validation over unique training points using 
+
+J = RMSE GP R pos 
+
+RMSE CC pos 
+
++ RMSE GP R ori 
+
+RMSE CC ori 
+
+, (11) Smaller J indicates larger simultaneous improvement in position and orientation. RMSE GP R and RMSE CC are the RMSEs of the GPR and CC model relative to experiment. With 
+
+ˆμp and ˆμR the GP posterior mean residuals, the corrected predictor is 
+
+ˆp = ˆ pCC + ˆ μp, ˆR = ˆRCC exp( ˆ μR) . (12) We avoided the unstable region: V5–V6 is excluded due to attachment-disturbed fluctuations and HS4 due to large devia-tions, leaving HS1–HS3 for fitting. Thus, the usable workspace is limited to HS3, which is acceptable here as the aim is to as-sess GPR’s feasibility. Points {P 2, P 9, P 16 , P 22 , P 31 , P 35 },covering different locations of the WS are held out for testing and the remaining are used for training. Initial tri-als restrict the kernel pool to ardrationalquadratic ,
+
+ardsquaredexponential , and ardmatern52 with constant basis; ardrationalquadratic is selected for all five cases. One model is trained per case 
+
+(T 0, T 25 , T 50 , T 75 , T 100) , yielding a still-air calibration model at T 0 and DW-aware predictors for T 25 –T 100 .IV. R ESULTS 
+
+A. Evaluating the CM prototype Vs CC model at ( T = 0% )
+
+We first assess the CM prototype against the CC model at 
+
+T 0. This baseline captures EE deviations tied to fabrication and modelling simplifications, and serves as the reference for later DW experiments. Since the goal is to study DW effects rather than optimize CM accuracy, the prototype is used as built. The GPR model is introduced separately to strengthen modelling baseline for forward prediction, while the DW-induced errors in Cases (ii)–(iv) remain referenced −200 0200 Horizontal Slice - HS4 (P37–P48) −100 0100               
+
+> Horizontal Slice - HS3 (P25–P36) −100 0100
+> Horizontal Slice - HS2 (P13–P24) V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 −50 050
+> Horizontal Slice - HS1 (P1–P12) Position error (mm) epos exeyez
+
+Fig. 4: Case (i) – Euclidean ( epos ) and Cartesian EE position error components across slices with propellers off ( T = 0% )−50 050 Horizontal Slice - HS4 (P37–P48) 050 Horizontal Slice - HS3 (P25–P36) −25 025                
+
+> Horizontal Slice - HS2 (P13–P24) V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 025 Horizontal Slice - HS1 (P1–P12) Orientation error (deg) eoeyaw epitch eroll
+
+Fig. 5: Case (i) – scalar quaternion errors ( eori ) and the extrinsic Euler components of EE orientation with ( T = 0% )to the mean still-air experimental baseline so that calibration residuals do not obscure the aerodynamic effect. 
+
+1) Position Error of the Continuum Manipulator: Figure 4 re-ports the Euclidean position error ( epos ) between the prototype and the CC model over all sampled points in each horizontal slice (HS). The error remains bounded, with SD typically 
+
+10 –25 mm and occasional peaks up to ≈ 35 mm in HS4. The mean epos increases with bending, from ≈ 50 –75 mm in HS1 to ≈ 150 –200 mm in HS4, with minima at V1, V5, and V9. Relative to the CM length ( 395 mm ), the maximum epos 
+
+increases from 12 .65% in HS1 to 50 .6% in HS4. In Cartesian components, ez dominates and is consistently negative, shifting from ≈ − 30 mm in HS1 to ≈ − 175 mm in HS4 while remaining nearly constant within each slice. In contrast, ex and 
+
+ey vary sinusoidally with V-index within roughly ±50 mm .For HS1–HS3, ex is positive over V5–V9 and negative over V10–V12 and V1–V4, while ey is positive over V1–V6 and negative over V7–V12; this pattern reverses in HS4. 
+
+2) Orientation Error of the Continuum Manipulator: Asimilar trend is observed in the orientation error ( e◦) (Fig. 5), with aligned minima and maxima. Its mean increases from 
+
+≈ 10 –25 ◦ in HS1 to ≈ 25 –50 ◦ in HS4, while SD remains 
+
+≈ 15 ◦. Peaks coincide with indices where |epitch | and/or |eroll |
+
+are largest. Both epitch and eroll vary sinusoidally: epitch is mostly negative for V1–V4 and V10–V12 and positive for V5–V10, whereas eroll is positive for V8–V12 and V1 and negative for V2–V7. By contrast, eyaw is smoother and largely positive, staying within ≈ 0–20 ◦, while epitch and eroll show 50200  
+
+> Horizontal Slice - HS4 (P37–P48) 0100
+> Horizontal Slice - HS3 (P25–P36) 0100
+> Horizontal Slice - HS2 (P13–P24) 020 Horizontal Slice - HS1 (P1–P12) Position Error: e pos  (mm)
+
+(a) 0200     
+
+> Horizontal Slice - HS4 (P37–P48) 0100
+> Horizontal Slice - HS3 (P25–P36) −25 025
+> Horizontal Slice - HS2 (P13–P24) 020 Horizontal Slice - HS1 (P1–P12) epos exeyez
+
+(b) 0200  
+
+> Horizontal Slice - HS4 (P37–P48) 0100
+> Horizontal Slice - HS3 (P25–P36) 0100 Horizontal Slice - HS2 (P13–P24) 0100
+> Horizontal Slice - HS1 (P1–P12)
+
+(c) 0100     
+
+> Horizontal Slice - HS4 (P37–P48) 050
+> Horizontal Slice - HS3 (P25–P36) 020 40 Horizontal Slice - HS2 (P13–P24) V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 025
+> Horizontal Slice - HS1 (P1–P12) Orientation Error: e o (deg) T25 T50 T75 T100
+
+(d)−100 0100      
+
+> Horizontal Slice - HS4 (P37–P48) −50 050
+> Horizontal Slice - HS3 (P25–P36) −25 025 Horizontal Slice - HS2 (P13–P24) V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 −20 020 Horizontal Slice - HS1 (P1–P12) eoeyaw epitch eroll
+
+(e) 0100    
+
+> Horizontal Slice - HS4 (P37–P48) 050
+> Horizontal Slice - HS3 (P25–P36) 025
+> Horizontal Slice - HS2 (P13–P24) V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 020 Horizontal Slice - HS1 (P1–P12) Wall Ground T100
+
+(f) 
+
+Fig. 6: EE errors of Euclidean position epos and scalar quaternion orientation e◦ relative to mean at T = 0% in Cases (ii)–(iv). 
+
+(a) Case (ii): epos across HS with DW at four throttle levels. 
+
+(b) Case (ii): epos and Cartesian compo-nents across HS at T = 100% .
+
+(c) Cases (iii) &(iv): epos across HS with wall and ground at T = 100% .
+
+(d) Case (ii): e◦ across HS with DW at four throttle levels. 
+
+(e) Case (ii): e◦ and extrinsic Euler com-ponents across HS at T = 100% .
+
+(f) Cases (iii) &(iv): e◦ across HS with wall and ground at T = 100% .larger excursions in HS3–HS4 ( ≈ − 40 ◦ to +40 ◦) with SD mostly < 10 ◦.
+
+B. Evaluating the DW effect on the CM in free-space 
+
+Using the experiment mean values from Section IV-A as reference, we evaluate the DW effect on the CM by calculating the error in pose at different throttle levels as in Table I. 
+
+1) Position error of the prototype under DW: Fig. 6(a) shows that the DW-induced epos is smallest in Horizontal Slice 1 (P13– P24), where the EE remains near its rest position, with mean of 5–15 mm and narrow SD. As it moves up through HS 2–4, both the mean and SD increase. In these top slices, peaks occur near V5–V6, where mean reach 25–180 mm, most prominently at T50 and T75, with large SD. Outside these regions, the epos 
+
+generally increases with throttle, while producing larger peaks and SD at T100. 
+
+2) Orientation error of the prototype under DW: The DW-induced orientation error ( e◦) in Fig. 6(d) follows the epos 
+
+trends in Fig. 6(a). Relative to T0, HS 1 remains low ( 10 ◦–20 ◦)and varies smoothly with V-index. In HS 2–3, the mean increases and peaks at the same V-indices as the position error, with larger SD; T50 and T75 fluctuate most, while T100 is more stable despite comparable or slightly higher mean error. Slice 4 shows the strongest DW effect, with mean of 60 ◦–100 ◦
+
+at V5 and V6, especially at low/intermediate throttles. In HS 1 and HS 4, T25 exceeds T75 or T100, indicating non-monotonic throttle dependence. 
+
+C. Component-wise contribution to DW-induced total error 
+
+Assuming operation at maximum take-off weight, we exam-ine the maximum-throttle case ( T 100 ) in Fig. 6(b,e) relative to T 0 means in Figs. 4 and 5. Fig. 6(b) decomposes the DW-induced epos at T 100 into (ex, e y , e z ). In all HS, epos 
+
+is dominated by ex and ez . Outside V5–V6, errors remain 
+
+≈ 5–10 mm in HS1–HS3 and rise to ≈ 25 mm in HS4, with SD of ≈ 5–15 mm that increases toward HS4. Their sign trends largely follow Fig. 4, with ez mostly negative and ex, e y
+
+retaining similar azimuth-dependent patterns. By contrast, V5– V6 shows peaks in all components, coincident maxima in epos ,and larger SD in ex and ez . Fig. 6(e) shows the e◦ components at T 100 . Outside V5–V6, eyaw has a negative bias growing from ≈ 15 ◦ in HS1 to ≈ 30 ◦ in HS4, while epitch and eroll 
+
+remain smaller. The largest e◦ peaks are in V5–V8, where all components are perturbed and SD rises from < 5◦ in HS1 to 
+
+≈ 30 ◦ in HS4, mainly in eyaw .
+
+D. Evaluating DW effect under the influence of ground/wall 
+
+At T 100 , Fig. 6(c,f) compare cumulative pose errors in free-space, ground, and wall. Ground effect dominates in HS1, 60 20 40 60 80 100 120 140 160 CM Bending angle, θ (deg) 0.04 0.06 0.08 Motor torque (N ⋅m) 
+
+> T0_M1 T100_M1 T0_M2 T100_M2 T0_M3 T100_M3
+
+Fig. 7: Driving motors’ (M1,M2 &M3) torques when operating in V1, V5 and V9 planes at T = 0% and T = 100% .producing the largest epos increase over free-space T 100 , but this increment decreases with height despite the overall rise in epos with bending. The ground- and wall-effect curves also show lower SD than free-space; the V5–V6 turbulent band remains but with reduced SD. e◦ shows the same trend, with ground and wall reducing mean by ≈ 30% and narrowing SD, keeping the mean near 10 ◦ except near the attachment-disturbed region V5–V6. 
+
+E. Effect of DW on driving motor torque of the CM 
+
+Fig. 7 compares the torques of Motors M1,M2 and M3 for motions in V1, V5, and V9 respectively. These slices align with the tendon–motor symmetry planes about the backbone (Fig. 2(a,b)). Hence represent worst-case single-motor winding load. In both T0 and T100, the M1 and M2 peaks occur about 
+
+40 ◦ later than M3. Across all, the T100 traces are generally above T0, indicating added DW loading. The clearest increase is for M1 and M3: M3’s peak rises from 0.086 Nm to 0.095 Nm (+10% ), while M1 shows the same increase with a smaller peak. M2 shows the same tendency but with configuration-dependency and T0–T100 crossover. Overall, DW increases torque across all three motors, though the magnitude and smoothness vary with actuation planes. 
+
+F. CC-guided residual prediction from experimental data 
+
+TABLE II: Held-out RMSE of the raw CC prior and the GP-corrected predictor across still-air and DW cases.                                             
+
+> Case Position RMSE (mm) Orientation RMSE ( ◦)Pos. imp. (%) Ori. imp. (%) T0 124.56 →8.63 28.40 →10.86 93.00 62.42 T25 131.52 →14.51 24.69 →5.80 90.28 79.72 T50 130.81 →11.94 35.20 →18.92 91.15 47.56 T75 132.11 →10.36 26.66 →11.29 92.17 58.64 T100 130.90 →14.68 24.15 →6.72 89.86 76.77
+
+Figs. 8 and 9 compare the held-out pointwise errors (mean 
+
+± SD) of the raw CC prior and GP-corrected predictor for T 0–T 100 against experiment. Across all five cases, the GP reduces position error ( epos ) at all held-out points from 
+
+∼ 50 –200 mm to 5–15 mm. Orientation error is also reduced in every case, though with larger variability, especially under DW, consistent with the stronger free-space fluctuations in Fig. 6(a,d). Position improvement is the most uniform, whereas orientation is more case-dependent: T 25 and T 100 show the largest gains, while T 50 remains the most difficult. Table II con-firms this trend: position RMSE decreases from 124 .56 –132 .11 
+
+mm to 8.63 –14 .68 mm ( 89 .86% –93 .00% ), and orientation RMSE from 24 .15 ◦–35 .20 ◦ to 5.80 ◦–18 .92 ◦, corresponding to (47 .56% –79 .72% ) improvement. P2 P9 P16 P22 P31 P35  
+
+> Position error (mm)
+> 050 100 150 200 250 T0 CC T0 GP T25 CC T25 GP T50 CC T50 GP T75 CC T75 GP T100 CC T100 GP
+
+Fig. 8: Test points’ position errors (mean ± SD) of the raw CC prior and the GP-corrected predictor for T 0–T 100 .P2 P9 P16 P22 P31 P35  
+
+> Orientation error (deg)
+> 020 40 60 T0 CC T0 GP T25 CC T25 GP T50 CC T50 GP T75 CC T75 GP T100 CC T100 GP
+
+Fig. 9: Test points’ orientation errors (mean ± SD) of the raw CC prior and the GP-corrected predictor for T 0–T 100 .V. DISCUSSION 
+
+A. Evaluating the CM against its CC model without DW 
+
+Fig. 4 shows that the vertical error ez is negative and nearly constant within each HS, consistent with gravitational sag and structural effects such as compliance/stiffness that are not captured by the purely geometric CC model [3], [23], [21]. In contrast, ex and ey alternate sinusoidally in sign because the sample points lie on circular slices about the CM base, so their projections onto xB and yB vary with slice angle. Orientation errors follow the same trend. The scalar metric 
+
+e◦ captures the net mismatch, and minima at V1/V5/V9 coincide with tendon directions (C1–C3; Fig. 2), consistent with the actuation layout. The Euler components are interpreted qualitatively only, since they do not sum to the scalar value. The positive, bounded eyaw indicates a repeatable CW bias about zB ,suggesting out-of-plane bending due to fabrication asymmetry and uneven tendon loading; the corrective rotation would therefore be CCW. Likewise, the sign-reversing sinusoidal patterns in epitch and eroll are consistent with azimuth-dependent under-tilt about yB and xB , likely related to gravity or backbone twist. Overall, the negative ez and pitch/roll biases indicate reduced effective bending relative to the reference, while eyaw 
+
+reflects out-of-plane bending and influences ex and ey . The mismatch is attributed to both CC geometric idealization and prototype-specific effects, including gravitational sag, compli-ance/stiffness, torsional deformation, tendon-routing asymmetry, pretension/hysteresis, marker-placement/frame-registration sen-sitivity, and actuator–pulley transmission sensitivities [32]. As these effects increase with bending (HS1–HS4), they impose a reduced operational bending range. Higher-fidelity models such as Cosserat rod modelling [24] could capture effects omitted by the pure CC model. 7
+
+B. Evaluating the DW effect in free-space 
+
+DW affects the CM non-uniformly: errors are smallest in HS1, likely because the EE remains closer to the UAV hub and partly outside the stronger wake core, and increase in HS3–4 as the EE moves farther below the vehicle with a larger moment arm. Peaks at V5–V6 beneath Prop. 4 coincide with nearby airframe attachments (Figs. 2 and 3), suggesting a locally disturbed wake and larger CM oscillation, reflected in the wider SD bands. The non-monotonic throttle dependence, with T25 often exceeding T75/T100, may reflect a localized wake–interaction effect rather than a contradiction of stronger overall DW: in hover, multirotor wakes can merge into a non-axisymmetric wake with jets between rotors, and changing rotor speed can alter not only wake strength but also velocity/vorticity distribution and vortex dynamics [33], [34]. Thus, different throttle settings may change the local impingement pattern on the CM rather than producing a strictly monotonic error increase at every workspace location, motivating future flow-field characterization of CAAMS. Component analysis shows that DW mainly increases ez
+
+and ex, indicating downward push, out-of-plane bending, and twisting reflected in elevated epitch , eroll , and persistent eyaw .Orientation degrades as the sinusoidal trends in Fig. 5 vanish, while the positional pattern broadly follows the benchmark. Peak errors and SD occur in the attachment-disturbed region. Overall, mean error and SD of both Cartesian and Euler components increase with bending, likely due to disturbed-flow-induced oscillations, lever-arm amplification, non-uniform DW, and structural asymmetry. These trends motivate streamlining or repositioning attachments and implementing DW-aware kinematic compensation and control. The bench-top setup was chosen to isolate DW-induced CM deformation from free-flight effects. In flight, wind gusts, UAV-motion-induced drag, attitude-control actions, and coupled CAAMS wrenches may change the magnitude of the deviations, but the qualitative trends remain informative and motivate future in-flight vali-dation with and without control. While Section III-B reports key features for generalization, CM sensitivity is expected to increase for longer, more compliant manipulators and decrease for shorter or stiffer ones, while different multirotor geome-tries, manipulator dimensions, placements, and morphologies would alter wake overlap and disturbed workspace sectors, motivating broader comparative study and direct throttle-to-RPM calibration or RPM measurement and CM-aerodynamic load distribution modelling for future downwash-informed manipulator control. 
+
+C. DW effect under the influence of ground or wall 
+
+Ground amplifies positional error more than wall, especially when the end effector operates near the floor. A possible explanation is that the impinging wake is redirected into a radial wall jet/groundwash with flow separation and recirculating structures near the surface, increasing lateral loading near the distal CM [8]. By contrast, wall proximity appears weaker because prior multirotor wall-effect experiments indicate a more localized one-sided perturbation of the downwash field than the more global wake redirection caused by the ground [7]. The reduced SD in the wall/ground cases is therefore interpreted not as weaker disturbance, but as a more surface-constrained and repeatable wake pattern than in free-space T100 [8], [35], [7]. Further CFD, flow visualization, and speed measurements are needed for a conclusive mechanism. 
+
+D. Effect of DW on CM-motor torque 
+
+Even at T100, the maximum measured torque is 0.095 Nm, only ≈ 6% of the XL430-W250-T stall rating (1.5 Nm at 12 V), leaving enough actuator headroom. The consistent rightward shift of the M1 and M2 peaks at both T0 and T100 likely reflects mismatch in initial tendon tension compared to M3, whereas the irregular crossover in M2 is consistent with the fluctuation-prone V5–V6 region. In heavier and solid surface CM designs, actuator sizing and CAAMS’s power budgets should therefore account for DW torque. In non-disturbed regions, the nearly parallel T0 and T100 torque curves suggest that DW acts mainly as an additive load. Thus, if needed, with actuator-specific refinement and tension senors, DW-imposed torque could be incorporated as a feedforward bias term in actuator loading or control design. 
+
+E. CC-guided residual prediction from experimental data 
+
+Section IV-F shows that the dominant CC-to-prototype mismatch is learnable. The larger and more uniform gains in position suggest a repeatable translational bias, whereas the smaller orientation gains indicate stronger disturbance-driven variability under DW. Beyond learning-based correction, a more torsionally rigid CM design [13] could further reduce orien-tation error and increase the usable workspace. Accordingly, the GP should be interpreted as a compact correction layer: 
+
+T 0 provides still-air calibration, while T 25 –T 100 support DW-aware forward pose prediction for future feedforward compensation and control, rather than validation of the raw CC prior or identification of the aerodynamic load distribution. VI. CONCLUSIONS 
+
+Prior multirotor research shows that understanding DW is essential for both design and control across diverse operating scenarios, including ground/wall/ceiling proximity effects [7], [8], aerial spraying [36], multi-agent interactions [37] and aerial manipulation [38]. In this letter, we experimentally quantified propeller-downwash effects on a tendon-driven continuum manipulator in CAAMS and complemented the study with a CC-guided GPR residual model for still-air calibration and DW-aware forward pose prediction. The still-air T 0 case revealed structured prototype–CC mismatch dominated by negative ez
+
+and yaw-related deviations. Relative to T 0, free-space DW primarily perturbs the distal CM, amplifying ez , and yaw with associated twisting effects. Ground proximity amplifies position error more than wall proximity, while both reduce SD, indicating more repeatable surface-constrained disturbance patterns. Attachments within the wake can strongly degrade stability and accuracy and should therefore be carefully placed. Across held-out points, the GPR model reduced position RMSE to 8.63 –14 .68 mm (up to 93 %) and orientation RMSE to 
+
+5.80 ◦–18 .92 ◦ (up to 79.72 %), substantially improving over 8
+
+the raw CC prior. Torque analysis showed that DW at T 100 
+
+increases CM driving torque by about 10% with near parallel shift compared to T 0, suggesting a first-order added load that future larger or solid-surfaced-CM CAAMS should account for in actuator sizing and control. In this letter, we focused on experimental disturbance characterization on the EE-pose together with a predictive residual model for DW-aware forward pose estimation. Future work will extend the study across multiple CM and multirotor configurations, integrate CFD and flow-field characterization, and aerodynamic load modelling to produce downwash models for CAAMS, and develop compensation control strategies with in-flight validation. REFERENCES [1] A. Ollero, M. Tognon, A. Suarez, D. Lee, and A. Franchi, “Past, present, and future of aerial robotic manipulators,” IEEE Transactions on Robotics ,vol. 38, no. 1, pp. 626–645, 2021. [2] S. Hamaza, I. Georgilas, G. Heredia, A. Ollero, and T. Richardson, “Design, modeling, and control of an aerial manipulator for placement and retrieval of sensors in the environment,” Journal of Field Robotics ,vol. 37, no. 7, pp. 1224–1245, 2020. [3] A. Uthayasooriyan, F. Vanegas, A. Jalali, K. M. Digumarti, F. Janabi-Sharifi, and F. Gonzalez, “Tendon-driven continuum robots for aerial manipulation—a survey of fabrication methods,” Drones , vol. 8, no. 6, p. 269, 2024. [4] R. Peng, Y. Wang, M. Lu, and P. Lu, “A dexterous and compliant aerial continuum manipulator for cluttered and constrained environments,” 
+
+Nature Communications , vol. 16, no. 1, p. 889, 2025. [5] S. Ubellacker, A. Ray, J. M. Bern, J. Strader, and L. Carlone, “High-speed aerial grasping using a soft drone with onboard perception,” npj Robotics , vol. 2, 8 2024. [6] A. Jalali and F. Janabi-Sharifi, “Aerial continuum manipulation: A new platform for compliant aerial manipulation,” Frontiers in Robotics and AI , vol. 9, p. 903877, 2022. [7] I. David Du Mutel de Pierrepont Franzetti, R. Parin, E. Capello, M. J. Rutherford, and K. P. Valavanis, “Ground, ceiling and wall effect evaluation of small quadcopters in pressure-controlled environments,” 
+
+Journal of Intelligent & Robotic Systems , vol. 110, no. 3, p. 125, 2024. [8] Z. Wu, T. Zhang, H. Tan, H. Zhou, W. Chen, and M. Xie, “Hovering rotor aerodynamics in extreme ground effect,” Chinese Journal of Aeronautics ,vol. 37, no. 7, pp. 204–219, 2024. [9] Z. Samadikhoshkho, S. Ghorbani, and F. Janabi-Sharifi, “Modeling and control of aerial continuum manipulation systems: A flying continuum robot paradigm,” IEEE Access , vol. 8, pp. 176 883–176 894, 2020. [10] Q. Zhao, G. Zhang, H. Jafarnejadsani, and L. Wang, “A modular continuum manipulator for aerial manipulation and perching,” in In-ternational Design Engineering Technical Conferences and Computers and Information in Engineering Conference , vol. 86281. American Society of Mechanical Engineers, 2022, p. V007T07A014. [11] J. L. Chien, C. Leong, J. Liu, and S. Foong, “Design and control of an aerial-ground tethered tendon-driven continuum robot with hybrid routing,” Robotics and Autonomous Systems , vol. 161, p. 104344, 2023. [12] J. L. Chien, L. T. L. Clarissa, J. Liu, J. Low, and S. Foong, “Kinematic model predictive control for a novel tethered aerial cable-driven contin-uum robot,” in 2021 IEEE/ASME International Conference on Advanced Intelligent Mechatronics (AIM) . IEEE, 2021, pp. 1348–1354. [13] R. Peng, Z. Wang, and P. Lu, “Aecom: An aerial continuum manipulator with imu-based kinematic modeling and tendon-slacking prevention,” 
+
+IEEE Transactions on Systems, Man, and Cybernetics: Systems , vol. 53, no. 8, pp. 4740–4752, 2023. [14] N. Amiri and F. Janabi-Sharifi, “High-performance coupled kinematics of aerial continuum manipulation systems for control applications,” Robotics and Autonomous Systems , p. 105021, 2025. [15] A. Khalifa, M. Fanni, and A. Khalifa, “Sensorless contact force estimation and robust impedance control for a quadrotor manipulation system,” 
+
+Scientific Reports , vol. 14, no. 1, p. 28772, 2024. [16] S. M. Lee, W. H. Ng, E. Tang, and S. Foong, “Towards fluid force estimation of a water-jetting aerial robot with hybrid kinematics-force model,” Journal of Field Robotics , vol. 39, no. 6, pp. 805–826, 2022. [17] H. Wei and Q. Quan, “A passive mechanism reducing cable distur-bance torque on a tethered multicopter,” IEEE/ASME Transactions on Mechatronics , 2025. [18] S. H. Hashemi, F. Janabi-Sharifi, and A. Jalali, “Robust global stabiliza-tion of aerial continuum manipulation systems via hybrid feedback,” ISA transactions , vol. 138, pp. 160–167, 2023. [19] S. Ghorbani, Z. Samadikhoshkho, and F. Janabi-Sharifi, “Dual-arm aerial continuum manipulation systems: modeling, pre-grasp planning, and control,” Nonlinear Dynamics , vol. 111, no. 8, pp. 7339–7355, 2023. [20] R. M. Grassmann, C. Shentu, T. Hamoda, P. Triana Dewi, and J. Burgner-Kahrs, “Open continuum robotics – one actuation module to create them all,” Frontiers in Robotics and AI , vol. 11, p. 1272403, 2024. [21] D. C. Rucker and R. J. Webster III, “Statics and dynamics of contin-uum robots with general tendon routing and external loading,” IEEE Transactions on Robotics , vol. 27, no. 6, pp. 1033–1044, 2011. [22] C. Li and C. D. Rahn, “Design of continuous backbone, cable-driven robots,” J. Mech. Des. , vol. 124, no. 2, pp. 265–271, 2002. [23] E. Amanov, T.-D. Nguyen, and J. Burgner-Kahrs, “Tendon-driven continuum robots with extensible sections—a model-based evaluation of path-following motions,” The International Journal of Robotics Research ,vol. 40, no. 1, pp. 7–23, 2021. [24] R. J. Webster III and B. A. Jones, “Design and kinematic modeling of constant curvature continuum robots: A review,” The International Journal of Robotics Research , vol. 29, no. 13, pp. 1661–1683, 2010. [25] F. L. Markley, Y. Cheng, J. L. Crassidis, and Y. Oshman, “Quaternion averaging,” 2007. [26] K. Lynch and F. Park, Modern Robotics: Mechanics, Planning, and Control . Cambridge University Press, 2017. [27] SciPy Developers, “scipy.spatial.transform.rotation.from euler,” SciPy Documentation, 2025, accessed: 2025-12-29. [Online]. Avail-able: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial. transform.Rotation.from euler.html [28] SciPy Developer, “scipy.spatial.transform.rotation.as euler,” SciPy Documentation, 2025, accessed: 2025-12-29. [Online]. Avail-able: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial. transform.Rotation.as euler.html [29] C. Rela˜ no, J. Mu˜ noz, and C. A. Monje, “Gaussian process regression for forward and inverse kinematics of a soft robotic arm,” Engineering Applications of Artificial Intelligence , vol. 126, p. 107174, 2023. [Online]. Available: https://www.sciencedirect.com/science/article/pii/ S0952197623013581 [30] E. Das ¸ and J. W. Burdick, “An active learning based robot kine-matic calibration framework using gaussian processes,” arXiv preprint arXiv:2303.03658 , 2023. [31] S. Lilge, T. D. Barfoot, and J. Burgner-Kahrs, “Continuum robot state estimation using gaussian process regression on se (3),” The International Journal of Robotics Research , vol. 41, no. 13-14, pp. 1099–1120, 2022. [32] E. Picard, S. Caro, F. Claveau, and F. Plestan, “Pulleys and force sensors influence on payload estimation of cable-driven parallel robots,” in 2018 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2018, pp. 1429–1436. [33] C. C. Wolf, D. Schanz, C. Schwarz, A. Heintz, J. Bosbach, T. Str¨ ubing, and A. Schr¨ oder, “Volumetric wake investigation of a free-flying quadcopter using shake-the-box lagrangian particle tracking,” Experiments in Fluids , vol. 65, no. 10, p. 152, 2024. [34] K. Chang, S. Chen, M. Wang, X. Xue, and Y. Lan, “Numerical simulation and verification of rotor downwash flow field of plant protection uav at different rotor speeds,” Frontiers in plant science , vol. 13, p. 1087636, 2023. [35] S. Prothin, C. Fernandez Escudero, N. Dou´ e, and T. Jardin, “Aerody-namics of mav rotors in ground and corner effect,” International Journal of Micro Air Vehicles , vol. 11, p. 1756829319861596, 2019. [36] Y. Zhu, Q. Guo, Y. Tang, X. Zhu, Y. He, H. Huang, and S. Luo, “Cfd simulation and measurement of the downwash airflow of a quadrotor plant protection uav during operation,” Computers and Electronics in Agriculture , vol. 201, p. 107286, 2022. [37] L. Bauersfeld, K. Muller, D. Ziegler, F. Coletti, and D. Scaramuzza, “Robotics meets fluid dynamics: A characterization of the induced airflow below a quadrotor as a turbulent jet,” IEEE Robotics and Automation Letters , vol. 10, no. 2, pp. 1241–1248, 2025. [38] B. V. Vidyadhara, L. A. Tony, M. S. Gadde, S. Jana, V. P. Varun, A. A. Bhise, S. Sundaram, and D. Ghose, “Design and integration of a drone based passive manipulator for capturing flying targets,” Robotica , vol. 40, no. 7, p. 2349–2364, 2022.
