@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-14",
+  "date": "2026-09-14",
+  "generated_at": "2026-09-14T22:19:46",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/14/2609.12758v1-curriculum-based-adversarial-heterogeneous-agent-reinforcement-learning-for-autonomous-quad-copter-landing-in-maritime-settings",
+      "section": "deep",
+      "title_en": "Curriculum-Based Adversarial Heterogeneous Agent Reinforcement Learning for Autonomous Quad-Copter Landing in Maritime Settings",
+      "authors": "Allan Minh-Tam Nguyen, Sree Showrya Kotala, Stefan Banioi-Crijman, Kurt Driessens, Rico Möckel",
+      "date": "2026-09-11",
+      "pdf": "https://arxiv.org/pdf/2609.12758v1",
+      "score": "9.0",
+      "evidence": "用强化学习让船载机械臂在空中捕获四旋翼无人机",
+      "tldr": "海上回收四旋翼面临风湍流与船甲板运动挑战，传统着陆控制常失效。本文在Isaac Lab中，采用课程学习结合对抗风智能体的HAPPO，训练船载机械臂空中捕获四旋翼的异构协同控制策略。实验表明，同分布海况0/4/5下成功率最高达97.5%；在未见海况7/8/10上泛化更好，海况10中位成功率提升至多16%，碰撞率降低至多14%。对抗策略行为更谨慎，超时仅增<3%，但在严重未见海况下回收更安全，为海上无人机回收提供泛化方案。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Recovering unmanned aerial vehicles (UAVs) in maritime environments is challenging due to wind turbulence and ship-deck motion, making it a valuable test case for alternative control and learning approaches as conventional landing approaches often become unreliable. We study simulated mid-air capture of quadrotor UAVs by a ship-mounted robotic arm, learning robust cooperative control policies with Heterogeneous-Agent Proximal Policy Optimization (HAPPO) Reinforcement Learning. We train with HAPPO using a curriculum and an adversarial wind agent (HARL-AC) in NVIDIA Isaac Lab, and compare the obtained control policies against those generated through curriculum-based domain randomization and a benchmark trained on a single sea state. In-distribution evaluation on sea states $0/4/5$ shows comparable success for HARL-AC and domain randomization of up to $97.5\\%$. On out-of-distribution sea states $7/8/10$, HARL-AC generalizes better, achieving up to $16\\%$ higher median success rate at sea state 10, and substantially lower crash rates of up to $14\\%$ compared to the domain randomization policy. Furthermore, we show that the adversarially trained policy shows more cautious behavior, slightly increasing timeouts by $<3\\%$, but yields safer recovery behavior in severe, unseen conditions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
