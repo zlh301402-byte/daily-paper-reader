@@ -1,0 +1,211 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-15T22:19:05.149148+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.15861v1",
+      "source": "arxiv",
+      "title": "DuctAM: A Duct-Assisted Quadrotor-Based Aerial Manipulator Enabling High-Force Push-and-Pull Interactions",
+      "abstract": "Uncrewed Aerial Manipulators (UAMs) extend the capabilities of Uncrewed Aerial Vehicles (UAVs) from perception to physical interaction. Among various aerial interactions, push-and-pull operations are fundamental manipulation primitives that require sustained horizontal forces while maintaining stable flight. In this paper, we propose DuctAM, a compact aerial manipulation platform that enhances horizontal force capability for push-and-pull interactions using two ducted fans integrated along the quadrotor interaction axis. An attitude-force decoupled control scheme enables controllable horizontal forces without requiring large attitude changes. Extensive real-world experiments are conducted to validate the DuctAM. Figure-eight trajectory tracking experiments demonstrate stable flight and accurate motion control in both quad and duct modes. Force-measurement experiments quantify the decoupled longitudinal force capability of DuctAM. Finally, representative push-and-pull interaction tasks, including cart pushing, door closing, and drawer opening, verify the practical effectiveness of DuctAM. The results show that DuctAM achieves significantly improved horizontal interaction force capability while maintaining stable flight compared with conventional UAVs.",
+      "authors": [
+        "Yi Wang",
+        "Rui Jin",
+        "Xinhang Xu",
+        "Haotian Jin",
+        "Ruiyang Liu",
+        "Yizhuo Yang",
+        "Lihua Xie"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-14T16:54:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.15861v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "quadrotor aerial manipulator for push-and-pull physical interaction with decoupled attitude-force control",
+      "llm_evidence_cn": "四旋翼空中机械臂推拉交互与姿态力解耦控制",
+      "llm_evidence": "四旋翼空中机械臂推拉交互与姿态力解耦控制",
+      "canonical_evidence": "四旋翼空中机械臂推拉交互与姿态力解耦控制",
+      "llm_tldr_en": "DuctAM is a compact quadrotor-based aerial manipulator that adds two ducted fans along the interaction axis, using an attitude-force decoupled control scheme to sustain high horizontal push-and-pull forces, validated in real-world experiments.",
+      "llm_tldr_cn": "针对空中机械臂在执行推拉等基础操作时难以维持持续水平作用力的问题，本文提出DuctAM——一种在四旋翼交互轴线上集成两个涵道风扇的紧凑空中操作平台。通过姿态—力解耦控制方案，无需大幅改变姿态即可输出可控水平推力。大量真实世界实验验证了该平台在推拉交互中的高力能力，为空中物理交互提供了新思路。",
+      "llm_tldr": "针对空中机械臂在执行推拉等基础操作时难以维持持续水平作用力的问题，本文提出DuctAM——一种在四旋翼交互轴线上集成两个涵道风扇的紧凑空中操作平台。通过姿态—力解耦控制方案，无需大幅改变姿态即可输出可控水平推力。大量真实世界实验验证了该平台在推拉交互中的高力能力，为空中物理交互提供了新思路。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.13545v1",
+      "source": "arxiv",
+      "title": "Runtime-Incremental Transformer for Reinforcement-Learning-Based Adaptive Control",
+      "abstract": "Learning-based adaptive control of robotic manipulators with non-observable friction memory has been addressed by attention- based meta-controllers whose number of attention heads is fixed before training and is tuned by costly offline search. At long memory horizons, such fixed-capacity controllers are prone to catastrophic failures on a sizeable fraction of training seeds. The present paper introduces a runtime mechanism that grows and prunes the heads of the attention block during reinforcement learning, governed by two signals: the effective rank of the on-policy context distribution, which triggers growth when representational capacity becomes insufficient, and the per-head output magnitude, which flags redundant heads for removal. Policy continuity at growth events and a quantitative bound at prune events are established analytically. On a two- link manipulator with Stribeck friction, the proposed mechanism attains full success across all memory regimes, eliminating the long-horizon failure mode and removing the need for offline tuning of the head count.",
+      "authors": [
+        "Giansalvo Cirrincione",
+        "Adriano Fagiolini"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-11T21:16:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.13545v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL-based adaptive control of robotic manipulators",
+      "llm_evidence_cn": "基于强化学习的机械臂自适应控制",
+      "llm_evidence": "基于强化学习的机械臂自适应控制",
+      "canonical_evidence": "基于强化学习的机械臂自适应控制",
+      "llm_tldr_en": "A runtime mechanism grows and prunes attention heads during reinforcement learning for adaptive control of robot manipulators, using context effective rank and per-head magnitude to avoid failures of fixed-capacity meta-controllers.",
+      "llm_tldr_cn": "针对具有不可观测摩擦记忆的机械臂自适应控制，已有基于注意力的元控制器需在训练前固定注意力头数，长记忆时域下常出现灾难性失败。本文提出一种运行时增量机制，依据在线策略上下文分布的有效秩触发头增长、依据每头输出幅度剪除冗余头。实验表明该机制能缓解固定容量控制器的失败并提升鲁棒性。其贡献在于让强化学习自适应控制器在运行中动态调整表征容量。",
+      "llm_tldr": "针对具有不可观测摩擦记忆的机械臂自适应控制，已有基于注意力的元控制器需在训练前固定注意力头数，长记忆时域下常出现灾难性失败。本文提出一种运行时增量机制，依据在线策略上下文分布的有效秩触发头增长、依据每头输出幅度剪除冗余头。实验表明该机制能缓解固定容量控制器的失败并提升鲁棒性。其贡献在于让强化学习自适应控制器在运行中动态调整表征容量。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12245v1",
+      "source": "arxiv",
+      "title": "DIA: Denoising Intermediate Advantage for Diffusion Policy Optimization",
+      "abstract": "Diffusion-based robot policies have become widely used in robotic manipulation, where they are typically trained with behavior cloning. However, policies trained purely from demonstrations are limited by the quality and coverage of the available data. Reinforcement learning can further improve the performance of these pretrained policies through interaction. A common approach is to use policy-gradient methods that formulate diffusion-policy fine-tuning as an outer environment MDP together with an inner denoising MDP. However, existing methods typically assign the same environment-level credit to all denoising steps used to construct an action chunk, without distinguishing which intermediate decisions contributed most to the final return. We introduce Denoising Intermediate Advantage (DIA), a policy-gradient method that learns a value function over partially denoised actions and uses it to construct a denoising- level advantage for each step of the generative process. DIA com- bines this inner credit signal with the standard environment-level PPO advantage, providing state-dependent credit throughout the denoising chain. Across Robomimic, FurnitureBench, Franka Kitchen, and D3IL, DIA consistently improves final performance over existing diffusion-policy fine-tuning methods. Beyond final reward, DIA reaches successful states more efficiently and can shift farther from the pretrained behavior distribution, enabling it to discover more effective and efficient task-level strategies and subtask sequences that baseline methods fail to reach.",
+      "authors": [
+        "Arjun Sohal",
+        "Yuchi Zhao",
+        "Miroslav Bogdanovic",
+        "Alan Aspuru-Guzik"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-10T22:02:28+00:00",
+      "link": "https://arxiv.org/pdf/2609.12245v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL fine-tuning of diffusion robot manipulation policies",
+      "llm_evidence_cn": "扩散机器人操作策略的强化学习微调",
+      "llm_evidence": "扩散机器人操作策略的强化学习微调",
+      "canonical_evidence": "扩散机器人操作策略的强化学习微调",
+      "llm_tldr_en": "Diffusion robot policies trained by behavior cloning are limited by demonstration data. This work introduces denoising intermediate advantage to credit individual denoising steps during RL fine-tuning, improving robotic manipulation performance.",
+      "llm_tldr_cn": "扩散策略在机器人操作中被广泛使用，但仅靠行为克隆训练受限于示范数据的质量与覆盖范围。本文提出去噪中间优势方法，将扩散策略微调建模为外层环境MDP与内层去噪MDP，并对各去噪步骤分配更精细的信用。实验表明该方法能更有效利用中间决策信息，提升机器人操作策略的强化学习微调性能，为扩散策略的在线改进提供了新思路。",
+      "llm_tldr": "扩散策略在机器人操作中被广泛使用，但仅靠行为克隆训练受限于示范数据的质量与覆盖范围。本文提出去噪中间优势方法，将扩散策略微调建模为外层环境MDP与内层去噪MDP，并对各去噪步骤分配更精细的信用。实验表明该方法能更有效利用中间决策信息，提升机器人操作策略的强化学习微调性能，为扩散策略的在线改进提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.13516v1",
+      "source": "arxiv",
+      "title": "Constraint-Grounded Reinforcement Learning for Variable Impedance Control in Contact-Rich Robotic Insertion",
+      "abstract": "In robotic insertion under uncertain contact, the axial force limit and the appropriate controller gain vary across tasks. As a result, a single fixed gain is unlikely to remain suitable across different task conditions, making conventional impedance controllers reliant on manual retuning. To eliminate manual retuning, we propose Constraint-Grounded Reinforcement Learning (CG-RL), a variable impedance framework for online gain adaptation. Conditioned on the force limit and contact feedback, the policy outputs a residual motion, an insertion rate, and a requested gain. The controller projects this gain into the admissible range without exposing the range itself to the policy. This separation allows a single policy to operate under different force limits without retraining or manual retuning. We evaluate CG-RL on simulated oblique insertion across five training seeds. CG-RL achieves an $85.8\\pm7.7\\%$ (mean $\\pm$ SD) success rate of insertions without violating the force limit, while keeping the applied gain within the admissible range. As a comparison, a fixed-gain baseline using the midpoint gain achieves a success rate of $50.1\\%$. The policy adapts its insertion rate continuously to the specified force limit and further generalizes to more permissive force limits above the training range. In contrast, the same actor without force-limit input does not exhibit this adaptation. The applied gain is guaranteed to remain within the admissible range, while force-limit satisfaction is validated empirically rather than guaranteed formally.",
+      "authors": [
+        "Lin He",
+        "Min Deng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-11T20:36:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.13516v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL-based variable impedance control for robot arm insertion",
+      "llm_evidence_cn": "基于强化学习的机械臂变阻抗控制",
+      "llm_evidence": "基于强化学习的机械臂变阻抗控制",
+      "canonical_evidence": "基于强化学习的机械臂变阻抗控制",
+      "llm_tldr_en": "Proposes CG-RL, a constraint-grounded RL framework for online impedance gain adaptation in contact-rich robotic insertion, removing manual retuning.",
+      "llm_tldr_cn": "针对接触丰富插入任务中固定阻抗增益难以适应多变工况、需人工反复整定的问题，本文提出约束锚定强化学习（CG-RL）框架，策略根据力限制与接触反馈在线输出残余运动、插入速率与增益请求，并由控制器将增益投影到可行范围。方法在无需向策略暴露约束范围的前提下实现单一策略跨任务自适应，减少人工调参。该工作为机械臂接触操作的强化学习控制提供了新思路。",
+      "llm_tldr": "针对接触丰富插入任务中固定阻抗增益难以适应多变工况、需人工反复整定的问题，本文提出约束锚定强化学习（CG-RL）框架，策略根据力限制与接触反馈在线输出残余运动、插入速率与增益请求，并由控制器将增益投影到可行范围。方法在无需向策略暴露约束范围的前提下实现单一策略跨任务自适应，减少人工调参。该工作为机械臂接触操作的强化学习控制提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.13779v1",
+      "source": "arxiv",
+      "title": "Force-Aware Reinforcement Learning with Hybrid Sensorless Force Estimation for Wheeled-Legged Loco-Manipulation",
+      "abstract": "Force-controlled loco-manipulation requires a whole-body policy to coordinate locomotion and arm motion while regulating end-effector interaction forces. This is challenging under floating-base dynamics and changing support contacts, particularly when end-effector force/torque sensing is unavailable for control. This paper presents a force-aware reinforcement learning approach with hybrid sensorless force estimation for wheeled-legged loco-manipulation. The proposed method provides a structured estimate of the end-effector force as an explicit policy observation, enabling force-guided contact behavior without using an end-effector force/torque sensor for control. The force estimate is obtained by combining generalized momentum observation, contact-constrained wrench projection, and temporal residual learning: the model-based components extract the physically structured part of the whole-body disturbance, while the residual network compensates the remaining motion-dependent bias. The estimated force is integrated into a mode-conditioned whole-body policy with an axis-wise force/position selector, allowing free-space motion, pure force regulation, and hybrid force/position control within one controller. Simulation results demonstrate improved sensorless force estimation and force-control performance. Hardware experiments further validate the proposed controller through quantitative valve-rotation and hybrid wiping evaluations, together with force-guided door opening and zero-force human-guided motion on a real wheeled-legged platform.",
+      "authors": [
+        "Xuanqi Zeng",
+        "Jiaming Wang",
+        "Tianlin Zhang",
+        "Lingwei Zhang",
+        "Botian Xu",
+        "Weipeng Xia",
+        "Zhongyu Li",
+        "Yun-Hui Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-12T07:46:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.13779v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Force-aware RL for arm loco-manipulation with sensorless force estimation",
+      "llm_evidence_cn": "力感知强化学习用于机械臂移动操作",
+      "llm_evidence": "力感知强化学习用于机械臂移动操作",
+      "canonical_evidence": "力感知强化学习用于机械臂移动操作",
+      "llm_tldr_en": "Presents force-aware RL with hybrid sensorless force estimation for wheeled-legged loco-manipulation, coordinating locomotion and arm motion while regulating contact forces without force sensors.",
+      "llm_tldr_cn": "轮腿式移动操作需在浮动基座与变化支撑接触下协调行走与机械臂运动并调节末端交互力，而末端力传感器常不可用。本文提出力感知强化学习与混合无传感器力估计方法，将估计的末端力作为策略显式观测，实现无末端力传感器的力引导接触行为。方法在移动操作任务中实现了力控与运动协调，拓展了无传感器力控的机器人操作能力。",
+      "llm_tldr": "轮腿式移动操作需在浮动基座与变化支撑接触下协调行走与机械臂运动并调节末端交互力，而末端力传感器常不可用。本文提出力感知强化学习与混合无传感器力估计方法，将估计的末端力作为策略显式观测，实现无末端力传感器的力引导接触行为。方法在移动操作任务中实现了力控与运动协调，拓展了无传感器力控的机器人操作能力。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
