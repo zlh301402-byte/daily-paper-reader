@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-16",
+  "date": "2026-09-16",
+  "generated_at": "2026-09-16T22:00:17",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/16/2609.15861v1-ductam-a-duct-assisted-quadrotor-based-aerial-manipulator-enabling-high-force-push-and-pull-interactions",
+      "section": "deep",
+      "title_en": "DuctAM: A Duct-Assisted Quadrotor-Based Aerial Manipulator Enabling High-Force Push-and-Pull Interactions",
+      "authors": "Yi Wang, Rui Jin, Xinhang Xu, Haotian Jin, Ruiyang Liu, Yizhuo Yang, Lihua Xie",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15861v1",
+      "score": "9.0",
+      "evidence": "空中机械臂平台与姿态-力解耦控制",
+      "tldr": "无人机空中操作器需执行推拉等物理交互，但传统四旋翼需大幅倾斜姿态才能产生持续水平力，难以兼顾稳定飞行与高力输出。本文提出DuctAM，一种沿交互轴集成两个涵道风扇的紧凑型空中操作平台，并设计姿态-力解耦控制方案，无需大姿态变化即可控制水平力。真实实验表明，四旋翼模式与涵道模式下均能稳定飞行并精确跟踪8字轨迹，力测量验证了解耦纵向力，推车、关门、开抽屉等任务验证了实用性。相比传统无人机，DuctAM显著提升水平交互力，同时保持稳定飞行。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Uncrewed Aerial Manipulators (UAMs) extend the capabilities of Uncrewed Aerial Vehicles (UAVs) from perception to physical interaction. Among various aerial interactions, push-and-pull operations are fundamental manipulation primitives that require sustained horizontal forces while maintaining stable flight. In this paper, we propose DuctAM, a compact aerial manipulation platform that enhances horizontal force capability for push-and-pull interactions using two ducted fans integrated along the quadrotor interaction axis. An attitude-force decoupled control scheme enables controllable horizontal forces without requiring large attitude changes. Extensive real-world experiments are conducted to validate the DuctAM. Figure-eight trajectory tracking experiments demonstrate stable flight and accurate motion control in both quad and duct modes. Force-measurement experiments quantify the decoupled longitudinal force capability of DuctAM. Finally, representative push-and-pull interaction tasks, including cart pushing, door closing, and drawer opening, verify the practical effectiveness of DuctAM. The results show that DuctAM achieves significantly improved horizontal interaction force capability while maintaining stable flight compared with conventional UAVs.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/16/2609.14878v1-real-world-reinforcement-learning-with-mpc-scaffolding-for-dexterous-manipulation",
+      "section": "quick",
+      "title_en": "Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation",
+      "authors": "Emek Barış Küçüktabak, Karankumar Patel, Zhaodong Yang, Jinda Cui, Kazuhiro Sasabuchi, Jun Takamatsu",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.14878v1",
+      "score": "6.0",
+      "evidence": "真实世界强化学习用于灵巧操作",
+      "tldr": "真实世界强化学习能让灵巧手从物理交互中直接学习，但早期探索低效且失败代价高，通常依赖演示或人工纠正。本文提出以采样 MPC 作为脚手架：先用少量硬件 MPC 轨迹填充离线回放并预训练 actor 与 critic；在线阶段 MPC 间歇引导数据采集，SAC 同时利用先验经验与新交互，并逐步将控制权交给学习策略。在 16 自由度 Allegro 手上，初始化仅用 20 条 MPC 轨迹，在线 7 分钟后策略单独评估达 100% 成功率，平均约 3 次掉落；20 分钟后转速超 MPC 五倍，连续 1000 次旋转超 110 分钟无掉落。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Real-world reinforcement learning (RL) offers a promising route to dexterous manipulation policies that can adapt directly from physical interaction, but learning is hindered by inefficient early exploration and costly failures. We propose a framework that uses sampling-based model predictive control (MPC) as scaffolding for real-world dexterous RL, providing structured prior experience and task-directed guidance during learning without human demonstrations or corrective actions. A small set of MPC trajectories is first used to populate an offline replay buffer and to pretrain the actor and critic. During online learning, MPC intermittently guides data collection while an off-policy Soft Actor-Critic learner trains from both prior MPC experience and newly collected physical interaction, with control gradually transitioning to the learned policy. On continuous in-hand rotation with a 16-DoF Allegro hand, the method reaches 100\\% success in policy-only evaluation (5/5 trials) after 7 minutes of online RL, following initialization with 20 MPC trajectories collected on hardware in 12 minutes. Online training incurs about three object drops on average. After 20 minutes of online learning, the policy achieves more than five times the rotation speed of the MPC controller. It completes 1000 consecutive rotations over more than 110 minutes without a drop. Ablations show complementary benefits from MPC-based pretraining, retained MPC experience, and online MPC guidance. We further demonstrate rapid adaptation to different object geometries and successful goal-conditioned reorientation, showing that the framework enables efficient, low-intervention, real-world dexterous RL.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
