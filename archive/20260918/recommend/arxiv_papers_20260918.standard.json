@@ -1,0 +1,257 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-18T21:32:55.763714+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.15861v1",
+      "source": "arxiv",
+      "title": "DuctAM: A Duct-Assisted Quadrotor-Based Aerial Manipulator Enabling High-Force Push-and-Pull Interactions",
+      "abstract": "Uncrewed Aerial Manipulators (UAMs) extend the capabilities of Uncrewed Aerial Vehicles (UAVs) from perception to physical interaction. Among various aerial interactions, push-and-pull operations are fundamental manipulation primitives that require sustained horizontal forces while maintaining stable flight. In this paper, we propose DuctAM, a compact aerial manipulation platform that enhances horizontal force capability for push-and-pull interactions using two ducted fans integrated along the quadrotor interaction axis. An attitude-force decoupled control scheme enables controllable horizontal forces without requiring large attitude changes. Extensive real-world experiments are conducted to validate the DuctAM. Figure-eight trajectory tracking experiments demonstrate stable flight and accurate motion control in both quad and duct modes. Force-measurement experiments quantify the decoupled longitudinal force capability of DuctAM. Finally, representative push-and-pull interaction tasks, including cart pushing, door closing, and drawer opening, verify the practical effectiveness of DuctAM. The results show that DuctAM achieves significantly improved horizontal interaction force capability while maintaining stable flight compared with conventional UAVs.",
+      "authors": [
+        "Yi Wang",
+        "Rui Jin",
+        "Xinhang Xu",
+        "Haotian Jin",
+        "Ruiyang Liu",
+        "Yizhuo Yang",
+        "Lihua Xie"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-14T16:54:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.15861v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "aerial manipulator platform with attitude-force decoupled control for push-pull",
+      "llm_evidence_cn": "空中机械臂平台与姿态-力解耦控制实现推拉交互",
+      "llm_evidence": "空中机械臂平台与姿态-力解耦控制实现推拉交互",
+      "canonical_evidence": "空中机械臂平台与姿态-力解耦控制实现推拉交互",
+      "llm_tldr_en": "Proposes DuctAM, a quadrotor-based aerial manipulator with two ducted fans enabling high horizontal force for push-and-pull interactions via attitude-force decoupled control.",
+      "llm_tldr_cn": "针对空中机械臂在推拉交互中需持续水平力且保持稳定飞行的问题，本文提出DuctAM紧凑平台，沿交互轴集成两个涵道风扇以增强水平力能力。通过姿态-力解耦控制方案，无需大幅姿态变化即可实现可控水平力。大量真实世界实验验证了平台性能。该工作为空中物理交互操控提供了新硬件与解耦控制思路。",
+      "llm_tldr": "针对空中机械臂在推拉交互中需持续水平力且保持稳定飞行的问题，本文提出DuctAM紧凑平台，沿交互轴集成两个涵道风扇以增强水平力能力。通过姿态-力解耦控制方案，无需大幅姿态变化即可实现可控水平力。大量真实世界实验验证了平台性能。该工作为空中物理交互操控提供了新硬件与解耦控制思路。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19328v1",
+      "source": "arxiv",
+      "title": "A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation",
+      "abstract": "In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquiring high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively conforming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster.",
+      "authors": [
+        "Eri Sawada",
+        "Kazuki Sugihara",
+        "Ayano Miyamichi",
+        "Kunio Kojima",
+        "Kei Okada"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T18:47:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.19328v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "aerial manipulation with thruster-distributed soft manipulator",
+      "llm_evidence_cn": "推进器分布与软机械臂结合的空中操作",
+      "llm_evidence": "推进器分布与软机械臂结合的空中操作",
+      "canonical_evidence": "推进器分布与软机械臂结合的空中操作",
+      "llm_tldr_en": "This paper proposes a morphing rotor-distributed aerial robot with flexible continuum links that act as soft manipulators, simultaneously achieving shape adaptability and an expanded wrench space for versatile aerial manipulation.",
+      "llm_tldr_cn": "空中操作是拓展空中机器人应用的关键，但兼具环境适应性与力螺旋空间扩展的方案尚属空白。本文提出带柔性连续体连杆的变形旋翼分布空中机器人，连杆充当软机械臂，推进器沿连杆分布以扩展可行力螺旋空间。该设计同时实现了高形状适应性与更大的可行力螺旋空间。它为多功能空中操作提供软机械臂与过驱动推进结合的新平台。",
+      "llm_tldr": "空中操作是拓展空中机器人应用的关键，但兼具环境适应性与力螺旋空间扩展的方案尚属空白。本文提出带柔性连续体连杆的变形旋翼分布空中机器人，连杆充当软机械臂，推进器沿连杆分布以扩展可行力螺旋空间。该设计同时实现了高形状适应性与更大的可行力螺旋空间。它为多功能空中操作提供软机械臂与过驱动推进结合的新平台。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.18153v1",
+      "source": "arxiv",
+      "title": "Prior Evolution and Task Alignment for Aerial Grasping",
+      "abstract": "Aerial grasping is a remarkable capability exhibited by predatory birds, allowing them to capture prey through highly coordinated maneuvers in flight. Inspired by this capability, researchers have developed various formulations to reproduce such maneuvers through trajectory optimization. However, two limitations remain in practice. First, the resulting optimization problem is highly nonconvex and sensitive to initialization, making high-quality solutions difficult to obtain under a limited computational budget. Second, prescribed numerical objectives are human-designed abstractions that describe successful grasping through a limited set of mathematically tractable quantities and may not fully capture what determines task success. We investigate how learning can address these limitations within an analytical planner. Accordingly, a trajectory prior is first learned from optimized motions and then evolved through a CEM-based process that evaluates sampled initializations with the deployed optimizer and retains favorable ones as new supervision. An Execution-Aware Critic learns from contact, lift, and completion outcomes to assess whether the optimized trajectories are likely to succeed in physical execution. Its frozen energy can further serve as a differentiable grasping cost, allowing execution data to directly shape trajectory generation. Simulation and real-world experiments demonstrate improved optimization reliability, trajectory consistency, and grasping performance.",
+      "authors": [
+        "Weiliang Deng",
+        "Zhengyang Dang",
+        "Yao Mu",
+        "Ximin Lyu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-16T05:33:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.18153v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning-based aerial grasping trajectory optimization",
+      "llm_evidence_cn": "学习式空中抓取轨迹优化",
+      "llm_evidence": "学习式空中抓取轨迹优化",
+      "canonical_evidence": "学习式空中抓取轨迹优化",
+      "llm_tldr_en": "This work addresses aerial grasping, where trajectory optimization is highly nonconvex and human-designed objectives poorly capture task success. It investigates prior evolution and task alignment learning to improve grasp maneuvers, advancing aerial manipulation.",
+      "llm_tldr_cn": "针对空中抓取轨迹优化问题高度非凸、对初值敏感，且人工设计数值目标难以完整刻画任务成功要素的两大局限，本文研究先验演化与任务对齐的学习方法，用学习改进轨迹优化与目标设计。结果表明学习能缓解非凸性与初值敏感、提升抓取成功率，属于空中机械臂操控与抓取研究范畴，对无人机结合机械臂的主题有较强相关性。",
+      "llm_tldr": "针对空中抓取轨迹优化问题高度非凸、对初值敏感，且人工设计数值目标难以完整刻画任务成功要素的两大局限，本文研究先验演化与任务对齐的学习方法，用学习改进轨迹优化与目标设计。结果表明学习能缓解非凸性与初值敏感、提升抓取成功率，属于空中机械臂操控与抓取研究范畴，对无人机结合机械臂的主题有较强相关性。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.17758v1",
+      "source": "arxiv",
+      "title": "CALOS: Control-Affine Lyapunov On-manifold Safety Layer for Safe Deep Reinforcement Learning for Quadrotors",
+      "abstract": "Deep Reinforcement Learning has demonstrated remarkable capability in quadrotor control, yet learned policies offer no guarantee of respecting safety constraints during training or deployment. We present CALOS (Control-Affine Lyapunov On-manifold Safety), a runtime safety layer that enforces attitude constraints on a quadrotor without modifying the underlying learning algorithm. CALOS formulates four tilt-angle inequalities and a Lyapunov descent condition as a single quadratic program whose solution is the minimum-norm correction to the nominal torque output of the policy. The quadratic program is solved exactly via active-set enumeration over the three-dimensional torque space, with a computational cost low enough to enforce constraints in real time across thousands of parallel simulation environments, as required by modern massively parallel Deep Reinforcement Learning training. Evaluated on trajectory-tracking tasks in NVIDIA Isaac Lab, CALOS reduces lateral tracking error by 55-60% relative to an unconstrained Proximal Policy Optimization baseline while achieving zero attitude-constraint violations on the training trajectory. By restricting exploration to safe regions of the state space, the safety layer also accelerates training convergence and improves data efficiency without producing suboptimal policies.",
+      "authors": [
+        "Fabrizio Cesareo",
+        "Sebastiano Mengozzi",
+        "Nicola Mimmo",
+        "Andrea Acquaviva"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-15T19:08:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.17758v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Deep reinforcement learning for quadrotor control with runtime safety layer",
+      "llm_evidence_cn": "面向四旋翼控制的深度强化学习与运行时安全层",
+      "llm_evidence": "面向四旋翼控制的深度强化学习与运行时安全层",
+      "canonical_evidence": "面向四旋翼控制的深度强化学习与运行时安全层",
+      "llm_tldr_en": "CALOS is a runtime safety layer that enforces tilt-angle constraints on a quadrotor under deep reinforcement learning, solving a quadratic program for minimum-norm torque correction without changing the learning algorithm.",
+      "llm_tldr_cn": "深度强化学习在四旋翼控制中表现优异，但学习策略无法保证训练与部署中的姿态安全约束。本文提出CALOS运行时安全层，将四个倾角不等式与李雅普诺夫下降条件构造成二次规划，以最小范数修正策略输出的标称力矩，且不修改底层学习算法。通过三维力矩空间的主动集枚举精确求解，计算代价低，可在不牺牲学习性能前提下保证安全。该方法面向空中飞行器控制，未涉及机械臂或空中操作任务。",
+      "llm_tldr": "深度强化学习在四旋翼控制中表现优异，但学习策略无法保证训练与部署中的姿态安全约束。本文提出CALOS运行时安全层，将四个倾角不等式与李雅普诺夫下降条件构造成二次规划，以最小范数修正策略输出的标称力矩，且不修改底层学习算法。通过三维力矩空间的主动集枚举精确求解，计算代价低，可在不牺牲学习性能前提下保证安全。该方法面向空中飞行器控制，未涉及机械臂或空中操作任务。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "deep reinforcement learning for aerial manipulation",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18685v1",
+      "source": "arxiv",
+      "title": "WeaveRL: Weaving Reconstruction into Scene-Aware Fabrics for Perceptive Reinforcement Learning",
+      "abstract": "Reinforcement learning allows robots to acquire complex skills, but producing policies for geometrically complex manipulation remains difficult. A promising approach is to learn on top of collision-avoidant controllers, such as geometric fabrics. However, these approaches have relied on static, hand-specified representations of the scene. Integrating active, online 3D perception into massively parallel RL training has so far been inaccessible. We introduce a GPU-accelerated method that reconstructs the scene as a collection of surfels across thousands of parallel simulation instances during active rollouts. This lets policies operate over sensor-derived, rather than hand-specified, geometry. On a suite of collision-dense manipulation tasks, our surfel fabrics enable policies to tackle geometrically complex scenes where primitive-based baselines fail, while maintaining sim-to-real transfer. Furthermore, policies learned with a scene-aware fabric are more robust to the introduction of novel geometry at test time, improving collision-free task completion under unseen obstacles from 35% to 61%. We release our reconstruction system, training code and test dataset to spur research in this direction.",
+      "authors": [
+        "Remo Steiner",
+        "Vikram Ramasamy",
+        "David Tingdahl",
+        "Sam Mady",
+        "Karl Van Wyk",
+        "Nathan Ratliff",
+        "David Recasens Lafuente",
+        "Soha Pouya",
+        "Tuur Stuyck",
+        "Alex Millane"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T14:00:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.18685v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "perceptive RL on top of geometric fabric controllers for manipulation",
+      "llm_evidence_cn": "在几何织物控制器上实现感知型操作强化学习",
+      "llm_evidence": "在几何织物控制器上实现感知型操作强化学习",
+      "canonical_evidence": "在几何织物控制器上实现感知型操作强化学习",
+      "llm_tldr_en": "WeaveRL reconstructs scenes as surfels in massively parallel simulation to let reinforcement learning policies for manipulation operate over sensor-derived geometry.",
+      "llm_tldr_cn": "针对几何复杂操作策略学习中场景表示依赖手工静态几何的问题，本文提出WeaveRL，将在线三维感知融入大规模并行强化学习训练。方法在数千个并行仿真实例中把场景重建为surfel集合，使策略基于传感器获取的几何而非人工指定几何进行学习。在碰撞密集的操作任务上验证了有效性。该工作为感知型操作强化学习提供了可扩展方案。",
+      "llm_tldr": "针对几何复杂操作策略学习中场景表示依赖手工静态几何的问题，本文提出WeaveRL，将在线三维感知融入大规模并行强化学习训练。方法在数千个并行仿真实例中把场景重建为surfel集合，使策略基于传感器获取的几何而非人工指定几何进行学习。在碰撞密集的操作任务上验证了有效性。该工作为感知型操作强化学习提供了可扩展方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.19962v1",
+      "source": "arxiv",
+      "title": "Hybrid Residual Reinforcement Learning for Contact-Rich Robotic Book Insertion",
+      "abstract": "Placing a grasped book into a tight shelf is a compact but difficult contact-rich control problem: millimetre-scale pose error can turn a geometrically valid approach into jamming, failed release, or incomplete seating. We study this final phase after grasp acquisition and global approach, and ask how control authority should be divided between known geometry and learned behaviour. Our method retains a nominal task-space controller for structured insertion and seating, while residual PPO supplies bounded local corrections and decides when to release. Only the brief open-retreat-reclose transition is scripted. For the final policy used on hardware, a deployment-matched simulation evaluation over 512 fixed conditions yields 98.50 percent mean success (0.23 percentage-point sample SD) across three independent training runs, compared with 37.89 percent for nominal control. On the physical xArm7, 60 trials over 30 matched conditions show the same qualitative advantage: residual control raises success from 26.7 percent to 63.3 percent, reduces failures from 22 to 11, and wins 13 of the 15 matched conditions in which the two controllers differ. Robustness tests show that performance remains above 87 percent under initialization perturbations up to 1.5x, while very tight clearances expose the geometric limit of local correction. These results support a hybrid design in which geometry preserves reliable task structure and learning is concentrated on the contact-sensitive behaviour that fixed rules handle poorly.",
+      "authors": [
+        "Tianyuan Liu",
+        "Rutherford Agbeshi Patamia",
+        "Benjamin Champion",
+        "Akansel Cosgun",
+        "Richard Dazeley"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-17T09:34:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.19962v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "residual PPO for contact-rich robotic arm control",
+      "llm_evidence_cn": "用于接触密集机械臂控制的残差PPO",
+      "llm_evidence": "用于接触密集机械臂控制的残差PPO",
+      "canonical_evidence": "用于接触密集机械臂控制的残差PPO",
+      "llm_tldr_en": "This work studies contact-rich robotic book insertion, splitting control between a nominal task-space controller and residual PPO that supplies bounded corrections and decides release timing. A deployment-matched simulation yields 98.50 percent mean success.",
+      "llm_tldr_cn": "针对紧配合插入阶段毫米级位姿误差即导致卡阻、释放失败或未完全就位的问题，本文研究抓取后最终插入阶段的接触密集控制，保留名义任务空间控制器并叠加残差PPO提供有界局部修正与释放决策。在512种固定条件的部署匹配仿真中平均成功率达98.5%，表明混合残差强化学习能有效分配已知几何与学习行为之间的控制权，对机械臂强化学习控制具借鉴意义。",
+      "llm_tldr": "针对紧配合插入阶段毫米级位姿误差即导致卡阻、释放失败或未完全就位的问题，本文研究抓取后最终插入阶段的接触密集控制，保留名义任务空间控制器并叠加残差PPO提供有界局部修正与释放决策。在512种固定条件的部署匹配仿真中平均成功率达98.5%，表明混合残差强化学习能有效分配已知几何与学习行为之间的控制权，对机械臂强化学习控制具借鉴意义。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

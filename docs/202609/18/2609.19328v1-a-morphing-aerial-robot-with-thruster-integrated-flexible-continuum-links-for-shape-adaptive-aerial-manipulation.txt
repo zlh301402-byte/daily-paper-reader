@@ -1,0 +1,319 @@
+Title: A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation
+
+URL Source: https://arxiv.org/pdf/2609.19328v1
+
+Published Time: Fri, 18 Sep 2026 00:10:36 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation 
+
+Eri Sawada 1, Kazuki Sugihara 1, Ayano Miyamichi 1, Kunio Kojima 1, and Kei Okada 1
+
+Abstract — In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquir-ing high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively con-forming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster. 
+
+I. INTRODUCTION For many years, aerial robots have been used mainly for non-contact tasks such as surveillance and remote sensing. In recent years, however, aerial manipulation—performing tasks while making contact with the environment—has ad-vanced, and applications such as transportation and contact-based inspection in higher places or hazardous areas are increasingly expected [1]. In this work, we focus on two major approaches that have been explored to realize versatile aerial manipulation. The first approach is achieving high en-vironmental adaptability using soft manipulators [2], [3], [4], [5], [6]. High adaptability allows a manipulator to passively conform to various geometries and enables aerial manipu-lation that can robustly adapt to complex and diverse real-world environments. The second approach is to distribute rotors along the manipulator to achieve an expanded thrust wrench space [7], [8]. Here, the thrust wrench space denotes the set of achievable forces and torques about the center of gravity (CoG) while providing the thrust required for gravity compensation. An expanded wrench space enables the stable execution of tasks that require large interaction forces with the environment, such as painting, window cleaning, and grasping heavy objects. To leverage both advantages simultaneously, we propose a new rotor-distributed morphing aerial robot with flexible 
+
+> 1The authors are with the Department of Mechano-Infomatics, The Uni-versity of Tokyo, Bunkyo-ku, Tokyo 113-8656, Japan. [e-sawada, sugihara, miyamichi, k-kojima, k-okada]@jsk.imi.i.u-tokyo.ac.jp
+
+(c) Multi-object grasping (a) Painting on a curved surface (b) Grasping objects with diverse shapes (d) Impact absorption 
+
+2.5kg weigh 
+
+Adapts to surfaces 
+
+Flexible Continuum Links Distributed Thruster Expanded Wrench Space +Shape Adaptability  
+
+> Fig. 1. The proposed morphing aerial robot features flexible continuum links with an integrated thruster. This combination provides both high adaptability and an expanded wrench space. Leveraging these properties, the robot performed aerial manipulation tasks such as (a) painting on a curved surface, (b) grasping objects of various shapes, and (c) multi-object grasping, and also demonstrated (d) impact absorption.
+
+continuum links, as shown in Fig. 1. The flexible continuum links function as a manipulator, providing high shape adapt-ability for aerial manipulation. Moreover, a thruster mounted on the flexible links contributes to an expanded wrench space and enable the end-effector to exert large interaction forces. However, lightweight flexible continuum links in aerial robots can easily deform in unintended directions and are prone to vibration during flight. To overcome these issues, we propose a composite leaf-spring structure for the flexible links and two vibration-suppression control strategies. The proposed composite leaf-spring structure combines flat and arXiv:2609.19328v1 [cs.RO] 16 Sep 2026 folded (U-shaped) PLA leaf springs to achieve both high torsional stiffness and vertical stiffness while maintaining horizontal flexibility. The proposed control strategies con-sist of (i) thrust-difference minimization, which suppresses variations in commanded thrust, and (ii) low-rate updates of the wrench-allocation matrix, which filter high-frequency variations in the estimated robot configuration. Using these design and control strategies, we build the proposed aerial robot and achieve stable flight. By leveraging its flexibility and an expanded wrench space, we demonstrate a variety of aerial manipulation tasks, such as painting on curved surfaces (Fig. 1(a)), grasping objects with diverse shapes (Fig. 1(b)), and multi-object grasping (Fig. 1(c)). The main contributions of this work are as follows:  
+
+> •
+
+We propose a morphing aerial robot with flexible con-tinuum links and distributed thrusters, enabling both high shape adaptability and an expanded thrust wrench space.  
+
+> •
+
+We design a lightweight composite leaf-spring structure for the flexible continuum links that achieves both tor-sional and vertical stiffness while maintaining horizontal flexibility.  
+
+> •
+
+We develop a vibration-suppressing control scheme that attenuates high-frequency components in thrust alloca-tion and mitigates vibrations of the flexible links.  
+
+> •
+
+We demonstrate the effectiveness of the proposed method through experiments including painting on a curved surface, grasping objects of various shapes, and multi-object grasping. The rest of this paper is organized as follows. Section II describes related works. Section III describes the design of the proposed flexible continuum links. Section IV describes the modeling of the morphing aerial robot with flexible continuum links. Section V describes the control method to suppress the vibration of the flexible links. Section VI describes the experimental results, and Section VII concludes the paper. II. RELATED WORKS This work aims to present an aerial robot that simultane-ously achieves both high shape adaptability and an expanded wrench space. In this section, we review prior studies from these two perspectives. 
+
+A. Robots With High Environmental Adaptability 
+
+In recent years, soft robots have gained significant atten-tion for their high compliance and shape adaptability. For example, soft grippers and continuum robots inspired by biological trunks and tentacles are well suited for navigating through narrow and cluttered environments and for grasping objects with diverse shapes, owing to their intrinsic flexibility and shape conformity [9], [10]. These soft manipulators have also been adopted in aerial robots and have been shown to expand the applicability and robustness of aerial manipulation. For instance, mounting a soft gripper on an aerial robot enables aerial grasping while in motion [2], [3]. Moreover, several studies using soft arms have demonstrated enhanced perching capabilities, in which an aerial robot attaches to and remains on a structure such as a wall or branch to rest or perform a task. Thanks to their compliance and shape adaptability, soft arms enable perching on targets with a wide range of geometries [5], [6]. Building on these studies, our work integrates distributed thrusters into a soft manipulator. This integration preserves shape adaptability while expanding the wrench space. As a result, the robot can generate larger interaction forces and perform tasks such as painting on curved surfaces and grasping objects with diverse geometries. 
+
+B. Aerial Robot With an Expanded Wrench Space 
+
+A straightforward configuration for aerial manipulation is to mount a manipulator on an underactuated quadrotor without a thrust-vectoring mechanism [11], [12]. While this configuration is mechanically simple, it is difficult to gener-ate interaction forces other than upward thrust, such as large moments or horizontal forces. To address this issue, some studies expanded the wrench space by increasing the number of thrusters and optimizing their placement[13]. Building on this direction, fully actuated aerial robots with thrust-vectoring mechanisms have also been proposed. By allowing the thrust directions to rotate, these platforms increase the number of control inputs without increasing the number of thrusters, thereby enabling wrench generation in horizontal directions and expanding the wrench space [14], [15]. However, when the manipulator is extended or grasps a heavy object, the overall CoG may move outside the horizontal-plane projection of the region spanned by the thrusters. In such cases, maintaining stable flight often becomes difficult even with thrust-vectoring mechanisms. More recently, a different approach has been proposed: distributing thrusters along the manipulator [7], [8]. Rather than separating the flight platform and the manipulator, these systems perform manipulation by morphing the body itself. Under this strategy, the system can be viewed as a manipulator equipped with distributed thrusters. Thanks to the thrusters mounted along the manipulator, the CoG can remain surrounded by rotors even when the arm is extended or carrying a heavy payload. This expanded wrench space has enabled the stable execution of tasks that require large interaction forces, such as valve turning [7] and grasping heavy objects [8]. III. DESIGN OF FLEXIBLE CONTINUUM LINKS In the proposed aerial robot, the flexible continuum link must satisfy the following three requirements:  
+
+> •
+
+lightweight design for flight,  
+
+> •
+
+high vertical stiffness to prevent vibration caused by thrust, while remaining flexible in the horizontal direc-tion to allow two-dimensional deformation,  
+
+> •
+
+a structural restoring force in the horizontal direction to stabilize the shape of the underactuated continuum links. A simple design that satisfies these requirements is a flat leaf spring, as shown in Fig. 2(a). The flat PLA leaf R1.5mm R4.5mm   
+
+> 65mm 251mm
+> 10mm
+> (b) A folded (U-shaped) PLA leaf spring (c) A flat PLA leaf spring + A folded (U-shaped) PLA leaf spring (a) A flat PLA leaf spring
+> 65mm 240mm 1.5mm
+> xyz
+> 0.31m
+> 0.14m
+> (i) High Vertical Stiffness (ii) Low Torsional Stiffness (i) Low Vertical Stiffness (ii) High Torsional Stiffness (i)(ii) High Vertical and Torsional Stiffness
+
+Fig. 2. Comparison of flexible continuum-link designs: (a) With a flat PLA leaf spring, the structure twists and sags during flight. (b) With a folded (U-shaped) PLA leaf spring, torsion is suppressed; however, the vertical stiffness is insufficient, causing large oscillations immediately after takeoff. (c) With the proposed composite leaf spring, both torsional and vertical stiffness are achieved, enabling stable in-air morphing. 
+
+spring, fabricated using a 3D printer, is lightweight and provides high stiffness against bending in the vertical z-direction while remaining compliant in the intended mor-phing direction, i.e., the y-direction defined in Fig. 2. It also provides a structural restoring force for shape stabilization. However, the flat leaf spring is prone to torsional deformation about the link axis (the x-axis). During flight, the continuum link tends to twist and sag, causing the rotor thrust axis to deviate from the vertical direction (see the flight snapshot in Fig. 2(a)). This results in a mismatch between the actual robot configuration and the intended model, degrading flight stability and preventing the robot from realizing the intended wrench space. To suppress torsion about the x-axis, we developed a hollow folded (U-shaped) structure, as shown in Fig. 2(b). The increased sectional thickness improves torsional stiffness about the x-axis while preserving compliance in the morph-ing y-direction. However, because the upper and lower parts can extend and contract, the structure remains compliant in the vertical z-direction, leading to large oscillations imme-diately after takeoff. Based on these observations, we developed the composite {cog} (b) Thrust model with vectoring mechanism (c) Thrust model without vectoring mechanism 
+
+> {cog} (a) Virtual rigid links and revolute joints
+> {cog}
+
+Fig. 3. Kinematic model of the robot with flexible continuum links and thrust models with and without the thrust-vectoring mechanism. (a) The flexible continuum link is approximated as a chain of rigid links connected by multiple virtual rotational joints. (b), (c) In modeling the thrust-vectoring mechanism, we introduce virtual thrusters that produce vertical and horizontal thrust components independently, enabling a linear representation of the thrust model. 
+
+leaf spring shown in Fig. 2(c), which achieves both high torsional stiffness about the x-axis and high stiffness against bending in the vertical z-direction. The structure combines a flat leaf spring and a folded leaf spring by introducing a slit along the center of the folded spring and inserting the flat spring into the slit. As a result, the link retains compliance in the intended morphing direction while suppressing undesired torsion and vertical bending. This enables the robot to maintain the intended configuration and realize the desired wrench space. IV. MODELING OF THE MORPHING AERIAL ROBOT WITH FLEXIBLE CONTINUUM LINKS This section describes the kinematic and thrust models of the proposed morphing aerial robot equipped with flexible continuum links. Several modeling approaches have been proposed for con-tinuum structures, such as the Piecewise Constant Curvature (PCC) model [16]. In this work, however, to ensure real-time computation on an onboard computer with limited resources, we approximate the flexible link as a chain of rigid links connected by multiple virtual rotational joints, as shown in Fig. 3(a). The robot model constructed here is used to com-pute the CoG, the position of each thruster pi ∈ R3, and its thrust-axis unit vector ui ∈ R3, expressed in the CoG frame. The virtual joint angles are determined from commanded deformation inputs or loop-link kinematic constraints that enforce consistency in the position and orientation at both ends of the links. The robot is equipped with Nr thrusters with a thrust-vectoring mechanism, as shown in Fig. 3(b), and Ns thrusters without a thrust-vectoring mechanism, as shown in Fig. 3(c). While the thrust-vectoring mechanism increases the control degrees of freedom, applying it to thrusters mounted on the flexible continuum links can induce vibration. For this reason, the thrusters attached to the flexible continuum links do not have a thrust-vectoring mechanism. Because a thrust-vectoring mechanism changes the rotor-axis direction nonlinearly, the mapping from control inputs to the generated wrench about the CoG becomes nonlinear. To obtain a linear approximation, we model each vectorable thruster as two virtual thrusters that independently generate a vertical component λiz and a horizontal component λiy , as shown in Fig. 3(b), and define uiz and uiy as the rotor-axis unit vectors of the vertical and horizontal virtual thrusters, respectively. The resultant thrust magnitude λi, total and the vectoring angle ϕi are calculated as follows. 
+
+λi, total =
+
+q
+
+λ2 
+
+> iz
+
++ λ2 
+
+> iy
+
+, (1) 
+
+ϕi = atan2( λiy , λ iz ). (2) Let λfull ∈ RN denote the thrust vector including the virtual thrust components introduced by the vectoring mechanisms, where N = 2 Nr + Ns. λfull is defined as 
+
+λfull =
+
+λ1z λ1y · · · λNr z λNr y
+
+| {z }
+
+> 2Nr
+
+λNr +1 · · · λNr +Ns
+
+| {z }
+
+> Ns
+
+T
+
+(3) For a given joint configuration q, the total force fλ and total torque τλ about the CoG generated by λfull are written as 
+
+fλ
+
+τλ
+
+
+
+= Q(q)λfull . (4) To define Q(q), we first introduce the wrench generated by a unit thrust applied at position p, along direction u, and 
+
+σ. σ represents the reaction torque coefficient with the sign representing the direction of rotation: 
+
+w(u, p, σ ) = 
+
+ up × u + σu
+
+
+
+∈ R6. (5) Using this notation, the wrench-allocation matrix is given by 
+
+Q(q) = 
+
+
+
+w(u1z , p1, σ 1)T
+
+w(u1y , p1, σ 1)T
+
+...
+
+w(uNr z , pNr , σ Nr )T
+
+w(uNr y , pNr , σ Nr )T
+
+w(uNr +1 , pNr +1 , σ Nr +1 )T
+
+...
+
+w(uNr +Ns , pNr +Ns , σ Nr +Ns )T
+
+ 
+
+> T
+
+
+
+2Nr
+
+ Ns
+
+.
+
+(6) The first 2Nr columns correspond to the virtual thrust components of the vectoring thrusters, and the remaining Ns
+
+columns correspond to the fixed-direction thrusters. Using the computed net force and torque, the equations of motion about the CoG are given below. In this work, joint Vectoring servo Thrust motor IMU (i): Vibration-Suppressing Thrust Allocation Motion Capture Motion Planner Joint servo Pose Controller Kinematics solver (ii): Freq. 20Hz Freq. 200Hz Freq. 200Hz Freq. 200Hz    
+
+> Fig. 4. Architecture of the proposed vibration-suppressing control. (i) Vibration attenuation by thrust-difference minimization (Sec. V-A). (ii) Low-frequency update of the wrench-allocation matrix (Sec. V-B), in which the desired accelerations are computed by a high-frequency pose controller, while the wrench-allocation matrix Qis updated at a lower frequency.
+
+angles are position-controlled, and the robot is treated as a single rigid body for thrust allocation at each time step. 
+
+m¨r = fλ − mg, (7) 
+
+I ˙ω = −ω × Iω + τλ. (8) where r is the CoG position in the world frame, g is the gravity vector, and ω is the angular velocity. ¨r and ˙ω are the desired linear and angular accelerations computed by PID controllers. The desired linear acceleration ¨r is calculated from the error between the desired center-of-gravity position and the model-computed center-of-gravity position in the world frame, while the desired angular acceleration ˙ω is calculated from the attitude error of the center-of-gravity frame, which corresponds to that of the base-link frame. V. VIBRATION-SUPPRESSING CONTROL In this section, we describe two control methods for suppressing vibrations of the flexible links. The control framework is shown in Fig. 4. The proposed control methods are evaluated through experiments in Sec. VI-B. 
+
+A. Thrust Allocation With Thrust-Difference Minimization 
+
+Next, we describe a thrust-allocation method for sup-pressing vibrations of the flexible links. The conventional approach computes the thrust command λfull by solving a linearly constrained quadratic programming that minimizes the thrust magnitude: minimize 
+
+> λfull
+
+λTfull W λfull (9) subject to 
+
+fλ
+
+τλ
+
+
+
+= Q(q)λfull , (10) 
+
+λi, min ≤ λi ≤ λi, max , i = 1 , · · · , N. (11) We set wz = 1 .0 and wy = 10 .0, and define the weighting matrix W as follows: 
+
+W = diag( wz, w y, . . . , w z, w y
+
+| {z }
+
+> 2Nr
+
+, w z, w z, . . . , w z
+
+| {z }
+
+> Ns
+
+). (12) Here, the horizontal thrust components are penalized more heavily than the vertical ones, because horizontal thrust more Tendon Winch Actuators (Servo + 3D-printed pulley)   
+
+> 0.55m Onboard PC MCU (Spinal) 0.57m Joint
+> Thruster ESC MCU (Neuron) (b) Serial-Link Configuration (a) Loop-Link Configuration
+> Onboard PC MCU (Spinal) 0.57m 0.6m Fig. 5. Prototypes of the proposed aerial robot
+
+easily excites vibrations of the flexible links. However, when using the above thrust-minimization approach, the resulting thrust commands can oscillate, which often causes oscilla-tions of the flexible links. To reduce such high-frequency variations, we propose an objective function that minimizes the difference from the thrust command at the previous control cycle, λfull ,prev :minimize 
+
+> λfull
+
+ λfull − λfull ,prev 
+
+T W  λfull − λfull ,prev 
+
+
+
+(13) subject to 
+
+fλ
+
+τλ
+
+
+
+= Q(q)λfull , (14) 
+
+λi, min ≤ λi ≤ λi, max , i = 1 , · · · , N. (15) 
+
+B. Low-Rate Wrench-Allocation Matrix Updates 
+
+As illustrated in Fig. 4, the desired linear and angular accelerations must be updated at a sufficiently high rate to ensure stable pose control. To suppress vibrations, however, we update the wrench-allocation matrix Q at a lower rate, thereby filtering out high-frequency variations before thrust allocation. In our implementation, the desired accelerations and thrust commands are updated at over 200 Hz, while Q
+
+is updated at below 20 Hz. VI. EXPERIMENT In this section, we first introduce prototypes of the pro-posed morphing aerial robot equipped with flexible contin-uum links. Next, using these prototypes, we evaluate the effectiveness of the vibration-suppressing control described in Sec. V. Finally, we demonstrate aerial manipulation tasks that leverage both shape adaptability and an expanded thrust wrench space, such as painting on curved surfaces, grasping objects with diverse shapes, and multi-object grasping. We further show that the robot’s flexibility also contributes to impact absorption. 
+
+A. Robot Platform 
+
+The overall hardware configuration is shown in Fig. 5. We developed two prototype variants: a loop-link configuration and a serial-link configuration. The loop-link configuration consists of four rigid links derived from Delta [17] and two flexible continuum links, whereas the serial-link configura-tion consists of four rigid links derived from Hydrus [8] and one flexible continuum link. The total mass is 4.6 kg for the loop-link configuration and 4.5 kg for the serial-link configuration. Both prototypes are equipped with a thruster on the flexible links. The flexible links and their integrated thrusters are config-ured as follows. The thrusters consist of Cobra C-2217-12 KV1550 motors and 5-inch propellers, providing a maximum thrust of 20.2 N at 25.2 V. The flexible-link joints are tendon-driven and actuated by servo motors with 3D-printed pulleys; note that in the following manipulation tasks, the flexible links deform passively without actuation. The servos used are Dynamixel XC330-T288-T and Dynamixel XL430-W250-T. We use a Khadas VIM4 onboard computer (Arm Cortex-A73 quad-core 2.2 GHz and Cortex-A53 quad-core 2.0 GHz) to construct the robot model from joint angles and solve the thrust-allocation problem using the OSQP quadratic programming solver [18]. State estimation is performed using an IMU and a motion-capture system. Custom MCU boards, Spinal and Neuron [19], control the servos in each link and the motor ESCs. 
+
+B. Evaluation of the Vibration-Suppressing Control 
+
+We evaluate the vibration-suppressing control introduced in Sec. V through flight experiments and demonstrate that both proposed methods are necessary for effective vibration suppression. The experiments were conducted for both the loop-link and serial-link configurations under vibration-prone conditions, such as in-air morphing and takeoff. To quantify the vibration of the flexible link, we focus on the thruster mounted on the flexible link, hereafter referred to as thrust5, and measure two signals associated with it: the thrust com-mand λ5 and the roll angle ψroll , as shown in Fig. 6. We further analyze the frequency components of these data using the Fast Fourier Transform (FFT). In this evaluation, the position p5 and rotor axis u5 of rotor5 were obtained directly from the motion-capture system rather than estimated from joint angles. 
+
+1) Thrust-Difference Minimization: We first evaluate the effectiveness of thrust-difference minimization described in Sec. V-A. Throughout the following experiments, the second proposed control method, low-rate wrench-allocation matrix updates, was enabled. For the loop-link configuration, an in-air morphing exper-iment was conducted, as shown in Fig. 6(a). During flight, the rigid-link joints q1 and q3 were actuated to 1.5 rad, causing large deformation of the flexible links and creating a vibration-prone configuration (Fig. 6(a)(i)). As indicated by the blue plots in Fig. 6(a)(ii)–(v), without thrust-difference minimization, both the thrust command λ5 and the roll angle of thrust5 ψroll exhibited large oscillations, with dominant (a) In-Air Morphing (Loop-Link) (b) In-Air Morphing (Serial-Link)    
+
+> thrust5 thrust5
+> [rad]
+> Unable to maintain flight (i) (ii) (iii) (i) (ii) (iii)
+> Without proposed method With proposed method Time [s] Time [s] [rad]
+> [rad]
+> (iv) (v)
+> [rad] [Hz] [Hz]
+> (iv) (v)
+> Without proposed method With proposed method Spectral analysis via FFT
+
+Fig. 6. Experimental evaluation of the proposed thrust-difference mini-mization control (Sec. V-A). We compare the proposed objective, min( λ −
+
+λprev )T W (λ − λprev ) (shown in orange in plots), with the baseline thrust-minimization objective, min λT W λ (shown in blue in plots), for (a) in-air morphing with the loop-link configuration and (b) in-air morphing with the serial-link configuration. The proposed wrench-allocation strategy suppresses thrust oscillations and stabilizes thruster motion, enabling stable in-air morphing. 
+
+spectral peaks around 3 Hz. The peak amplitudes were 2.87 N for λ5 and 0.051 rad for ψroll . In contrast, with thrust-difference minimization (orange plots), these oscil-lations were markedly suppressed, and the corresponding peak amplitudes were reduced to 0.19 N and 0.0085 rad, respectively. These results demonstrate that the proposed method enables stable flight even in a structurally unstable configuration. For the serial-link configuration, an in-air morphing exper-iment was conducted, as shown in Fig. 6(b). The flexible link was deformed by wire actuation to approximately q4 + q5 =1.0 rad. As indicated by the blue plots in Fig. 6(b)(ii)– (v), without thrust-difference minimization, both the thrust command λ5 and the roll angle of thrust5 ψroll exhibited large oscillations, with dominant spectral peaks around 2 Hz. (a) In-Air Morphing (Loop-Link) 
+
+> (i) (ii) (iii) [rad] Time [s] Without proposed method With proposed method
+> [rad] [Hz]
+> (iv) (v)
+
+Fig. 7. Experimental evaluation of the proposed control strategy that reduces the update frequency of the wrench-allocation matrix Q (Sec. V-B). The proposed strategy, in which Q is updated at 20 Hz or lower (orange plots), is compared with a baseline strategy in which Q is updated at every control cycle, i.e., at 200 Hz or higher (blue plots), under (a) in-air morphing in the loop-link configuration. The proposed strategy suppresses thrust oscillations and enables stable in-air morphing. 
+
+The peak amplitudes were 1.154 N for λ5 and 0.321 rad for 
+
+ψroll . These oscillations made continued flight difficult, and the robot had to land at around 13 s. In contrast, with thrust-difference minimization (orange plots), the peak amplitudes were reduced to 0.064 N for λ5 and 0.042 rad for ψroll ,corresponding to a 87% reduction in the ψroll amplitude. As a result, stable in-air morphing was achieved. 
+
+2) Low-Rate Wrench-Allocation Matrix Updates: We next evaluate the effectiveness of reducing the update frequency of the wrench-allocation matrix Q. Throughout the follow-ing experiments, the first proposed control method, thrust-difference minimization, was enabled. For the loop-link configuration, an in-air morphing exper-iment was conducted, as shown in Fig. 7(a). As indicated by the blue plots in Fig. 7(a)(ii)–(v), when Q was updated at 200 Hz, both λ5 and ψroll exhibited large oscillations. Their dominant spectral peaks appeared around 3.5 Hz, with amplitudes of 0.985 N and 0.05 rad, respectively. In contrast, when the update rate of Q was reduced (orange plots), these oscillations were greatly suppressed, and the spectral peaks around 3.5 Hz decreased to 0.031 N and 0.0006 rad, respectively. This enabled stable flight even in a largely deformed configuration. For the serial-link configuration, a takeoff experiment was conducted. When Q is updated at a high rate, large oscillations appeared immediately after takeoff, resulting in failed takeoff. In contrast, when the update frequency of Q is reduced, the link still exhibited an initial transient oscillation after takeoff, but they were damped out over time. As a result, stable takeoff and subsequent flight were achieved. See the attached video for a visual comparison of the experiment. 
+
+C. Aerial Painting on a Curved Surface 
+
+We conducted an aerial painting experiment on a curved surface, as shown in Fig. 8. For this task, the flexible Fig. 8. Demonstration of painting on a curved surface by utilizing the passive deformation of the flexible link. The flexible link passively deforms and conforms to a cylinder with a diameter of 250 mm, enabling stable flight while performing the painting task. 
+
+link was equipped with brushes. Starting from an O-shaped configuration in flight, the flexible link was pressed against the target object, a cylinder with a diameter of 250 mm (Fig. 8(1)). The flexible link then passively deformed into an M-shaped configuration along the surface (Fig. 8(3)). In this experiment, the flexible links deformed by up to 0.2 m. Despite the large deformation, the robot maintained stable flight and successfully painted the surface. Aerial painting requires the end-effector to conform to the target geometry while generating sufficient moment to counteract contact forces. By leveraging both shape adaptability and an expanded wrench space, the robot successfully performed painting on a curved surface without requiring prior knowl-edge of the target geometry. However, brush–surface friction was not explicitly modeled, which led to attitude deviations. Incorporating this friction effect into the model remains an important direction for future work. 
+
+D. Grasping Objects of Various Shapes 
+
+We conducted grasping experiments with objects of var-ious shapes, as shown in Fig. 9. After achieving hovering, the rigid-link joints were actuated to close the flexible link around the objects. The flexible link passively conformed to the object geometry, enabling stable grasping. The mass of each target object was measured in advance and incorporated into the robot model. We successfully grasped a plastic bag containing a loosely placed plastic bottle (Fig. 9(a)), L-shaped objects (Fig. 9(b), (c)), and a rectangular box (Fig. 9(d)). Object grasping is a promising application of aerial robots [1]. However, robust grasping of diverse objects is difficult with rigid links because they lack the flexibility to conform to various object shapes. In contrast, soft manipulators can exploit structural compliance to passively adapt to different shapes, thereby enabling more robust grasping. In addition, during aerial transport, the robot must generate sufficient thrust to compensate for the moments induced by the payload mass. In the loop-link configuration, without the thruster on the flexible link, the platform already operates near its thrust saturation even without carrying an additional payload, making stable flight difficult. In particular, the robot (a) (b)        
+
+> (c) (d)
+> Fig. 9. Demonstration of grasping objects of various shapes. (a) A plastic bag containing a randomly placed plastic bottle, (b)(c) L-shaped objects, and (d) a rectangular box were grasped. The red dots indicate the contact points with the grasped objects, showing that the gripper conforms to each object’s geometry and establishes distributed contacts for stable grasping. thrust1 thrust2 thrust3 thrust4
+> Thrust Height thrust1 thrust3 thrust2 thrust4
+> (1) (2) (1) (2)
+
+Unable to maintain flight Thrust saturation  
+
+> Fig. 10. Flight without the thruster mounted on the flexible link. The robot could not generate sufficient thrust to maintain stable flight, particularly during upward acceleration, and eventually crashed.
+
+was unable to generate sufficient thrust during upward accel-eration, which led to a crash, as shown in Fig. 10. Adding a thruster to the flexible links successfully addresses this limitation, and we achieved grasp-and-transport of payloads up to 683 g. We attribute the successful grasping of objects with diverse shapes to the combination of (i) the shape adaptability of the flexible link and (ii) sufficient thrust provided by the distributed thruster. 
+
+E. Multi-Object Grasping 
+
+We demonstrated grasping of multiple objects placed in an unstructured arrangement, as shown in Fig. 11. Three boxes of different sizes were first surrounded by the flexible link. The rigid-link joints were actuated to close the flexible link and grasp all the boxes together. By passively conforming to the objects and applying distributed contact forces from Fig. 11. Demonstration of multi-object grasping using the flexible link. The flexible link passively deforms and closely adheres to multiple objects of various shapes, enabling stable multi-object grasping. By utilizing the thrust on the flexible link, the robot successfully took off while maintaining the grasp on the objects. 
+
+multiple directions, the robot achieved stable multi-object grasping. With the thruster mounted on the flexible link, the robot successfully took off and performed aerial transport. The total mass of the grasped boxes was 388 g; this value was measured in advance and incorporated into the robot model. As discussed above, achieving stable flight under this condition is difficult without the thruster on the flexible link. Multi-object grasping is generally challenging because of the high uncertainty in object shapes and poses. By leveraging both shape adaptability and an expanded wrench space, the proposed robot can grasp and transport multiple objects in a single grasp even in unstructured settings. 
+
+F. Impact Absorption during Flight 
+
+The flexible-link structure also contributes to impact ab-sorption during flight. We compared the robot’s response when an impact was applied to a rigid link versus a flexible link. In the experiment, a 2.5 kg weight was released from a height of approximately 850 mm, swung as a pendulum, and collided with the robot while it was flying at a height of approximately 550 mm, corresponding to an impact speed of about 1.71 m/s. When the rigid link was struck, the joint driven by the pulley and timing belt skipped by 23.6 deg, re-sulting in mechanical damage. In contrast, when the flexible link was struck, the compliant structure absorbed the impact, and the robot maintained stable flight. See the attached video for a visual comparison of the experiment. VII. CONCLUSIONS In this study, we proposed a morphing aerial robot with flexible continuum links that achieves both high environ-mental adaptability and an expanded achievable wrench set. The lightweight composite leaf-spring structure designed for the flexible continuum links suppresses sagging and vertical oscillations. In addition, we developed two vibration-suppressing control strategies: (i) thrust-difference minimiza-tion and (ii) low-rate updates of the wrench-allocation ma-trix. In flight experiments, these strategies further reduced flexible-link oscillations, achieving up to a 87% reduction in the dominant spectral peak of the roll angle of the flexible-link thruster, and enabled successful takeoff and stable in-air morphing. Together, the proposed hardware design and control methods enabled stable flight and versatile aerial manipulation, thereby validating the effectiveness of flexible continuum links with integrated thrusters. In future work, it will be important to increase the number of flexible continuum links and thrusters mounted on flexible section, so as to further enhance both shape adaptability and feasible wrench space. This is expected to enable more advanced manipulation tasks, such as painting on more complex geometries and grasping larger objects. However, longer flexible continuum links are more prone to oscil-lations, which can destabilize flight. Therefore, improved design and control strategies will be necessary to suppress these vibrations. REFERENCES [1] Fabio Ruggiero et al. Aerial manipulation: A literature review. IEEE Robotics and Automation Letters , 3(3):1957–1964, 2018. [2] Samuel Ubellacker et al. High-speed aerial grasping using a soft drone with onboard perception. npj Robotics , 2(1):5, 2024. [3] Zhichao Liu et al. Safely catching aerial micro-robots in mid-air using an open-source aerial robot with soft gripper. Frontiers in Robotics and AI , 9:1030515, 2022. [4] Zhanchi Wang et al. Spirobs: Logarithmic spiral-shaped robots for versatile grasping across scales. Device , 3(4), 2025. [5] Fernando Ruiz et al. Sophie: Soft and flexible aerial vehicle for phys-ical interaction with the environment. IEEE Robotics and Automation Letters , 7(4):11086–11093, 2022. [6] Krispin CV Broers et al. Design and testing of a bioinspired lightweight perching mechanism for flapping-wing mavs using soft grippers. IEEE Robotics and Automation Letters , 7(3):7526–7533, 2022. [7] Moju Zhao et al. Forceful valve manipulation with arbitrary direction by articulated aerial robot equipped with thrust vectoring apparatus. 
+
+IEEE Robotics and Automation Letters , 7(2):4893–4900, 2022. [8] Moju Zhao et al. Whole-body aerial manipulation by transformable multirotor with two-dimensional multilinks. In 2017 IEEE interna-tional conference on robotics and automation (ICRA) , pages 5175– 5182. IEEE, 2017. [9] Ian D Walker. Continuous backbone “continuum” robot manipulators. 
+
+International Scholarly Research Notices , 2013(1):726506, 2013. [10] Jun Shintake et al. Soft robotic grippers. Advanced materials ,30(29):1707035, 2018. [11] Matteo Fumagalli et al. Developing an aerial manipulator prototype: Physical interaction with the environment. IEEE Robotics & Automa-tion Magazine , 21(3):41–50, 2014. [12] Graham Hunt et al. 3d printing with flying robots. In 2014 IEEE international conference on robotics and automation (ICRA) , pages 4493–4499. IEEE, 2014. [13] Sangyul Park et al. Odar: Aerial manipulation platform enabling omnidirectional wrench generation. IEEE/ASME Transactions on Mechatronics , 23(4):1907–1918, 2018. [14] Marco Tognon et al. A truly-redundant aerial manipulator system with application to push-and-slide inspection in industrial plants. IEEE Robotics and Automation Letters , 4(2):1846–1851, 2019. [15] Christos Papachristos et al. Efficient force exertion for aerial robotic manipulation: Exploiting the thrust-vectoring authority of a tri-tiltrotor uav. In 2014 IEEE international conference on robotics and automa-tion (ICRA) , pages 4500–4505. IEEE, 2014. [16] Robert J Webster III et al. Design and kinematic modeling of constant curvature continuum robots: A review. The International Journal of Robotics Research , 29(13):1661–1683, 2010. [17] Kazuki Sugihara et al. Design, control, and motion strategy for delta: Transformable multilink multirotor for air-ground hybrid locomotion and manipulation (early access). IEEE Transactions on Robotics , 2026. [18] Bartolomeo Stellato et al. Osqp: An operator splitting solver for quadratic programs. In 2018 UKACC 12th international conference on control (CONTROL) , pages 339–339. IEEE, 2018. [19] Tomoki Anzai et al. Multilinked multirotor with internal commu-nication system for multiple objects transportation based on form optimization method. In 2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 5977–5984. IEEE, 2017.
