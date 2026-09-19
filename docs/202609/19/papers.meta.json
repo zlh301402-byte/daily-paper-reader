@@ -1,0 +1,69 @@
+{
+  "label": "2026-09-19",
+  "date": "2026-09-19",
+  "generated_at": "2026-09-19T21:09:15",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/19/2609.15861v1-ductam-a-duct-assisted-quadrotor-based-aerial-manipulator-enabling-high-force-push-and-pull-interactions",
+      "section": "deep",
+      "title_en": "DuctAM: A Duct-Assisted Quadrotor-Based Aerial Manipulator Enabling High-Force Push-and-Pull Interactions",
+      "authors": "Yi Wang, Rui Jin, Xinhang Xu, Haotian Jin, Ruiyang Liu, Yizhuo Yang, Lihua Xie",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15861v1",
+      "score": "9.0",
+      "evidence": "四旋翼空中机械臂及解耦姿态-力控制",
+      "tldr": "无人机空中机械臂需从感知走向物理交互，但推拉任务要求持续水平力并保持稳定飞行，传统四旋翼水平力有限。本文提出 DuctAM，在四旋翼交互轴集成两个涵道风扇，并采用姿态-力解耦控制，无需大姿态变化即可输出可控水平力。真机实验验证了八字轨迹跟踪、力测量及推车、关门、开抽屉等任务，表明其在稳定飞行下显著提升水平交互力。该平台为高力推拉交互提供了紧凑有效的解决方案。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Uncrewed Aerial Manipulators (UAMs) extend the capabilities of Uncrewed Aerial Vehicles (UAVs) from perception to physical interaction. Among various aerial interactions, push-and-pull operations are fundamental manipulation primitives that require sustained horizontal forces while maintaining stable flight. In this paper, we propose DuctAM, a compact aerial manipulation platform that enhances horizontal force capability for push-and-pull interactions using two ducted fans integrated along the quadrotor interaction axis. An attitude-force decoupled control scheme enables controllable horizontal forces without requiring large attitude changes. Extensive real-world experiments are conducted to validate the DuctAM. Figure-eight trajectory tracking experiments demonstrate stable flight and accurate motion control in both quad and duct modes. Force-measurement experiments quantify the decoupled longitudinal force capability of DuctAM. Finally, representative push-and-pull interaction tasks, including cart pushing, door closing, and drawer opening, verify the practical effectiveness of DuctAM. The results show that DuctAM achieves significantly improved horizontal interaction force capability while maintaining stable flight compared with conventional UAVs.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/19/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping",
+      "section": "deep",
+      "title_en": "Prior Evolution and Task Alignment for Aerial Grasping",
+      "authors": "Weiliang Deng, Zhengyang Dang, Yao Mu, Ximin Lyu",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.18153v1",
+      "score": "8.0",
+      "evidence": "学习增强的空中抓取与操作优化",
+      "tldr": "空中抓取依赖轨迹优化，但问题高度非凸且对初始化敏感，人工设计的数值目标也难以完全刻画任务成功。为此，方法先从优化运动学习轨迹先验，再用CEM演化采样初始化并由部署优化器评估，保留优者作为新监督。同时训练执行感知Critic，从接触、提升与完成结果判断轨迹物理可行性，其冻结能量可作为可微抓取代价，让执行数据直接塑造轨迹生成。仿真与真机实验表明，优化可靠性、轨迹一致性和抓取性能均有提升。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Aerial grasping is a remarkable capability exhibited by predatory birds, allowing them to capture prey through highly coordinated maneuvers in flight. Inspired by this capability, researchers have developed various formulations to reproduce such maneuvers through trajectory optimization. However, two limitations remain in practice. First, the resulting optimization problem is highly nonconvex and sensitive to initialization, making high-quality solutions difficult to obtain under a limited computational budget. Second, prescribed numerical objectives are human-designed abstractions that describe successful grasping through a limited set of mathematically tractable quantities and may not fully capture what determines task success. We investigate how learning can address these limitations within an analytical planner. Accordingly, a trajectory prior is first learned from optimized motions and then evolved through a CEM-based process that evaluates sampled initializations with the deployed optimizer and retains favorable ones as new supervision. An Execution-Aware Critic learns from contact, lift, and completion outcomes to assess whether the optimized trajectories are likely to succeed in physical execution. Its frozen energy can further serve as a differentiable grasping cost, allowing execution data to directly shape trajectory generation. Simulation and real-world experiments demonstrate improved optimization reliability, trajectory consistency, and grasping performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/19/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation",
+      "section": "deep",
+      "title_en": "A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation",
+      "authors": "Eri Sawada, Kazuki Sugihara, Ayano Miyamichi, Kunio Kojima, Kei Okada",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.19328v1",
+      "score": "8.0",
+      "evidence": "推进器集成柔性连续体空中操作",
+      "tldr": "空中操作需兼顾环境适应性与出力能力，但柔性机械臂与推进器分布两条路线此前未能兼得。本文提出可变形旋翼分布式空中机器人，将推进器集成于柔性连续体连杆，使其被动贴合环境并扩展可行力旋量空间。为抑制轻质连杆振动，设计复合板簧结构并提供高扭转与垂直刚度，结合抑振控制。实验实现稳定飞行与多种空中操作，首次验证带集成推进器的柔性连杆操作。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquiring high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively conforming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/19/2609.19850v1-gr2po-group-relative-return-policy-optimization-for-continuous-robot-control",
+      "section": "quick",
+      "title_en": "GR2PO: Group Relative Return Policy Optimization for Continuous Robot Control",
+      "authors": "Pengqin Wang, Qiming Zhang, Shaojie Shen, Jun Ma",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19850v1",
+      "score": "6.0",
+      "evidence": "面向连续机器人控制的无评论家强化学习",
+      "tldr": "连续机器人控制中，actor-critic依赖价值网络，增加训练开销且受价值估计误差影响；无critic方法虽简化训练，但稠密奖励下仅用即时奖励难以学习长期结果。GR2PO从并行轨迹估计折扣回报，在每个rollout时间索引做组归一化，并用相对优势与裁剪目标更新策略。仿真与Jetson TX2部署显示，它显著优于即时奖励无critic基线，并与先进actor-critic方法竞争力相当。该工作为无critic连续控制提供了可落地框架。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Actor-critic architecture has been widely used in continuous robot control. However, they rely on learning a value network, introducing additional computational overhead during training. Moreover, policy learning may also be affected by the approximation error of value estimation. Critic-free group relative policy optimization methods provide a simpler training approach by removing the need for a critic. However, they fail to learn long-term action outcomes when directly applying immediate rewards to policy optimization in dense-reward environments. To address these problems, we propose Group Relative Return Policy Optimization (GR2PO), a critic-free reinforcement learning framework for continuous robot control. GR2PO estimates the discounted returns from the parallelly collected trajectories, performs group normalization at each rollout time index, and uses relative advantages and clipped targets to update the policy. To evaluate the effectiveness of the proposed framework, we instantiate it on robot control simulation environments and deploy the model to a real-world edge device. The results show that GR2PO significantly outperforms critic-free baselines that use immediate rewards and performs competitively against state-of-the-art actor-critic methods. Furthermore, GR2PO demonstrates competitive training efficiency. Inference tests on NVIDIA Jetson TX2 demonstrate the feasibility of deploying the learned policies on edge platforms. Further ablation experiments analyze the effects of parallel group size, return estimation methods, and target clipping ratio on learning performance. To support follow-up research, we will make the complete code publicly available after the paper is accepted, including the framework implementation, experimental configuration, and training and evaluation scripts.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
