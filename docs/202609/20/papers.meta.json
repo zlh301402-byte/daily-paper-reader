@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-20",
+  "date": "2026-09-20",
+  "generated_at": "2026-09-20T21:10:18",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/20/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping",
+      "section": "deep",
+      "title_en": "Prior Evolution and Task Alignment for Aerial Grasping",
+      "authors": "Weiliang Deng, Zhengyang Dang, Yao Mu, Ximin Lyu",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.18153v1",
+      "score": "9.0",
+      "evidence": "面向空中抓取的学习方法，空中机械臂轨迹优化",
+      "tldr": "空中抓取轨迹优化常受非凸性与初始化敏感制约，且人工设计目标难以完全刻画任务成功。本文在解析规划器中引入可学习先验：先从优化运动学习轨迹先验，再用CEM进化并借助部署优化器评估采样初始化，同时以Execution-Aware Critic从接触、提升和完成结果学习可微抓取代价。仿真与真实实验表明，该方法提升了优化可靠性、轨迹一致性与抓取性能。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Aerial grasping is a remarkable capability exhibited by predatory birds, allowing them to capture prey through highly coordinated maneuvers in flight. Inspired by this capability, researchers have developed various formulations to reproduce such maneuvers through trajectory optimization. However, two limitations remain in practice. First, the resulting optimization problem is highly nonconvex and sensitive to initialization, making high-quality solutions difficult to obtain under a limited computational budget. Second, prescribed numerical objectives are human-designed abstractions that describe successful grasping through a limited set of mathematically tractable quantities and may not fully capture what determines task success. We investigate how learning can address these limitations within an analytical planner. Accordingly, a trajectory prior is first learned from optimized motions and then evolved through a CEM-based process that evaluates sampled initializations with the deployed optimizer and retains favorable ones as new supervision. An Execution-Aware Critic learns from contact, lift, and completion outcomes to assess whether the optimized trajectories are likely to succeed in physical execution. Its frozen energy can further serve as a differentiable grasping cost, allowing execution data to directly shape trajectory generation. Simulation and real-world experiments demonstrate improved optimization reliability, trajectory consistency, and grasping performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation",
+      "section": "deep",
+      "title_en": "A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation",
+      "authors": "Eri Sawada, Kazuki Sugihara, Ayano Miyamichi, Kunio Kojima, Kei Okada",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.19328v1",
+      "score": "8.0",
+      "evidence": "空中操作，软机械臂与分布式推力器扩展力旋量空间",
+      "tldr": "空中操作需兼顾环境适应性与大交互力，但柔性机械臂虽能被动贴合环境，却难以提供足够力螺旋空间；沿机械臂分布推进器可扩展可行力螺旋，却鲜有两者兼得。本文提出可变形、旋翼分布式空中机器人，采用集成推进器的柔性连续体连杆，使其兼具形状自适应能力与扩展的可行力螺旋空间，末端可施加较大交互力。为抑制轻质连杆振动，设计了复合板簧结构以提供高扭转与垂向刚度，并配合抑振控制。实验实现稳定飞行及多种空中操作任务，并首次验证带集成推进器的柔性连杆空中操作。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquiring high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively conforming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.18930v1-learning-holistic-whole-body-loco-manipulation-with-a-bipedal-mobile-manipulator",
+      "section": "quick",
+      "title_en": "Learning Holistic Whole-Body Loco-Manipulation with a Bipedal Mobile Manipulator",
+      "authors": "Zhongyu Chen, Yuxuan Nai, Qian Chen, Yidong Zhu, Chen Jing, Qihan Wang, Xudong Li, Zhizhan Li, Leixin Chang, Liangjing Yang, Hua Chen",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.18930v1",
+      "score": "6.0",
+      "evidence": "强化学习全身控制器将末端目标映射为机械臂与基座动作",
+      "tldr": "双足移动机械臂可借行走与操作协同扩展作业空间，但需全身控制器在平衡下将操作目标转为手臂和腿部动作。本文用强化学习训练统一全身控制器，仅输入6自由度末端目标，直接输出双足基座与机械臂的协调动作。无需显式基座速度或脚步指令，它即可自主伸够、调整姿态并迈步；奖励门控协调末端跟踪、行走与平衡，时序估计器融合Transformer、GRU与动力学预测。真机实验显示，同一控制器可响应VR遥操作、扩散策略与脚本轨迹，为多样操作提供统一末端接口。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Bipedal loco-manipulation enables robots to interact with objects beyond the nominal workspace of their arms by coordinating locomotion and manipulation. Realizing this capability requires a low-level whole-body controller that translates task-level manipulation goals into coordinated arm and leg motions while maintaining balance. We present a unified whole-body controller trained with reinforcement learning that directly maps 6-DoF end-effector targets to coordinated actions for the bipedal base and robotic arm. Given only an end-effector target, the learned controller autonomously coordinates reaching, postural adaptation, and stepping without explicit base-velocity or footstep commands. A reward-gating strategy regulates the trade-offs among end-effector tracking, locomotion, and balance during training, while a temporal context estimator combines windowed Transformer encoding, recurrent GRU memory, and auxiliary dynamics prediction to extract dynamics-relevant information from observation history. Real-robot experiments demonstrate that the same controller supports reaching, postural adaptation, and stepping under commands from VR teleoperation, a learned diffusion policy, and scripted trajectories, providing a common end-effector interface for diverse manipulation tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,35 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-19
-- 运行时间：2026-09-19 21:09:06 UTC
+- 最新运行日期：2026-09-20
+- 运行时间：2026-09-20 21:10:15 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：3
+- 本次总论文数：3
+- 精读区：2
 - 速读区：1
 
 ### 今日简报（AI）
-- 今日共生成 4 篇推荐（精读 3 篇，速读 1 篇）
-- 精读：《DuctAM: A Duct-Assisted Quadrotor-Based Aerial Manipulator Enabling High-Force Push-and-Pull Interactions》（9.0/10）, 《Prior Evolution and Task Alignment for Aerial Grasping》（8.0/10）
-- 速读：《GR2PO: Group Relative Return Policy Optimization for Continuous Robot Control》（6.0/10）
-- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202609/19/README](/202609/19/README)
+2026-09-20 日报精选 3 篇，精读 2 篇、速读 1 篇，聚焦空中抓取与形态自适应飞行机器人。最值得看的是《Prior Evolution and Task Alignment for Aerial Grasping》（9.0/10）和《A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation》（8.0/10），分别代表先验演化与任务对齐、柔性连续体链接驱动形态自适应两条路线。普通读者可先读这两篇精读，再按兴趣速览双足移动操作那篇。
+- 详情：[/202609/20/README](/202609/20/README)
 
 ### 精读区论文标签
-1. [DuctAM: A Duct-Assisted Quadrotor-Based Aerial Manipulator Enabling High-Force Push-and-Pull Interactions](/202609/19/2609.15861v1-ductam-a-duct-assisted-quadrotor-based-aerial-manipulator-enabling-high-force-push-and-pull-interactions)  
-   标签：评分：9.0/10、query:drone-arm
-   evidence：四旋翼空中机械臂及解耦姿态-力控制
-2. [Prior Evolution and Task Alignment for Aerial Grasping](/202609/19/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping)  
+1. [Prior Evolution and Task Alignment for Aerial Grasping](/202609/20/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping)  
+   标签：评分：9.0/10、query:aerial-arm
+   evidence：面向空中抓取的学习方法，空中机械臂轨迹优化
+2. [A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation](/202609/20/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation)  
    标签：评分：8.0/10、query:aerial-arm
-   evidence：学习增强的空中抓取与操作优化
-3. [A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation](/202609/19/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation)  
-   标签：评分：8.0/10、query:aerial-arm
-   evidence：推进器集成柔性连续体空中操作
+   evidence：空中操作，软机械臂与分布式推力器扩展力旋量空间
 
 ### 速读区论文标签
-1. [GR2PO: Group Relative Return Policy Optimization for Continuous Robot Control](/202609/19/2609.19850v1-gr2po-group-relative-return-policy-optimization-for-continuous-robot-control)  
+1. [Learning Holistic Whole-Body Loco-Manipulation with a Bipedal Mobile Manipulator](/202609/20/2609.18930v1-learning-holistic-whole-body-loco-manipulation-with-a-bipedal-mobile-manipulator)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：面向连续机器人控制的无评论家强化学习
+   evidence：强化学习全身控制器将末端目标映射为机械臂与基座动作
 
 
 <div class="dpr-home-promo-card">
