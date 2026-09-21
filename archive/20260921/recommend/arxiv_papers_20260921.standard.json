@@ -1,0 +1,215 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-21T22:40:42.139121+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2609.18153v1",
+      "source": "arxiv",
+      "title": "Prior Evolution and Task Alignment for Aerial Grasping",
+      "abstract": "Aerial grasping is a remarkable capability exhibited by predatory birds, allowing them to capture prey through highly coordinated maneuvers in flight. Inspired by this capability, researchers have developed various formulations to reproduce such maneuvers through trajectory optimization. However, two limitations remain in practice. First, the resulting optimization problem is highly nonconvex and sensitive to initialization, making high-quality solutions difficult to obtain under a limited computational budget. Second, prescribed numerical objectives are human-designed abstractions that describe successful grasping through a limited set of mathematically tractable quantities and may not fully capture what determines task success. We investigate how learning can address these limitations within an analytical planner. Accordingly, a trajectory prior is first learned from optimized motions and then evolved through a CEM-based process that evaluates sampled initializations with the deployed optimizer and retains favorable ones as new supervision. An Execution-Aware Critic learns from contact, lift, and completion outcomes to assess whether the optimized trajectories are likely to succeed in physical execution. Its frozen energy can further serve as a differentiable grasping cost, allowing execution data to directly shape trajectory generation. Simulation and real-world experiments demonstrate improved optimization reliability, trajectory consistency, and grasping performance.",
+      "authors": [
+        "Weiliang Deng",
+        "Zhengyang Dang",
+        "Yao Mu",
+        "Ximin Lyu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-16T05:33:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.18153v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learning-based aerial grasping with aerial robot manipulator",
+      "llm_evidence_cn": "基于学习的空中机械臂抓取",
+      "llm_evidence": "基于学习的空中机械臂抓取",
+      "canonical_evidence": "基于学习的空中机械臂抓取",
+      "llm_tldr_en": "This paper tackles aerial grasping by learning to evolve trajectory priors and align task objectives, overcoming nonconvexity and hand-designed objectives in flight grasping.",
+      "llm_tldr_cn": "该文受猛禽飞行抓取启发，指出空中抓取轨迹优化存在非凸敏感于初值和目标函数人工抽象两大局限。方法研究如何用学习演化轨迹先验并做任务对齐，以提升有限算力下的求解质量并更贴近真实成功判据。实验表明学习可缓解初始化敏感并改善抓取任务表现，为无人机机械臂空中抓取提供学习增强方案。",
+      "llm_tldr": "该文受猛禽飞行抓取启发，指出空中抓取轨迹优化存在非凸敏感于初值和目标函数人工抽象两大局限。方法研究如何用学习演化轨迹先验并做任务对齐，以提升有限算力下的求解质量并更贴近真实成功判据。实验表明学习可缓解初始化敏感并改善抓取任务表现，为无人机机械臂空中抓取提供学习增强方案。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19328v1",
+      "source": "arxiv",
+      "title": "A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation",
+      "abstract": "In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquiring high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively conforming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster.",
+      "authors": [
+        "Eri Sawada",
+        "Kazuki Sugihara",
+        "Ayano Miyamichi",
+        "Kunio Kojima",
+        "Kei Okada"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T18:47:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.19328v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "morphing aerial robot for shape adaptive aerial manipulation",
+      "llm_evidence_cn": "变形空中机器人实现形状自适应空中操作",
+      "llm_evidence": "变形空中机器人实现形状自适应空中操作",
+      "canonical_evidence": "变形空中机器人实现形状自适应空中操作",
+      "llm_tldr_en": "A morphing aerial robot integrates thruster-distributed flexible continuum links to achieve both shape adaptability and an expanded wrench space for versatile aerial manipulation.",
+      "llm_tldr_cn": "针对空中操作机器人难以同时具备高环境适应性与大可行力螺旋空间的问题，本文提出一种将柔性连续体链接作为软机械臂、并把推进器沿机械臂分布的变形空中机器人。该设计使机器人既能被动顺应环境，又能通过分布式推进扩展操作力螺旋空间。研究表明该方案可同时实现高形状适应性与更强的操作能力。这一体化构型为多功能空中操作机器人设计提供了新方向。",
+      "llm_tldr": "针对空中操作机器人难以同时具备高环境适应性与大可行力螺旋空间的问题，本文提出一种将柔性连续体链接作为软机械臂、并把推进器沿机械臂分布的变形空中机器人。该设计使机器人既能被动顺应环境，又能通过分布式推进扩展操作力螺旋空间。研究表明该方案可同时实现高形状适应性与更强的操作能力。这一体化构型为多功能空中操作机器人设计提供了新方向。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.21307v1",
+      "source": "arxiv",
+      "title": "Stability-aware Residual Reinforcement Learning Framework for Robotic Manipulator Disturbance Compensation",
+      "abstract": "Although conventional controllers and disturbance observers (DOBs) are the standard for precision tracking in manipulators, they suffer from parameter uncertainty, nonlinear friction, and compound disturbances. This study proposes a residual reinforcement learning DOB framework that pairs an analytical observer with an RL policy. The deterministic baseline operates within a reliable region, whereas the RL policy explicitly targets the residuals that the model cannot capture. To make this compensation disturbance-aware, an estimator network aligns the observation history with a privileged disturbance context, organizing the latent space by disturbance regime and enabling rapid adaptation across disturbance transitions. To guarantee stability, we derived and enforced a state-dependent action bound on the RL policy from an input-to-state stability (ISS) analysis such that the closed loop provably confines the tracking error to a certified envelope for arbitrary policy outputs. Experiments on a 6-DOF manipulator demonstrated consistent improvements in disturbance estimation and tracking, including a 27.8% tracking-error reduction on real hardware under zero-shot sim-to-real transfer and a 38.0% reduction under a base-vibration disturbance that was not observed during training.",
+      "authors": [
+        "Jihong Kim",
+        "Joonhyuk Kwon",
+        "Hwa Soo Kim",
+        "TaeWon Seo",
+        "Hyung-Tae Seo"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T04:35:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.21307v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "residual RL for robotic manipulator control",
+      "llm_evidence_cn": "用于机械臂控制的残差强化学习",
+      "llm_evidence": "用于机械臂控制的残差强化学习",
+      "canonical_evidence": "用于机械臂控制的残差强化学习",
+      "llm_tldr_en": "A residual reinforcement learning disturbance observer framework pairs an analytic observer with an RL policy to compensate unmodeled residuals, enabling fast adaptation across disturbance regimes in manipulator tracking.",
+      "llm_tldr_cn": "传统控制器和扰动观测器在机械臂精密跟踪中受参数不确定、非线性摩擦和复合扰动影响，性能受限。本文提出稳定性感知的残差强化学习扰动观测器框架，将解析观测器与RL策略结合，由RL专门补偿模型无法刻画的残差，并引入估计网络对齐扰动上下文。实验表明该方法能按扰动类型组织潜空间并实现快速自适应。该框架为机械臂抗扰控制提供了可迁移的RL增强方案。",
+      "llm_tldr": "传统控制器和扰动观测器在机械臂精密跟踪中受参数不确定、非线性摩擦和复合扰动影响，性能受限。本文提出稳定性感知的残差强化学习扰动观测器框架，将解析观测器与RL策略结合，由RL专门补偿模型无法刻画的残差，并引入估计网络对齐扰动上下文。实验表明该方法能按扰动类型组织潜空间并实现快速自适应。该框架为机械臂抗扰控制提供了可迁移的RL增强方案。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21788v1",
+      "source": "arxiv",
+      "title": "From Pretraining to Proficiency: Real-World Subtask RL for Long-Horizon Manipulation with Minimal Human Intervention",
+      "abstract": "A pretrained robot foundation policy may execute most of a long-horizon task yet repeatedly fail at a few critical subtasks. Collecting additional full-task demonstrations for supervised fine-tuning (SFT) requires operators to repeat behaviors the policy already performs well. Reinforcement learning (RL) fine-tuning offers a promising path to bridge this gap, but existing approaches struggle to solve long-horizon tasks using only sparse rewards. We present PARTS (Policy Adaptation with RL on Targeted Subtasks), a real-world subtask RL framework that concentrates practice at these bottlenecks while allowing training rollouts to proceed with minimal human intervention. The frozen pretrained policy supplies nominal actions throughout execution, while agent-generated selectors and success verifiers activate residual corrections and provide local outcome rewards. These rewards support learning from successful subtasks even when complete-task successes are scarce. Training combines online RL with success-reweighted retraining, and each retrained residual policy is redeployed to collect further experience. Humans identify bottlenecks during setup and perform physical resets when needed. On bimanual YAM and single-arm Franka tasks, PARTS improves complete-task success from 32% to 61% and from 50% to 95%, respectively, using tens of minutes of real-world RL rollouts per task on average. Compared with existing real-world RL fine-tuning methods, PARTS raises full-task success by more than 25% under the same robot-rollout budget while requiring less human involvement.",
+      "authors": [
+        "Sichang Su",
+        "Benjamin Yang",
+        "Zhiyun Deng",
+        "Boyuan Liang",
+        "Yip Fun Yeung",
+        "Zelin Wang",
+        "Lingfeng Sun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-18T14:03:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.21788v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Reinforcement learning fine-tuning for robot arm manipulation subtasks",
+      "llm_evidence_cn": "面向机械臂操作子任务的强化学习微调",
+      "llm_evidence": "面向机械臂操作子任务的强化学习微调",
+      "canonical_evidence": "面向机械臂操作子任务的强化学习微调",
+      "llm_tldr_en": "Pretrained robot policies fail at a few critical subtasks in long-horizon tasks, yet collecting full-task demos is costly. PARTS concentrates RL fine-tuning on bottleneck subtasks with minimal human intervention, improving subtask success under sparse rewards.",
+      "llm_tldr_cn": "预训练机器人策略在长时程任务中常卡在少数关键子任务，而补采完整演示代价高昂。本文提出PARTS，将强化学习微调集中到瓶颈子任务，并借助冻结的预训练策略让训练在极少人工干预下推进。实验表明，该方法仅用稀疏奖励即可显著提升关键子任务成功率。其贡献在于提供了一种面向真实世界的子任务级强化学习微调范式。",
+      "llm_tldr": "预训练机器人策略在长时程任务中常卡在少数关键子任务，而补采完整演示代价高昂。本文提出PARTS，将强化学习微调集中到瓶颈子任务，并借助冻结的预训练策略让训练在极少人工干预下推进。实验表明，该方法仅用稀疏奖励即可显著提升关键子任务成功率。其贡献在于提供了一种面向真实世界的子任务级强化学习微调范式。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.22085v1",
+      "source": "arxiv",
+      "title": "SeeQ: Training Generalist Value Functions for Long-Horizon Robotic Manipulation",
+      "abstract": "Despite rapid progress, generalist robot policies remain brittle on complex, long-horizon tasks that comprise multiple stages or require repeated attempts and deliberation on the same underlying stage before success. Q-value functions can improve these policies by ranking candidate actions or guiding policy improvement, but learning from sparse task-level rewards entails long credit-assignment horizons, difficult Bellman backups, and broad data-coverage requirements. We introduce SeeQ (Subtask-elicited Q-functions), which instead learns Q-values for the currently active subtask. This shortens the value-prediction horizon and enables effective learning with temporal-difference (TD) objectives. During training, subtask-level annotations present in offline robot data provide the decomposition and enable learning from broad, potentially suboptimal robot datasets. To eliminate the need for human annotations or modular subtask prediction systems at test time, our Q-function architecture is trained to autoregressively predict the active subtask in natural language before estimating its value. We instantiate SeeQ using a base vision-language backbone, pretrain it on diverse open-source robot manipulation data, and finetune it on downstream tasks. Across four real-world manipulation tasks on two bimanual robot platforms, the SeeQ value function substantially improves best-of-N policy steering.",
+      "authors": [
+        "Saksham Singh",
+        "Zheyuan Hu",
+        "Max Sobol Mark",
+        "Jeffrey Yu",
+        "Zackory Erickson",
+        "Aviral Kumar"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T17:59:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.22085v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Value functions and RL for long-horizon robotic manipulation",
+      "llm_evidence_cn": "面向长时程机器人操作的价值函数与强化学习",
+      "llm_evidence": "面向长时程机器人操作的价值函数与强化学习",
+      "canonical_evidence": "面向长时程机器人操作的价值函数与强化学习",
+      "llm_tldr_en": "Generalist robot policies remain brittle on long-horizon manipulation due to sparse rewards and long credit assignment. SeeQ learns Q-values for the currently active subtask, shortening the prediction horizon and enabling effective TD learning.",
+      "llm_tldr_cn": "通用机器人策略在长时程多阶段任务上仍显脆弱，稀疏任务奖励带来长信用分配与数据覆盖难题。本文提出SeeQ，转而学习当前活跃子任务的Q值，从而缩短价值预测时域，使时序差分目标更易学习。借助子任务级标注，该方法改善了动作排序与策略改进。其贡献在于为长时程操作提供子任务化的价值学习思路。",
+      "llm_tldr": "通用机器人策略在长时程多阶段任务上仍显脆弱，稀疏任务奖励带来长信用分配与数据覆盖难题。本文提出SeeQ，转而学习当前活跃子任务的Q值，从而缩短价值预测时域，使时序差分目标更易学习。借助子任务级标注，该方法改善了动作排序与策略改进。其贡献在于为长时程操作提供子任务化的价值学习思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
