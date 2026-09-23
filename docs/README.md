@@ -6,39 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-22
-- 运行时间：2026-09-22 22:01:31 UTC
+- 最新运行日期：2026-09-23
+- 运行时间：2026-09-23 22:46:06 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：3
-- 速读区：2
+- 本次总论文数：7
+- 精读区：1
+- 速读区：6
 
 ### 今日简报（AI）
-2026-09-22 空中机器人日报：5篇入库，精读3篇、速读2篇，两篇9.0分研究领跑。
-
-最值得看的是“变形柔性连续体+推进器”的形状自适应空中操作，以及动态切换下的空中机械臂自适应控制，均瞄准复杂空中操作稳定性。
-
-普通读者可优先了解这两条9分方向，速读可顺带关注空中抓取先验进化；时间有限就先读精读。
-- 详情：[/202609/22/README](/202609/22/README)
+今天筛完7篇机器人论文，精读1篇、速读6篇，重点落在9.0分的可变形空中操作机器人。
+最值得看的是精读那篇用“推进器+柔性连续体”让飞行机器人形状自适应地抓取与操作，速读里“空中抓取先验对齐”和“世界模型增强VLA”也值得顺带一瞥。
+普通读者可先看精读论文的摘要或视频，重点判断这种会变形、能操作的空中机器人距离真实场景还有哪些工程门槛。
+- 详情：[/202609/23/README](/202609/23/README)
 
 ### 精读区论文标签
-1. [A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation](/202609/22/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation)  
+1. [A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation](/202609/23/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation)  
    标签：评分：9.0/10、query:aerial-arm
-   evidence：带柔性连续体机械臂的形变空中机器人用于空中操作
-2. [A Switched Adaptive Control Framework for Aerial Manipulators Under Dynamic Transitions](/202609/22/2609.24761v1-a-switched-adaptive-control-framework-for-aerial-manipulators-under-dynamic-transitions)  
-   标签：评分：9.0/10、query:drone-arm
-   evidence：空中机械臂切换自适应控制
-3. [Potential-Field Action Representation for Reinforcement Learning in Contact-Rich Manipulation](/202609/22/2609.21609v1-potential-field-action-representation-for-reinforcement-learning-in-contact-rich-manipulation)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：强化学习用于机械臂操作控制
+   evidence：带柔性连续体机械臂与分布推进器的变形空中操作机器人
 
 ### 速读区论文标签
-1. [Prior Evolution and Task Alignment for Aerial Grasping](/202609/22/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping)  
+1. [Prior Evolution and Task Alignment for Aerial Grasping](/202609/23/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping)  
    标签：评分：7.0/10、query:aerial-arm
-   evidence：面向空中抓取机动的学习式轨迹优化
-2. [ForceRFT: Refining VLA Actions through Force-Guided Residual Reinforcement Learning](/202609/22/2609.22840v1-forcerft-refining-vla-actions-through-force-guided-residual-reinforcement-learning)  
+   evidence：面向空中机器人的学习式空中抓取与操作
+2. [PINGU: Extending Air-Bearing Spacecraft Emulators with Open-Source Actuators and Learned Control for Contact-Rich Proximity Operations](/202609/23/2609.23554v1-pingu-extending-air-bearing-spacecraft-emulators-with-open-source-actuators-and-learned-control-for-contact-rich-proximity-operations)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：带机械臂的过驱动平台与学习控制
+3. [Imagine-RL: Residual-Confidence-Guided Cross-Attention for World-Model-Augmented VLA Reinforcement Learning](/202609/23/2609.24033v1-imagine-rl-residual-confidence-guided-cross-attention-for-world-model-augmented-vla-reinforcement-learning)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：面向接触丰富操作的强化学习
+4. [Reinforcement Learning for Real-Time Vision-Language-Action Policies](/202609/23/2609.18207v1-reinforcement-learning-for-real-time-vision-language-action-policies)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：残差强化学习精炼机械臂末端位姿指令
+   evidence：面向实时机器人操作的强化学习微调
+5. [LOInK: Learned Optimal Inverse Kinematics via Structured Neural Surrogate Models](/202609/23/2609.21275v1-loink-learned-optimal-inverse-kinematics-via-structured-neural-surrogate-models)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：面向机械臂控制的逆运动学学习
+6. [RouteRLT: Learning When and Which RL Specialist Should Control a Vision-Language-Action Policy](/202609/23/2609.26467v1-routerlt-learning-when-and-which-rl-specialist-should-control-a-vision-language-action-policy)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：用RL专家微调机械臂操作策略
 
 
 <div class="dpr-home-promo-card">

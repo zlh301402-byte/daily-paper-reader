@@ -1,0 +1,294 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-23T22:42:10.806918+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2609.19328v1",
+      "source": "arxiv",
+      "title": "A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation",
+      "abstract": "In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquiring high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively conforming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster.",
+      "authors": [
+        "Eri Sawada",
+        "Kazuki Sugihara",
+        "Ayano Miyamichi",
+        "Kunio Kojima",
+        "Kei Okada"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T18:47:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.19328v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "morphing aerial robot with soft continuum manipulator and distributed thrusters for aerial manipulation",
+      "llm_evidence_cn": "带柔性连续体机械臂与分布推进器的变形空中操作机器人",
+      "llm_evidence": "带柔性连续体机械臂与分布推进器的变形空中操作机器人",
+      "canonical_evidence": "带柔性连续体机械臂与分布推进器的变形空中操作机器人",
+      "llm_tldr_en": "Aerial manipulation needs both soft-manipulator adaptability and expanded wrench space, yet no robot achieves both. This paper proposes a morphing rotor-distributed aerial robot with flexible continuum links acting as soft manipulators and thrusters.",
+      "llm_tldr_cn": "针对通用空中操作需要兼具软体机械臂的环境适应性与分布推进器扩展的可行力旋量空间、而现有机器人无法同时满足的问题，本文提出一种带柔性连续体连杆的变形旋翼分布式空中机器人，连杆既作为软体机械臂又沿其分布推进器。结果表明该设计同时实现了高形状适应性与扩展的可行力旋量空间，为空中操作机器人的形态与驱动融合设计提供了新方案。",
+      "llm_tldr": "针对通用空中操作需要兼具软体机械臂的环境适应性与分布推进器扩展的可行力旋量空间、而现有机器人无法同时满足的问题，本文提出一种带柔性连续体连杆的变形旋翼分布式空中机器人，连杆既作为软体机械臂又沿其分布推进器。结果表明该设计同时实现了高形状适应性与扩展的可行力旋量空间，为空中操作机器人的形态与驱动融合设计提供了新方案。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.18153v1",
+      "source": "arxiv",
+      "title": "Prior Evolution and Task Alignment for Aerial Grasping",
+      "abstract": "Aerial grasping is a remarkable capability exhibited by predatory birds, allowing them to capture prey through highly coordinated maneuvers in flight. Inspired by this capability, researchers have developed various formulations to reproduce such maneuvers through trajectory optimization. However, two limitations remain in practice. First, the resulting optimization problem is highly nonconvex and sensitive to initialization, making high-quality solutions difficult to obtain under a limited computational budget. Second, prescribed numerical objectives are human-designed abstractions that describe successful grasping through a limited set of mathematically tractable quantities and may not fully capture what determines task success. We investigate how learning can address these limitations within an analytical planner. Accordingly, a trajectory prior is first learned from optimized motions and then evolved through a CEM-based process that evaluates sampled initializations with the deployed optimizer and retains favorable ones as new supervision. An Execution-Aware Critic learns from contact, lift, and completion outcomes to assess whether the optimized trajectories are likely to succeed in physical execution. Its frozen energy can further serve as a differentiable grasping cost, allowing execution data to directly shape trajectory generation. Simulation and real-world experiments demonstrate improved optimization reliability, trajectory consistency, and grasping performance.",
+      "authors": [
+        "Weiliang Deng",
+        "Zhengyang Dang",
+        "Yao Mu",
+        "Ximin Lyu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-16T05:33:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.18153v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning-based aerial grasping and manipulation for aerial robots",
+      "llm_evidence_cn": "面向空中机器人的学习式空中抓取与操作",
+      "llm_evidence": "面向空中机器人的学习式空中抓取与操作",
+      "canonical_evidence": "面向空中机器人的学习式空中抓取与操作",
+      "llm_tldr_en": "This work addresses aerial grasping, where trajectory optimization is nonconvex, initialization-sensitive, and relies on human-designed objectives; it proposes prior evolution and task alignment learning to obtain better solutions under limited computation.",
+      "llm_tldr_cn": "空中抓取是鸟类的高超能力，但现有轨迹优化方法存在非凸、对初值敏感，且人工设计的数值目标难以完整刻画任务成功要素。本文提出先验演化与任务对齐的学习方法，用于空中抓取轨迹优化。实验表明该方法能在有限计算预算下获得更高质量解，并更好地对齐任务成功标准。这为空中机器人抓取提供了新的学习式求解范式。",
+      "llm_tldr": "空中抓取是鸟类的高超能力，但现有轨迹优化方法存在非凸、对初值敏感，且人工设计的数值目标难以完整刻画任务成功要素。本文提出先验演化与任务对齐的学习方法，用于空中抓取轨迹优化。实验表明该方法能在有限计算预算下获得更高质量解，并更好地对齐任务成功标准。这为空中机器人抓取提供了新的学习式求解范式。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.18207v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for Real-Time Vision-Language-Action Policies",
+      "abstract": "Reinforcement learning fine-tuning on top of large, pretrained Vision-Language-Action (VLA) models offers promise for highly reliable robot deployment. However, because of their scale, modern VLA models suffer from high inference latency, so the observation used to select an action is often stale by execution time, creating a distribution shift that can substantially degrade reliability and performance. Prior work has explored asynchronous policy execution to reduce the effect of latency, but these methods are mostly built on imitation learning and offer no mechanism for moving beyond the training distribution toward higher reliability. We close this gap by enabling RL fine-tuning that meets the real-time control requirements of dynamic real-world manipulation. Our approach builds on EXPO-FT, a framework for sample-efficient, reliable VLA fine-tuning with reinforcement learning, and decouples slow, expressive action generation from fast, reactive action edits: a large pretrained VLA proposes action chunks using its strong behavior prior, while a lightweight edit policy performs fast, reactive decision-making by editing actions in response to changes in state, conditioned on the latest observation. We instantiate this as Real-Time EXPO-FT, an RL framework for finetuning real-time VLA policies. On the Kinetix benchmark, Real-Time EXPO-FT enables a delayed policy to achieve the best performance among delayed and non-delayed methods in 10 out of 10 environments. On four dynamic real-world tasks, robot object passing, ball balancing, table soccer kicking, and dynamic object picking, with online robot data capped at 10 minutes, Real-Time EXPO-FT improves average policy performance from 42% to 97%, all without human intervention, demonstrating rapid, sample-efficient adaptation to challenging real-world dynamics. Website: https://pd-perry.github.io/real-time-expo-ft",
+      "authors": [
+        "Perry Dong",
+        "Kuo-Han Hung",
+        "Dorsa Sadigh",
+        "Chelsea Finn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-16T06:38:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.18207v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL fine-tuning for real-time robot manipulation control",
+      "llm_evidence_cn": "面向实时机器人操作的强化学习微调",
+      "llm_evidence": "面向实时机器人操作的强化学习微调",
+      "canonical_evidence": "面向实时机器人操作的强化学习微调",
+      "llm_tldr_en": "RL fine-tuning on pretrained VLA models to meet real-time control needs, mitigating latency-induced distribution shift for reliable robot manipulation deployment.",
+      "llm_tldr_cn": "针对大型视觉-语言-动作模型推理延迟高、执行时观测陈旧导致可靠性下降的问题，本文提出在其上叠加强化学习微调的方法，使策略满足真实世界动态操作的实时控制需求。方法通过异步执行与RL训练缓解延迟引起的分布偏移，实验表明可提升操作任务的可靠性与性能，为VLA模型的实际部署提供了可行路径。",
+      "llm_tldr": "针对大型视觉-语言-动作模型推理延迟高、执行时观测陈旧导致可靠性下降的问题，本文提出在其上叠加强化学习微调的方法，使策略满足真实世界动态操作的实时控制需求。方法通过异步执行与RL训练缓解延迟引起的分布偏移，实验表明可提升操作任务的可靠性与性能，为VLA模型的实际部署提供了可行路径。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.23554v1",
+      "source": "arxiv",
+      "title": "PINGU: Extending Air-Bearing Spacecraft Emulators with Open-Source Actuators and Learned Control for Contact-Rich Proximity Operations",
+      "abstract": "Low-cost planar air-bearing testbeds have matured into a standard proxy for free-flying spacecraft GNC, but they remain largely thruster-only and are rarely equipped for contact-rich, inertia-coupled manipulation. Building on the open-source ATMOS testbed, we contribute a reaction wheel and two force/torque-sensed robotic arms (LEVION) with interchangeable end-effectors, integrated as first-class control actuators through a unified ROS 2 abstraction layer. On top of the software stack we build a reinforcement-learning training environment and digital twin, and a controller that exploits these added degrees of freedom, letting classical optimal controllers and learned policies be swapped on the same hardware without modification. We validate the integrated system, PINGU, across four benchmark tasks: point-to-pose navigation (classical LQR vs. sim-to-real PPO), dynamic disturbance rejection under arm-induced center-of-mass shifts, reaction-wheel momentum stabilization, and force-controlled docking. The results show that these additions extend an ATMOS-class emulator into the contact-rich regime and bridge classical optimal control and reinforcement learning on one reproducible platform.",
+      "authors": [
+        "Ricard Marsal I Castan",
+        "Akiyoshi Uchida",
+        "Aman Arora",
+        "Pedro Lima",
+        "Matteo El-Hariry",
+        "Anrej Orsula",
+        "Francesco Grella",
+        "Antoine Richard",
+        "Cedric Pradalier",
+        "Miguel A. Olivarez-Mendez"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-20T11:10:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.23554v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "over-actuated platform with robotic arms and learned control",
+      "llm_evidence_cn": "带机械臂的过驱动平台与学习控制",
+      "llm_evidence": "带机械臂的过驱动平台与学习控制",
+      "canonical_evidence": "带机械臂的过驱动平台与学习控制",
+      "llm_tldr_en": "PINGU extends air-bearing spacecraft testbeds with a reaction wheel and two robotic arms as over-actuated first-class actuators, plus an RL training environment.",
+      "llm_tldr_cn": "针对气浮航天器测试台多为纯推力器、缺乏接触密集惯性耦合操作能力的问题，本文提出PINGU扩展。方法在ATMOS测试台上加入反作用轮与两条力力矩感知机械臂，经统一ROS2抽象层集成为一等执行器，并构建RL训练环境与数字孪生。结果实现可利用额外自由度的控制器。该工作支持经典与学习策略灵活切换，推进接触密集近距操作研究。",
+      "llm_tldr": "针对气浮航天器测试台多为纯推力器、缺乏接触密集惯性耦合操作能力的问题，本文提出PINGU扩展。方法在ATMOS测试台上加入反作用轮与两条力力矩感知机械臂，经统一ROS2抽象层集成为一等执行器，并构建RL训练环境与数字孪生。结果实现可利用额外自由度的控制器。该工作支持经典与学习策略灵活切换，推进接触密集近距操作研究。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "over-actuated drone control with manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21275v1",
+      "source": "arxiv",
+      "title": "LOInK: Learned Optimal Inverse Kinematics via Structured Neural Surrogate Models",
+      "abstract": "We introduce Learned Optimal Inverse Kinematics (LOInK), a method to generate approximately optimal solutions to an inverse kinematics problem. When trained on data consisting of sampled configurations and associated task variables and a given cost function, LOInK learns a bi-Lipschitz invertible mapping from configuration space to a decoupled task/latent space, and moreover, the latent space is structured so as to place cost-minimizing solutions at the origin. This enables efficient sampling of cost-minimizing solutions via a network-inversion algorithm based on operator splitting. We demonstrate the proposed approach on three problems: an illustrative three degree-of-freedom manipulator problem; a quadrupedal climbing robot for which LOInK can generate near-optimal solutions on average 31 times faster and up to 100 times faster than a constrained optimization approach; and a simulated soft actuator as a purely data-driven example, in which LOInK can explicitly generate high-quality solutions, unlike existing generative approaches that require diverse sampling and evaluation of candidate solutions.",
+      "authors": [
+        "Michael Somerfield",
+        "Damian Abood",
+        "Ruigang Wang",
+        "Ian R. Manchester"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T03:41:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.21275v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "learned inverse kinematics for manipulator control",
+      "llm_evidence_cn": "面向机械臂控制的逆运动学学习",
+      "llm_evidence": "面向机械臂控制的逆运动学学习",
+      "canonical_evidence": "面向机械臂控制的逆运动学学习",
+      "llm_tldr_en": "This paper introduces LOInK, a learned inverse kinematics method that trains a bi-Lipschitz invertible mapping from configuration space to a structured latent space, enabling efficient sampling of cost-minimizing solutions via network inversion for manipulator control.",
+      "llm_tldr_cn": "逆运动学求解常需在满足任务约束的同时优化代价，传统方法难以高效获得近似最优解。本文提出LOInK，学习从构型空间到解耦任务-潜空间的双Lipschitz可逆映射，并将代价最小解置于潜空间原点，从而借助算子分裂的网络反演高效采样最优解。作者在三自由度机械臂、四足攀爬机器人等问题上验证了方法有效性，为机械臂运动控制提供了可复用的学习式求解器。",
+      "llm_tldr": "逆运动学求解常需在满足任务约束的同时优化代价，传统方法难以高效获得近似最优解。本文提出LOInK，学习从构型空间到解耦任务-潜空间的双Lipschitz可逆映射，并将代价最小解置于潜空间原点，从而借助算子分裂的网络反演高效采样最优解。作者在三自由度机械臂、四足攀爬机器人等问题上验证了方法有效性，为机械臂运动控制提供了可复用的学习式求解器。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.24033v1",
+      "source": "arxiv",
+      "title": "Imagine-RL: Residual-Confidence-Guided Cross-Attention for World-Model-Augmented VLA Reinforcement Learning",
+      "abstract": "Reliable action evaluation in contact-rich manipulation requires looking beyond the current observation to future visual and contact consequences. Existing noise-space reinforcement learning efficiently steers a frozen Vision-Language-Action (VLA) policy, but its critics largely ignore these consequences. We present Imagine-RL, which augments noise-space VLA post-training with action-conditioned visual-torque imagination. For each candidate action chunk, a frozen visual-torque latent world model (VTLWM) autoregressively predicts compact future representations without pixel reconstruction. A current image-state-action query attends to observed histories and predicted futures, while previous-window prediction residuals provide token-wise confidence priors that suppress unreliable future tokens. By combining current evidence with predicted consequences, the action critic better evaluates candidate actions and supervises the actor, while the VLA and VTLWM remain frozen. Across four real-robot tasks with 50 evaluation trials per task, Imagine-RL uses only 100 RL trajectories and improves the average success rate by (23.6%) over DSRL and by (60%) over VLA baselines.",
+      "authors": [
+        "Kejia Hu",
+        "Wentong Zhai",
+        "Bo Zhao",
+        "Shuai Liang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-21T02:59:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.24033v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "RL for contact-rich robot manipulation",
+      "llm_evidence_cn": "面向接触丰富操作的强化学习",
+      "llm_evidence": "面向接触丰富操作的强化学习",
+      "canonical_evidence": "面向接触丰富操作的强化学习",
+      "llm_tldr_en": "Contact-rich manipulation needs action evaluation beyond current observations, so this paper augments noise-space VLA reinforcement learning with a visual-torque latent world model that imagines future visual and contact consequences to guide residual-confidence action selection.",
+      "llm_tldr_cn": "接触丰富操作中的动作评估需要预见未来的视觉与接触后果，而现有噪声空间强化学习在微调视觉-语言-动作策略时其评论家往往忽略这些后果。本文提出Imagine-RL，用冻结的视觉-力矩潜世界模型自回归预测紧凑未来表征，并通过跨注意力让当前图像-状态-动作查询同时关注历史与预测未来。实验显示该想象机制提升了动作评价与操作成功率，为机器人臂的强化学习控制提供了可迁移的方法。",
+      "llm_tldr": "接触丰富操作中的动作评估需要预见未来的视觉与接触后果，而现有噪声空间强化学习在微调视觉-语言-动作策略时其评论家往往忽略这些后果。本文提出Imagine-RL，用冻结的视觉-力矩潜世界模型自回归预测紧凑未来表征，并通过跨注意力让当前图像-状态-动作查询同时关注历史与预测未来。实验显示该想象机制提升了动作评价与操作成功率，为机器人臂的强化学习控制提供了可迁移的方法。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.26467v1",
+      "source": "arxiv",
+      "title": "RouteRLT: Learning When and Which RL Specialist Should Control a Vision-Language-Action Policy",
+      "abstract": "Vision-language-action (VLA) models provide broad manipulation competence, but often struggle during the precision-critical stages that dominate contact-rich industrial tasks such as connector insertion and cable management. A common remedy is to refine a pretrained VLA with reinforcement learning (RL), enabling task-specific improvement beyond behavior cloning. However, how to preserve its generalist behavior while deciding when RL refinement is needed and which specialized policy should act remains an open question. In this work, we present RouteRLT, a routing framework that learns when and which RL specialist, an RL policy trained for a single precision-critical phase, should take control from a generalist VLA. A phase selector identifies the active controller, a stabilizer suppresses transient switches, and an action-boundary manager handles transitions between chunked policy outputs. We evaluate RouteRLT on multi-object pick-and-place tasks in LIBERO, as well as on a real-world cable pickup and port-insertion task with multiple precision-critical stages. In simulation, the learned routing improves over the base VLA and matches routing with privileged phase boundaries, without accessing those boundaries at deployment. The real-robot evaluation validates automatic routing to both the pickup and insertion specialists under an operator-aligned handoff protocol. Altogether, these results show that learned routing applies RL specialist control where precise adaptation is most valuable while preserving generalist VLA behavior, including recovery from failed execution attempts.",
+      "authors": [
+        "Chongyu Zhu",
+        "Jaden Hinds",
+        "Hyegang Kim",
+        "Juan Sebastian Rojas",
+        "Ramy Elmallah",
+        "Chi-Guhn Lee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-22T14:15:28+00:00",
+      "link": "https://arxiv.org/pdf/2609.26467v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL specialists refine robot arm manipulation policy",
+      "llm_evidence_cn": "用RL专家微调机械臂操作策略",
+      "llm_evidence": "用RL专家微调机械臂操作策略",
+      "canonical_evidence": "用RL专家微调机械臂操作策略",
+      "llm_tldr_en": "RouteRLT routes control between a generalist VLA and RL specialists for precision-critical robot arm manipulation phases such as connector insertion.",
+      "llm_tldr_cn": "针对视觉-语言-动作模型在接触密集的精密操作阶段表现不足的问题，本文提出RouteRLT路由框架，学习何时以及由哪个强化学习专家策略接管控制。方法为分阶段训练RL专家，并在恰当时机从通用VLA策略切换。实验在连接器插入等任务上验证了精度提升。该工作为机械臂操作中通用与专用策略的协同提供了新思路。",
+      "llm_tldr": "针对视觉-语言-动作模型在接触密集的精密操作阶段表现不足的问题，本文提出RouteRLT路由框架，学习何时以及由哪个强化学习专家策略接管控制。方法为分阶段训练RL专家，并在恰当时机从通用VLA策略切换。实验在连接器插入等任务上验证了精度提升。该工作为机械臂操作中通用与专用策略的协同提供了新思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
