@@ -1,0 +1,1304 @@
+Title: AeRSoM: An Aerial Rigid-Soft Integrated Manipulator for Contact-Rich Manipulation
+
+URL Source: https://arxiv.org/pdf/2609.28044v1
+
+Published Time: Thu, 24 Sep 2026 01:23:26 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+> 1
+
+# AeRSoM: An Aerial Rigid-Soft Integrated Manipulator for Contact-Rich Manipulation 
+
+Jiacheng Liang, Hang Zhong, Yaonan Wang, Ge Chen, Zhixing Zhang, Bocheng Tian, Hui Zhang, Li Wen 
+
+Abstract —Contact-rich aerial manipulation remains funda-mentally challenging because interaction forces are directly transmitted to the aerial platform, often leading to instability and degraded task performance. While compliant manipula-tors can mitigate these effects, existing aerial manipulation systems typically struggle to reconcile interaction compliance with manipulation precision. To this end, this article presents an aerial rigid-soft integrated manipulator (AeRSoM) robot that realizes embodied compliance for aerial manipulation. The proposed system integrates a fully actuated aerial platform, a rigid-soft manipulator, and variable-stiffness regulation to simultaneously achieve stable flight, compliant interaction, and precise manipulation. By distributing compliance throughout the manipulation system, the proposed design leverages distributed embodied compliance to passively absorb contact disturbances while preserving sufficient stiffness for task execution. To fully exploit the mechanical design, a composite control framework is developed for precise end-effector trajectory tracking in the presence of uncertainties and external disturbances. Extensive real-world experiments are conducted in representative contact-rich aerial manipulation tasks, including dynamic transmission-line grasping, physical interaction with a wind turbine blade, peg-in-hole, and screwing operations. The results demonstrate that the proposed rigid-soft integration significantly improves interaction robustness and task adaptability while maintaining manipulation accuracy, highlighting that embodied compliance provides a promising design paradigm for enhancing the safety, robustness, and versatility of aerial manipulation. 
+
+Index Terms —Aerial manipulator, rigid-soft integrated, em-bodied compliance, composite control, aerial compliant manipu-lation. 
+
+I. I NTRODUCTION 
+
+# AERIAL manipulation has emerged as a promising capa-bility for performing inspection, maintenance, and inter-vention tasks in environments that are difficult or hazardous for human workers [1], [2], [3]. Despite significant progress in aerial robotic platforms and manipulation systems, enabling reliable physical interaction with the environment remains a fundamental challenge. Unlike free-flight operations, contact-rich aerial manipulation introduces interaction forces that are directly transmitted to the aerial platform, potentially causing instability, trajectory deviations, and task failures. As a result, 
+
+Corresponding author: Hang Zhong, e-mail: zhonghang@hnu.edu.cn. Jiacheng Liang, Hang Zhong, Yaonan Wang, Ge Chen, Zhixing Zhang, and Hui Zhang are with the School of Artificial Intelligence and Robotics, Hunan University, Changsha 410082, China and also with the National Engineering Research Center for Robot Visual Perception and Control Technology, Changsha 410082, China (e-mail: liangjiacheng@hnu.edu.cn; zhonghang@hnu.edu.cn; yaonan@hnu.edu.cn; arcg@hnu.edu.cn; zhangzhix-ing@hnu.edu.cn; zhanghui1983@hnu.edu.cn). Bocheng Tian and Li Wen are with the School of Mechanical Engineer-ing and Automation, Beihang University, Beijing 100191, China (e-mail: 19376448@buaa.edu.cn; liwen@buaa.edu.cn). 
+
+achieving robust physical interaction while maintaining precise manipulation continues to be one of the central challenges in the aerial robotics community. Most existing aerial manipulators rely on rigid robotic arms to achieve accurate positioning and force transmission. Although rigid structures provide manipulation precision and payload capability, their high structural stiffness limits the system’s ability to adapt to contact impacts and environ-mental errors, making interaction-sensitive tasks particularly challenging. Consequently, successful operation often requires accurate environment models, sophisticated force regulation strategies, and precise state estimation [4], [5]. These require-ments become increasingly difficult to satisfy in unstructured environments characterized by uncertainties, disturbances, and imperfect sensing. Compliance has recently gained traction as a key mechanism for enhancing the safety and robustness of aerial manipulation [6]. Through passive deformation during contact, compliant structures can absorb impact energy, redistribute interaction forces, and enlarge task tolerances. More importantly, com-pliance enables part of the interaction complexity to be han-dled through physical morphology rather than active control, thereby reducing the burden on sensing and feedback regu-lation. However, introducing compliance typically comes at the cost of reduced stiffness, lower manipulation precision, and limited load-bearing capability, creating a fundamental tradeoff between robust interaction and accurate manipulation. Moreover, while compliant components have been integrated into rigid links to enhance compliance, these solutions fre-quently fall short in terms of dexterity and maneuverability. Several studies have explored the integration of soft robotic components into aerial manipulation systems [7], [8]. While these approaches improve interaction safety and environmen-tal adaptability, they often suffer from insufficient structural stiffness, reduced manipulation accuracy, or restricted payload capability. Furthermore, many existing systems rely on fixed compliance characteristics, limiting their ability to accommo-date the diverse requirements of different manipulation stages. Therefore, achieving a balanced combination of compliance, precision, and adaptability remains an open problem in aerial manipulation. To address these challenges, this article proposes an aerial rigid-soft integrated manipulator (AeRSoM) capable of em-bodied compliant aerial manipulation. The core concept is to leverage distributed compliance within the system while maintaining sufficient structural rigidity for precise task exe-cution. The proposed system combines a fully actuated aerial base paired with a rigid-soft integrated manipulation. Inspired arXiv:2609.28044v1 [cs.RO] 22 Sep 2026 2       
+
+> Presented AeRSoM robot used to replace manual operation Manual operation at high altitude using helicopter
+> Fig. 1. Schematic diagram of manual operation at high altitude using helicopter (left), and using the presented AeRSoM robot to replace human for aerial manipulation (right).
+
+by the flexibility and maneuverability of human hands, this manipulator features a rigid rotary mechanism combined with a lightweight soft robotic arm, expanding the operational range and enhancing compliance in aerial tasks, as shown in Fig. 1. Additionally, the chain-mail jamming technique is employed to provide the soft arm with variable stiffness, enabling rigidity-compliance adjustments during different stages of manipu-lation. Through this rigid-soft integration, the system can passively attenuate disturbances upon contact, adapt to envi-ronmental uncertainties, and maintain accuracy across a broad range of aerial manipulation tasks. The main contributions of this work are summarized as follows:  
+
+> •
+
+We propose a rigid-soft integrated aerial manipulation paradigm that enables embodied compliant interaction through distributed compliance and variable stiffness reg-ulation. This paradigm enables a unique combination of fully-actuated flight, enlarged manipulation workspace, and distributed compliance, which is difficult to achieve simultaneously by existing aerial manipulators.  
+
+> •
+
+We develop a modeling and control framework that addresses actuator hysteresis, payload variations, and environmental disturbances to achieve robust and precise aerial manipulation.  
+
+> •
+
+Comprehensive real-world experiments are conducted in representative contact-rich aerial manipulation tasks and provide promising results. In particular, compar-ative experiments involving multi-directional dynamic transmission-line grasping are performed using the pre-sented robot equipped with a soft arm versus one with a purely rigid arm, highlighting the advantages of compli-ance without the requirements for additional complex and expensive interaction methods. Furthermore, the flexibil-ity and performance of the end-effector are showcased through physical interaction with a wind turbine blade featuring an unstructured surface. Finally, peg-in-hole and screwing experiments are conducted to further validate the capabilities of the presented robot for complex aerial manipulation tasks.  
+
+> •
+
+Experimental results demonstrate that embodied compli-ance improves interaction robustness and task adaptabil-ity while maintaining manipulation accuracy, providing insights into the role of physical morphology in aerial manipulation. The rest of this work is structured as follows. Section II re-views the relevant literature. Section III introduces the system design and implementation, and evaluates the soft structure performance. Section IV presents the system modeling, and Section V describes the composite control framework and the end-effector trajectory generation method. In Section VI, real-world experiments are conducted to explain the capabilities of the proposed system, and Section VI provides the discussions of this work. Finally, Section VII concludes this article. II. R ELATED WORK 
+
+This section reviews representative studies in contact-rich Aerial manipulation, compliance in Aerial Interaction, and variable-stiffness manipulation. Then, their limitations are discussed to motivate the proposed rigid-soft integrated aerial manipulation framework. 
+
+A. Contact-Rich Aerial Manipulation 
+
+Recent advances have evolved aerial manipulation from simple pick-and-place toward increasingly complex physical interaction tasks, including infrastructure inspection, mainte-nance, assembly, and intervention in challenging environments [9], [10]. To support these applications, substantial efforts have been devoted to the development of aerial manipulation platforms and control strategies. From the platform perspective, both underactuated and fully actuated aerial vehicles have been investigated. Conventional underactuated aerial platforms are attractive due to their mechanical simplicity and high payload efficiency. However, they suffer from strong coupling between translational and rotational dynamics, which limits their manipulation dexter-ity. To overcome these limitations, various fully actuated aerial platforms have been proposed, including tilted [4], [11] configurations and tiltable configurations [5], [12]. By enabling independent control of position and orientation, fully actuated aerial systems significantly improve manipulation dexterity, interaction stability, and workspace accessibility. In parallel, aerial manipulators have evolved from single-arm configurations [13], [14], [15] to dual-arm systems [16], [17] and mechanisms with enlarged workspaces, such as rotary manipulation structures [10], [18]. Despite the progress made, contact-rich aerial manipulation still presents fundamentally challenging, as the interaction forces generated at the end-effector are directly coupled to the dynamics of the aerial platform. While conventional aerial rigid manipulators provide accurate positioning and effective force transmission, they are sensitive to impact disturbances and environmental uncertainties. Even moderate contact forces can lead to significant attitude deviations, thereby undermining system stability. To improve interaction performance, existing solutions have explored compliant control strategies, force regulation, or additional force sensing to mitigate interaction disturbances [4], [10]. While these approaches can enhance in-teraction stability under controlled conditions, their effective-ness often require accurate environment modeling and reliable 3
+
+interaction measurements, which may be difficult to obtain in unstructured environments. Therefore, achieving robust aerial physical interaction and manipulation under uncertain contact conditions remains an open challenge. 
+
+B. Compliance in Aerial Interaction 
+
+Compliance has emerged as an effective mechanism for en-hancing the safety and robustness of aerial physical interaction. Compared with purely rigid manipulators, compliant struc-tures can absorb impact energy, accommodate environmental uncertainties, and mitigate the transmission of interaction disturbances to the aerial platform by introducing passive deformation during contact. Existing studies have explored mechanically compliant aerial manipulators, in which mechanical compliance provides a significant solution by embedding compliant behavior di-rectly into the robot morphology [6], [19], [20], [21], [22]. Several aerial manipulation systems have incorporated flexible joints [19], compliant mechanisms [20], [21], spring-based transmissions [22], and lightweight flexible robotic arms [6] to improve interaction safety and environmental adaptability. Mechanical compliance has been introduced through flex-ible joints [19], compliant mechanisms [20], [21], spring-based transmissions [22], and lightweight flexible robotic arms [6]. These approaches improve interaction safety and passive adaptability during contact. However, compliance in such systems is typically localized at discrete joints, limiting their ability to realize large and continuous shape adaptation during manipulation. Recent advances in soft robotics have introduced a new class of aerial manipulators based on soft continuum structures, including pneumatically driven soft robotic arms [7], soft grip-pers [23], and tendon-driven continuum manipulators [24]. Un-like rigid manipulators that concentrate compliance at discrete joints, soft robotic systems exhibit intrinsic and distributed compliance along their entire body, enabling safer and more flexible interaction with uncertain or delicate environments while reducing the dependence on precise force regulation and environmental modeling. This property is particularly valuable for aerial manipulators because it alleviates the burden on sensing, force regulation, and active stabilization. In this sense, compliance can be viewed as a form of embodied intelligence, where part of the interaction complexity is handled through physical morphology rather than explicit control. Despite these advantages, purely soft aerial manipulators often suffer from limited load-bearing capability, reduced positioning accuracy, and insufficient structural rigidity during manipulation. Excessive compliance may lead to large defor-mations, poor force transmission, and reduced task precision. As a result, achieving both robust physical interaction and accurate aerial manipulation remains a key challenge for aerial compliant manipulation systems. 
+
+C. Variable-Stiffness Manipulation 
+
+The respective limitations of rigid and compliant manip-ulators have motivated growing interest in variable-stiffness robotic systems. As an approach to balance the conflicting demands of compliance and precision, variable-stiffness mech-anisms have been widely studied in robotics. In many manip-ulation tasks, compliance and rigidity are desirable at different stages of interaction. Low stiffness facilitates contact establish-ment by enhancing impact absorption, improving interaction safety, and increasing environmental adaptability. In contrast, high stiffness is often essential for precise positioning, efficient force transmission, and tool operation. To reconcile these contradictory requirements, various variable-stiffness technologies have been developed. Common methods involve altering the physical state of materials, such as using low melting point metals [25] or materials that undergo a glass transition [26]. Chemical methods, like hydro-gels [27], have also been employed. However, these methods typically require heating or electric field actuation, which can complicate integration into drones. Jamming-based techniques (such as granular jamming [28], [29], [30], layer jamming [31], [32], [33], and fiber jamming [34]) provide an effective and convenient way to modify the stiffness of soft robotic arms. Nonetheless, accommodating the large deformations and irregular shapes of soft arms can make the structural design of such jamming techniques quite complex. In pursuit of scalable design and manufacturing, chain-mail jamming presents an innovative solution to strengthen soft structures, where the designed three-dimensional structure is wrapped in a flexi-ble membrane and then hardened through vacuum actuation [35], [36]. This solution facilitates the rapid fabrication and reinforcement of soft robotic arms. The chain-mail structure forms a macroscopic interlocking network when hardened, whose mechanical model more closely resembles an integral beam, which provides significantly higher bending stiffness and load capacity compared to schemes reliant on point-contact force chains (granular jamming) or interlayer friction (layer jamming). Further, the chain-mail jamming exhibits rapid stiffness switching due to minimal internal material rearrangement and low required vacuum volume. Variable stiffness has demonstrated considerable success in soft robotics, where stiffness modulation enables robots to transition between highly compliant and rigid configurations. Such capabilities have been widely exploited in grasping, locomotion, rehabilitation devices, and continuum manipu-lation. More recently, researchers have begun exploring the integration of variable-stiffness mechanisms into aerial robotic systems to enhance manipulation performance under diverse operating conditions. However, the application of variable stiffness in aerial manipulation remains relatively limited. Aerial robots are subject to stringent constraints on weight, volume, energy consumption, and system complexity, mak-ing many existing variable-stiffness technologies difficult to deploy. Furthermore, the influence of stiffness modulation on the stability of aerial platforms has not yet been systematically investigated. As a result, developing lightweight variable-stiffness aerial manipulators capable of balancing compliance, precision, and interaction robustness remains an important research challenge. 4
+
+x
+
+z
+
+o BB  
+
+> MMM
+> 0S00S
+> 1S1SEE
+> II
+
+(a) (b) 
+
+> Rotary Mechanism Support Plate Soft Robotic Arm Fully-Actuated Aerial Vehicle
+
+Control Units      
+
+> Onboard
+> Computer
+> Ubuntu 20.04
+> ROS Noetic Intel NUC-i7
+> Flight Controller
+> Pixhawk V5+ (built-in IMU)
+> Self-Made PCB Motor Controller
+> Convertor and Voltage Regulator STM32 Micro Controller TTL (MavLink)
+> Ground Station
+> 6*EOLO50A 6*EOLO V5210 3*EOLO CN17*6.2
+> ESC BLDC Propellers Rotor Speed
+> 1*XH540-W270-R
+> Dynamixel Servo
+> 4*12V-G2BK1268S
+> Vacuum
+> Pumps
+> Servo Position PWM 485 Uart
+
+Actuators 
+
+> 12*Prime
+> OptiTrack Wireless Router Wireless Rou
+> Pose 100Hz
+
+(c) 
+
+> Solenoid Valves
+> 4*12V-H103
+> Soft Robotic Arm
+> Rotary Mechanism
+> Flig
+> Pi (b
+> TT
+
+Sensors 
+
+> Pressure Sensor
+> 3*SMC ZSE30A Pressure Value Uart
+> Drag Chains
+
+y 
+
+> Rj Rj Rj D
+> H
+> Fig. 2. Design and implementation of the AeRSoM robot system. (a) Three-dimensional CAD model. (b) Real AeRSoM robot consisting of the fully-actuated aerial vehicle, the rotary mechanism, and the soft robotic arm. (c) Hardware architecture of the AeRSoM robot system.
+
+III. S YSTEM OVERVIEW 
+
+Unlike conventional aerial manipulators that primarily rely on rigid structures and active force regulation, this work investigates embodied compliance as a mechanism for en-hancing aerial physical interaction and manipulation. The proposed AeRSoM robot integrates a fully actuated aerial plat-form, a rigid-soft manipulator architecture, and a lightweight variable-stiffness mechanism within a unified aerial manipula-tion framework, aiming to simultaneously achieve interaction robustness, manipulation precision, and environmental adapt-ability. The resulting system provides a practical framework for investigating the role of embodied compliance in aerial manipulation and demonstrates how morphology-assisted in-teraction can enhance the capability of aerial robotic systems operating in uncertain environments. 
+
+A. System Design and Implementation 
+
+Following the analysis and discussion of related literature, the AeRSoM robot system is designed and implemented in this part, as illustrated in Fig. 2. Initially, the three-dimensional (3D) CAD model of the robot is designed and shown in Fig. 2(a), which consists of a fully-actuated flight platform, a one-DOF robotic rotary mechanism, and a segment of a lightweight soft robotic arm. According to the designed CAD model, the real AeRSoM robot is assembled in Fig. 2(b). The rotary mechanism can achieve circular motion in the x-z plane with respect to the floating base through the gear transmission mechanism. The main body of the rotary mechanism is a large transmission gear with a 360 ◦ gear chute embedded inside, and the chute is connected to asmall gear on the Dynamixel XH540-W270-R servo, where the transmission ratio is approximately 1:5. To avoid the chattering of the rotary mechanism in the lateral direction, two support plates are designed to connect the base of the rotary mechanism and the flight vehicle base. Additionally, the drag chains are installed on the rotary mechanism to arrange the wiring of the electronic devices on the soft robotic arm and the end-effector. The hardware architecture is depicted in Fig. 2(c), where the total weight is approximately 8.875 kg. The fully-actuated aerial vehicle is developed from a traditional hexarotor with the symmetrical rotor spacing of 1200 mm, where propellers are tilted with a fixed angle α
+
+(α = 30 ◦) and point in different directions. An Intel NUC-i7 onboard computer is integrated into the flight base to process high-level signals, while a Pixhawk V5+ is responsible for managing the low-level flight control. The commanded rotor speed signal generated by the flight controller is sent to the EOLO50A electronic speed controller (ESC), which drives the EOLO V5210 BLDC motors equipped with EOLO CN17 ∗6.2 inch propellers to produce flight motion. The robotic rotary mechanism is powered by a Dynamixel XH540-W270-R servo through a gear transmission system. To maintain a lightweight design without compromising strength, the rotary mechanism is constructed using carbon fiber materials and aluminum alloys, while the transmission components are made of 3D-printed plastic materials. The lightweight soft robotic arm is fabricated with three soft actuators along with a stiffening layer, as shown in Fig. 3. First, three polyethylene bellows serve as pneumatic actuators for the soft robotic arm, and each bellows is depressurized to shorten its length to generate motion (Fig. 3(i)). Then, the connectors and the structural holders are 3D-designed and printed, where the structural holders can ensure that the axes of the parallel actuator units can remain relatively parallel during the shortening process (Fig. 3(ii)). Subsequently, three soft actuators are arranged in a circle and assembled with connectors and structural holders (Fig. 3(iii)), and then the soft actuators are assembled with a soft inner membrane (Fig. 3(iv)). Next, employing the design principles of chain-mail jamming [35], [36], we create a 3D CAD model of the stiffening layer that features the octahedron-ring-octahedron connected structure, and the elongation of this structure is 5     
+
+> Connection
+> Octahedron-Ring-Octahedron Structure Elongated State Shorten State
+> Stiffening Layer
+> (i)
+> 5 mm 17 mm 13 mm
+> Bellows Soft Actuators
+> (iii) (v) (vi) (ii)
+> Connectors
+> Structural Holder
+> (iv)
+> Connector
+> Inner Membrane
+> Soft Robotic Arm
+> 230 mm 100 mm Elongate 130%
+> ∅68 ∗165 mm 151 g
+
+Fig. 3. Fabrication process and assembly of the soft robotic arm. (i) Selection of the bellows. (ii) Design of the connectors and structural holders. (iii) Assembly of three soft actuators. (iv) Containing the soft actuators with a soft inner membrane. (v) Fabrication and assembly of the stiffening layer. (vi) Assembly of the soft robotic arm, where the stiffening layer is sealed with soft membranes. 
+
+> Soft Robotic Arm Vacuum Pumps Solenoid
+> Valves
+> Pressure
+> Sensors
+> STM32 Four-Way Relay
+> (Gas Flow Direction)
+
+Fig. 4. Schematic of the pneumatic control system for the soft robotic arm. 
+
+proved to be 130 %. Then, the 3D-printed stiffening layer is assembled outside the inner soft membrane (Fig. 3(v)). Ultimately, a lightweight soft robotic arm is fabricated and assembled by combining the sealed stiffening layer and soft actuators (Fig. 3(vi)), where the sealed stiffening layer is simply operated using a vacuum. Without actuation, the size of the soft robotic arm without end-effectors is ∅68 ∗165 mm, and the total weight of the soft robotic arm is about 151 g. From Fig. 2(c), the vacuum pressures produced by 12V-G2BK1268S vacuum pumps act on soft actuators to enable motion in space. To implement the control of the pneumatic pressures in the chambers, 12V-H103 micro ON-OFF solenoid valves and a four-way relay are employed to regulate the pressure within the chamber, and the pneumatic pressures in the actuators are monitored using SMC ZSE30A pressure sensors. A STM32 microcontroller is utilized for the low-level process, while high-level control commands are issued from the Intel onboard computer. The schematic of the pneumatic control system for the soft robotic arm is shown in Fig. 4. It is worth noting that a printed circuit board (PCB) is designed and manufactured to manage power supply and facil-itate signal conversion. The control units in Fig. 2(c) detail the signal conversion process in conjunction with other controllers or servos, which the PCB is responsible for converting and supplying the appropriate voltage to support both the onboard computer and servos.    
+
+> (a1) (a2) (a3) (a4)
+> (b1) (b2) (b3) (b4)
+> (c1) (c2)
+> (c3)
+> (c4)
+> Force
+> sensor
+> (a)
+> (b)
+> (c)
+> F
+
+Fig. 5. Stiffness evaluation of the soft robotic arm at three different states: (a) free-hanging, (b) axial when 90 ◦ bending, and (c) tangential when 90 ◦
+
+bending. Snapshots of the soft robotic arm under three different cases: with the jammed stiffening layer ((a1), (b1), and (c1)), with the unjammed stiffening layer ((a2), (b2), and (c2)), without the stiffening layer ((a3), (b3), and (c3)). Force-displacement curves at (a4) the free-hanging state, (b4) the axial state when 90 ◦ bending, and (c4) the tangential state when 90 ◦ bending. TABLE I COMPARISON OF DIFFERENT SOFT ROBOTIC ARMS WITH VARIABLE STIFFNESS CAPABILITY 
+
+Arms Stiffening Principle Stiffening Work Range Maximum Stiffening Rate This work Chain-mail All directions 1230% 
+
+[28] Granular jamming All directions 750% [29] Granular jamming All directions 900% [30] Granular jamming Mainly increase in-plane stiffness 36% [31] Layer jamming All directions 700% [32] Layer jamming Mainly increase in-plane stiffness 46% [33] Layer jamming All directions 90% 
+
+B. Soft Structure Performance Evaluation 
+
+This subsection will evaluate the stiffness and load capacity of the fabricated soft robotic arm, as tools need to be mounted on the end-effector to perform aerial manipulation tasks. To ensure consistency and fairness in the upcoming capacity evaluations, the same pneumatic pressures are applied to the soft actuators during each test. Consequently, the kinematic modeling and control of the soft arm can be set aside for now, but these topics will be addressed in the following section. The stiffness of the soft robotic arm is tested under three different cases: the soft robotic arm without the stiffening 6              
+
+> (a) Without Stiffening With Stiffening
+> 1hD
+> 1hD1hD
+> 2hD
+> i) Free ii) 150 g Load iii) 350 g Load
+> Load
+> Load
+> (b)
+> (c)
+> Fig. 6. Load capacity evaluation of the soft robotic arm. (a) The soft robotic arm is placed horizontally under the same actuation with different loads ((i) free load, (ii) 150 g, and (iii) 350 g), and the deviation of the soft robotic arm in the z-direction in the inertial frame FIslightly decreases after stiffening compared with the unjammed state ( ∆h1= 16 mm and ∆h2= 20 mm). (b) and (c) The relationship between the load weight and displacement in the
+> z-direction in FIwith and without stiffening, where the soft arm is place horizontally (b) and vertically (c).
+
+layer, with the unjammed stiffening layer, and with the jammed stiffening layer, as shown in Fig. 5. For each case, the stiffness tests are performed at three different states: free-hanging (Fig. 5(a)), axial when 90 ◦ bending (Fig. 5(b)), and tangential when 90 ◦ bending (Fig. 5(c)), in which a force sensor is placed on a precisely controlled lead screw slide to push the soft robotic arm in 1 mm increments, and then the applied forces are recorded and plotted with the displacement (Fig. 5(a4), Fig. 5(b4), and Fig. 5(c4)). As shown in Fig. 5(a), the stiffness of the soft robotic arm without the stiffening layer in the free-hanging state is extremely low, and the applied force is only 0.511 N when pushing a distance of 20 mm. After integrating the unjammed stiffening layer, the stiffness is not significantly improved, and the applied force at a pushing distance of 20 mm is 1.491 N. When the stiffening layer is jammed, the applied force comes to 4.583 N, which is nearly 9 times that of the soft robotic arm without the stiffening layer. Then, for the 90 ◦ bending state, the axial stiffness of the soft robotic arm without the stiffening layer is slightly increased due to the introduction of pneumatic pressure, applying a force of 1.373 N at a displacement of 20 mm, as exhibited in Fig. 5(b). The unjammed and jammed stiffening layers generate 4.542 N and 8.817 N, respectively, almost 6.5 times that of the original soft robotic arm. Finally, since the soft materials generally cannot withstand much out-of-plane force, the tangential stiffness at the 90 ◦ bending state is tested. As plotted in Fig. 5(c), the applied force of the soft robotic arm without the stiffening layer is 0.879 N at a displacement of 20 mm. The unjammed stiffening layer generates 6.063 N, and the jammed stiffening layer significantly copes with this drawback by increasing the force to 11.671 N, almost 13.3 times larger. Table I concludes a quantitative comparison with other jamming methods (such as granular jamming and layer jamming). The load capacity tests of the soft robotic arm are con-                                                                                 
+
+> TABLE II NOMENCLATURE
+> Symbols Definitions
+> Frames
+> FIInertial frame
+> FBBody frame of the aerial vehicle
+> FMJoint frame of the rotary mechanism
+> FS0Base frame of the soft robotic arm
+> FS1End frame of the soft robotic arm
+> FEEnd-effector frame Manipulator
+> u1,u2,u3∈Ri-th chamber pressure ( i= 1 ,2,3)
+> us∈RStiffening layer pressure
+> l1,l2,l3∈Ri-th chamber length ( i= 1 ,2,3)
+> L∈RLength of the soft robotic arm
+> φ,θ∈RCurvature angle and direction of bending
+> ρ∈RCurvature of the soft robotic arm
+> r∈RCurvature radius of the soft robotic arm
+> h∈RCross-sectional radius Aerial vehicle
+> α∈RTilted angle of each propeller ( α= 30 ◦)
+> ms∈RTotal mass of the whole system
+> Jb∈R3×3Inertial matrix of the vehicle
+> pIb,vIb∈R3Vehicle’s position and linear velocity in FI
+> vb,ωb∈R3Twist of the vehicle in FB
+> R⋆
+> ∗∈R3×3Rotation matrix from F∗to F⋆
+> g∈RGravity constant ( g= 9 .81 kg ·m/s 2)
+> e3∈R3Unit vector ( e3= [0 ,0,1] ⊤)
+
+ducted, and the evaluated results are depicted in Fig. 6. To account for the gravitational effects on the soft robotic arm, it is initially positioned as a horizontal cantilever beam (Fig. 6(a)-(i)). Compared with the unjamming state, the deviation of the soft robotic arm in the z-direction in the inertial frame 
+
+FI slightly decreases after stiffening under the same actuation and load conditions. When a load of 150 g is applied, the stiffened soft arm droops, resulting in a height difference of 
+
+∆h1 (16 mm) in comparison to its unjamming state (Fig. 6(a)-(ii)). As the load increases to 350 g, the height difference grows slightly to ∆h2 (20 mm) (Fig. 6(a)-(iii)). If the load exceeds 350 g, applying additional weight to the unjammed soft arm could cause damage, but the stiffened state remains within its load capacity. Fig. 6(b) illustrates the relationship between the load weight and displacement of the soft arm, both in its jammed and unjammed states, with load values ranging from free load up to 500 g. Fig. 6(c) is similar to Fig. 6(b), recording the relationship between the load weight and displacement of the soft arm in the jammed and unjammed states when placed vertically. These tests demonstrate that the stiffened soft robotic arm can support heavier loads without large deviations, making it beneficial for practical applications. IV. M ODELING 
+
+The model of the AeRSoM robot is shown in Fig. 2(a), six coordinate frames are defined to describe the kinematics of the AeRSoM system: the inertial frame FI , the body frame of the aerial vehicle FB , the joint frame of the rotary mechanism 
+
+FM , the base frame FS0 and end frame FS1 of the soft 7                        
+
+> (a) Actuator Space
+> 123,,,suuuu
+> Joint Space Configuration Space
+> Task Space
+> 123,,lll
+> ,,
+> r f q
+> ,,sssxyz
+> Forward Kinematics Inverse Kinematics
+> 10
+> SST
+> (b)
+> fq
+> 1
+> r
+> r
+> =
+> 0SO
+> 0Sx
+> 0Sy
+> 0{}S
+> O
+> 00S
+> 0Sz
+> L
+> 1Sx1Sy
+> h
+> (c)
+> 1Sz
+> 1{}S11S
+> 1l
+> 2l
+> 3l
+> Fig. 7. (a) Frame transformation between the base and end of the soft robotic arm. (b) The mapping among the actuator space, joint space, configuration space, and task space. (c) Simulated workspace results of the soft robotic arm.
+
+robotic arm, and the end-effector frame FE . The symbols are summarized in Table II for the convenience of reading. 
+
+A. Forward Kinematic Model 
+
+Based on the defined coordinate frames of the robot system, the forward kinematic model is derived to calculate the spatial position and orientation of the end-effector, taking into account the motion of both the flight platform and the manipulator. The forward kinematics of the AeRSoM robot is described as 
+
+T IE = T IB T BM T ME =
+
+[ RIE pIe
+
+0 1
+
+]
+
+(1) 
+
+RIE = RIB RBM RME , pIe = pIb + RIB (pbm + RBM pme ) (2) where T ⋆ 
+
+> ∗
+
+∈ R4×4 and R⋆ 
+
+> ∗
+
+∈ R3×3 represent the transfor-mation and rotation matrices from the frame ∗ to the frame 
+
+⋆, respectively, where ∗ = {B, M, E } and ⋆ = {I, B, M }.The vectors pIe = [ xe, y e, z e]⊤ ∈ R3 and pIb ∈ R3 denote the end-effector position and vehicle position expressed in the inertial frame FI , respectively. The vectors pbm ∈ R3 and 
+
+pme ∈ R3 represent the position of the rotary mechanism expressed in the body frame FB and the end-effector position in FM , respectively. Note that the transformation matrix T ME = T MS0 T S0 
+
+> S1
+
+T S1
+
+> E
+
+contains the transformation between the base and end of the soft robotic arm T S0 
+
+> S1
+
+, which needs to be determined. The matrix T MS0 is the transformation matrix between the joint frame FM and the base frame of the soft robotic arm FS0,and T S1 
+
+> E
+
+is the transformation matrix between the end-effector frame FE and the end frame of the soft robotic arm FS1.Fig. 7(a) illustrates the modeling of the soft robotic arm, where three chambers of the soft robotic arm are assembled to be parallel, and thus the soft robotic arm is assumed to have constant curvature. To acquire the forward kinematics of the soft robotic arm, the mapping from the actuator space 
+
+{u1, u 2, u 3, u s} to the task space {xs, y s, z s} of the soft robotic arm needs to be determined, as illustrated in Fig. 7(b), where the stiffening layer pressure us is isolated from the chamber pressures {u1, u 2, u 3} and only used to enable the stiffening layer. From Fig. 7(a), the transformation from the joint space {l1, l 2, l 3} to configuration space {ρ, φ, θ } is expressed as 
+
+ρ(li) = 1
+
+r = 2√l21 + l22 + l23 − l1l2 − l1l3 − l2l3
+
+h(l1 + l2 + l3) (3) 
+
+φ(li) = tan −1
+
+( √3( l2 + l3 − 2l1)3( l2 − l3)
+
+)
+
+(4) 
+
+θ(li) = 2√l21 + l22 + l23 − l1l2 − l1l3 − l2l3
+
+3h (5) where li represents the i-th chamber length; ρ, φ, and θ are the curvature, curvature angle, and bending angle of the soft robotic arm, respectively; h denotes the cross-sectional radius. For modeling the transformation T S1 
+
+> S0
+
+from the configuration space {ρ, φ, θ } to the task space {xs, y s, z s}, firstly, the arm rotates with the angle θ around y-axis of FS0, i.e., Ry (θ);subsequently, the arm rotates with the angle φ around z-axis of FS0, i.e., Rz (φ), and then the arm is moved out of the 
+
+x-z plane with the translation pθ = r[1 − cθ, 0, s θ]⊤; finally, the posture is adjusted by right-multiplying the rotation matrix 
+
+Rz (−φ). The transformation matrix T S1 
+
+> S0
+
+is expressed as 
+
+T S1 
+
+> S0
+
+=
+
+[ Rz (φ) 00 1
+
+] [ Ry (θ) pθ
+
+0 1
+
+] [ Rz (−φ) 00 1
+
+]
+
+=
+
+[ RS1 
+
+> S0
+
+pS1
+
+> S0
+
+0 1
+
+]
+
+(6) 
+
+RS1 
+
+> S0
+
+=
+
+
+
+c2
+
+> φ
+
+(cθ − 1) + 1 sφcφ(cθ − 1) cφsθ
+
+sφcφ(cθ − 1) s2
+
+> φ
+
+(cθ − 1) + 1 sφsθ
+
+−cφsθ −sφsθ cθ
+
+ (7) 
+
+pS1 
+
+> S0
+
+= [ xs, y s, z s]⊤ , r [cφ(1 − cθ), s φ(1 − cθ), s θ ]⊤ (8) where cφ, sφ, cθ, sθ represent cos φ, sin φ, cos θ, sin θ,respectively. pS1 
+
+> S0
+
+and RS1 
+
+> S0
+
+denote the translational motion and rotation of the soft robotic arm expressed in FS0, respectively. 
+
+B. Inverse Kinematic Model 
+
+The inverse kinematics of the AeRSoM robot can be used to calculate the movement of the actuator parts associated with the desired pose of the tool’s end-effector by using (2). In particular, the rigid portion of the AeRSoM robot can be easily resolved according to repeated measurements and tests. To determine the end motion of the soft robotic arm, the inverse kinematics model is established based on the given end position {xs, y s, z s}. The modeling procedures are given in Fig. 7(b): the first is to transform from the given end position {xs, y s, z s} to the arc parameter {ρ, φ, θ }
+
+according to the geometric calculations; the second is to transform from the arc parameter {ρ, φ, θ } to the chamber length {l1, l 2, l 3}. According to geometric calculations using 8
+
+(8), the arc parameter {ρ, φ, θ } can be obtained by the given end position as 
+
+φ = tan −1
+
+( ys
+
+xs
+
+)
+
+(9) 
+
+ρ = 1
+
+r = 2√x2 
+
+> s
+
++ y2
+
+> s
+
+x2 
+
+> s
+
++ y2 
+
+> s
+
++ z2
+
+> s
+
+(10) 
+
+θ = cos −1 (
+
+1 − ρ√x2 
+
+> s
+
++ y2
+
+> s
+
+)
+
+(11) Notice that three chambers actuated simultaneously could result in the singular situation ( l1 = l2 = l3), which indicates the only contraction motion of the soft robotic arm. Further, considering the general bending case, the chamber length 
+
+{l1, l 2, l 3} can be obtained by geometric calculation [37]. The installed location of three chambers are shown in Fig. 7(a). The direction from the origin of the coordinate system to the first actuator is the positive direction of the yS0-axis, and the second and third actuators are placed in a circular order with equal distances. Based on the geometric relationship in Fig. 7(a), the length of each chamber can be computed and represented with respect to arc parameters {ρ, φ, θ } as 
+
+li = rθ − θh cos 
+
+[ 2π
+
+3 (i − 1) + π
+
+2 − φ
+
+]
+
+, i = 1 , 2, 3 (12) Therefore, the inverse transformation from the given end position {xs, y s, z s} to the chamber length {l1, l 2, l 3} can be obtained. Then, the workspace of the soft robotic arm can be evaluated according to the kinematic model, as depicted in Fig. 7(c), where the workspace is 138 mm in length, 158 mm in width, and 42 mm in height. 
+
+C. Dynamic Model 
+
+In the previous work involving rotary mechanism-based aerial manipulators, the manipulator is assumed to be in quasi-static motion, and the dynamics of the manipulator is treated as a small disturbance to the flight platform compensated by the platform controller. Considering dynamic motion, the strong coupling disturbances between the manipulator and the flight platform cannot be negligible. Therefore, this work incorporates a comprehensive dynamic model of the entire system. Except for the soft robotic arm, the aerial body and other components are assumed to be rigid. Using the Newton-Euler equations, the flight dynamics can be modeled in the body frame FB as 
+
+M ˙tb + Ct b + G = Wc + Wm + We (13) where M ∈ R6×6 represents the positive definite inertia matrix, C ∈ R6×6 involves the centrifugal and Coriolis terms, and G ∈ R6 is the gravity term. The vector tb = [ v⊤ 
+
+> b
+
+, ω⊤ 
+
+> b
+
+] ∈
+
+R6 denotes the twist of the aerial vehicle, where vb ∈ R3
+
+and ωb ∈ R3 are the linear and angular velocities of the vehicle expressed in the body frame FB , respectively. The terms Wc ∈ R6 and We ∈ R6 denote the control and external wrenches acting on the flight platform, respectively. The term 
+
+Wm ∈ R6 is the coupling disturbance from the manipulator acting on the flight platform. More specifically, the matrices expressed in the body frame FB are described as 
+
+M = diag ([ msI3×3 Jb
+
+]) 
+
+C = diag ([ ms[ωb]× −[Jbωb]×
+
+]) 
+
+G = [ ms(RBI ge3)⊤ 0 ]⊤
+
+(14) where ms and Jb ∈ R3×3 are the total mass of the system and the inertial matrix of the aerial vehicle, respectively; g is the gravity constant, and e3 = [0 , 0, 1] ⊤; the symbol [·]× denotes the skew-symmetric matrix; RBI ∈ SO (3) is the rotation matrix from the inertial frame FI to the body frame FB .Rotor groups generate flight motion by receiving speed signals from the flight controller. Therefore, the control wrench 
+
+Wc of the system is converted into the thrust and torque gener-ated by each rotor, which is associated with the speed of each rotor. As shown in Fig. 2(a), define FRj : {ORj −xRj yRj zRj }
+
+related to the the j-th rotor, and zRj coincides with the thrust direction. Then, the position and orientation of the j-th rotor-propeller group relative to the body frame of the aerial vehicle 
+
+FB are expressed as 
+
+pBRj = Rz
+
+(
+
+(j − 1) π
+
+3
+
+)
+
+D + Rx
+
+((−1) j+1 α) H, (15) 
+
+RBRj = Rz
+
+(
+
+(j − 1) π
+
+3
+
+)
+
+Rx
+
+((−1) j+1 α) , j = 1 , · · · , 6
+
+(16) where Rx(·) and Rz (·) ∈ SO (3) denote the rotation matrices about the x and z axes, respectively; D, H ∈ R3 are the vectors from the center of the aerial vehicle and the rotor-propeller group to the center of the tilting rotation, respectively. The rotating propeller generates thrust and torque at the central point ORj . By approximation, both thrust and torque can be modeled by the square of the rotational speed as 
+
+F Bj = cF Ω2 
+
+> j
+
+RBRj e3, j = 1 , · · · , 6 (17) 
+
+τ Bj = ( −1) j+1 cτ Ω2 
+
+> j
+
+RBRj e3, j = 1 , · · · , 6 (18) where cF and cτ are constants that link the rotational speed 
+
+Ωj of the propeller to the generated thrust and torque. Utilizing (17) and (18), the control wrench Wc can be expressed as 
+
+Wc =
+
+[ ∑6 
+
+> j=1
+
+F Bj
+
+∑6
+
+> j=1
+
+[pBRj 
+
+] 
+
+> ×
+
+F Bj + τ Bj
+
+]
+
+:= AΩ (19) where A ∈ R6×6 is an allocation matrix including the geometric and physical characteristics of the aerial vehicle; the vector Ω = [Ω 21, · · · , Ω26]⊤ ∈ R6.V. C OMPOSITE CONTROL 
+
+As depicted in Fig. 8, this section presents the composite control framework of the AeRSoM robot for precise end-effector trajectory tracking, including the robust dynamic flight controller and RL-based adaptive soft robotic arm controller. The flight controller is designed to track the desired pose tra-jectory under uncertainties and disturbances. The soft robotic arm controller is employed to track the desired end position under external loads and interferences. 9
+
+> Desired End-Effector Trajectory Generator Kinematic Calculation Eq. (41)
+> ,
+> Ie d
+
+p Feedback  
+
+> Linearization Controller Eq. (23)
+> Dynamic Coupling
+> from Manipulator Eq. (20)
+> External Wrench
+> Estimation Eq. (21)
+> Aerial Rigid-
+> Soft Integrated Manipulator OptiTrack State Estimator
+> Allocation
+> Matrix Eq. (19) Inverse Kinematic
+> Model Eqs. (9)-(12)
+> Feedforward EUPI
+> Hysteresis Model Eq. (26) Learning-Assisted
+> Adaptive Feedback Controller Eq. (28) State Equation Eq. (31)
+> State-Action Value
+> Reward Table
+> Modified -Greedy
+> Policy Eq. (32)
+> Flight Controller
+> ,
+> Ib d
+
+p 
+
+> 10,
+> SSd
+
+p
+
+> 10
+> SS
+
+p
+
+> m
+
+W
+
+ˆeW
+
+> c
+
+W
+
+, , ,I I Ib b B bp v R
+
+w 
+
+> ()ka
+
+u 
+
+> ()
+> pk
+
+u 
+
+> ()
+> ck
+
+u
+
+> Soft Robotic Arm Controller
+
+AVS
+
+> ,
+> IE d R
+
+W 
+
+> Fig. 8. Block diagram of the proposed composite control framework of the AeRSoM robot containing the robust flight controller and the RL-Based adaptive soft robotic arm controller.
+
+A. Robust Dynamic Flight Control 
+
+This subsection focuses on developing a pose trajectory tracking controller for a fully-actuated aerial vehicle, taking into consideration unmodeled dynamics and external distur-bances. To establish the dynamic coupling caused by the mo-tion of the manipulator, the linear and angular momentum the-orem can be employed to model the term Wm = [ F ⊤ 
+
+> m
+
+, τ ⊤ 
+
+> m
+
+]⊤
+
+in the body frame FB as [38], [39] 
+
+Fm =mm[ωb]×([ ωb]×pbcm ) + mm[ ˙ ωb]×pbcm 
+
++ 2 mm[ωb]× ˙pbcm + mm ¨pbcm 
+
+τm = − Jm ˙ωb − [ωb]×Jmωb + mm[pbcm ]×RBI (ge3 − ¨pIb )
+
+− ˙Jmωb − mm[ωb]×([ pbcm ]× ˙pbcm ) − mm[pbcm ]× ¨pbcm 
+
+(20) where mm ∈ R and Jm ∈ R3×3 are the mass and inertial matrix of the manipulator, respectively; ¨pIb ∈ R3 is the acceleration of the flight platform expressed in the inertial frame FI ; pbcm is the position of the center of mass of the manipulator in the body frame FB .Then, in order to address all uncertainties and external disturbances acting on the aerial vehicle, the generalized momentum-based external wrench estimator is introduced to enhance the robustness of the system [40], [41], which is expressed as 
+
+ˆWe = Ke
+
+[
+
+M t b −
+
+∫ (
+
+Wc − Ct b − G + Wm + ˆWe
+
+)
+
+dt 
+
+]
+
+(21) where Ke ∈ R6×6 denotes the estimator positive definite gain, and the vector ˆWe is the estimated value of the We.Differentiating (21), it gives as 
+
+˙ˆWe = Ke(We − ˆWe) (22) which implies that the estimated value ˆWe follows the external wrench We through the first-order low-pass filter. Based on the wrench estimator, the feedback linearization method is employed to compute the control wrench Wc to control the pose of the aerial vehicle as 
+
+Wc = M ˙t⋆b + Ct b + G − Wm − ˆWe (23) where the term ˙t⋆b ∈ R6 is a virtual control input that implements a PD control behavior to track the pose of the aerial vehicle, and it gives as 
+
+˙t⋆b = ˙ tb,d − Kpep − Kvev (24) where ˙tb,d ∈ R6 is the desired acceleration term of the aerial vehicle, and Kp, Kv ∈ R6×6 are the PD positive definite gains. The vectors ep ∈ R6 and ev ∈ R6 denote the pose and twist tracking errors expressed in the body frame FB ,respectively. The tracking errors are defined as 
+
+ep =
+
+[ RBI (pIb − pIb,d ) 
+
+> 12
+
+(RBI,d RIB − RBI RIB,d )∨
+
+]
+
+ev =
+
+[ RBI (vIb − vIb,d )
+
+ωb − RBI RIB,d ωb,d 
+
+] (25) where pIb,d ∈ R3 and RIB,d ∈ SO (3) are the desired pose of the aerial vehicle, where RBI,d is the transpose of RIB,d . The vectors vI ∈ R3 and ωI ∈ R3 are the desired twist of the aerial vehicle in the body frame FI . The symbol (·)∨ : SO (3) → R3
+
+is the inverse of the operator [·]×.
+
+B. Learning-Assisted Adaptive Control of Soft Robotic Arm 
+
+Accurate control of pneumatic soft manipulators is chal-lenging due to hysteresis, payload variations, and interaction-dependent deformation. To address the dominant hysteresis nonlinearity, the static pressure-length prediction model can be adopted as a feedforward compensation module. While the model significantly improves the pressure–length mapping accuracy, residual tracking errors remain under varying oper-ating conditions. These residual errors are mainly caused by factors that are difficult to model explicitly, including payload changes, gravity-induced deformation, pneumatic parameter variations, and external interaction disturbances. To improve robustness against these uncertainties, an on-line adaptive compensation mechanism is incorporated into the control framework. The adaptive component continuously adjusts controller parameters according to the observed track-ing behavior, thereby enhancing tracking performance under varying manipulation conditions. 10  
+
+> Depressurization Pressurization
+> Fig. 9. Pressure-length hysteresis curves using the EUPI model.
+
+1) Hysteresis Model: To characterize the relationship be-tween chamber length and pneumatic pressure, an isotonic test is carried out under unloaded conditions. Due to the elasticity of the material, each actuator chamber exhibits asymmetric hysteresis characteristics. To describe this hysteresis phe-nomenon, the extended unparallel Prandtl-Ishlinskii (EUPI) model is employed and expressed as [42] 
+
+
+
+u(k) 
+
+> p
+
+= Γ CPI 
+
+(l(k)) + Γ UPI 
+
+(l(k)) + W (l(k))
+
+ΓCPI 
+
+(l(k)) = a0l(k) + ∑Nc 
+
+> j=1
+
+bj Gγj ,c j ,1
+
+(l(k))
+
+ΓUPI 
+
+(l(k)) = ∑Nu 
+
+> j=1
+
+δj Gγj ,c j ,d j
+
+(l(k))
+
+W (l(k)) = ∑Nw 
+
+> j=2
+
+wj (l(k))j + w0
+
+Gγj ,c j ,d j
+
+(l(k)) = max {cj (l(k) − γj ),
+
+min {dj (l(k) + γj ), G γj ,c j ,d j
+
+(l(k−1) )}} 
+
+(26) where l(k) is the chamber length and u(k) 
+
+> p
+
+represents the ac-tuated chamber pressure predicted by the EUPI model, which consists of the symmetric portion ΓCPI 
+
+(l(k)), the asymmetric portion ΓUPI 
+
+(l(k)), and the polynomial portion W (l(k));
+
+Gγj ,c j ,d j
+
+(l(k)) is the operator output of the unparallel Prandtl-Ishlinskii model; a0 is the linear weight gain for amplifying 
+
+l(k), and bi, δij , wi are the weight gains; γj is the j-th dead zone, and cj , dj are the j-th tilted angles of the pressurization and depressurization edges, respectively; w0 is an offset associated with hysteresis loops working angle; Nc
+
+and Nw are the numbers in the symmetric and polynomial portions, respectively; Nu is the total number of the dead zone in the asymmetric portion. The EUPI fitting curve is plotted in Fig. 9. 
+
+2) Learning-Assisted Adaptive Control Design: The pres-sure command u(k) 
+
+> a
+
+applied to the soft actuator is composed of a feedforward compensation term u(k) 
+
+> p
+
+generated by the EUPI model and a feedback correction term u(k) 
+
+> c
+
+:
+
+u(k) 
+
+> a
+
+=u(k) 
+
+> p
+
++ u(k) 
+
+> c
+
+(27) 
+
+u(k) 
+
+> c
+
+=kp˜l(k) + ki
+
+∫
+
+˜l(k)dt + kd ˙˜l(k) (28) where ˜l(k) = l(k) 
+
+> d
+
+− l(k) with the desired chamber length l(k)
+
+> d
+
+and the actual chamber length l(k), which can be calculated by the desired position pS1 
+
+> S0,d
+
+and actual position pS1 
+
+> S0
+
+according to the inverse kinematic model (9)-(11). The parameters kp, ki,and kd are the positive proportional, integral, and derivative coefficients, respectively. To improve the feedback control performance, the proportional coefficient kp is adjusted and set as an exponential function, which is expressed as 
+
+kp = kp0 + λ1e(λ2 − λ3   
+
+> |˜l(k)|)
+
+(29) where kp0, λ1, λ2, and λ3 are positive constants. To facilitate the smooth adjustment of the coefficient kp, the Sarsa learning algorithm is employed to determine the parameters online. To assess the end tracking performance of the soft robotic arm, the state space S is defined and divided into several continuous and symmetric intervals as 
+
+S = {S1, S2, S3, S4, S5, S6, S7}
+
+
+
+S1 : ˜l ∈ (−∞ , −8); S2 : ˜l ∈ [−8, −2); 
+
+S3 : ˜l ∈ [−2, −0.5); S4 : ˜l ∈ [−0.5, 0.5]; 
+
+S5 : ˜l ∈ (0 .5, 2]; S6 : ˜l ∈ (2 , 8]; 
+
+S7 : ˜l ∈ (8 , +∞).
+
+(30) Then, an action space A containing four actions is set to adjust the parameters kp0, λ 1, λ 2, λ 3, and it is expressed as 
+
+A = {A1, A 2, A 3, A 4}
+
+Ai : [ kp0 λ1 λ2 λ3], i = 1 , · · · , 4 (31) It indicates that at the current state ˜l(k), an action A(k) can be chosen from the action space A to determine the proportional coefficient kp by (31). Further, to evaluate the chosen action, a reward table R(S, A) ∈ R7×4 is designed based on the state space S and the action space A.Next, to enable the soft robotic arm to learn to choose the best action, the improved ǫ-greedy policy is used to reduce the variety of action choices and improve the convergence rate. The modified ǫ-greedy policy is given as 
+
+
+
+if rand() < ǫ, A(k) ← rand A(A {A1, A 2, A 3, A 4})
+
+else if ˜l(k) ∈ S1, A(k) ← max A V (S1, {A1})
+
+else if ˜l(k) ∈ S2, A(k) ← max A V (S2, {A1, A 2})
+
+else if ˜l(k) ∈ S3, A(k) ← max A V (S3, {A2, A 3})
+
+else if ˜l(k) ∈ S4, A(k) ← max A V (S4, {A3, A 4})
+
+else if ˜l(k) ∈ S5, A(k) ← max A V (S5, {A2, A 3})
+
+else if ˜l(k) ∈ S6, A(k) ← max A V (S6, {A1, A 2})
+
+else if ˜l(k) ∈ S7, A(k) ← max A V (S7, {A1})
+
+(32) where ǫ ∈ (0 , 1) and V (S, A) ∈ R7×4 is the state-action value, which is formulated by 
+
+V (S(k) 
+
+> i
+
+, A (k) 
+
+> i
+
+) ← V (S(k) 
+
+> i
+
+, A (k) 
+
+> i
+
+) + β[R(S(k+1)  
+
+> i
+
+, A (k+1)  
+
+> i
+
+)+σV (S(k+1)  
+
+> i
+
+, A (k+1)  
+
+> i
+
+) − V (S(k) 
+
+> i
+
+, A (k) 
+
+> i
+
+)] 
+
+(33) where β is the learning rate, and σ denotes the discount factor. Following (27)-(33), the learning-assisted adaptive controller of the soft robotic arm can be realized. The corresponding algorithm is illustrated in Algorithm ?? .
+
+3) Stiffening Layer Response: During free flight, the soft robotic arm is expected to achieve higher stiffness for precise end trajectory tracking. In contrast, lower stiffness allows the soft arm to perform various manipulation tasks with greater compliance. To minimize computational cost and complexity, 11 
+
+x y
+
+z
+
+o
+
+> II
+
+x
+
+> y
+
+zo
+
+> CC
+
+x
+
+> y
+
+z o   
+
+> (,)u v G
+> ICR
+> OptiTrack Target Point Camera
+> Fig. 10. Offline measurement of task target point, which is constructed the desired end-effector trajectory.
+
+the stiffening layer is activated using an ON-OFF response, which is expressed as 
+
+u(k) 
+
+> s
+
+=
+
+{ ON , Jamming; OFF , Unjamming. (34) 
+
+Remark 1: Regarding the rotary mechanism, the servo angle is commanded by the inner PID position controller. In particular, the nested velocity and acceleration profiles are regulated to ensure smooth and steady motion of the rotary mechanism. 
+
+C. End-Effector Trajectory Generation 
+
+For the task target point measurement, the target point is obtained offline using the Intel RealSense D435i depth camera, as shown in Fig. 10. The camera generates a depth image, which is then converted into point cloud information. The point cloud information is filtered and sparsely processed to filter out noise and prevent overfitting. Then, the least squares method is used to fit the processed point cloud information to obtain a nonuniform rational B-splines (NURBS) surface, which can be represented as [43] 
+
+pce,d = Γ(¯ u, ¯v) = 
+
+∑mi=0 
+
+∑nj=0 N ¯pi (¯ u)M ¯qj (¯ v) ¯ wij Pij 
+
+∑mi=0 
+
+∑nj=0 N ¯pi (¯ u)M ¯qj (¯ v) ¯ wij 
+
+(35) where pce,d ∈ R3 is the position of the target point expressed in the camera frame FC ; Γ(¯ u, ¯v) is the mapping from the parametric space D = {(¯ u, ¯v)|¯u, ¯v ∈ [0 , 1] } ∈ R2 to the configuration space C, where each (¯ u, ¯v) corresponds to the 3D spatial coordinate point pce on the surface; Pij is the control point of the surface, which is used to define the surface shape; N ¯pi (¯ u) and M ¯qj (¯ v) are B-spline basis functions in the directions of parameters ¯u and ¯v, respectively, where ¯p and ¯q
+
+are the orders; the parameter ¯wij represents the weight, which affects the effort of each control point to the surface shape. Further, based on (35), the normal vector ~nc ∈ R3 of the NURBS surface expressed in the camera frame FC can be given as 
+
+~nc = ∂Γ(¯ u, ¯v)
+
+∂ ¯u
+
+∣∣∣∣(¯ u0 ,¯v0)
+
+× ∂Γ(¯ u, ¯v)
+
+∂¯v
+
+∣∣∣∣(¯ u0,¯v0 )
+
+(36) Through homogeneous transformation, the orientation of the target point is transformed from the camera frame FC to the inertial frame FI , and it yields 
+
+pIe,d = pIc,d + RIC Γ(¯ u, ¯v) (37) 
+
+~nId = RIC ~nc (38) where pIe,d ∈ R3 and pIc,d ∈ R3 are the position of the target point and the camera expressed in the inertial frame 
+
+FI , respectively; RIC ∈ R3×3 is the rotation matrix from the camera frame FC to the inertial frame FI ; ~nId ∈ R3 is the normal vector of the target point expressed in the frame FI .The resulting vectors pIe,d and ~nId obtained offline are used to construct the desired end-effector trajectory of the AeRSoM robot, particularly for tasks involving physical interaction with unstructured surfaces. It is worth noting that, given the desired end-effector pose, there exist multiple ways to realize the combined motion of the aerial vehicle, rotary mechanism, and soft robotic arm. To solve the kinematic redundancy, the successive null-space projection method is employed to obtain the unique inverse kinematics solution [44], [45]. The successive equations are given as 
+
+˙qi = ˙qi−1 + ( JiNi−1)†( ˙xi,d − Ji ˙qi−1) (39) 
+
+Ni = Ni−1 − (JiNi−1)†(JiNi−1) (40) where ˙q0 = 0 and N0 = I; the final instruction ˙qi ensures that high-priority tasks are completed, while utilizing system redundancy to implement low-priority tasks in the null space. Therefore, in this work, we define the end-effector pose as the highest priority, followed by the attitude stabilization of the aerial base, then the joint of the one-DOF rotary mechanism, and finally the position constraints of the soft robotic arm within its reachable workspace. Define the de-sired configuration variables of the AeRSoM robot qd =[( pIb,d )⊤, (( RIB,d )∨)⊤, η m,d , (pS1
+
+> S0,d
+
+)⊤]⊤, where ηm,d is the desired joint angle of the rotary mechanism. Based on (39) and (40), we can compute ˙qd as 
+
+˙qd =J† 
+
+> 1
+
+˙x1,d + ( I − J†
+
+> 1
+
+J1)[ J† 
+
+> 2
+
+˙x2,d 
+
++ N2J† 
+
+> 3
+
+˙x3,d + N3J† 
+
+> 4
+
+˙x4,d ] (41) where Ji, i = 1 , · · · , 4 represents the Jacobian matrix of the ith task; J† 
+
+> i
+
+= B−1 
+
+> i
+
+J⊤ 
+
+> i
+
+(JiB−1 
+
+> i
+
+J⊤ 
+
+> i
+
+)−1 with the invertible weight matrix Bi. x1,d is given by pIe,d and ~nId. For x2,d , we regulate the desired roll and pitch angles as zero to ensure stable attitude of the aerial vehicle, and the desired yaw angle is also set as zero in this work. The specified angle ηm,d is employed for x3,d . Finally, x4,d specifies that the end position of the soft robotic arm is within its reachable workspace. VI. R EAL -W ORLD EXPERIMENTS 
+
+This section highlights the capabilities and applications of the AeRSoM robot through a series of real-world experiments. The tracking control performance of both the aerial platform and the soft robotic arm is verified to provide a basis for aerial manipulation. As depicted in Fig. 11, the AeRSoM robot is equipped with various lightweight end-effectors to carry 12  
+
+> Modular Connecting Different End-Effectors Gripper (89 g) Camera Probe (38 g) Bolt Installer (48 g) (b) (c) (a)
+
+Fig. 11. AeRSoM robot equipped with different end-effectors ((a) gripper, (b) camera probe, and (c) bolt installer) for various aerial manipulation tasks. The end-effectors can be connected modularly and altered rapidly. 
+
+out complex aerial manipulation tasks, including dynamic transmission-line grasping, physical interaction with a wind turbine blade, peg-in-hole, and screwing. In particular, the end-effectors can be connected modularly and altered rapidly. 
+
+TABLE III SELECTION OF THE CONTROLLER GAINS AND PARAMETERS 
+
+Parameter Value 
+
+M ∗ diag(8 .875 I3 , 0.1560 , 0.1568 , 0.2908) 
+
+Kp M −1diag(20 I3 , 0.3I3)
+
+Kv M −1diag(12 I3 , 0.2I3)
+
+Ke diag(1 .2I3 , 0.25 I3 )
+
+ki 0.15 
+
+kd 0.5
+
+mm 2.497 
+
+Jm diag(0 .0276 , 0.1150 , 0.1418) 
+
+> ∗
+
+The mass is measured by an electronic scale, and the primary components of inertia are obtained from the CAD model. 
+
+A. Experimental Settings 
+
+The gains and parameters for the robust flight controller and the adaptive soft robotic arm controller are chosen and listed in Table III, where the parameter kp is obtained based on the Sarsa learning algorithm. The overall system architecture is depicted in Fig. 2(c). The pose signal is obtained through the OptiTrack motion tracking system, which transmits data to the onboard computer via a wireless router. The end-effectors, including the gripper and bolt installer, are driven by the Dynamixel XC330-T288-T servo. Additionally, the camera probe connects with the onboard computer through a USB interface. All the software for the proposed AeRSoM robot is developed using ROS Noetic on Ubuntu 20.04. The robust flight controller runs at 200 Hz, while the adaptive soft robotic arm controller runs at 20 Hz. 
+
+B. Robust Flight Test 
+
+This test demonstrates the performance of the AeRSoM during free flight, specifically in response to coupling dis-turbances from the rotary mechanism as well as artificial disturbances. The key snapshots of the robust flight test are shown in Fig. 12. Initially, the aerial vehicle is instructed to track a desired spatial point, with the rotary mechanism fixed in the horizontal state (Fig. 12(a)). The Dynamixel servo is continuously operated at an angular velocity of 0.48 
+
+> drag
+
+F Artificial disturbances From 0 ° to -45 °   
+
+> From -45 °
+> to 45 °
+> Back to 0°
+> (a) (b) (c) (d)
+
+Fig. 12. Snapshots of robust flight tests, where the rotary mechanism rotates to different angles with 0.48 rad/s (from a) 0 ◦ to b) -45 ◦ to c) 45 ◦ back to d) 0◦) and then the aerial platform is imposed on random artificial disturbances. 
+
+Fig. 13. Experimental results of pose errors and estimated wrenches of the aerial vehicle under the coupling disturbances from the rotary mechanism and artificial disturbances. 
+
+rad/s. As a result of the transmission conversion, the rotary mechanism rotates clockwise or counterclockwise at different angles before ultimately returning to the horizontal position (Fig. 12(b)-(d)). As shown in Fig. 12(d), the landing gear of the aerial vehicle is secured with a thin wire, which is pulled randomly three times to introduce artificial disturbances to the vehicle. The test results are plotted in Fig. 13. Specifically, the first and second graphs of Fig. 13 display the position and attitude errors of the aerial vehicle, respectively. The robust flight controller responds effectively, allowing the AeRSoM to converge near the target spatial point after approximately 5.5s. From 28s to 47s, the rotary mechanism is commanded to move. During this time, there is only a spike in the 13                                                                                                          
+
+> TABLE IV MAXIMUM κ,MEAN μ,AND STANDARD DEVIATION σOF THE ABSOLUTE ERRORS (U NITS :CM ,DEG )
+> exeyezeroll epitch eyaw
+> κ
+> I16.98 30.43 2.52 9.44 10.46 3.17 II 16.98 10.12 2.27 4.16 10.46 2.24 III 4.38 9.65 2.04 4.30 2.57 3.17 IV 12.75 30.43 2.52 9.44 5.47 2.69 V1.84 2.20 0.49 1.97 1.04 1.69
+> μ
+> I2.77 4.74 0.48 1.96 1.51 1.00 II 2.67 2.77 0.60 1.53 1.99 0.81 III 1.51 1.90 0.45 1.02 0.80 1.22 IV 4.91 12.12 0.47 4.15 2.12 1.18 V0.81 1.08 0.14 1.25 0.51 0.90
+> σ
+> I2.75 5.82 0.48 1.94 1.92 0.73 II 2.81 2.27 0.57 1.16 2.64 0.61 III 1.10 1.83 0.40 0.87 0.61 0.91 IV 3.28 7.45 0.47 2.45 1.57 0.72 V0.47 0.57 0.12 0.35 0.30 0.43 I, II, III, IV, and V represent time intervals [0, 77]s, [0, 28]s, [28, 47]s, [50.6, 69]s, and [73, 77]s, respectively.
+> Fig. 14. Motion test of the soft robotic arm from unjamming to jamming.
+
+error curve at about 35s, which may result from the large amplitude movement of the rotary mechanism (from -45 ◦
+
+to 45 ◦). For the remainder of this period, the error remains within 4 cm under coupling disturbances. After 50.6s, artificial disturbances are applied to the robot body by pulling the wire, causing the maximum roll inclination of 10 degrees. After that, the position error of the vehicle converges to within 2 cm. To further quantitatively evaluate the control performance of the aerial vehicle, three indices (maximum κ, mean μ,and standard deviation σ of the absolute errors) are listed in Table IV. The outputs of the corresponding force and torque estimators are plotted in the third and fourth graphs of Fig. 13, and the bias in the estimated torque values is caused by model errors. This test demonstrates that the AeRSoM robot can tolerate strong coupling of the manipulator and external disturbances while maintaining robust and accurate pose tracking. This capacity provides a solid foundation for subsequent end-effector tracking tasks. 
+
+C. Constant Curvature Model Validation 
+
+We have added structural holders every 15 mm on the soft robotic arm (as shown in Fig. 3(iii)) to maintain the characteristics of the constant curvature model as much as 
+
+(a) (b) 
+
+(c)                  
+
+> 2.95 N 2.62 N 2.38 N
+> 2.67 N 2.45 N 3.54 N
+> ŘřŚ
+> śŜŝ
+> ŘřŚ
+> śŜŝ
+> ŘřŚ
+> śŜŝ
+> Fig. 15. Snapshots of the constant curvature model validation process. (a) Free bending. (b) Consider the influence by the motion of the aerial base. (c) Consider the effect of the interaction with the environment, where a thrust gauge is used to apply the interaction for the soft robotic arm, and the maximum interaction force is marked in the snapshots. (a1)-(a3), (b4)-(b6), and (c1)-(c3) The soft robotic arm is placed vertically. (a4)-(a6), (b1)-(b3), and (c4)-(c6) The soft robotic arm is placed horizontally.
+
+possible To further test the accuracy of the constant curvature model of the soft robotic arm, the plan of the test is to mark the base plane, the end plane, and three intermediate cross-sections of the soft robotic arm, and use the OptiTrack motion capture system to measure its pose. Then, the bending angles of the three cross-sections and the end plane relative to the base plane are compared through constant curvature model calculations. To add markers to the intermediate cross-sections, the motion tests on the soft robotic arm are first conducted from unjamming to jamming, as shown in Fig. 14, and the results show that the motion of the soft robotic arm is almost unaffected by the unjammed stiffening layer. Therefore, we remove the membranes from the original soft robotic arm but retain the stiffening layer structure for constant curvature model verification. For comprehensive testing and validation, the conditions of the soft robotic arm are considered under its free bending (Fig. 15(a)), the influence by the motion of the aerial base (Fig. 15(b)), and the effect of the interaction with the environment (Fig. 15(c)). In the test influenced by the motion of the aerial base, the flight trajectory is commanded as pd = [−0.03 + 0 .8 sin( 18 t), 0.86 + 0 .8 cos(( 18 t), 2.0)] ⊤.Moreover, the testing of the soft robotic arm in both vertical and horizontal orientations is also fully taken into account. Fig. 16 shows the bending angle errors of three cross-sections and the end face relative to the base plane based on calculations using the constant curvature model. To further quantify the 14                     
+
+> Fig. 16. Bending angle errors of three cross-sections and the end face relative to the base plane based on calculations using the constant curvature model. TABLE V MEAN ABSOLUTE ERROR OF THE BENDING ANGLE (U NIT :DEG )
+> Cross-section (a1)-(a3) (a4)-(a6) (b1)-(b3) (b4)-(b6) (c1)-(c3) (c4)-(c6) 1st 1.72 2.55 3.25 2.65 2.06 3.88
+> 2nd 2.39 3.10 3.37 3.83 3.70 2.98
+> 3rd 1.56 3.45 3.22 2.63 2.22 3.16
+
+error results, the mean absolute error is given in Table V. Small deviations in the bending angle are acceptable for the overall movement of the soft robotic arm. 
+
+D. End Tracking Test of Soft Robotic Arm 
+
+This subsection tests the end tracking response of the soft robotic arm using the proposed learning-assisted adaptive controller. To assess the performance of the proposed adap-tive controller, a static end tracking experiment is conducted through an ablation study to track different end points within the workspace of the soft robotic arm. In this experiment, the rotary mechanism is set and fixed at the -90 ◦ state, while the soft robotic arm is oriented vertically upwards. Then, the comparative experiments are conducted to track three different points expressed in the base frame of the soft robotic arm FS0
+
+using the proposed learning-assisted adaptive controller, a PID controller with the feedforward hysteresis model (26), and a standard PID controller. The experimental results of the static end tracking of the soft robotic arm are plotted in Fig. 17. The tracking curves indicate that the proposed RL-based adaptive controller achieves the highest tracking accuracy and fastest convergence speed. Further, since the soft robotic arm is installed at the end of the rotating mechanism, the rotation of the mechanism will  
+
+> Fig. 17. Experimental results of the static end tracking of the soft robotic arm via the ablation study. The comparisons among the proposed RL-based adaptive controller, PID with hysteresis model (26), and only PID.
+
+impact the dynamic end tracking of the soft robotic arm, particularly when accounting for its gravity. To investigate this, we conduct an experiment where the rotary mechanism is commanded to move sequentially through the angles of -90 ◦ to -60 ◦, -30 ◦, and 0 ◦, as shown in Fig. 18(a). The experimental results of the dynamic end tracking of the soft robotic arm are depicted in Fig. 18(b). The tracking curves show that the soft robotic arm achieves precise end tracking during the movement of the rotary mechanism from -90 ◦ to -60 ◦. When the rotary mechanism transitions to the -30 ◦ and 0 ◦ states, there exist some deviations in the end tracking in both the x
+
+and z directions. This deviation may be attributed to the rapid movement of the mechanism, causing the soft robotic arm to swing, which could lead to the accumulation of particles in the stiffening layer. Nevertheless, the deviation remains within 4.8 mm, as shown in the locally magnified image, making it acceptable for aerial manipulation tasks. 
+
+E. Dynamic Transmission-Line Grasping 
+
+To evaluate the compliance performance of the presented AeRSoM robot, comparative experiments are conducted in-volving the aerial dynamic grasping of a transmission line. The sizes of the gripper and the line are displayed in Fig. 19(a). During the aerial grasping phase, a thrust gauge is employed to apply various magnitudes of disturbance forces to the line in the x-direction, causing the grabbed line shake dynamically (Fig. 19(b)). As depicted in Fig. 19(c), the comparative experi-ments assess the presented robot equipped with the soft robotic arm versus a purely rigid arm. To ensure a fair comparison, the distance between the end of the gripper and the center of gravity of the vehicle body is kept constant, and it is assumed that the change in the overall mass of the robot caused by the replacement of the rigid arm is negligible. 15 
+
+> (b)
+> (a) At driven state At non-driven state
+
+Fig. 18. Experimental results of the dynamic end tracking of the soft robotic arm. (a) Snapshots of the soft robotic arm at the driven state or non-driven state when the rotary mechanism rotates to different angles (-60 ◦ , -30 ◦, and 0◦). In the driven state, the vacuum pumps are active and drive the soft robotic arm using the proposed control strategy. Conversely, in the non-driven state, the vacuum pumps are inactive, and the soft robotic arm remains passive. (b) Trajectory of the end point tracking in the base frame of the soft robotic arm 
+
+FS0 when the rotary mechanism is at the -90 ◦, -60 ◦ , -30 ◦, or 0 ◦ state.  
+
+> (a)
+> 42 mm 9 mm
+> (b) Applying disturbances to the line
+> With soft robotic arm With purely rigid arm
+> (c)
+> Gripper Transmission line
+
+Fig. 19. Setup of aerial dynamic grasping of the transmission line with comparisons. (a) The maximum opening size of the gripper is 42 mm and the width of the transmission line is 9 mm. (b) A thrust gauge is used to apply disturbances forces of different magnitudes to the line in the x-direction under the inertial frame FI . (c) Snapshots of the robot equipped with the soft robotic arm (left) and the purely rigid arm (right).    
+
+> Approaching Grasping & Jamming Unjamming
+> 3.6 N 5.6 N 7.3 N 10.2 N 15.3 N 18.2 N 3.3 N 5.7 N 7.2 N 10.6 N 15.9 N 18.6 N
+
+Fig. 20. Comparative results of aerial grasping. (a)-(c) The fabricated soft robotic arm or (d) the purely rigid arm with the gripper is used for grasping. 
+
+Fig. 20 presents comparative results, where the experimental results using the soft robotic arm are shown in Fig. 20(a)-(c). The position trajectory tracking of the aerial vehicle is plotted in Fig.20(a), which is divided into the approaching phase and the grasping phase under both the jamming and unjamming states. Fig. 20(b) and Fig. 20(c) display the position and attitude errors of the aerial vehicle, respectively, where the applied disturbance forces are marked in Fig. 20(b). Focusing on the curve of ex in Fig. 20(b) and taking peaks at time 56.5s and 109s as an example, a disturbance force of approximately 15 N is applied to the line while the stiffening layer of the soft robotic arm is either in the jamming state or the unjamming state. The results indicate that the unjammed stiffening layer enables the AeRSoM robot to exhibit smaller position devia-tions and achieve faster convergence to the equilibrium point, thereby improving dynamic grasping stability. Additionally, Fig. 20(d) plots the attitude error of the vehicle when the arm is purely rigid, and it gives that the attitude experiences severe high-frequency vibrations in the absence of a soft structure or a compliant algorithm. This conducted experiment highlights that the presented AeRSoM robot equipped with the soft struc-ture can safely perform aerial dynamic grasping tasks despite the dynamic movement of the grasped object, without relying on additional complex and expensive interaction methods. To further demonstrate the performance of the proposed soft robotic arm, experimental comparisons of horizontal gripping the line are conducted using the soft arm versus the purely 16   
+
+> With soft robotic arm With purely rigid arm
+> 14 cm
+> With soft robotic arm With purely
+> rigid arm
+> (b1) (b2) (b3) 267 cm
+> 23 cm
+> (a1) (a2) (a3)
+> 362 cm
+> Horizontal pull force applied by a servo motor Vertical pull force measured by ruler markings Grasping Applied force Grasping
+> Applied force
+> (b4) (a4)
+> (b5) (a5) (b6) (a6)
+> Fig. 21. Comparisons of aerial dynamic horizontal grasping of the transmission line. (a1) and (b1) Diagrams of applied force and grasping points. The disturbances originate from the horizontal pull force applied by the servo motor (a2) and the vertical quantitative pull force measured by the ruler markings (b2). (a3) and (b3) Snapshots of the robot equipped with the soft robotic arm (top) and the purely rigid arm (bottom). Time trajectories of attitude errors for the soft robotic arm (a4, b4) and the purely rigid arm (a5, b5). Violin plots show the attitude error of the aerial vehicle under horizontal pull force (a6) and vertical pull force (b6).
+
+rigid arm, where the soft arm is bent under the effect of gravity. Considering that the previous use of a manual thrust gauge to apply perturbations may limit the reproducibility of the results, two more controlled and reproducible validation methods are introduced. Specifically, a servo motor with a connecting cable is used to apply a horizontal pull force through a fixed pulley (Fig. 21(a2)), and the diagram of applied force and grasping points is shown in Fig. 21(a1). A total of ten horizontal pull forces act on the transmission line by the motor’s connecting cable. Starting from zero tension, the servo motor is commanded to rotate half a turn each time. After each tension application, it returns to the initial zero-tension position, and this process is repeated. Another method involves applying a manual vertical pull force measured via ruler markings (Fig. 21(b2)), where the diagram of applied force and grasping points is presented in Fig. 21(b1). The cable is pulled vertically from the zero mark sequentially to the marks approximately 5 cm (one time), 10 cm (four times), and 16 cm (nine times). Since the cable is still manually pulled vertically to the predetermined marks, an error of approximately 1 cm is introduced. We hereby declare that rapidly pulling and releasing the cable in this manner can cause oscillations and interference to the end-effector. In contrast, the servo motor, affected by torque lock, can only generate milder disturbances. This is also the reason for constructing the second disturbance input method. Fig. 21(a4) and Fig. 21(a5) display the experimental results of the attitude error using the soft robotic arm and the purely rigid arm under the horizontal pull force disturbances, respectively. Fig. 21(b4) and Fig. 21(b5) plot the time trajectories of the comparative attitude error under the vertical pull force disturbances. Violin plots visually show comparative attitude errors, as presented in Fig. 21(a6) and Fig. 21(b6). These experiments further illustrate the compliance performance of the present AeRSoM robot equipped with the soft robotic arm, especially its ability to cope with severe oscillations. 
+
+F. Physical Interaction with Wind Turbine Blade 
+
+To verify the flexibility of the soft robotic arm and the end-effector tracking performance, the camera probe in Fig. 11(b) is installed at the end of the presented AeRSoM robot to conduct aerial physical interaction with a wind turbine 17    
+
+> (a)
+> Fig. 22. Wind turbine blade employed for experiments (left), and 20 random points are drawn on the surface marked with red dots and their normals are plotted as black arrows (right).
+> 2nd contact 3rd contact 1st contact
+> Fig. 23. Snapshots of aerial physical interaction with different points on the wind turbine blade featuring an unstructured surface (top). Violin plots show the position tracking error of the aerial vehicle (middle) and the attitude tracking error of the end-effector (bottom) for three trials.
+
+blade featuring an unstructured surface. Fig. 22 visualizes the contact points with their normals, and the AeRSoM robot is commanded to interact perpendicularly with the surface, where the desired contact point is selected to penetrate the surface by a constant amount to ensure that the end-effector is in contact with the surface. The experimental results of aerial physical interaction with the unstructured surface are presented in Fig. 23. The top part of Fig. 23 displays snapshots of the end-effector in contact with three different orientations. In the first image, a small label can be seen in the camera view, while the second and third images depict the contact in different orientations. The middle and bottom parts of Fig. 23 plot the position tracking error of the aerial vehicle and the attitude tracking error of the end-effector across three trials. Since the end-effector cannot reach the desired contact point that penetrates the surface, the attitude error of the end-effector is considered as an important evaluation metric, which is affected by the position and attitude errors of both the vehicle body and the soft robotic arm. The position tracking error of the vehicle during the third contact       
+
+> (b1) (b2) (b3) Approaching Peg-in-hole &
+> screwing Return M18 Peg-in-hole Screwing
+> (a)
+> 35.6 mm
+> 50 mm 8e
+> Fig. 24. Setup of aerial peg-in-hole and screwing task (a) and key snapshots during this manipulation, including approaching (b1), aerial peg-in-hole and screwing (b1), and mission completion and return (b3).
+
+is slightly larger compared to the first two contacts, indicating a relatively larger attitude error for the end-effector in that instance. Throughout the entire process, the stiffening layer of the soft robotic arm remains jammed. In the free flight phase, the soft robotic arm is stiffened to mitigate end-effector vibrations. Our tests reveal that if the stiffening layer is in an unjammed state during contact, the soft robotic arm becomes vulnerable to significant shearing effects. 
+
+G. Peg-in-Hole and Screwing 
+
+To further investigate the capability of the AeRSoM robot to perform precise manipulation tasks, a challenging aerial bolt-tightening task is developed in this subsection. The procedure starts with the placement of the bolt into a peg-in-hole configu-ration, followed by the activation of the end-effector illustrated in Fig. 11(c) to tighten the bolt, as shown in Fig. 24(a). Given that the bolt and nut must fit together with minimal tolerance, this manipulation task could become quite troublesome. In this experiment, a M18 ∗50 mm bolt is fixed at the end-effector and inserted into a hole with a diameter of 35.6 mm, where the upper surface of the hole is inclined at approximately 8 ◦,allowing the bolt to slide into the hole. Fig. 24 presents the key snapshots from the bolt-tightening operation captured in the video, highlighting the following processes: 1) the aerial vehicle makes an effort to carry out the bolt to approach the hole (Fig. 24 (b1); 2) the aerial vehicle collaborates with the soft robotic arm to insert the bolt from the end-effector into the hole allowing a play of ±8.8 mm, and then the bolt is tightened into the nut (Fig. 24 (b2); 3) the bolt-tightening mission is completed, and the vehicle returns (Fig. 24 (b3). Fig. 25 plots the trajectory tracking performance of the aerial vehicle, soft robotic arm and end-effector during aerial peg-in-hole and screwing tasks. During the free flight approach and insertion phases, the stiffening layer of the soft robotic arm is jammed to increase the end rigidity, allowing for the precise insertion of the bolt into 18    
+
+> The aerial vehicle The soft robotic arm The end-effector
+> Approaching Peg-in-hole Screwing
+> Fig. 25. Trajectory of the AeRSoM during aerial peg-in-hole and screwing a bolt.
+
+the hole. Once the tightening operation begins, the stiffening layer is unjammed to provide sufficient compliance and safety. Three sets of successful experiments shown in the video are conducted to confirm that the completion of accurate peg-in-hole and screwing tasks is not merely accidental. To further clarify the necessity of variable stiffness of the soft robotic arm, a comparative experiment is conducted, as exhibited in the video, where the soft robotic arm remains in the unjammed state throughout. Experimental observations reveal that the unjammed soft robotic arm results in low end-effector accuracy, making it difficult to achieve the hole-docking task. VII. D ISCUSSIONS 
+
+The experimental results demonstrate that the performance improvement of the proposed AeRSoM is not solely attributed to the control framework, but also to the physical morphology of the system. This distributed embodied compliance enhances disturbance tolerance during contact-rich manipulation while reducing the stabilization burden on the flight system. Another key observation is that aerial manipulation inher-ently involves a tradeoff between compliance and precision. While Highly compliant manipulators improve interaction safety and robustness, they often suffer from reduced posi-tioning accuracy and force transmission capability. In contrast, rigid manipulators enable precise manipulation but amplify contact disturbances and increase the risk of destabilizing the aerial platform. The proposed rigid-soft architecture seeks to balance these competing requirements by combining passive compliance with task-oriented structural rigidity. Furthermore, the variable-stiffness mechanism allows the manipulator to adapt its mechanical properties according to different manip-ulation stages, thereby improving both interaction robustness and task execution performance. The experimental results indi-cate that stiffness modulation is particularly beneficial for tasks involving both environmental uncertainty and high precision requirements, such as peg-in-hole and screwing operations. More broadly, the proposed system highlights the potential of embodied intelligence for aerial manipulation. Rather than relying solely on increasingly complex sensing and control algorithms, part of the interaction complexity can be handled through physical morphology and mechanical intelligence. The distributed compliance of the rigid-soft manipulator allows the robot to passively adapt to uncertain contacts, thereby reducing the burden on perception, force estimation, and active stabilization. This observation suggests that integrating morphology, materials, and control may provide an effective pathway toward more capable aerial manipulation systems. Despite the encouraging results, several limitations remain. The experiments are conducted in an indoor laboratory setting, where state feedback is provided by a motion capture system. If the AeRSoM robot is to be used outdoors, onboard sensing will be required both for the aerial vehicle and the soft robotic arm. In particular, the aircraft can utilize cameras, GPS, or LIDAR for outdoor positioning. Regarding the soft robotic arm, soft stretch sensors can be arranged along the main axis of the soft robotic arm to enable distributed bending measurement [46]. The chamber pressure sensor is installed at the air supply pipeline, providing a rapid dynamic response and a 19 
+
+measurement range that fully covers the operating pressure. Further, the optical fiber sensing offers excellent electromag-netic tolerance and supports high-density distributed strain measurement, making it suitable for high-voltage or harsh environments, such as areas near power lines [47]. Moreover, the IMU sensor, mounted at the end-effector or other critical rigid connections, can provide essential information on the end-effector’s pose and dynamic behavior [24]. Therefore, integrating soft stretch sensors, pressure sensors, and IMU sen-sors presents a promising approach to accurately capture both the pose and dynamic states of the proposed soft robotic arm, facilitating its practical applications. For high-voltage or other harsh environments, fiber optic sensing can be considered as a suitable alternative to soft stretch sensors. In terms of power supply, a 16000mAh-6S-25C LiPo battery is employed. When the aircraft and the flexible robotic arm operate simultaneously, the presented robot can operate for approximately 8.4 minutes while the voltage drops from 25.0 V to 22.5 V when the aircraft and the flexible robotic arm operate simultaneously, allowing the presented robot to operate for approximately 8.4 minutes. Alternatively, another feasible solution is to use tethered power. VIII. C ONCLUSION 
+
+This article presented AeRSoM, a novel aerial rigid-soft integrated manipulator designed for contact-rich aerial ma-nipulation. The proposed system combines a fully actuated aerial platform, a rigid-soft manipulator, and a variable-stiffness mechanism to achieve stable flight, compliant in-teraction, and precise task execution. A composite control framework was further developed to improve end-effector tracking performance during aerial manipulation. Extensive experiments demonstrated the effectiveness of the proposed system in diverse contact-rich scenarios. The results show that distributed embodied compliance can improve interaction robustness while preserving sufficient manipulation accuracy for task execution. Overall, this work suggests that rigid-soft integration provides a promising approach to balancing the tradeoff between interaction compliance and manipulation precision in aerial robots. Future work will focus on force-aware interaction control, faster stiffness modulation, and more autonomous aerial manipulation in complex environments. REFERENCES [1] H. Zhong, J. Liang, Y. Chen, H. Zhang, J. Mao, and Y. Wang, “Prototype, modeling, and control of aerial robots with physical interaction: Areview,” IEEE Trans. Autom. Sci. Eng. , vol. 22, pp. 3528-3542, 2025. [2] A. Ollero, M. Tognon, A. Suarez, D. Lee, and A. Franchi, “Past, present, and future of aerial robotic manipulators,” IEEE Trans. Robot. , vol. 38, no. 1, pp. 626-645, Feb. 2022. [3] K. Zhang et al. , “Aerial additive manufacturing with multiple autonomous robots,” Nature , vol. 609, no. 7928, pp. 709-717, 2022. [4] M. Ryll et al. , “6D interaction control with aerial robots: The flying end-effector paradigm,” Int. J. Robot. Res. , vol. 38, no. 9, pp. 1045-1062, 2019. [5] K. Bodie et al. , “Active interaction force control for contact-based inspectionwith a fully actuated aerial vehicle,” IEEE Trans. Robot. , vol. 37, no. 3, pp. 709-722, Jun. 2021. [6] J. Mellet et al. , “Design of a flexible robot arm for safe aerial physical interaction,” in Proc. 2024 IEEE 7th Int. Conf. Soft Robot. (RoboSoft) ,2024, pp. 1048-1053. [7] R. Sz´ asz, M. Allenspach, M. Han, M. Tognon, and R. K. Katzschmann, “Modeling and control of an omnidirectional micro aerial vehicle equipped with a soft robotic arm,” in Proc. 2022 IEEE 5th Int. Conf. Soft Robot. (RoboSoft) , 2022, pp. 1-8. [8] A. Jalali and F. Janabi-Sharifi, “Aerial continuum manipulation: A new platform for compliant aerial manipulation,” Frontiers in Robotics and AI , vol. 9, no. 903877, Aug. 2022. [9] J. Liang et al. , “Active physical interaction control for aerial manipulator based on external wrench estimation,” IEEE/ASME Trans. Mechatron. ,vol. 28, no. 5, pp. 2774-2785, Oct. 2023. [10] J. Liang et al. , “Reference optimization-based compliant control for aerial pipeline inspection using a hexacopter with a robotic contact device,” IEEE/ASME Trans. Mechatron. , vol. 29, no. 6, pp. 4063-4074, Dec. 2024. [11] R. Rashad et al. , “Energy aware impedance control of a flying end-effector in the port-Hamiltonian framework,” IEEE Trans. Robot. , vol. 38, no. 6, pp. 3936-3955, Dec. 2022. [12] M. Allenspach et al. , “Design and optimal control of a tiltrotor mi-croaerial vehicle for efficient omnidirectional flight,” Int. J. Robot. Res. ,vol. 39, nos. 10-11, pp. 1305-1325, Sep. 2020. [13] J. Liang, Y. Chen, Y. Wu, Z. Miao, H. Zhang and Y. Wang, “Adaptive prescribed performance control of unmanned aerial manipulator with disturbances,” IEEE Trans. Autom. Sci. Eng. , vol. 20, no. 3, pp. 1804-1814, Jul. 2023. [14] N. Lai et al. , “Image dynamics-based visual servo control for unmanned aerial manipulatorl with a virtual camera,” IEEE/ASME Trans. Mecha-tron. , vol. 27, no. 6, pp. 5264-5274, Dec. 2022. [15] M. Tognon et al. , “A truly-redundant aerial manipulator system with application to push-and-slide inspection in industrial plants,” IEEE Robot. Autom. Lett. , vol. 4, no. 2, pp. 1846-1851, Apr. 2019. [16] M. Orsag, C. Korpela, S. Bogdan, and P. Oh, “Dexterous aerial robots–mobile manipulation using unmanned aerial systems,” IEEE Trans. Robot. , vol. 33, no. 6, pp. 1453-1466, Dec. 2017. [17] A. Suarez, P. R. Soria, G. Heredia, B. C. Arrue, and A. Ollero, “Anthropomorphic, compliant and lightweight dual arm system for aerial manipulation,” in Proc. IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS) ,2017, pp. 992-997. [18] M. Trujillo, J. Mart´ ınez-de Dios, C. Mart´ ın, A. Viguria, and A. Ollero, “Novel aerial manipulator for accurate and robust industrial NDT contact inspection: A new tool for the oil and gas inspection industry,” Sensors ,vol. 19, no. 6, pp. 1305, Mar. 2019. [19] B. Y¨ uksel, S. Mahboubi, C. Secchi, H. H. B¨ ulthoff, and A. Franchi, “Design, identification and experimental testing of a light-weight flexible-joint arm for aerial physical interaction,” in Proc. IEEE Int. Conf. Robot. Autom. (ICRA) , 2015, pp. 870-876. [20] P. Supa, A. Dunnett, F. Xiao, R. Wu, M. Kovac, and B. B. Kocer, “Bumper drone: Elastic morphology design for aerial physical interac-tion,” in Proc. 2026 IEEE 9th Int. Conf. Soft Robot. (RoboSoft) , 2026, pp. 723-729. [21] T. Bartelds, A. Capra, S. Hamaza, S. Stramigioli, and M. Fumagalli, “Compliant aerial manipulators: Toward a new generation of aerial robotic workers,” IEEE Robot. Autom. Lett. , vol. 1, no. 1, pp. 477-483, Jan. 2016. [22] A. Suarez, G. Heredia, and A. Ollero, “Physical-virtual impedance control in ultralightweight and compliant dual-arm aerial manipulators,” 
+
+IEEE Robot. Autom. Lett. , vol. 3, no. 3, pp. 2553-2560, July 2018. [23] J. Fishman and L. Carlone, “Control and trajectory optimization for soft aerial manipulation,” in Proc. IEEE Aerosp. Conf. , 2021, pp. 1-17. [24] R. Peng, Z. Wang, and P. Lu, “AeCoM: An aerial continuum manipulator with IMU-based kinematic modeling and tendon-slacking prevention,” 
+
+IEEE Trans. Syst. Man Cybern. Syst. , vol. 53, no. 8, pp. 4740-4752, Aug. 2023. [25] Y. Hao et al. , “A eutectic-alloy-infused soft actuator with sensing, tunable degrees of freedom, and stiffness properties,” J. Micromech. Microeng. , vol. 28, no. 2, 2018, Art. no. 024004. [26] J. R. Capadona, K. Shanmuganathan, D. J. Tyler, S. J. Rowan, and C. Weder, “Stimuli-responsive polymer nanocomposites inspired by the sea cucumber dermis,” Science , vol. 319, no. 5868, pp. 1370-1374, 2008. [27] S. Zhuo et al. , “Complex multiphase organohydrogels with pro-grammable mechanics toward adaptive soft-matter machines,” Sci. Adv. ,vol. 6, no. 5, 2020, Art. no. eaax1464. [28] S.-Q. An, W.-H. Li, J.-H. Li, H.-L. Zou, and Z.-C. Deng, “Tuning stiffness with granular chain structures for versatile soft robots,” Soft Robot. , vol. 10, no. 3, pp. 493-503, Jun. 2023. [29] Y. Wei, Y. Chen, Y. Yang, and Y. Li, “A soft robotic spine with tunable stiffness based on integrated ball joint and particle jamming,” Mechatron. ,vol. 33, pp. 84-92, Feb. 2016. 20 
+
+[30] M. Cianchetti, T. Ranzani, G. Gerboni, I. De Falco, C. Laschi and A. Menciassi, “STIFF-FLOP surgical manipulator: Mechanical design and experimental characterization of the single module,” in Proc. 2013 IEEE/RSJ Int. Conf. Intell. Robots Syst. , 2013, pp. 3576-3581. [31] T. Wang, J. Zhang, Y. Li, J. Hong, and M. Y. Wang, “Electrostatic layer jamming variable stiffness for soft robotics,” IEEE/ASME Trans. Mechatron. , vol. 24, no. 2, pp. 424-433, Apr. 2019. [32] J. Santiago, I. Godage, P. Gonthina, and I. Walker, “Soft robots and kangaroo tails: modulating compliance in continuum structures through mechanical layer jamming,” Soft Robot. , vol. 3, no. 2, pp. 54-63, 2016. [33] Y. -J. Kim, S. Cheng, S. Kim and K. Iagnemma, “A novel layer jamming mechanism with tunable stiffness capability for minimally invasive surgery,” IEEE Trans. Robot. , vol. 29, no. 4, pp. 1031-1042, Aug. 2013. [34] M. Brancadoro, M. Manti, S. Tognarelli, and M. Cianchetti, “Fiber jamming transition as a stiffening mechanism for soft robotics,” Soft Robot. , vol. 7, no. 6, pp. 663-674, 2020. [35] Y. Wang, L. Li, D. Hofmann, J.E. Andrade, and C. Daraio, “Structured fabrics with tunable mechanical properties,” Nature , vol. 596, no. 7871, pp. 238-243, 2021. [36] Z. Xie et al. , “Soft robotic arm with extensible stiffening layer,” IEEE Robot. Autom. Lett. , vol. 8, no. 6, pp. 3597-3604, Jun. 2023. [37] Z. Gong et al. , “A soft manipulator for efficient delicate grasping in shallow water: Modeling, control, and real-world experiments,” Int. J. Robot. Res. , vol. 40, no. 1, pp. 449-469, 2021. [38] G. Zhang, Y. He, B. Dai, F. Gu, J. Han, and G. Liu, “Robust control of an aerial manipulator based on a variable inertia parameters model,” 
+
+IEEE Trans. Ind. Electron. , vol. 67, no. 11, pp. 9515-9525, Nov. 2020. [39] M. Wang et al. , “Millimeter-level pick and peg-in-hole task achieved by aerial manipulator,” IEEE Trans. Robot. , vol. 40, pp. 1242-1260, 2024. [40] T. Tomi´ c, C. Ott, and S. Haddadin, “External wrench estimation, collision detection, and reflex reaction for flying robots,” IEEE Trans. Robot. , vol. 33, no. 6, pp. 1467-1482, Dec. 2017. [41] J. Liang et al. , “Robust variable impedance control for aerial compliant interaction with stability guarantee,” IEEE Trans. Ind. Inform. , vol. 20, no. 3, pp. 3351-3360, March 2024. [42] Z. Sun, B. Song, N. Xi, R. Yang, L. Hao, and L. Chen, “Compensating asymmetric hysteresis for nanorobot motion control,” in Proc. 2015 IEEE Int. Conf. Robot. Autom. (ICRA) , 2015, pp. 3501-3506. [43] E. Abbena, S. Salamon, and A. Gray, Modern differential geometry of curves and surfaces with mathematica , New York: Chapman and Hall/CRC, 2017. [44] B. Siciliano, O. Khatib, and T. Kr¨ oger, Springer handbook of robotics ,Berlin: springer, 2008 [45] A. Dietrich, C. Ott, and A. Albu-Sch¨ affer, “An overview of null space projections for redundant, torque-controlled robots,” Int. J. Robot. Res. ,vol. 34, no. 11, pp. 1385-1400, 2015. [46] X. Huang et al. , “High-stretchability and low-hysteresis strain sensors using origami-inspired 3D mesostructures,” Sci. Adv. , vol. 9, no. 34, 2023, Art. no. eadh9799. [47] K. C. Galloway, Y. Chen, E. Templeton, B. Rife, I. S. Godage, and E. J. Barth, “Fiber optic shape sensing for soft robotics,” Soft Robot. , vol. 6, no. 5, 671-684, Oct, 2019. 
+
+Jiacheng Liang received the B.S. degree in me-chanical design manufacture and automation and the M.S. degree in mechatronic engineering from Fuzhou University, Fuzhou, China, in 2019 and 2022, and the Ph.D. degree in control science and en-gineering from Hunan University, Changsha, China, in 2026. He is currently a Postdoctoral Research Fellow with the Hunan University. His research interests include aerial robotics, soft robotics, robot control, and aerial manipulation. 
+
+Hang Zhong (Member, IEEE) received the B.S., M.S., and Ph.D. degrees in automation science from the College of Electrical and Information Engineer-ing, Hunan University, Changsha, China, in 2013, 2016, and 2020 respectively. From 2020 to 2022, he was a post-doc fellow with the Department of Electrical and Information Engineering, Hunan University, Changsha, China. He is currently an Associate Professor with the School of Robotics, Hunan University, Changsha, China. His research interests include aerial robotics, multi-robot systems, visual servoing, visual navigation and nonlinear control. 
+
+Yaonan Wang received the B.S. degree in computer engineering from East China University of Science and Technology, Fuzhou, China, in 1981 and the M.S. and Ph.D. degrees in control engineering from Hunan University, Changsha, China, in 1990 and 1994, respectively. He was a Post-Doctoral Research Fellow with the National University of Defense Technology, Changsha, from 1994 to 1995, a Senior Humboldt Fellow in Germany from 1998 to 2000, and a Visiting Professor with the University of Bremen, Bremen, Germany, from 2001 to 2004. He has been a Professor with Hunan University since 1995. His research interests include robot control, intelligent control and information processing, industrial process control, and image processing. He has been an academician of China Engineering Academy since 2019. 
+
+Ge Chen received the B.S. degree in artificial intel-ligence from China University of Mining and Tech-nology in 2020. He is currently working toward the master’s degree in control science and engineering at Hunan University, Changsha, China. His research interests include aerial robotics and robot control. 
+
+Zhixing Zhang received the B.S.degree in mechani-cal design manufacture and automation from Guang-dong University of Technology, Guangzhou, China in 2021, the M.S.degree in mechatronic engineering from Fuzhou University, Fuzhou, China in 2024. He is currently working toward the Ph.D. degree in control science and engineering from Hunan Univer-sity, Changsha, China. His research interests include motion planning and mobile robot. 
+
+Bocheng Tian received the B.S. degree in engi-neering mechanics in 2023 from Beihang Univer-sity, Beijing, China, where he is currently working toward the Ph.D. degree in mechanical engineering. His research interests include design and control of aerial and aquatic robots, soft robots, and biomimetic adsorption mechanism. 21 
+
+Hui Zhang (Member, IEEE) received the B.S., M.S., and Ph.D. Degrees in pattern recognition and intelligent system from Hunan University, Changsha, China, in 2004, 2007, and 2012, respectively. He is currently a professor with the School of Robotics, Hunan University, and he is the Deputy Director of the National Engineering Research Center of Robotic Vision Perception and Control Technology. He was a Visiting Scholar with Common Vulner-ability Scoring System Laboratory, Department of Electrical and Computer Engineering, University of Windsor, Windsor, ON, Canada, in 2017. His research interests include machine vision, sparse representation, and visual tracking. 
+
+Li Wen (Member, IEEE) received the bachelor’s degree from the Beijing Institute of Technology, Beijing, China, in 2005, and the Ph.D. degree from Beihang University, Beijing, in 2011. He is currently a Full Professor with the Department of Mechanical Engineering, Beihang University. He is the Vice Dean of the Department of Mechanical Engineering, Beihang University. His current research interests in-clude soft robots, bioinspired robotics, and embodied intelligence for robots. Dr. Wen is an Associate Ed-itor of IEEE Transactions on Robotics, International Journal of Robotics Research, Soft Robotics, IEEE Robotics and Automation Letters, etc.

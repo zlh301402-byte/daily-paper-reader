@@ -1,0 +1,134 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-24T22:19:04.794291+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2609.18153v1",
+      "source": "arxiv",
+      "title": "Prior Evolution and Task Alignment for Aerial Grasping",
+      "abstract": "Aerial grasping is a remarkable capability exhibited by predatory birds, allowing them to capture prey through highly coordinated maneuvers in flight. Inspired by this capability, researchers have developed various formulations to reproduce such maneuvers through trajectory optimization. However, two limitations remain in practice. First, the resulting optimization problem is highly nonconvex and sensitive to initialization, making high-quality solutions difficult to obtain under a limited computational budget. Second, prescribed numerical objectives are human-designed abstractions that describe successful grasping through a limited set of mathematically tractable quantities and may not fully capture what determines task success. We investigate how learning can address these limitations within an analytical planner. Accordingly, a trajectory prior is first learned from optimized motions and then evolved through a CEM-based process that evaluates sampled initializations with the deployed optimizer and retains favorable ones as new supervision. An Execution-Aware Critic learns from contact, lift, and completion outcomes to assess whether the optimized trajectories are likely to succeed in physical execution. Its frozen energy can further serve as a differentiable grasping cost, allowing execution data to directly shape trajectory generation. Simulation and real-world experiments demonstrate improved optimization reliability, trajectory consistency, and grasping performance.",
+      "authors": [
+        "Weiliang Deng",
+        "Zhengyang Dang",
+        "Yao Mu",
+        "Ximin Lyu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-16T05:33:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.18153v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Aerial grasping via learning and trajectory optimization",
+      "llm_evidence_cn": "基于学习与轨迹优化的空中抓取",
+      "llm_evidence": "基于学习与轨迹优化的空中抓取",
+      "canonical_evidence": "基于学习与轨迹优化的空中抓取",
+      "llm_tldr_en": "Investigates how learning improves aerial grasping, addressing nonconvex trajectory optimization and task alignment to achieve higher-quality grasping maneuvers.",
+      "llm_tldr_cn": "针对空中抓取的轨迹优化问题高度非凸、对初值敏感，且人工设计的数值目标难以完全刻画成功抓取的问题，本文研究学习如何改进空中抓取，通过先验演化与任务对齐来优化抓取轨迹并更好对齐真实任务成功标准。结果表明在有限计算预算下可获得更高质量的抓取解，并更贴合实际任务成功定义。该工作推动空中机器人抓取与操作能力，是空中机械臂研究的重要方向。",
+      "llm_tldr": "针对空中抓取的轨迹优化问题高度非凸、对初值敏感，且人工设计的数值目标难以完全刻画成功抓取的问题，本文研究学习如何改进空中抓取，通过先验演化与任务对齐来优化抓取轨迹并更好对齐真实任务成功标准。结果表明在有限计算预算下可获得更高质量的抓取解，并更贴合实际任务成功定义。该工作推动空中机器人抓取与操作能力，是空中机械臂研究的重要方向。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.28044v1",
+      "source": "arxiv",
+      "title": "AeRSoM: An Aerial Rigid-Soft Integrated Manipulator for Contact-Rich Manipulation",
+      "abstract": "Contact-rich aerial manipulation remains fundamentally challenging because interaction forces are directly transmitted to the aerial platform, often leading to instability and degraded task performance. While compliant manipulators can mitigate these effects, existing aerial manipulation systems typically struggle to reconcile interaction compliance with manipulation precision. To this end, this article presents an aerial rigid-soft integrated manipulator (AeRSoM) robot that realizes embodied compliance for aerial manipulation. The proposed system integrates a fully actuated aerial platform, a rigid-soft manipulator, and variable-stiffness regulation to simultaneously achieve stable flight, compliant interaction, and precise manipulation. By distributing compliance throughout the manipulation system, the proposed design leverages distributed embodied compliance to passively absorb contact disturbances while preserving sufficient stiffness for task execution. To fully exploit the mechanical design, a composite control framework is developed for precise end-effector trajectory tracking in the presence of uncertainties and external disturbances. Extensive real-world experiments are conducted in representative contact-rich aerial manipulation tasks, including dynamic transmission-line grasping, physical interaction with a wind turbine blade, peg-in-hole, and screwing operations. The results demonstrate that the proposed rigid-soft integration significantly improves interaction robustness and task adaptability while maintaining manipulation accuracy, highlighting that embodied compliance provides a promising design paradigm for enhancing the safety, robustness, and versatility of aerial manipulation.",
+      "authors": [
+        "Jiacheng Liang",
+        "Hang Zhong",
+        "Yaonan Wang",
+        "Ge Chen",
+        "Zhixing Zhang",
+        "Bocheng Tian",
+        "Hui Zhang",
+        "Li Wen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-22T12:52:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.28044v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "aerial rigid-soft integrated manipulator with fully actuated aerial platform for contact-rich manipulation",
+      "llm_evidence_cn": "面向接触操作的刚柔一体空中机械臂与全驱动飞行平台",
+      "llm_evidence": "面向接触操作的刚柔一体空中机械臂与全驱动飞行平台",
+      "canonical_evidence": "面向接触操作的刚柔一体空中机械臂与全驱动飞行平台",
+      "llm_tldr_en": "Contact-rich aerial manipulation suffers when interaction forces destabilize the platform, and compliant arms struggle to keep precision; AeRSoM integrates a fully actuated aerial platform with a rigid-soft manipulator and variable-stiffness regulation to jointly achieve stable flight, compliant interaction and precise manipulation.",
+      "llm_tldr_cn": "接触丰富的空中操作中，交互力会直接传递到飞行平台，容易引起失稳并降低任务性能，而现有柔性机械臂又难以同时兼顾顺应性与操作精度。本文提出刚柔一体空中机械臂AeRSoM，将全驱动飞行平台、刚柔混合机械臂与变刚度调节机制集成在一起。该系统可同时实现稳定飞行、柔顺接触交互与较精确的操作。其意义在于为空中接触操作提供一种兼顾柔顺性与精度的新构型与控制思路。",
+      "llm_tldr": "接触丰富的空中操作中，交互力会直接传递到飞行平台，容易引起失稳并降低任务性能，而现有柔性机械臂又难以同时兼顾顺应性与操作精度。本文提出刚柔一体空中机械臂AeRSoM，将全驱动飞行平台、刚柔混合机械臂与变刚度调节机制集成在一起。该系统可同时实现稳定飞行、柔顺接触交互与较精确的操作。其意义在于为空中接触操作提供一种兼顾柔顺性与精度的新构型与控制思路。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19328v1",
+      "source": "arxiv",
+      "title": "A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation",
+      "abstract": "In recent years, aerial manipulation has attracted increasing attention as a key to expand the application of aerial robots. In this work, we focus on two major research directions for achieving versatile aerial manipulation: (i) acquiring high environmental adaptability using soft manipulators, and (ii) expanding the feasible wrench space by distributing thrusters along the manipulator. However, no aerial robot has simultaneously satisfied these two requirements. Therefore, in this paper, we propose a morphing rotor-distributed aerial robot with flexible continuum links that achieves both high shape adaptability and an expanded wrench space. The flexible continuum links function as soft manipulators, passively conforming to the shape of the environment, while the thrusters distributed along the continuum links expand the feasible thrust wrench space and enable the end-effector to exert large interaction forces. To realize the proposed robot, it is essential to suppress vibrations of the lightweight continuum links. Thus, we develop a composite leaf-spring structure that provides both high torsional and vertical stiffness, and vibration-suppressing control methods. Using these implementations, we demonstrate stable flight and a variety of aerial manipulation tasks. To the best of our knowledge, this is the first work to realize aerial manipulations using flexible links with an integrated thruster.",
+      "authors": [
+        "Eri Sawada",
+        "Kazuki Sugihara",
+        "Ayano Miyamichi",
+        "Kunio Kojima",
+        "Kei Okada"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T18:47:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.19328v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "morphing aerial robot with thruster-integrated flexible continuum links for shape-adaptive aerial manipulation",
+      "llm_evidence_cn": "推力器集成柔性连续体连杆的变形空中机器人用于形状自适应空中操作",
+      "llm_evidence": "推力器集成柔性连续体连杆的变形空中机器人用于形状自适应空中操作",
+      "canonical_evidence": "推力器集成柔性连续体连杆的变形空中机器人用于形状自适应空中操作",
+      "llm_tldr_en": "Aerial manipulation needs both environmental adaptability and a large feasible wrench space, yet no robot has achieved both; this paper proposes a morphing rotor-distributed aerial robot whose flexible continuum links act as soft manipulators, achieving shape adaptability and an expanded wrench space.",
+      "llm_tldr_cn": "空中操作既要具备对复杂环境的高适应性，又需要足够大的可行力螺旋空间，但此前尚无空中机器人能同时满足这两点。本文提出一种变形空中机器人，将推力器分布在柔性连续体连杆上，使连杆兼作软体机械臂。该设计同时获得高形状适应性与扩展的力螺旋空间，从而提升空中操作能力。其意义在于为软体、推力分布式的空中操作平台提供了新的构型思路。",
+      "llm_tldr": "空中操作既要具备对复杂环境的高适应性，又需要足够大的可行力螺旋空间，但此前尚无空中机器人能同时满足这两点。本文提出一种变形空中机器人，将推力器分布在柔性连续体连杆上，使连杆兼作软体机械臂。该设计同时获得高形状适应性与扩展的力螺旋空间，从而提升空中操作能力。其意义在于为软体、推力分布式的空中操作平台提供了新的构型思路。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
