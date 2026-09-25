@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-25",
+  "date": "2026-09-25",
+  "generated_at": "2026-09-25T22:50:38",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/25/2609.28716v1-temporal-learning-for-end-effector-position-estimation-under-aerodynamic-disturbances-in-aerial-continuum-manipulation",
+      "section": "quick",
+      "title_en": "Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation",
+      "authors": "Niloufar Amiri, Houman Masnavi, Farrokh Janabi-Sharifi",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.28716v1",
+      "score": "7.0",
+      "evidence": "无人机搭载空中连续体机械臂末端估计",
+      "tldr": "空中连续体机械臂受无人机气动扰动时，末端位置估计精度易下降。本文采集旋翼关闭与自由悬停数据，先比较不同应变基的标称运动学模型，再用闭式连续时间(CfC)网络估计三维位置残差，并以MLP和GRU对比。在未见测试中，CfC的RMSE为22.00±1.70 mm，较MLP和GRU分别降低39.52%和20.62%。结果表明连续时间学习能有效抑制气动扰动影响。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "This paper investigates temporal neural networks for \\mbox{end-effector} position \\mbox{estimation} of an aerial continuum manipulator (ACM) operating under aerodynamic effects induced by the unmanned aerial vehicle (UAV). An experimental dataset is collected under stationary (\\mbox{rotor-off}) and \\mbox{free-hovering} conditions across continuum robot (CR) configurations and UAV altitudes, providing \\mbox{end-effector} position measurements with and without aerodynamic residuals. To establish a nominal framework, \\mbox{strain-parameterized} kinematic models with progressively richer strain bases are evaluated to balance model complexity and prediction accuracy. The selected nominal model then serves as the baseline for 3D position residual estimation using a \\mbox{closed-form} \\mbox{continuous-time} (CfC) neural network, with a multilayer perceptron (MLP) and a gated recurrent unit (GRU) used for comparison. On unseen test experiments, the CfC achieves an RMSE of \\(22.00\\pm1.70~\\mathrm{mm}\\) over five random seeds, compared with \\(36.38\\pm3.58~\\mathrm{mm}\\) for the MLP and \\(27.72\\pm2.92~\\mathrm{mm}\\) for the GRU, corresponding to reductions of \\(39.52\\%\\) and \\(20.62\\%\\), respectively. These results demonstrate the effectiveness of \\mbox{continuous-time} learning for \\mbox{end-effector} position estimation under aerodynamic disturbances relative to static and \\mbox{discrete-time} learning methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/25/2609.30023v1-res-hil-human-guided-residual-reinforcement-learning-for-sample-efficient-dexterous-manipulation",
+      "section": "quick",
+      "title_en": "Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation",
+      "authors": "Mariia Iavorskaia, Christian Dietz, Sebastian Albrecht, Majid Khadiv",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.30023v1",
+      "score": "7.0",
+      "evidence": "面向机器人操作的人在环残差强化学习",
+      "tldr": "模仿学习能从演示获得灵巧操作技能，但策略易在训练分布外失败，补充演示成本高。Res-HIL提出人在回路残差强化学习，在冻结模仿策略上学习纠正动作，并用人类干预同时监督残差策略和塑形前序自主行为奖励，配合零初始化加速在线学习。在五类接触丰富任务中，仅20条初始演示、十分钟在线训练，即超越全策略人在回路RL与无人类引导的残差微调，并优于五倍演示的模仿策略。消融显示，直接残差监督最关键，干预感知奖励塑形显著提升效率。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Imitation learning enables robots to acquire manipulation skills from demonstrations, but the resulting policies can fail outside the training data, while collecting more demonstrations requires substantial human effort. Human-in-the-loop reinforcement learning uses corrective feedback during online training, but typically learns the complete task policy rather than refining a pretrained imitation policy. We introduce Res-HIL, a human-in-the-loop residual reinforcement learning framework that learns corrective actions on top of a frozen imitation policy. Each human intervention provides two complementary learning signals: direct supervision of the residual policy and reward shaping of preceding autonomous behavior. Res-HIL combines these signals with zero initialization of the residual policy to stabilize and accelerate online learning. We evaluate Res-HIL on five contact-rich manipulation tasks spanning high-precision and long-horizon behaviors. With only 20 initial demonstrations, Res-HIL outperforms state-of-the-art full-policy human-in-the-loop reinforcement learning and residual fine-tuning without human guidance on every task after ten minutes of online training. Res-HIL improves its pretrained base policies and outperforms imitation policies trained with five times more demonstrations. An ablation study shows that direct residual supervision is critical to performance, while intervention-aware reward shaping substantially improves training efficiency.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/25/2609.21082v1-design-of-adaptive-pid-controller-based-on-asynchronous-advantage-actor-critic-learning-method-for-quadcopter-control",
+      "section": "quick",
+      "title_en": "Design of Adaptive PID Controller Based On Asynchronous Advantage Actor Critic Learning Method for QuadCopter Control",
+      "authors": "Ali Jokar, Aria Alasty",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.21082v1",
+      "score": "6.0",
+      "evidence": "基于强化学习自适应PID的四旋翼控制",
+      "tldr": "四旋翼具非线性与扰动敏感特性，传统PID控制难以满足复杂场景下的高精度控制需求。本文提出将异步优势演员-评论家（A3C）与PID结合的自适应控制框架，利用并行智能体和神经网络动态优化PID参数，并通过系统辨识模块预测系统状态以辅助最优策略学习。仿真表明，A3C与A2C均能实现精确的姿态与轨迹跟踪，但A3C在奖励和损失曲线上收敛更好，参数优化效果更佳。该工作验证了强化学习与传统控制融合可提升四旋翼控制的适应性与性能。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Quadcopters offer great utility in many applications, but their nonlinear nature and disturbance sensitivity present great control challenges. Basic PID controllers are generally not sophisticated enough to cope with these complexities. This paper suggests a control system that integrates the Asynchronous Advantage Actor-Critic (A3C) algorithm with a PID controller for quadcopter attitude and trajectory tracking. The A3C controller uses parallel agents to optimize PID parameters dynamically using a neural network. A system identification module for the complementary system makes predictions about system states for optimal control policy. The proposed framework was compared with a standard actor-critic (A2C) model. Simulation results verify that they both track accurately. However, the A3C-based controller converges much more for the loss function, as evidenced by reward figures and loss curves, demonstrating better parameter optimization. This shows that A3C-based approach results in improved performance for the control of quadcopter, effectively integrating reinforcement learning and traditional control to achieve higher adaptability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

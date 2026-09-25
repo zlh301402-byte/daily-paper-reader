@@ -1,0 +1,542 @@
+Title: Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation
+
+URL Source: https://arxiv.org/pdf/2609.28716v1
+
+Published Time: Fri, 25 Sep 2026 00:12:27 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+> 1
+
+# Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation 
+
+Niloufar Amiri, Houman Masnavi, Farrokh Janabi-Sharifi 
+
+Abstract —This paper investigates temporal neural networks for end-effector position estimation of an aerial continuum manipulator (ACM) operating under aerodynamic effects in-duced by the unmanned aerial vehicle (UAV). An experimental dataset is collected under stationary (rotor-off) and free-hovering conditions across continuum robot (CR) configurations and UAV altitudes, providing end-effector position measurements with and without aerodynamic residuals. To establish a nominal frame-work, strain-parameterized kinematic models with progressively richer strain bases are evaluated to balance model complexity and prediction accuracy. The selected nominal model then serves as the baseline for 3D position residual estimation using aclosed-form continuous-time (CfC) neural network, with a multi-layer perceptron (MLP) and a gated recurrent unit (GRU) used for comparison. On unseen test experiments, the CfC achieves an RMSE of 22 .00 ±1.70 mm over five random seeds, compared with 
+
+36 .38 ±3.58 mm for the MLP and 27 .72 ±2.92 mm for the GRU, corresponding to reductions of 39 .52% and 20 .62% , respectively. These results demonstrate the effectiveness of continuous-time learning for end-effector position estimation under aerodynamic disturbances relative to static and discrete-time learning methods. 
+
+Index Terms —Aerial manipulation, continuum robots, aero-dynamic disturbance, residual estimation, temporal neural net-works. 
+
+I. I NTRODUCTION 
+
+The integration of soft and continuum manipulators into aerial robotic systems enables enhanced dexterity in elevated and confined environments and potentially safer physical interaction with surrounding objects [1]. These advantages, however, introduce additional modeling and estimation chal-lenges due to the compliant and nonlinear behavior of aerial continuum manipulators (ACMs) [2], [3]. In particular, their lightweight and deformable structures make them more sus-ceptible than rigid aerial manipulators to aerodynamic distur-bances induced by the unmanned aerial vehicle (UAV) [4], [5], leading to measurable deviations in the continuum robot (CR) configuration and end-effector position [6]. Accurate position estimation under these conditions requires both an appropriate nominal representation of the CR and a means of capturing the residual effects introduced by the induced airflow. Establishing the nominal response is itself nontrivial, since the accuracy of strain-parameterized contin-uum models depends on the spatial order used to approximate the strain distribution along the backbone. Increasing the strain          
+
+> This work was supported by the Natural Sciences and Engineering Research Council of Canada (NSERC) under Grant 2023-05542 and by the National Research Council Canada (NRC) under Grant AI4L-128-1. Niloufar Amiri and Farrokh Janabi-Sharifi are with the Department of Mechanical, Industrial, and Mechatronics Engineering, Toronto Metropoli-tan University, Toronto, ON, Canada. Houman Masnavi is aResearch Fellow at the University of Freiburg, Freiburg, Germany. E-mail: nilou-far.amiri@torontomu.ca (corresponding author).
+
+basis order can capture more complex spatial variations, but also introduces additional generalized coordinates and model complexity [7], [8]. An appropriate nominal model should therefore provide sufficient accuracy without unnecessarily high-order parameterizations that yield only marginal improve-ment [9]. The end-effector position residual under aerodynamic dis-turbances presents an additional challenge because the down-wash loading experienced by the CR varies with its config-uration and UAV operating conditions, while the compliant response can depend on motion history through hysteresis and delayed effects. Consequently, the resulting position deviation may not be adequately represented by instantaneous system variables alone. Static neural models can approximate nonlin-ear input–output relationships but do not retain temporal infor-mation across sequential samples. Recurrent neural networks maintain a hidden memory of previous observations, while closed-form continuous-time networks additionally model the time-dependent evolution of this state, providing a repre-sentation more naturally aligned with continuously evolving physical dynamics [10], [11]. These characteristics motivate the investigation of temporal neural networks for end-effector position estimation under UAV-induced aerodynamic uncer-tainty in ACMs. II. R ELATED WORK 
+
+Disturbances in aerial manipulation are commonly treated as lumped uncertainties incorporating aerodynamic effects, platform vibration, modeling errors, and UAV–manipulator coupling. Model-based approaches, including nonlinear dis-turbance observers and adaptive methods, have been widely employed for their estimation and rejection [12]–[14]. How-ever, these methods generally rely on sufficiently accurate system models and assumptions regarding the structure or bounds of unknown disturbances, which can be difficult to establish for highly coupled and nonlinear systems subject to complex aerodynamic interactions. Learning-based approaches have therefore been employed to approximate unmodeled dynamics and external disturbances using adaptive radial basis function (RBF) networks and deep neural networks [15]–[18]. More specifically, aerodynamic disturbances have been in-vestigated using analytical and data-driven approaches [19]– [23], although these studies primarily consider individual UAVs or aerodynamic interactions among multiple aerial vehicles. For ACMs, recent experiments have shown that rotor downwash can significantly affect CR deformation and end-effector position [6], [24]. In the most closely related study, Uthayasooriyan et al. [6] developed a Gaussian process arXiv:2609.28716v1 [cs.RO] 23 Sep 2026 2
+
+regression model guided by constant curvature (CC) kine-matics for steady-state residual correction using a mechan-ically constrained multirotor. In contrast, this work consid-ers a free-hovering UAV, establishes a strain-parameterized nominal model through a systematic study of spatial strain complexity, and estimates 3D position residuals using static, discrete-time recurrent, and continuous-time neural models across CR configurations and hovering altitudes. This formu-lation extends steady-state correction toward temporal residual estimation, explicitly examining the roles of temporal memory, continuous-time modeling, and nominal model complexity in uncertain position estimation. The main contributions are:  
+
+> •
+
+An experimental dataset characterizing ACM end-effector position under stationary and free-hovering UAV condi-tions across CR configurations, hovering altitudes, and UAV operating conditions.  
+
+> •
+
+A comparative evaluation of strain-parameterized kine-matic models with increasing spatial strain basis order to establish a compact nominal representation for aerody-namic residual estimation.  
+
+> •
+
+A systematic comparison of MLP, GRU, and CfC net-works for 3D end-effector position residual estimation under free-hovering UAV conditions, extending existing steady-state, CC-based correction by evaluating temporal memory and continuous-time modeling. III. P ROBLEM FORMULATION AND METHODOLOGY 
+
+A. Nominal Strain-Parameterized Model 
+
+Let s ∈ [0 , L ] denote the arc-length coordinate along a CR, where L is its undeformed length. The configuration of a cross-section at s relative to the base frame is represented by 
+
+g(s) = 
+
+R(s) r(s)
+
+01×3 1
+
+
+
+∈ SE(3) , (1) where R(s) ∈ SO(3) and r(s) ∈ R3 denote the cross-section orientation and position, respectively. Following strain-parameterized Cosserat rod theory [7], [8], the configu-ration evolves as 
+
+g′(s) = g(s) bξ(s), bξ(s) = 
+
+S( κ) ν
+
+01×3 0
+
+
+
+, (2) where S( ·) is the skew-symmetric operator and ξ =[κ⊤, ν⊤]⊤ ∈ R6 is the local strain vector. Here, κ ∈ R3
+
+contains the bending and torsional strains, while ν ∈ R3
+
+contains the axial and shear strains. The distributed strain field is approximated by 
+
+ξ(s, qs) = ξ⋆ + Bm
+
+ sL
+
+
+
+qs, (3) where ξ⋆ is the reference strain, qs ∈ Rns contains the generalized strain coordinates, and Bm ∈ R6×ns is the spatial strain basis of order m. The corresponding forward kinematics (FK) is 
+
+g(s; qs) = g(0) P exp 
+
+Z s
+
+> 0
+
+bξ(σ, qs) dσ 
+
+!
+
+, (4) where P denotes the path-ordering operator. The kinematics are numerically evaluated using Lie-group integration to pre-serve the SE(3) structure [7]. For the tendon-driven CR considered in this work, shown in Fig. 1, the base frame is the attachment frame Oa, such that g(0) = I4. The straight, unsheared reference strain is written as ξ⋆ = [ 0⊤ 
+
+> 3
+
+, e⊤ 
+
+> b
+
+]⊤, where eb is the unit vector along the undeformed backbone in the adopted local frame. Only the two actuated bending strains are parameterized, while torsion, extension, and shear remain fixed at their reference values. Shifted Legendre polynomials are employed as spatial basis functions. Constant, linear, quadratic, and cubic orders, corresponding to m = 0 , 1, 2, 3, are evaluated to examine the tradeoff between nominal prediction accuracy and spatial model complexity. Based on this comparison, the linear basis is selected for the nominal model. For the selected model, the two bending strain distributions are 
+
+κ1(s) = A1
+
+h
+
+1 + a1P1
+
+ sL
+
+i 
+
+,κ2(s) = A2
+
+h
+
+1 + a2P1
+
+ sL
+
+i 
+
+,
+
+(5) where P1(η) = 2 η − 1 is the first-order shifted Legendre polynomial. Accordingly, 
+
+qs = A1 a1A1 A2 a2A2
+
+⊤ , (6) where A1 and A2 are bending amplitudes, while a1 and a2
+
+govern their spatial variation. The bending amplitudes are related to the measured actuator coordinates qa = [q1, q 2]⊤ through a calibrated actuation mapping A1
+
+A2
+
+
+
+= Φ(qa; θΦ), (7) where Φ(·) denotes the actuator-to-strain mapping and θΦ
+
+collects its calibration parameters. The mapping is calibrated separately from the spatial strain parameters. For the selected linear strain model, the remaining spatial parameters are collected as θs = [ a1, a 2]⊤.The nominal end-effector position is obtained from the translational component rL = r(L) of the tip configuration as 
+
+bpnom = Cr L + p0, (8) where C ∈ R3×3 and p0 ∈ R3 denote the fixed coordinate registration and translation used to express the model predic-tion in the experimental measurement frame. After calibration of the actuator-to-strain mapping, the spatial parameters are identified from the stationary baseline measurements by minimizing the end-effector position error, 
+
+θ⋆s = arg min 
+
+> θs
+> Nstat
+
+X
+
+> i=1
+
+pstat  
+
+> i
+
+− bpnom (qa,i ; θs) 22 , (9) where Nstat is the number of stationary measurements and 
+
+pstat  
+
+> i
+
+∈ R3 is the corresponding measured end-effector position. The resulting nominal model is fixed before the subsequent aerodynamic residual learning process. 3
+
+Fig. 1: ACM frame attachment and operating conditions across different CR configurations. 
+
+B. UAV-Induced Residual Estimation 
+
+The nominal model represents the CR response identified under stationary (rotor-off) conditions. Under free-hovering conditions, the measured end-effector position deviates from this nominal response due to UAV-induced aerodynamic ef-fects and associated operating conditions. To estimate this deviation, the neural network input at sample k is defined as 
+
+uk = q1,k q2,k ˙q1,k hk τk
+
+⊤ , (10) where q1,k and q2,k are the actuator coordinates, ˙q1,k is the reciprocating actuation rate, hk is the UAV hovering altitude, and τk is the recorded throttle signal. For the corresponding actuator configuration, the 3D posi-tion residual is defined as 
+
+∆pk = phov  
+
+> k
+
+− bpnom  
+
+> k
+
+, (11) where phov  
+
+> k
+
+∈ R3 is the measured CR end-effector position during free hovering and bpnom  
+
+> k
+
+is the corresponding prediction of the nominal model. The residual is estimated as 
+
+c∆pk = F(uk, uk−1, . . . ), (12) where the dependence on preceding observations is determined by the selected neural architecture. The corrected position estimate is then 
+
+bphov  
+
+> k
+
+= bpnom  
+
+> k
+
++ c∆pk. (13) Because ∆pk is defined relative to an experimentally calibrated nominal model, it can contain both UAV-induced position deviations and residual nominal model mismatch. It is therefore interpreted as an effective UAV-induced position residual rather than a direct measurement or estimate of aerodynamic force. 
+
+C. Comparative Neural Architectures 
+
+Three neural architectures with different temporal modeling capabilities are considered: an MLP, a GRU, and a CfC network. The MLP provides a memoryless baseline, the GRU introduces discrete-time recurrent memory, and the CfC em-ploys a closed-form state transition derived from continuous-time neural dynamics [11]. For the recurrent models, consecutive measurements are ar-ranged into finite input sequences. For a recurrent architecture with sequence length Ns, a sequence ending at sample k is defined as 
+
+U (Ns) 
+
+> k
+
+= [ uk−Ns+1 , . . . , uk] . (14) The sequence length Ns is selected separately for the GRU and CfC architectures. Sequences are constructed independently within each experiment, and a temporal gap exceeding a prescribed threshold ∆tmax initiates a new sequence segment. The MLP, GRU, and CfC models are evaluated at identical target timestamps to ensure a direct comparison. 
+
+1) Multilayer Perceptron: The MLP estimates the residual from the instantaneous input vector. For hidden layer ℓ,
+
+a(ℓ) 
+
+> k
+
+= ρ
+
+
+
+W (ℓ)a(ℓ−1)  
+
+> k
+
++ b(ℓ)
+
+, a(0)  
+
+> k
+
+= uk, (15) and the output is 
+
+c∆pk = W MLP  
+
+> o
+
+a(Lm) 
+
+> k
+
++ bMLP  
+
+> o
+
+. (16) Here, W (ℓ) and b(ℓ) denote the trainable weight matrix and bias vector of hidden layer ℓ, respectively, while W MLP 
+
+> o
+
+and bMLP  
+
+> o
+
+denote the output-layer parameters. The function 
+
+ρ(·) denotes the nonlinear activation function, and Lm is the number of hidden layers. The MLP therefore implements the static mapping 
+
+c∆pk = FMLP (uk), (17) without an explicit recurrent state. 4
+
+2) Gated Recurrent Unit: The GRU introduces a recurrent hidden state hk to retain information from preceding observa-tions [25]. Its reset and update gates are defined as 
+
+rk = σ (Wir uk + bir + Whr hk−1 + bhr ) , (18) 
+
+zk = σ (Wiz uk + biz + Whz hk−1 + bhz ) , (19) with candidate hidden state 
+
+ehk = tanh 
+
+
+
+Win uk + bin + rk ⊙ (Whn hk−1 + bhn )
+
+
+
+.
+
+(20) The recurrent state is updated according to 
+
+hk = ( 1 − zk) ⊙ ehk + zk ⊙ hk−1, (21) and mapped to the residual estimate through 
+
+c∆pk = W GRU  
+
+> o
+
+hk + bGRU  
+
+> o
+
+. (22) Here, Wi(·) and Wh(·) denote the trainable input and recurrent weight matrices, respectively, and bi(·) and bh(·) are the corresponding bias vectors. The parameters W GRU  
+
+> o
+
+and bGRU 
+
+> o
+
+define the output mapping. The function σ(·) denotes the sigmoid function and ⊙ is the Hadamard product. 
+
+3) Closed-Form Continuous-Time Network: The CfC archi-tecture employs a closed-form recurrent state transition derived from continuous-time neural dynamics, avoiding numerical integration of the underlying state evolution [11]. Defining the augmented input to the recurrent transition as 
+
+ηk = u⊤ 
+
+> k
+
+h⊤
+
+> k−1
+
+⊤ . (23) The elapsed time between consecutive measurements is de-fined as ∆tk = tk − tk−1, where tk denotes the timestamp associated with sample k. A time-dependent interpolation gate is then expressed as 
+
+αk = σ (Na(ηk)∆ tk + Nb(ηk)) , (24) and the recurrent state is updated according to 
+
+hk = ( 1 − αk) ⊙ N 1(ηk) + αk ⊙ N 2(ηk), (25) where N1, N2, Na, and Nb denote trainable nonlinear map-pings. The dependence on ∆tk allows the recurrent transition to account explicitly for variations in the time interval between consecutive measurements. The residual estimate is obtained as c∆pk = W CfC  
+
+> o
+
+hk + bCfC  
+
+> o
+
+. (26) IV. E XPERIMENTAL SETUP AND DATASET GENERATION 
+
+Fig. 1 shows the experimental platform used for dataset generation, consisting of a tendon-driven CR rigidly mounted on a UAV. The CR workspace is partitioned into 12 slices defined by prescribed ranges of q1. For each experiment, 
+
+q1 is set to the midpoint of the corresponding range and held constant, while q2 undergoes reciprocating motion. Thus, 
+
+˙q1 = 0 during each experiment and is not included as a model input. By symmetry, each experiment represents four workspace slices; consequently, three experiments cover all 12 slices at a given hovering altitude. The experiments are repeated at four hovering altitudes, resulting in 12 free-hovering experiments. Five additional baseline experiments are conducted with inactive rotors to characterize the nominal CR behavior without UAV-induced airflow. During each experiment, the CR is actuated suffi-ciently slowly such that inertial effects are negligible and its motion can be treated as kinetostatic. The 3D positions of the CR end-effector and UAV center of mass are measured at 
+
+10 Hz using a Vicon motion capture system (Vicon Motion Systems Ltd., UK), while UAV throttle and the two tendon-actuating servo encoder measurements are recorded. The complete dataset contains 28,411 samples, including 10,538 baseline samples and 17,873 samples collected under UAV operation. For residual estimation, Tests 13–16 (with payload) are excluded, and domain filtering of Tests 1–12 retains 13,922 free-hovering samples. The data are split at the experiment level, with Tests 1–9 forming the development dataset, Tests 10–12 reserved as the unseen dataset for final evaluation, and Tests 17–21 used exclusively for nominal model calibration. V. R ESULTS AND ANALYSIS 
+
+A. Nominal Model Evaluation 
+
+The nominal CR kinematics is identified from the baseline dataset in two steps. First, strain-parameterized models with constant through cubic spatial bases are compared using Test 17 ( q2 = 0 ), where deformation occurs predominantly in the principal bending plane. Measurements with similar 
+
+q1 values are averaged to approximate the nominal static relationship and reduce variability due to reciprocating motion. As shown in Fig. 2(a) and (b), the constant strain model yields a binned x–z RMSE of 94 .72 mm , whereas the linear basis reduces the error to 13 .84 mm , an 85 .4% reduction. Quadratic and cubic bases provide only marginal further improvement, reaching approximately 13 .03 mm . The linear basis is therefore selected as a compact representation of the dominant nonuniform deformation. These results indicate that the CC assumption, equivalent to constant strain in the present formulation, poorly represents the actual CR deformation. The selected strain model is then evaluated over the com-plete baseline dataset against a purely data-driven third-order polynomial FK . As shown in Fig. 2(c)–(g), the two models achieve comparable accuracy across the workspace. The poly-nomial model yields RMSEs of (16 .13 , , 7.53 , , 17 .37) mm in 
+
+x, y, and z, respectively, with a 3D RMSE of 24 .87 mm ,compared with (16 .94 , , 8.48 , , 16 .60) mm and 25 .19 mm for the strain model. Despite similar accuracy, the strain model and actuation mapping together use 20 identified parame-ters, compared with 30 coefficients in the purely data-driven polynomial model, while preserving a physically structured representation of the distributed CR deformation rather than directly fitting the Cartesian tip coordinates. 
+
+B. UAV-Induced Residual Characterization 
+
+Before evaluating the residual estimators, the UAV-induced position residual is characterized across the CR workspace and hovering conditions to quantify its 3D magnitude and depen-dence on CR coordinates and UAV altitude. Across Tests 1– 12, the residual has an overall 3D RMS of 44 .05 mm , as 5Const. Linear Quad. Cubic 020 40 60 80 100                                      
+
+> x-z RMSE [mm]
+> Binned data Raw data
+> (a)
+> xyz3D 010 20 30
+> RMSE [mm]
+> Polynomial Strain
+> (b)
+> 17 18 19 20 21
+> Test
+> 010 20 30
+> 3D RMSE [mm]
+> Polynomial Strain
+> (c)
+> −10 010
+> q*1
+> −0.2 −0.1 0.0 0.1 0.2
+> xtip  [m]
+> (d)
+> −10 010
+> q*1
+> −0.10 −0.05 0.00 0.05 0.10
+> ytip  [m]
+> (e)
+> −10 010
+> q*1
+> −0.6 −0.5 −0.4 −0.3 −0.2
+> ztip  [m]
+> Polynomial Strain
+> (f)
+> −0.4 −0.2 0.0 0.2 0.4
+> xtip [m]
+> −0.6 −0.4 −0.2 0.0
+> ztip  [m]
+> Data Linear Constant
+> (g)
+> −0.4 −0.2 0.0 0.2 0.4
+> xtip [m]
+> −0.6 −0.4 −0.2 0.0
+> ztip  [m]
+> Data Quadratic Constant
+> (h)
+> −0.4 −0.2 0.0 0.2 0.4
+> xtip [m]
+> −0.6 −0.4 −0.2 0.0
+> ztip  [m]
+> Data Cubic Constant
+> (i)
+
+Fig. 2: Nominal model evaluation. (a) x–z RMSE of strain models with different basis orders on Test 17 using binned and raw data. (b) RMSE of the third-order polynomial and selected linear strain models over the complete baseline dataset. (c) Per-test RMSE for Tests 17–21. (d)–(f) Measured and predicted xtip , ytip , and ztip versus centered q∗ 
+
+> 1
+
+across the five baseline tests; colors distinguish tests, and solid/dashed curves denote polynomial/strain models. (g)–(i) Test 17 x–z trajectories comparing measured data and the constant strain model with the linear, quadratic, and cubic strain models, respectively. shown in Fig. 3(a). The residual varies with both flight altitude and CR configuration. Fig. 3(b) and (c) show a nonmonotonic dependence on altitude, while Fig. 3(d)–(f) reveal nonlinear variations with q∗ 
+
+> 1
+
+that also differ across the q2 configuration slices. Residuals are present in all three Cartesian directions, with the largest RMS component along z, consistent with the primary direction of the rotor-induced downwash acting on the CR beneath the UAV. 
+
+C. Learning-Based Residual Estimation 
+
+The development dataset is utilized to train and compare the MLP, GRU, and CfC estimators for 3D UAV-induced resid-ual prediction. Hyperparameters are selected using three-fold cross-validation, with each fold using one experiment from each development altitude for validation and the remaining experiments for training. Thus, all development altitudes are represented in both partitions. Input and target standardization statistics are computed exclusively from each training partition and the unseen dataset remains reserved for final evaluation. Cross-validation selects sequence lengths of 25 and 50 samples for the GRU and CfC, respectively, with 32 recurrent units and a learning rate of 10 −3 for both models. The MLP contains two hidden layers of 64 ReLU units each. All models are trained using the Adam optimizer and mean squared error (MSE) loss. Final performance is evaluated on the unseen dataset, col-lected at a hovering altitude excluded from neural network de-velopment, with the nominal linear strain-parameterized model used as the uncompensated reference. Fig. 4 summarizes the prediction performance and shows the estimated residuals and instantaneous position errors across the unseen experiments. As shown in Fig. 4(a), the nominal model yields a 3D RMSE of 44 .94 mm , which is reduced to 41 .98 mm by the MLP. The temporal models provide substantially larger improvements, reducing the 3D RMSE to 27 .75 mm for the GRU and 
+
+21 .87 mm for the CfC. The directional errors show a similar trend, with particularly notable improvements in the local x
+
+and z directions. The residual R2 values in Fig. 4(b) further demonstrate the benefit of temporal modeling. The MLP yields negative 
+
+R2 values for ∆x and ∆z, indicating poor generalization of 6Δx Δy Δz 3D 010 20 30 40 50                         
+
+> Residual RMS [mm]
+> 24.3 23.5 28.2 44.0
+> (a)
+> h1h2h3h4
+> Flight altitude
+> 010 20 30 40
+> Residual RMS [mm]  ΔxΔyΔz(b)
+> 0.8 0.9 1.0 1.1 1.2
+> Mean flight altitude [m]
+> 37.5 40.0 42.5 45.0 47.5 50.0
+> 3D Residual RMS [mm]  (c)
+> −10 010
+> q*1
+> −50 −25 025 50
+> Mean  Δx [mm]
+> (d)
+> −10 010
+> q*1
+> −25 025 50
+> Mean  Δy [mm]
+> (e)
+> −10 010
+> q*1
+> −80 −60 −40 −20 0
+> Mean  Δz [mm]
+> (f)
+> q2≈ 0 q2≈ 1.2 q2≈ 2.8
+
+Fig. 3: Aerodynamic residual characterization for free-hovering Tests 1–12. (a) Overall RMS of the Cartesian residual components ∆x, ∆y, and ∆z, and the 3D residual. (b) Directional residual RMS at four flight altitudes h1–h4, ordered by increasing mean altitude. (c) 3D residual RMS versus mean flight altitude. (d)–(f) Mean ∆x, ∆y, and ∆z versus centered 
+
+q∗ 
+
+> 1
+
+for the three configuration slices q2 ≈ 0, q2 ≈ 1.2, and q2 ≈ 2.8. Solid curves show binned mean values, with shaded regions indicating ±1 standard deviation. the memoryless mapping for these residual components. In contrast, the GRU achieves positive R2 values in all three directions, while the CfC reaches approximately 0.75 , 0.39 ,and 0.67 for ∆x, ∆y, and ∆z, respectively. The distribution of true versus predicted values in Fig. 4(d)–(f) similarly shows that the CfC captures the dominant residual trends, although greater dispersion remains in the y direction, which may reflect the more limited workspace variation along this dimension. The time histories in Fig. 4(g)–(i) further show that the temporal models generally maintain lower instan-taneous 3D position errors across the unseen experiments, although performance varies with operating conditions and Test 12 remains the most challenging case. These results show that incorporating temporal information substantially improves residual estimation compared with a memoryless nonlinear mapping for the present ACM system. 
+
+D. Model Sensitivity and Robustness 
+
+Input ablation and robustness analyses are conducted to evaluate the contribution of each input to prediction accuracy and the sensitivity of the learned estimators to stochastic train-ing. For the input ablation, the selected temporal models are retrained by individually removing ˙q1, hovering altitude, and rotor throttle while keeping the remaining model settings fixed. The same three-fold cross-validation protocol used during model development is applied to each ablation case to ensure a fair comparison. Robustness is evaluated by independently training each final model configuration with five random seeds and evaluating each model on the same unseen dataset, without further hyperparameter adjustment. Table I summarizes the input ablation results using the same cross-validation employed during model development. Removing the actuation rate ˙q1 increases the mean 3D RMSE by 11 .34% for the CfC and 11 .20% for the GRU. This consistent degradation indicates that rate information captures recent CR motion and delayed residual effects beyond the instantaneous configuration, supporting its inclusion in the estimator input. Hovering altitude also contributes to prediction accuracy. Removing altitude increases the 3D RMSE by 18 .89% for the CfC and 7.52% for the GRU. For the CfC, the largest directional degradation occurs in the y direction, where the RMSE increases from 18 .27 to 28 .00 mm . This behavior is consistent with the residual characterization, which shows that the aerodynamic residual varies with hovering altitude without following a simple monotonic trend. In contrast, removing rotor throttle slightly reduces the validation RMSE by 2.05% 
+
+for the CfC and 3.60% for the GRU. Although rotor thrust directly influences the generated downwash, the UAV operated near its available thrust capacity because of the limited payload margin, resulting in a relatively narrow throttle range during the experiments. Consequently, the throttle signal provided limited additional predictive information in the present dataset. Table II presents the robustness analysis on the unseen experiments. The nominal linear strain FK yields a 3D RMSE of 44 .94 mm . Across five random seeds, the MLP achieves 
+
+36 .38 ± 3.58 mm , corresponding to a 19 .04 ± 7.98% improve-7x y z 3D 010 20 30 40                                         
+
+> RMSE [mm]
+> Overall accuracy
+> Linear strain FK MLP GRU CfC
+> (a)
+> ΔxΔyΔz
+> −0.5 0.0 0.5
+> Residual  R 2
+> Residual prediction accuracy
+> (b)
+> 10 11 12
+> Test
+> 010 20 30 40 50 60
+> 3D RMSE [mm]
+> Accuracy across unseen dataset
+> (c)
+> −50 050
+> True Δx[mm]
+> −40 −20 020 40 60
+> Predicted  Δx [mm]
+> CfC: Δx, RMSE=11.8 mm, R2=0.75
+> (d)
+> −50 −25 025
+> True Δy[mm]
+> −40 −20 020 40
+> Predicted  Δy [mm]
+> CfC: Δy, RMSE=13.6 mm, R2=0.39
+> (e)
+> −75 −50 −25 0
+> True Δz[mm]
+> −80 −60 −40 −20 0
+> Predicted  Δz [mm]
+> CfC: Δz, RMSE=12.4 mm, R2=0.67
+> (f)
+> 25 50 75 100 125 150
+> Time [s]
+> 020 40 60 80
+> 3D error [mm]
+> Test 10
+> Linear strain FK MLP GRU CfC
+> (g)
+> 050 100 150
+> Time [s]
+> 020 40 60 80
+> Test 11
+> (h)
+> 025 50 75 100 125
+> Time [s]
+> 025 50 75 100 125
+> Test 12
+> (i)
+
+Fig. 4: Residual estimators performance on unseen dataset. TABLE I: Input ablation analysis for the temporal estimators. The reported ∆RMSE is relative to the corresponding full-input model, with positive values indicating increased error. 
+
+Model Removed 3D RMSE [mm] ∆RMSE [%] x [mm] y [mm] z [mm] 
+
+CfC None 29 .62 ± 11 .59 – 17.48 18.27 13.47 
+
+˙q1 32 .97 ± 10 .86 +11 .34 22.68 15.91 16.84 Altitude 35 .21 ± 7.03 +18 .89 16.63 28.00 11.37 Throttle 29 .01 ± 11 .36 −2.05 16.36 17.76 14.18 GRU None 31 .44 ± 10 .35 – 19.43 17.04 16.07 
+
+˙q1 34 .96 ± 9.73 +11 .20 22.91 17.54 17.75 Altitude 33 .80 ± 7.67 +7 .52 16.78 25.45 12.21 Throttle 30 .31 ± 11 .27 −3.60 17.80 18.83 14.68 
+
+ment relative to the nominal model. The GRU reduces the error to 27 .72 ± 2.92 mm , corresponding to an improvement of 38 .32 ± 6.50% , while the CfC achieves 22 .00 ± 1.70 mm 
+
+and an improvement of 51 .04 ± 3.78% . In terms of mean 3D RMSE, the CfC therefore reduces the error by approximately 
+
+39 .5% relative to the MLP and 20 .6% relative to the GRU. It also exhibits the smallest variation in 3D RMSE across the five random seeds and achieves the lowest 3D error in each run. The component-wise results show that the CfC achieves the lowest RMSE in the x and z directions, with 11 .92 ±0.85 mm 
+
+and 11 .72 ± 0.39 mm , respectively. Although the MLP yields the lowest mean y-direction RMSE, its larger errors in the other directions result in a substantially higher overall 3D RMSE, highlighting the importance of evaluating the complete 3D position error rather than individual Cartesian components. Performance also varies across the individual unseen ex-periments, with Test 12 representing the most challenging condition for all three learned estimators. This test exhibits relatively larger lateral CR deviation at close ground proximity. The CfC yields lower errors than the GRU for Tests 11 and 12, whereas the two temporal models perform similarly on Test 10, for which the GRU achieves a slightly lower mean error. Thus, the CfC does not consistently outperform the GRU under every individual operating condition, but provides lower overall error and greater consistency across the complete unseen dataset. Overall, the robustness analysis reinforces the benefit of temporal modeling for UAV-induced residual estimation. Both temporal models achieve substantially lower 3D RMSE than the memoryless MLP, while the CfC provides the lowest 8
+
+TABLE II: Robustness analysis on the unseen dataset over five random seeds. Improvement is measured relative to the nominal linear strain FK. 
+
+Model x [mm] y [mm] z [mm] 3D RMSE [mm] Improvement [%] 
+
+Linear strain FK 25.54 19.94 31.14 44.94 –MLP 24 .38 ± 2.05 13 .26 ± 2.68 23 .24 ± 4.23 36 .38 ± 3.58 19 .04 ± 7.98 
+
+GRU 15 .58 ± 2.22 16 .03 ± 1.30 16 .31 ± 2.23 27 .72 ± 2.92 38 .32 ± 6.50 
+
+CfC 11 .92 ± 0.85 14 .27 ± 1.86 11 .72 ± 0.39 22 .00 ± 1.70 51 .04 ± 3.78 
+
+mean 3D RMSE and smallest variation under the experimental conditions considered. VI. C ONCLUSION 
+
+Two fundamental challenges in ACMs are investigated in this paper. These platforms are complex coupled systems with multibody and continuum dynamics, making accurate modeling challenging. Reduced-order models are therefore attractive for real-time deployment, although the trade-off between modeling accuracy and complexity must be carefully considered. Using an experimental dataset, a compact physics-informed strain model is evaluated and shown to provide accuracy comparable to that of a data-driven polynomial model while preserving a more structured representation. Real-world experiments also reveal noticeable deviations in CR end-effector position under UAV-induced aerodynamic effects. The effectiveness of learning-based residual estimation is therefore investigated, with temporal models providing sub-stantially better performance than a memoryless approach on unseen experiments. These results demonstrate a lightweight and deployable approach for improving end-effector position estimation in ACMs. Future work will focus on extending the framework to more aggressive UAV maneuvers and stochastic aerodynamic conditions. REFERENCES [1] A. Jalali and F. Janabi-Sharifi, “Aerial continuum manipulation: A new platform for compliant aerial manipulation,” Frontiers in Robotics and AI , vol. 9, p. 903877, 2022. [2] N. Amiri and F. Janabi-Sharifi, “High-performance coupled kinematics of aerial continuum manipulation systems for control applications,” 
+
+Robotics and Autonomous Systems , vol. 192, p. 105021, 2025. [3] N. Amiri, S. Sepahvand, I. Mantegh, and F. Janabi-Sharifi, “Systematic analysis of coupling effects on closed-loop and open-loop performance in aerial continuum manipulators,” in 2026 International Conference on Unmanned Aircraft Systems (ICUAS) , 2026, pp. 1184–1191. [4] H. B. Khamseh, F. Janabi-Sharifi, and A. Abdessameud, “Aerial manip-ulation—a literature survey,” Robotics and Autonomous Systems , vol. 107, pp. 221–235, 2018. [5] A. Ollero, M. Tognon, A. Suarez, D. Lee, and A. Franchi, “Past, present, and future of aerial robotic manipulators,” IEEE Transactions on Robotics , vol. 38, no. 1, pp. 626–645, 2021. [6] A. Uthayasooriyan, K. M. Digumarti, F. Vanegas, and F. Gonzalez, “An experimental study of downwash effects on a continuum manipulator integrated with a multirotor uav,” IEEE Robotics and Automation Letters ,2026. [7] F. Renda, C. Armanini, V. Lebastard, F. Candelier, and F. Boyer, “A geometric variable-strain approach for static modeling of soft manipula-tors with tendon and fluidic actuation,” IEEE Robotics and Automation Letters , vol. 5, no. 3, pp. 4006–4013, 2020. [8] F. Boyer, V. Lebastard, F. Candelier, and F. Renda, “Dynamics of continuum and soft robots: A strain parameterization based approach,” 
+
+IEEE transactions on robotics , vol. 37, no. 3, pp. 847–863, 2020. [9] N. Amiri and F. Janabi-Sharifi, “Strain-parameterized coupled dynamics and dual-camera visual servoing for aerial continuum manipulators,” 
+
+arXiv preprint arXiv:2603.23333 , 2026. [10] Z. C. Lipton, J. Berkowitz, and C. Elkan, “A critical review of recurrent neural networks for sequence learning,” arXiv preprint arXiv:1506.00019 , 2015. [11] R. Hasani, M. Lechner, A. Amini, L. Liebenwein, A. Ray, M. Tschaikowski, G. Teschl, and D. Rus, “Closed-form continuous-time neural networks,” Nature Machine Intelligence , vol. 4, pp. 992–1003, 2022. [12] J. Liang, Y. Chen, Y. Wu, Z. Miao, H. Zhang, and Y. Wang, “Adaptive prescribed performance control of unmanned aerial manipulator with disturbances,” IEEE Transactions on Automation Science and Engineer-ing , vol. 20, no. 3, pp. 1804–1814, 2022. [13] Y. Chen, J. Liang, Y. Wu, Z. Miao, H. Zhang, and Y. Wang, “Adap-tive sliding-mode disturbance observer-based finite-time control for unmanned aerial manipulator with prescribed performance,” IEEE trans-actions on cybernetics , vol. 53, no. 5, pp. 3263–3276, 2022. [14] X. Liang, Y. Wang, H. Yu, Z. Zhang, J. Han, and Y. Fang, “Observer-based nonlinear control for dual-arm aerial manipulator systems suffer-ing from uncertain center of mass,” IEEE Transactions on Automation Science and Engineering , vol. 22, pp. 1984–1995, 2024. [15] Q. Fang, P. Mao, L. Shen, and J. Wang, “Robust control based on adap-tive neural network for the process of steady formation of continuous contact force in unmanned aerial manipulator,” Sensors , vol. 23, no. 2, p. 989, 2023. [16] H. Li, Z. Li, J. Liu, X. Zheng, X. Yu, and O. Kaynak, “Adaptive neural network backstepping control method for aerial manipulator based on coupling disturbance compensation,” Journal of the Franklin Institute ,vol. 361, no. 7, p. 106733, 2024. [17] Y. Wu, Z. Zhou, M. Wei, and H. Cheng, “Robust and energy-efficient control for multi-task aerial manipulation with automatic arm-switching,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2024, pp. 8394–8400. [18] M. Wang, Z. Chen, K. Guo, X. Yu, Y. Zhang, L. Guo, and W. Wang, “Millimeter-level pick and peg-in-hole task achieved by aerial manipu-lator,” IEEE Transactions on Robotics , vol. 40, pp. 1242–1260, 2023. [19] L. Bauersfeld, K. Muller, D. Ziegler, F. Coletti, and D. Scaramuzza, “Robotics meets fluid dynamics: A characterization of the induced airflow below a quadrotor as a turbulent jet,” IEEE Robotics and Automation Letters , vol. 10, no. 2, pp. 1241–1248, 2024. [20] C.-C. Chen and H. H.-T. Liu, “Adaptive modeling for downwash effects in multi-uav path planning,” Guidance, Navigation and Control , vol. 1, no. 04, p. 2140005, 2021. [21] B. Wang, Z. Ma, S. Lai, and L. Zhao, “Neural moving horizon estimation for robust flight control,” IEEE Transactions on Robotics , vol. 40, pp. 639–659, 2023. [22] J. Li, L. Han, H. Yu, Y. Lin, Q. Li, and Z. Ren, “Nonlinear mpc for quadrotors in close-proximity flight with neural network downwash prediction,” in 2023 62nd IEEE Conference on Decision and Control (CDC) . IEEE, 2023, pp. 2122–2128. [23] P. Kharitenko, Y. Fan, X. Liu, and Y. Wang, “A spatiotemporal down-wash modeling for agile close-proximity multirotor flight,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2025, pp. 807–812. [24] Y. Zhang, H. Song, Z. Hu, D. Wei, and W. Wang, “Motion control and experimental verification of a continuum aerial manipulator for power grid maintenance operations,” Journal of Field Robotics , pp. 1–18, 2026. [25] K. Cho, B. van Merrienboer, C. Gulcehre, D. Bahdanau, F. Bougares, H. Schwenk, and Y. Bengio, “Learning phrase representations using rnn encoder–decoder for statistical machine translation,” in Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP) , 2014, pp. 1724–1734.

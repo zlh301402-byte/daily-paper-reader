@@ -6,32 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-24
-- 运行时间：2026-09-24 22:22:01 UTC
+- 最新运行日期：2026-09-25
+- 运行时间：2026-09-25 22:50:30 UTC
 - 运行状态：成功
 - 本次总论文数：3
-- 精读区：3
-- 速读区：0
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今天精读3篇空中操作论文，其中两篇8.0分聚焦空中抓取与形态自适应飞行机器人。
-最值得看：用先验进化与任务对齐提升空中抓取，以及推进器集成柔性连续体链接实现形状自适应操作。
-普通读者可优先从“抓取稳定性”和“形态自适应控制”两条线切入，再结合其余精读内容补充理解。
-- 详情：[/202609/24/README](/202609/24/README)
+今日速读3篇：空中连续体机械臂抗气动扰动、灵巧操作样本效率与四旋翼自适应PID齐登场。  
+最值得看的是两篇7分工作——气动扰动下空中连续体机械臂末端位置估计的时序学习，以及用人类引导残差强化学习提升灵巧操作样本效率。  
+普通读者可先读这两篇摘要与方法，再对照6分四旋翼A3C自适应PID，关注后续真实平台验证。
+- 详情：[/202609/25/README](/202609/25/README)
 
 ### 精读区论文标签
-1. [Prior Evolution and Task Alignment for Aerial Grasping](/202609/24/2609.18153v1-prior-evolution-and-task-alignment-for-aerial-grasping)  
-   标签：评分：8.0/10、query:aerial-arm
-   evidence：基于学习与轨迹优化的空中抓取
-2. [A Morphing Aerial Robot With Thruster-Integrated Flexible Continuum Links for Shape Adaptive Aerial Manipulation](/202609/24/2609.19328v1-a-morphing-aerial-robot-with-thruster-integrated-flexible-continuum-links-for-shape-adaptive-aerial-manipulation)  
-   标签：评分：8.0/10、query:aerial-arm
-   evidence：推力器集成柔性连续体连杆的变形空中机器人用于形状自适应空中操作
-3. [AeRSoM: An Aerial Rigid-Soft Integrated Manipulator for Contact-Rich Manipulation](/202609/24/2609.28044v1-aersom-an-aerial-rigid-soft-integrated-manipulator-for-contact-rich-manipulation)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：面向接触操作的刚柔一体空中机械臂与全驱动飞行平台
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation](/202609/25/2609.28716v1-temporal-learning-for-end-effector-position-estimation-under-aerodynamic-disturbances-in-aerial-continuum-manipulation)  
+   标签：评分：7.0/10、query:aerial-arm
+   evidence：无人机搭载空中连续体机械臂末端估计
+2. [Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation](/202609/25/2609.30023v1-res-hil-human-guided-residual-reinforcement-learning-for-sample-efficient-dexterous-manipulation)  
+   标签：评分：7.0/10、query:drone-arm
+   evidence：面向机器人操作的人在环残差强化学习
+3. [Design of Adaptive PID Controller Based On Asynchronous Advantage Actor Critic Learning Method for QuadCopter Control](/202609/25/2609.21082v1-design-of-adaptive-pid-controller-based-on-asynchronous-advantage-actor-critic-learning-method-for-quadcopter-control)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：基于强化学习自适应PID的四旋翼控制
 
 
 <div class="dpr-home-promo-card">

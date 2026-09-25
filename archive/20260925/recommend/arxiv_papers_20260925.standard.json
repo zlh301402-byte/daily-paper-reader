@@ -1,0 +1,131 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-25T22:49:23.668421+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.28716v1",
+      "source": "arxiv",
+      "title": "Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation",
+      "abstract": "This paper investigates temporal neural networks for \\mbox{end-effector} position \\mbox{estimation} of an aerial continuum manipulator (ACM) operating under aerodynamic effects induced by the unmanned aerial vehicle (UAV). An experimental dataset is collected under stationary (\\mbox{rotor-off}) and \\mbox{free-hovering} conditions across continuum robot (CR) configurations and UAV altitudes, providing \\mbox{end-effector} position measurements with and without aerodynamic residuals. To establish a nominal framework, \\mbox{strain-parameterized} kinematic models with progressively richer strain bases are evaluated to balance model complexity and prediction accuracy. The selected nominal model then serves as the baseline for 3D position residual estimation using a \\mbox{closed-form} \\mbox{continuous-time} (CfC) neural network, with a multilayer perceptron (MLP) and a gated recurrent unit (GRU) used for comparison. On unseen test experiments, the CfC achieves an RMSE of \\(22.00\\pm1.70~\\mathrm{mm}\\) over five random seeds, compared with \\(36.38\\pm3.58~\\mathrm{mm}\\) for the MLP and \\(27.72\\pm2.92~\\mathrm{mm}\\) for the GRU, corresponding to reductions of \\(39.52\\%\\) and \\(20.62\\%\\), respectively. These results demonstrate the effectiveness of \\mbox{continuous-time} learning for \\mbox{end-effector} position estimation under aerodynamic disturbances relative to static and \\mbox{discrete-time} learning methods.",
+      "authors": [
+        "Niloufar Amiri",
+        "Houman Masnavi",
+        "Farrokh Janabi-Sharifi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-23T18:57:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.28716v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "aerial continuum manipulator on UAV end-effector estimation",
+      "llm_evidence_cn": "无人机搭载空中连续体机械臂末端估计",
+      "llm_evidence": "无人机搭载空中连续体机械臂末端估计",
+      "canonical_evidence": "无人机搭载空中连续体机械臂末端估计",
+      "llm_tldr_en": "End-effector position of an aerial continuum manipulator is hard to estimate under UAV-induced aerodynamic disturbances. The paper uses temporal neural networks and strain-parameterized kinematic models on rotor-off and free-hovering datasets. The learned model improves position estimation accuracy.",
+      "llm_tldr_cn": "空中连续体机械臂在无人机旋翼气流扰动下，其末端位置难以准确估计，传统运动学模型精度受限。本文采集悬停与旋翼关闭两种工况下的实验数据，评估逐级加细应变基的参数化运动学模型，并引入时序神经网络进行末端位置估计。结果表明该方法能在气动残余扰动下提升估计精度。该工作为空中机械臂的建模与末端定位提供了数据驱动方案。",
+      "llm_tldr": "空中连续体机械臂在无人机旋翼气流扰动下，其末端位置难以准确估计，传统运动学模型精度受限。本文采集悬停与旋翼关闭两种工况下的实验数据，评估逐级加细应变基的参数化运动学模型，并引入时序神经网络进行末端位置估计。结果表明该方法能在气动残余扰动下提升估计精度。该工作为空中机械臂的建模与末端定位提供了数据驱动方案。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21082v1",
+      "source": "arxiv",
+      "title": "Design of Adaptive PID Controller Based On Asynchronous Advantage Actor Critic Learning Method for QuadCopter Control",
+      "abstract": "Quadcopters offer great utility in many applications, but their nonlinear nature and disturbance sensitivity present great control challenges. Basic PID controllers are generally not sophisticated enough to cope with these complexities. This paper suggests a control system that integrates the Asynchronous Advantage Actor-Critic (A3C) algorithm with a PID controller for quadcopter attitude and trajectory tracking. The A3C controller uses parallel agents to optimize PID parameters dynamically using a neural network. A system identification module for the complementary system makes predictions about system states for optimal control policy. The proposed framework was compared with a standard actor-critic (A2C) model. Simulation results verify that they both track accurately. However, the A3C-based controller converges much more for the loss function, as evidenced by reward figures and loss curves, demonstrating better parameter optimization. This shows that A3C-based approach results in improved performance for the control of quadcopter, effectively integrating reinforcement learning and traditional control to achieve higher adaptability.",
+      "authors": [
+        "Ali Jokar",
+        "Aria Alasty"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-17T20:58:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.21082v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL-based adaptive PID for quadcopter control",
+      "llm_evidence_cn": "基于强化学习自适应PID的四旋翼控制",
+      "llm_evidence": "基于强化学习自适应PID的四旋翼控制",
+      "canonical_evidence": "基于强化学习自适应PID的四旋翼控制",
+      "llm_tldr_en": "Quadcopter PID control struggles with nonlinearity and disturbances; this work integrates A3C reinforcement learning to dynamically tune PID gains, using parallel agents and a system identification module, and compares it against standard actor-critic baselines.",
+      "llm_tldr_cn": "四旋翼具有强非线性与扰动敏感性，传统PID控制器难以应对复杂工况。该文提出将异步优势演员-评论家（A3C）算法与PID控制相结合，利用并行智能体和神经网络动态优化PID参数，并引入系统辨识模块预测状态以支撑最优控制策略。实验将其与标准演员-评论家方法对比，表明强化学习调参可改善四旋翼姿态与轨迹跟踪性能，为无人机智能控制提供可行路径。",
+      "llm_tldr": "四旋翼具有强非线性与扰动敏感性，传统PID控制器难以应对复杂工况。该文提出将异步优势演员-评论家（A3C）算法与PID控制相结合，利用并行智能体和神经网络动态优化PID参数，并引入系统辨识模块预测状态以支撑最优控制策略。实验将其与标准演员-评论家方法对比，表明强化学习调参可改善四旋翼姿态与轨迹跟踪性能，为无人机智能控制提供可行路径。",
+      "llm_tags": [
+        "query:drone-arm:composite"
+      ],
+      "matched_query_tag": "query:drone-arm:composite",
+      "matched_query_text": "Papers central to 强化学习与无人机机械臂、过驱动无人机与机械臂相关论文, especially work that connects or combines: reinforcement learning for robot arm control; unmanned aerial vehicle with robotic arm; aerial manipulation using reinforcement learning; deep reinforcement learning for aerial manipulation; aerial manipulator dynamics and control; over-actuated drone control with manipulator; reinforcement learning for overactuated UAV manipulator; reinforcement learning for drone manipulator control; over actuated drones with robotic arms research; aerial manipulation using deep reinforcement learning methods.",
+      "matched_requirement_id": "req-composite-drone-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.30023v1",
+      "source": "arxiv",
+      "title": "Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation",
+      "abstract": "Imitation learning enables robots to acquire manipulation skills from demonstrations, but the resulting policies can fail outside the training data, while collecting more demonstrations requires substantial human effort. Human-in-the-loop reinforcement learning uses corrective feedback during online training, but typically learns the complete task policy rather than refining a pretrained imitation policy. We introduce Res-HIL, a human-in-the-loop residual reinforcement learning framework that learns corrective actions on top of a frozen imitation policy. Each human intervention provides two complementary learning signals: direct supervision of the residual policy and reward shaping of preceding autonomous behavior. Res-HIL combines these signals with zero initialization of the residual policy to stabilize and accelerate online learning. We evaluate Res-HIL on five contact-rich manipulation tasks spanning high-precision and long-horizon behaviors. With only 20 initial demonstrations, Res-HIL outperforms state-of-the-art full-policy human-in-the-loop reinforcement learning and residual fine-tuning without human guidance on every task after ten minutes of online training. Res-HIL improves its pretrained base policies and outperforms imitation policies trained with five times more demonstrations. An ablation study shows that direct residual supervision is critical to performance, while intervention-aware reward shaping substantially improves training efficiency.",
+      "authors": [
+        "Mariia Iavorskaia",
+        "Christian Dietz",
+        "Sebastian Albrecht",
+        "Majid Khadiv"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T16:00:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.30023v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Human-in-the-loop residual RL for robot manipulation",
+      "llm_evidence_cn": "面向机器人操作的人在环残差强化学习",
+      "llm_evidence": "面向机器人操作的人在环残差强化学习",
+      "canonical_evidence": "面向机器人操作的人在环残差强化学习",
+      "llm_tldr_en": "Res-HIL learns corrective residual actions on top of a frozen imitation policy, using each human intervention for direct supervision and reward shaping to boost sample efficiency.",
+      "llm_tldr_cn": "针对模仿学习策略在训练分布外易失败、而补充演示代价高的问题，本文提出人在环残差强化学习框架Res-HIL。该方法在冻结的模仿策略之上学习纠正性残差动作，每次人工干预同时提供残差策略的直接监督与对自主行为的奖励塑形。实验表明其在灵巧操作任务中显著提升样本效率与鲁棒性。",
+      "llm_tldr": "针对模仿学习策略在训练分布外易失败、而补充演示代价高的问题，本文提出人在环残差强化学习框架Res-HIL。该方法在冻结的模仿策略之上学习纠正性残差动作，每次人工干预同时提供残差策略的直接监督与对自主行为的奖励塑形。实验表明其在灵巧操作任务中显著提升样本效率与鲁棒性。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
