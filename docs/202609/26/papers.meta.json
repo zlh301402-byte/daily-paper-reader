@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-26",
+  "date": "2026-09-26",
+  "generated_at": "2026-09-26T22:17:36",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/26/2609.28716v1-temporal-learning-for-end-effector-position-estimation-under-aerodynamic-disturbances-in-aerial-continuum-manipulation",
+      "section": "deep",
+      "title_en": "Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation",
+      "authors": "Niloufar Amiri, Houman Masnavi, Farrokh Janabi-Sharifi",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.28716v1",
+      "score": "8.0",
+      "evidence": "无人机气动干扰下空中连续体机械臂末端估计",
+      "tldr": "针对空中连续体机械臂在无人机气动扰动下末端位置估计精度不足的问题，本文采集旋翼关闭与自由悬停、不同连续体构型和无人机高度下的实验数据，并先评估应变参数化运动学模型以选取标称基线。在此基础上，使用闭式连续时间（CfC）神经网络估计三维位置残差，并与MLP和GRU进行对比。在未见测试中，CfC取得22.00±1.70 mm的RMSE，较MLP和GRU分别降低39.52%和20.62%。结果表明连续时间学习能有效提升气动扰动下的末端位置估计精度。",
+      "tags": "query:drone-arm",
+      "abstract_en": "This paper investigates temporal neural networks for \\mbox{end-effector} position \\mbox{estimation} of an aerial continuum manipulator (ACM) operating under aerodynamic effects induced by the unmanned aerial vehicle (UAV). An experimental dataset is collected under stationary (\\mbox{rotor-off}) and \\mbox{free-hovering} conditions across continuum robot (CR) configurations and UAV altitudes, providing \\mbox{end-effector} position measurements with and without aerodynamic residuals. To establish a nominal framework, \\mbox{strain-parameterized} kinematic models with progressively richer strain bases are evaluated to balance model complexity and prediction accuracy. The selected nominal model then serves as the baseline for 3D position residual estimation using a \\mbox{closed-form} \\mbox{continuous-time} (CfC) neural network, with a multilayer perceptron (MLP) and a gated recurrent unit (GRU) used for comparison. On unseen test experiments, the CfC achieves an RMSE of \\(22.00\\pm1.70~\\mathrm{mm}\\) over five random seeds, compared with \\(36.38\\pm3.58~\\mathrm{mm}\\) for the MLP and \\(27.72\\pm2.92~\\mathrm{mm}\\) for the GRU, corresponding to reductions of \\(39.52\\%\\) and \\(20.62\\%\\), respectively. These results demonstrate the effectiveness of \\mbox{continuous-time} learning for \\mbox{end-effector} position estimation under aerodynamic disturbances relative to static and \\mbox{discrete-time} learning methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/26/2609.21580v1-tilt-as-a-certified-resource-preserving-motor-wrench-rate-authority-on-articulated-multirotors",
+      "section": "quick",
+      "title_en": "Tilt as a Certified Resource: Preserving Motor Wrench-Rate Authority on Articulated Multirotors",
+      "authors": "Giuseppe Silano, Martin Saska",
+      "date": "2026-09-18",
+      "pdf": "https://arxiv.org/pdf/2609.21580v1",
+      "score": "7.0",
+      "evidence": "过驱动关节式多旋翼的力矩权限与控制分配",
+      "tldr": "全驱动多旋翼不仅要跟踪标称力旋量，还需在扰动下保留快速调节力旋量的能力。传统能耗最小分配器忽略该动态限制，而最大化准备度会产生拓扑断开的不可行最优解；固定几何对称平台还面临零和退化。本文利用主动变体，将伺服倾转视为几何资源，构建仅含电机的准备度证书并作为 CBF 嵌入统一物理指令 QP。强阵风仿真中，该滤波器约束状态并保持力旋量速率权限。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Fully-actuated multirotor aerial vehicles must not only track nominal wrenches but retain the \"readiness\" to modulate them rapidly under disturbances. Classical effort-minimizing allocators ignore this dynamic limit, whereas maximizing readiness leads to topologically disconnected optimal sheets demanding physically impossible actuator rates. Enforcing a readiness safety floor on fixed-geometry symmetric platforms further encounters a zero-sum degeneracy: motor-speed redistribution cannot improve authority without conceding wrench tracking. This paper uses active morphology to break the degeneracy, treating servo tilt as a geometric resource supplying authority-recovery directions unavailable to static rotors. We construct a configuration-dependent, motor-only readiness certificate - the log-volume of the reachable wrench-rate set - that explicitly excludes servo capacity, preventing a \"ghost capacity fallacy\" in which the certificate would falsely credit slow mechanical kinematic limits instead of collapsing accurately at motor saturation. The certificate is enforced as a Control Barrier Function (CBF) within a Unified Physical-Command Quadratic Program acting on motor torques and servo setpoints. Closed-loop simulations of an articulated octorotor under severe gust disturbances show classical allocators diverging and uncertified articulated allocators violating the safety floor, while the proposed CBF filter bounds the system state and preserves vehicle authority.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

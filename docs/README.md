@@ -6,32 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-25
-- 运行时间：2026-09-25 22:50:30 UTC
+- 最新运行日期：2026-09-26
+- 运行时间：2026-09-26 22:17:33 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：0
-- 速读区：3
+- 本次总论文数：2
+- 精读区：1
+- 速读区：1
 
 ### 今日简报（AI）
-今日速读3篇：空中连续体机械臂抗气动扰动、灵巧操作样本效率与四旋翼自适应PID齐登场。  
-最值得看的是两篇7分工作——气动扰动下空中连续体机械臂末端位置估计的时序学习，以及用人类引导残差强化学习提升灵巧操作样本效率。  
-普通读者可先读这两篇摘要与方法，再对照6分四旋翼A3C自适应PID，关注后续真实平台验证。
-- 详情：[/202609/25/README](/202609/25/README)
+今日精读1篇、速读1篇，聚焦空中连续体机械臂与多旋翼控制。最值得看的是空中连续体操作在气动扰动下的末端位置时序学习估计（8.0分），以及铰接多旋翼通过倾角保持电机力矩变化率权限（7.0分）。普通读者可先读精读那篇，了解扰动下如何稳住末端估计，再顺带看速读篇理解倾角控制思路。
+- 详情：[/202609/26/README](/202609/26/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation](/202609/26/2609.28716v1-temporal-learning-for-end-effector-position-estimation-under-aerodynamic-disturbances-in-aerial-continuum-manipulation)  
+   标签：评分：8.0/10、query:drone-arm
+   evidence：无人机气动干扰下空中连续体机械臂末端估计
 
 ### 速读区论文标签
-1. [Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation](/202609/25/2609.28716v1-temporal-learning-for-end-effector-position-estimation-under-aerodynamic-disturbances-in-aerial-continuum-manipulation)  
-   标签：评分：7.0/10、query:aerial-arm
-   evidence：无人机搭载空中连续体机械臂末端估计
-2. [Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation](/202609/25/2609.30023v1-res-hil-human-guided-residual-reinforcement-learning-for-sample-efficient-dexterous-manipulation)  
+1. [Tilt as a Certified Resource: Preserving Motor Wrench-Rate Authority on Articulated Multirotors](/202609/26/2609.21580v1-tilt-as-a-certified-resource-preserving-motor-wrench-rate-authority-on-articulated-multirotors)  
    标签：评分：7.0/10、query:drone-arm
-   evidence：面向机器人操作的人在环残差强化学习
-3. [Design of Adaptive PID Controller Based On Asynchronous Advantage Actor Critic Learning Method for QuadCopter Control](/202609/25/2609.21082v1-design-of-adaptive-pid-controller-based-on-asynchronous-advantage-actor-critic-learning-method-for-quadcopter-control)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：基于强化学习自适应PID的四旋翼控制
+   evidence：过驱动关节式多旋翼的力矩权限与控制分配
 
 
 <div class="dpr-home-promo-card">

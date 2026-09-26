@@ -1,0 +1,625 @@
+Title: Tilt as a Certified Resource: Preserving Motor Wrench-Rate Authority on Articulated Multirotors
+
+URL Source: https://arxiv.org/pdf/2609.21580v1
+
+Published Time: Mon, 21 Sep 2026 00:47:17 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Tilt as a Certified Resource: Preserving Motor Wrench-Rate Authority on Articulated Multirotors 
+
+Giuseppe Silano 1 and Martin Saska 2
+
+Abstract —Fully-actuated multirotor aerial vehicles must not only track nominal wrenches but retain the “readiness” to modu-late them rapidly under disturbances. Classical effort-minimizing allocators ignore this dynamic limit, whereas maximizing readi-ness leads to topologically disconnected optimal sheets demanding physically impossible actuator rates. Enforcing a readiness safety floor on fixed-geometry symmetric platforms further encounters a zero-sum degeneracy: motor-speed redistribution cannot improve authority without conceding wrench tracking. This paper uses active morphology to break the degeneracy, treating servo tilt as a geometric resource supplying authority-recovery directions un-available to static rotors. We construct a configuration-dependent, motor-only readiness certificate—the log-volume of the reach-able wrench-rate set—that explicitly excludes servo capacity, preventing a “ghost capacity fallacy” in which the certificate would falsely credit slow mechanical kinematic limits instead of collapsing accurately at motor saturation. The certificate is enforced as a Control Barrier Function (CBF) within a Unified Physical-Command Quadratic Program acting on motor torques and servo setpoints. Closed-loop simulations of an articulated octorotor under severe gust disturbances show classical allocators diverging and uncertified articulated allocators violating the safety floor, while the proposed CBF filter bounds the system state and preserves vehicle authority. 
+
+Index Terms —Aerial Systems: Mechanics and Control, Robot Safety, Optimization and Optimal Control, Redundant Robots. 
+
+I. I NTRODUCTION 
+
+Fully-actuated Multi Rotor Aerial Vehicles (MRAVs) have expanded aerial robotics’ operational envelope [1], [2], de-coupling translational and rotational dynamics through over-actuation to track arbitrary six-degree-of-freedom trajectories and sustain physical interaction with the environment [3]. This redundancy introduces the classically ill-posed control allocation problem: mapping a 6-dimensional target wrench to a higher-dimensional actuator-command space [4]. The classical answer minimizes actuator effort via the Moore–Penrose pseudo-inverse or a quadratic program [4]— computationally light, but blind to a distinct dynamic limit we call wrench-rate readiness : the rotors’ remaining capacity                 
+
+> 1Giuseppe Silano is with the Department of Power Generation Tech-nologies and Materials, Ricerca sul Sistema Energetico (RSE) S.p.A., 20134 Milan, Italy, and also with the Department of Cybernetics, Czech Technical University in Prague, 12135 Prague, Czech Republic (e-mail:
+
+giuseppe.silano@fel.cvut.cz ).               
+
+> 2Martin Saska is with the Department of Cybernetics, Czech Technical University, 12135 Prague, Czech Republic (e-mail:
+
+martin.saska@fel.cvut.cz ). This work was partially funded by the research fund for the Italian Electrical System (decree n. 388, Nov. 6th, 2024), by the GA ˇ CR project no. 26-22419S, by the CTU grant no. SGS26/077/OHK3/1T/13, and by the European Union under ROBOPROX reg. no. CZ.02.01.01/00/22 008/0004590. The author used Google Gemini 3 and Anthropic Claude 5 Opus for proofreading and exposition refinement, but independently verified all outputs and assumes full responsibility for the article’s content. 
+
+to generate rapid wrench variations. Propeller thrust and drag both scale quadratically with spin rate, imposing competing limits: a slow rotor has a shallow thrust slope and cannot modulate force quickly, while a rotor near saturation has spent its torque budget fighting drag and has no headroom to accelerate. Readiness therefore peaks at an interior sweet spot and collapses at both extremes of the speed range. Consider an articulated MRAV holding a contact force against a wall when a gust arrives: it may track its commanded wrench exactly, every rotor inside its speed limits, effort-minimization problem solved to optimality, and still fail—the rotors spinning fast enough that drag has consumed the torque budget, leaving no capacity to accelerate [5], [6]. Producing a nominal wrench and retaining the authority to change it are distinct capabilities. Recent geometric work formalizes the latter through a drag-aware authority co-metric, Drag-Aware Aerodynamic Ma-nipulability (DAAM), whose log-determinant measures the reachable wrench-rate volume [6], [7]. The co-metric D(v),with v ∈ Rn the rotor spin rates, maps actuator bounds into task space; and the readiness level L(v) = ln det D(v) is that set’s scalar log-volume. Maximizing L along the task fiber —the continuum of redundant rotor speeds satisfying the current wrench command—repels the allocation from both collapse modes; two obstacles remain. 
+
+The first is topological: the fiberwise maximizer is set-valued, with optimal selections on disconnected sheets. The signed-quadratic thrust map partitions rotor-speed space into 
+
+sign orthants —convex regions where every rotor keeps a fixed spin direction, bounded by loci where it reverses. At such a zero crossing the thrust slope vanishes, the allocation Jacobian degenerates, and the actuator rate needed to sustain a bounded wrench rate diverges, so the fiber decomposes into components a bounded-rate allocator cannot cross (Figure 1). Low-pass filtering bounds the rate demand but introduces phase lag, dragging the trajectory through the low-authority crossing rather than avoiding it. 
+
+The second is geometric , and motivates this paper. Rather than maximize authority, one may certify it via a floor on L as a Control Barrier Function (CBF) [8], [9]. On symmetric fixed-geometry vehicles this meets a structural limitation [10]: at a regular constrained optimum—interior in rotor speed, wrench-rate Jacobian of full row rank—every motor-speed perturbation preserving the commanded wrench leaves L unchanged to first order, so the constant-wrench ascent available to motor redistribution is zero. Physically, the readiness gained by accelerating one rotor is cancelled by decelerating another; authority at the floor can then be recovered only by conceding wrench tracking. Section IV formalizes this; the configuration arXiv:2609.21580v1 [cs.RO] 18 Sep 2026 vk 
+
+> w
+> +v⋆
+> −v⋆
+> 0Σ+Σ−
+> slack δ
+> zero-crossing (loss of authority) motor saturation motor saturation certified safe band certified safe band
+
+Figure 1: Allocation section over commanded wrench w for rotor speed vk . Greedy maximization jumps between optimal sheets Σ±
+
+(dashed), demanding physically impossible actuator rates. The pro-posed barrier ( h ≥ 0) strictly confines the allocation to a single certified band, resolving authority-tracking conflicts via an explicit wrench slack δ.
+
+that efficient hover selects is exactly where motor-only certi-fication becomes indefensible. We break the degeneracy through active morphology [1], [2], treating servo tilt as geometric resource rather than a tracking variable: physically tilting the rotors alters the allo-cation matrix’s geometry, contributing wrench-rate directions unreachable by redistributing spin among fixed rotors. We are deliberate about scope—articulation is bidirectional, and an arbitrary tilt may raise or lower the metric—but a strictly favor-able direction always exists where static motor redistribution has none, and a certified allocator will select it. We therefore certify rather than maximize: a configuration-dependent, motor-only readiness certificate enforces a floor on the log-determinant, crediting no servo authority and re-maining conservative in the L¨ owner order—not merely from caution, but because a servo-inclusive metric stays finite at motor saturation and would report a vehicle with no torque headroom as healthy. Restricting the metric to motor capacity preserves the divergence of L at saturation and, with it, the property that a single inequality fences both collapse modes (Section IV). 
+
+Contributions. The core contributions of this manuscript are fourfold:  
+
+> •
+
+A first-order geometric characterization of the motor-only readiness degeneracy at a regular constrained optimum, with explicit regularity hypotheses (Section IV).  
+
+> •
+
+A configuration-dependent readiness certificate, conser-vative in the L¨ owner order, whose conservatism is what preserves the saturation indication that a servo-inclusive metric destroys (Sections III–IV).  
+
+> •
+
+Enforcement of that certificate on motor and servo com-mands through a memoryless Unified Physical-Command Quadratic Program (UPC-QP) with relative-degree-one barrier dynamics and an online feasibility margin, struc-turally free of integrator wind-up (Section V).  
+
+> •
+
+A controlled three-way evaluation isolating the causal contribution of the readiness constraint from articulation alone under severe disturbance, in which an articulated allocator without the certificate still violates the floor (Section VI). II. R ELATED WORK 
+
+Allocation for overactuated systems is mature [4]; MRAV specialization is well developed: tilted-rotor platforms decou-ple translational and rotational dynamics [2], [11]; actuation properties are characterized via force–moment decoupling [5]; surveys cover the platform class [1] and applications [3]. The dominant allocator—pseudo-inverse or effort-minimizing program—ignores actuator bounds and saturates afterwards. Constrained dynamic allocation embeds those limits directly [12], reference governors enforce admissibility [13], full-pose tracking extends to limited actuation [14] and bounded lateral force [15], and null-space methods exploit redundancy instantaneously [16] or over a horizon [17]. All certify that the commanded wrench is currently attainable ; none floors the capacity to change it, which is what decides whether a gust can be answered. Measuring capability by reachable-set volume originates with Yoshikawa’s manipulability index [18]. DAAM [6] adapts this to MRAVs by weighting each rotor by its aerodynamic 
+
+state, so the metric collapses as drag consumes torque margin, trading off against energy when maximized along the task fiber [7]. We adopt this co-metric but not its use: a floor rather than a maximum sidesteps the set-valued, disconnected fiberwise maximizer. Such a floor is naturally a CBF [19]. Determinant-type capability barriers appear in manipulator control: [8] certify singularity avoidance with an exponential CBF on the manip-ulability index. Closest to this work, [20] certify a margin from rank-deficient regions of a state-dependent input–output map, using one barrier per eigenvalue—a construction requiring 
+
+simple eigenvalues. This is where our setting diverges: a symmetric airframe carries exactly repeated eigenvalues by construction, so per-eigenvalue barriers lose differentiability precisely where we need them, whereas ln det D stays smooth wherever D ≻ 0. Their map is also weighted uniformly, while ours carries the drag-dependent capacity producing the collapse in the first place. Feasibility of the enforcing program is a known concern, addressed through conditions on the optimal control problem, input-constrained constructions, soft-minimum barriers, and composite certificates for actuator lag [19]; we inherit rather than resolve it, since our barrier acts on physical commands whose admissible set is a box, giving a closed-form per-step margin that we monitor instead of assume. Rotor tilting is itself established for reshaping the feasible wrench set [2], [11], with recent omnidirectional platforms exploring actuation-aware allocation experimentally [17], [21]: there, tilt reaches wrenches; we use it to preserve the ability to change them. Fault-tolerant control is the complement in time, accommodating rotor loss after it occurs [22]; readiness acts before. III. S YSTEM MODEL AND READINESS CERTIFICATE 
+
+This section fixes the vehicle model, constructs the readiness co-metric, and separates three objects the paper keeps distinct. Every quantity here is computable from the current state by a single m × m factorization. A. Physical actuator dynamics 
+
+The vehicle carries n > m = 6 actively articulable rotor groups. Rotor i spins at a signed rate vi, axis tilted by servo angle αi. Physical inputs are motor torques τ ∈ Rn and the servo setpoints αc ∈ Rn:
+
+Jm,i ˙vi = τi − bivi|vi|, |τi| ≤ ¯τi, (1) 
+
+˙αi = 1
+
+> τs
+
+ αc,i − αi
+
+, | ˙αi| ≤ ¯u, αi ∈ [α, ¯α], (2) with lumped motor–propeller inertia Jm,i , drag coefficient 
+
+bi, torque limit ¯τi, servo time constant τs, and servo rate limit ¯u. The first-order rotor model with quadratic drag (1) is standard and experimentally identified [5]; the servo is a symmetric first-order lag, chosen to keep physical commands in the barrier’s first derivative—whether that suffices to avoid high-order constructions [23] is established in Section V, not assumed. Equation (1) determines the certificate’s basis. For vi > 0
+
+the admissible spin acceleration satisfies | ˙vi| ≤ ¯ai(vi), where 
+
+¯ai(vi) = (¯ τi − biv2 
+
+> i
+
+)/J m,i , vsat  
+
+> i
+
+= p¯τi/b i, (3) is the symmetric acceleration capacity : maximal at rest, de-creasing monotonically to zero at the drag-limited terminal speed vsat  
+
+> i
+
+, where drag consumes the entire torque budget— formalizing that a rotor may be far from any speed limit yet have no capacity to accelerate. 
+
+B. Wrench map and wrench-rate jacobians 
+
+The body wrench follows the signed-quadratic thrust map 
+
+w = A(α) ϕ(v) ∈ Rm, ϕi(vi) = vi|vi|, (4) where A•i ∈ Rm collects the thrust direction and induced drag torque of rotor i at cant αi. With A′•i = ∂A •i/∂α i the tilt direction of column i, differentiating (4) gives 
+
+˙w = Jv (v, α ) ˙ v + Jα(v, α ) ˙ α, (5) with Jv = 2 A(α) diag( |v|) and [Jα]•i = A′•i ϕi(v). Substi-tuting (1)–(2) renders the wrench rate affine in the physical command u = [ τ⊤, α ⊤ 
+
+> c
+
+]⊤,
+
+˙w = M (v, α ) u + d(v, α ), (6) with input map and drift 
+
+M =  Jv Dm 1 
+
+> τs
+
+Jα
+
+, d = −Jv Dm b ⊙ ϕ(v) − 1 
+
+> τs
+
+Jα α, (7) where Dm = diag( J−1
+
+> m,i
+
+), b = ( b1, . . . , b n), and ⊙ is the elementwise product. Drift d collects command-independent terms: drag torque to overcome and the servo lag on current tilt. Equation (6) is the form the Section V allocator acts on. 
+
+C. The motor-only readiness co-metric 
+
+Weighting each rotor by its capacity (3), the wrench rates achievable by the motors at fixed articulation contain the ellipsoid E = {Jv W 1/2ζ : ∥ζ∥2 ≤ 1} with W = diag(¯ a2 
+
+> i
+
+),whose squared volume is proportional to the determinant of the DAAM co-metric 
+
+D(v, α ) = Jv W J ⊤ 
+
+> v
+
+= 4 A(α) Ψ( v) A(α)⊤, (8)                  
+
+> ˙v1
+> ˙v2
+> 2¯ ai
+> (a) |˙vi| ≤ ¯ai(vi)
+> Jv
+> (5) E
+> (b) zonotope ⊇ellipsoid E
+> det √ν1√ν2
+> (c) det D=Q
+> kνk
+> αreshapes A(α), hence E
+
+Figure 2: Readiness certificate geometry. (a) Actuator-rate box bounded by symmetric capacity ¯ai(vi). (b) Reachable wrench-rate zonotope under-approximated by inscribed ellipsoid E. (c) Readiness level L = ln det D measures the log-volume of this inner approxi-mation. 
+
+with Ψ = diag( ψi) and the per-rotor readiness weight is 
+
+ψi(vi) = v2 
+
+> i
+
+¯ai(vi)2, (9) where a prime denotes differentiation with respect to the rotor’s own spin rate, ψ′ 
+
+> i
+
+= d ψi/dvi. The scalar readiness level and the shifted safety barrier are 
+
+L(v, α ) = ln det D(v, α ), h(v, α ) = L(v, α ) − ℓmin , (10) where ℓmin ∈ R is the designer-chosen readiness floor . The certified set is {(v, α ) : h(v, α ) ≥ 0}, and Section VI sets 
+
+ℓmin relative to nominal hover readiness. Two properties of (9) explain why a single scalar inequality suffices: ψi vanishes at vi = 0 (zero thrust slope, no wrench rate contribution) and at vi = vsat  
+
+> i
+
+(¯ai = 0 , no acceleration capacity)—in either case det D loses that rotor’s contribution, so a floor on L fences both failure modes, dropout and saturation, without auxiliary logic. Moreover E is the image of the unit 2-ball, contained in the actuator-rate box, so (8) under-approximates the true reachable zonotope (Figure 2) and 
+
+L never overstates authority; we avoid the maximum-volume (L¨ owner–John) ellipsoid, since the 2-ball image is closed-form and differentiable in (v, α ), and the resulting conservatism is one-sided, hence safe. 
+
+Remark 1 (Three distinct objects) . The motor-only co-metric 
+
+D(v, α ) in (8) , depending only on current state, is the sole 
+
+basis of barrier h; the augmented metric Dart = D +P 
+
+> i
+
+ρiA′•iA′⊤ •i , with ρi = ¯ u2ϕi(v)2, accounting for wrench rate from servo motion, is used in Section IV only to quantify the authority the certificate declines to credit and never enters a control constraint; and the plant (1) –(2) supplies the actuator rates, with u the only quantity the allocator commands. Proposition 6 shows that restricting the certificate to motor capacity is the right choice. D. Gradients in closed form 
+
+Both gradients needed to enforce (10) are available analyt-ically at every control instant. 
+
+Lemma 2 (Readiness gradients) . Let D(v, α ) ≻ 0 and define the rotor leverage si and tilt cross-leverage ci,
+
+si = A⊤•iD−1A•i, ci = A⊤•iD−1A′•i. (11) 
+
+Then 
+
+∂L ∂v i
+
+= 4 ψ′
+
+> i
+
+(vi) si, ∂L ∂α i
+
+= 8 ψi(vi) ci. (12) Proof. By Jacobi’s formula, ∂ ln det D = tr( D−1∂D ). Only the i-th term of (8) depends on vi or αi: ∂D/∂v i = 4 ψ′
+
+> i
+
+A•iA⊤•i
+
+and ∂D/∂α i = 4 ψi
+
+ A′•iA⊤•i + A•iA′⊤ •i
+
+. Taking traces against 
+
+D−1 gives (12), using symmetry of D−1.Both expressions share one factorization of D, so the cost per step is a single m × m inverse and 2n quadratic forms— negligible for embedded flight control. Define the capacity-weighted leverage score σi = 4 ψisi.The trace identity gives 
+
+P 
+
+> i
+
+σi = tr( D−1D) = m, (13) so the m wrench dimensions are shared among n rotors, σi
+
+the fraction of readiness volume rotor i supports. This also quantifies the cost of losing a rotor: setting ψi = 0 
+
+removes the rank-one term 4ψiA•iA⊤•i from (8), the matrix determinant lemma gives det  D−4ψiA•iA⊤•i
+
+ = det( D) (1 −
+
+σi), so the readiness drop is exactly 
+
+∆i = − ln  1 − σi
+
+. (14) The fraction σi → 1 marks an essential rotor whose loss makes 
+
+D singular, ∆i → ∞ . On a symmetric platform at uniform spin, σi = m/n , and (14) reduces to the finite dropout gap 
+
+∆ = ln  n/ (n − m)—a bounded, predictable degradation. Equation (13) has one further consequence: when every σi is equal, ∇v L is proportional to the vector of ones, so a constant-wrench motor redistribution trades readiness between rotors at no net gain—stated precisely with regularity conditions in Section IV. IV. A RTICULATION AS A READINESS RESOURCE 
+
+We now show that rotor-speed redistribution alone cannot defend the certificate at the configuration efficient flight se-lects, that articulation supplies what is missing, and that the certificate must nonetheless exclude servo authority. 
+
+A. The zero-sum degeneracy 
+
+Assumption 1. v⋆ is interior to {v : 0 < v < v sat }, Jv (v⋆)
+
+has full row rank m, and v⋆ is a regular local maximizer of L(·, α ) subject to w(v, α ) = w⋆, so a unique Lagrange multiplier λ ∈ Rm exists. 
+
+Proposition 3 (Zero-sum authority degeneracy) . Under As-sumption 1, ∇v L(v⋆) = Jv (v⋆)⊤λ, and the constant-wrench authority ascent available through rotor-speed redistribution, 
+
+γ = max ∇v L⊤ξ : Jv ξ = 0 , |ξ| ≤ ¯a , (15) 
+
+is zero. Here ξ ∈ Rn is a candidate spin-acceleration pertur-bation. Proof. Interiority removes the box constraints; full row rank of Jv (v⋆) is the linear independence constraint qualification under which λ exists uniquely. The first-order necessary con-dition for the constrained maximizer is therefore ∇v L(v⋆) = 
+
+Jv (v⋆)⊤λ. Any feasible ξ in (15) lies in ker Jv (v⋆), whence 
+
+∇v L⊤ξ =  J⊤ 
+
+> v
+
+λ⊤ξ = λ⊤ Jv ξ = 0 . (16)               
+
+> ker Jv
+> ∇vLv⋆
+> (a) fixed geometry
+> ∇vL⊥ker Jv⇒γ= 0 ker Jv
+> ∇vLJα˙αγart >0
+> (b) articulated tilt leaves the fibre at constant wrench
+
+Figure 3: Authority ascent geometry. (a) At v⋆, the readiness gradient is orthogonal to ker Jv , yielding zero constant-wrench ascent (γ = 0 ). (b) Active tilt supplies a recovery direction outside ker Jv ,restoring positive ascent ( γart > 0) at the same commanded wrench. 
+
+The linear objective therefore vanishes on the entire feasible set, which is nonempty since ξ = 0 is admissible, so its maximum is zero. Two qualifications: the result is first-order —no admissible constant-wrench perturbation increases L to first order, not that the state cannot move—and local , holding at v⋆ under Assumption 1. What it establishes is that the recovery direction available to rotor-speed redistribution vanishes exactly where readiness is optimal, so a motor-only allocator meeting the floor there must concede wrench tracking to restore authority. The mechanism is concrete (Figure 3a): on a symmetric octorotor in hover, n = 8 , m = 6 leave a genuine two-dimensional null space, and since all rotors share an operating point, (13) gives every rotor σi = m/n and ∇v L ∝ 1.Accelerating one rotor group while holding the wrench forces compensating deceleration elsewhere, and since every rotor has identical thrust sensitivity and drag headroom, the readi-ness gained is cancelled exactly by the readiness lost—the exchange is zero-sum, which is (16) read backwards. 
+
+B. Restoring the ascent through articulation 
+
+Admitting the servo tilt rates μ = ˙α ∈ Rn as a second resource enlarges (15) to 
+
+γart = max  
+
+> ξ,μ
+
+∇v L⊤ξ + ∇αL⊤μ
+
+s.t. Jv ξ + Jαμ = 0 , |ξ| ≤ ¯a, |μ| ≤ ¯u, (17) where the equality constraint holds the commanded wrench— tilt perturbs it, motors absorb the perturbation (Figure 3b). This 
+
+actuator-envelope quantity bounds what the actuators could do at the current state; Section V decides what they actually do. 
+
+Proposition 4 (Certified articulated ascent) . Let J+ 
+
+> v
+
+be the Moore–Penrose pseudoinverse; define the reduced tilt gradient 
+
+and the induced motor-correction direction 
+
+˜g = ∇αL − J⊤
+
+> α
+
+ J+
+
+> v
+
+⊤∇v L, z = J+ 
+
+> v
+
+Jα sign(˜ g). (18) 
+
+Then γart ≥ β ∥˜g∥1 ¯u, with the dimensionless feasibility factor β = min {1, min i ¯ai/(¯ u|zi|)}.Proof. Take the tilt rate μ⋆ = ¯ u sign(˜ g), which saturates the servo box, and the minimum-norm motor correction ξ⋆ =
+
+−J+ 
+
+> v
+
+Jαμ⋆ = −¯uz holding the wrench, so the pair satisfies the equality constraint of (17) by construction. Substituting into the objective and using sign(˜ g)⊤ ˜g = ∥˜g∥1 gives ∇v L⊤ξ⋆ +
+
+∇αL⊤μ⋆ = ∥˜g∥1 ¯u. The pair need not be admissible, since ξ⋆may exceed the motor box; but scaling both components by 
+
+β ∈ (0 , 1] preserves the equality constraint, scales the objective linearly, and by the definition of β yields |βξ ⋆i | = β ¯u|zi| ≤ ¯ai
+
+for every i. The scaled pair is thus feasible and attains β∥˜g∥1 ¯u,which lower-bounds the maximum. The factor β is the price of holding the wrench: tilting perturbs it, motors must undo the perturbation, and β < 1
+
+when they lack headroom to do so at full servo rate. At v⋆ the construction simplifies: since ∇v L vanishes there, the second term of (18) drops and ˜g becomes purely geometric, 
+
+˜gi = 2A⊤•i(AA ⊤)−1A′•i, independent of spin, alternating in sign around a symmetric airframe—opposite-sign tilt on adjacent arms inflates readiness volume while induced wrench perturbations cancel in pairs. A gradient proportional to 1
+
+cannot do this in the rotor-speed null space, where the same pairing cancels the readiness gain as well; articulation escapes the trade because it changes the geometry of A(α) rather than redistributing effort within a fixed one, avoiding the drag bottleneck entirely. 
+
+Remark 5 (Bidirectionality) . Articulation is not uniformly beneficial: an arbitrary tilt perturbation may lower L as easily as raise it. Proposition 4 is an existence statement: a favorable direction exists where rotor-speed redistribution has none. C. Why the certificate excludes servo authority 
+
+Servo motion produces wrench rate, so a metric crediting it exists: Dart = D + P 
+
+> i
+
+ρiA′•iA′⊤ •i with ρi = ¯ u2ϕi(v)2. We deliberately do not certify against it. 
+
+Proposition 6 (Conservatism and saturation indication) . (i) 
+
+D ⪯ Dart in the L¨ owner order, hence L ≤ Lart point-wise and {L ≥ ℓmin } ⊆ {Lart ≥ ℓmin }: certifying 
+
+h ≥ 0 certifies the articulated authority as well. (ii) If 
+
+rank A′•1ϕ1, . . . , A ′•nϕn
+
+ = m at saturation, then Lart re-mains finite as v → vsat , whereas L → −∞ .Proof. (i) The difference Dart −D = P 
+
+> i
+
+ρiA′•iA′⊤ •i is a sum of rank-one positive semidefinite terms, hence ⪰ 0. Monotonicity of ln det on the positive-definite cone gives L ≤ Lart , and the set inclusion is immediate. (ii) As v → vsat we have 
+
+¯a → 0 by (3), so Ψ → 0, D → 0 and L → −∞ . The servo weights behave oppositely: ρi → ¯u2ϕi(vsat )2 > 0, since ϕi
+
+is evaluated at the largest admissible spin. Under the rank hypothesis det Dart tends to a finite positive limit. Part (ii) forces the choice: under a gust the response rests on motors (high electrical bandwith), while servos are mechan-ically slow. A barrier built on Dart would nevertheless read those slow kinematic limits as authority—the ghost capacity 
+
+fallacy—reporting a vehicle with no remaining torque margin as safe. Restricting the metric to motor capacity avoids this and, by part (i), costs only conservatism. 
+
+D. The admissible tilt set 
+
+Tilt-dependent allocation matrices lose rank at flat config-urations [11], usually handled by a dedicated constraint; here the floor supplies it. 
+
+Proposition 7 (Singularity exclusion) . Let Lmax (α) =max v L(v, α ) and A(ℓmin ) = {α : Lmax (α) > ℓ min }. Then 
+
+A(ℓmin ) contains no configuration with rank A(α) < m , and on A(ℓmin ) the certified set {h ≥ 0} has nonempty interior in v.Proof. If rank A(α) < m then D(v, α ) = 4 AΨA⊤ is rank-deficient for every v by (8), so det D = 0 , Lmax (α) = −∞ <ℓmin , and α / ∈ A (ℓmin ). For the second claim, some v attains 
+
+L(v, α ) > ℓ min ; continuity of L in v gives a neighborhood with h > 0.The floor defending authority thus also fences the singular-ity, needing no separate avoidance logic. The two effects pull oppositely on cant angle: the available ascent ∥˜g∥1 is largest at shallow cant, while A(ℓmin ) excludes the shallowest con-figurations precisely because they approach rank deficiency. V. E NFORCEMENT THROUGH PHYSICAL COMMANDS 
+
+What remains is enforcing the floor using hardware commands—motor torques and servo setpoints—rather than the idealized actuator rates of (17). 
+
+A. Barrier dynamics and relative degree 
+
+Write x = ( v, α ), differentiating h along (1)–(2) gives 
+
+˙h = X
+
+> i
+
+∂L ∂v i
+
+τi − bivi|vi|
+
+Jm,i 
+
++ X
+
+> i
+
+∂L ∂α i
+
+αc,i − αi
+
+τs
+
+= aCBF (x)⊤u − δh(x), (19) which is affine in the physical command u = [ τ⊤, α ⊤ 
+
+> c
+
+]⊤. Here             
+
+> aCBF =
+> Dm∇vLDs∇αL
+> 
+> ,δh=∇vL⊤Dmb⊙ϕ(v) + ∇αL⊤Dsα,
+
+(20) with Dm = diag( J−1
+
+> m,i
+
+) and Ds = τ −1 
+
+> s
+
+I. The scalar δh is the 
+
+barrier drift , distinct from the wrench-rate drift d of (7). Both gradients come from Lemma 2 in closed form, so (20) costs one factorization of D per step. 
+
+Assumption 2. aCBF (x)̸ = 0 , equivalently  ∇v L, ∇αL̸ =(0 , 0) , on the operating set. 
+
+Under Assumption 2 the physical commands appear in h’s first derivative with a nonvanishing coefficient, so the barrier has relative degree one and high-order constructions [23]— with the added conservatism they impose—are not required. Assumption 2 cannot be strengthened to a sign or mag-nitude condition, since the coefficient multiplying τi is 
+
+(∂L/∂v i)/J m,i , zero wherever ∇v L is—exactly the configura-tion of Proposition 3, where the motor block of aCBF vanishes and the servo block carries the entire row. We therefore monitor Assumption 2 online rather than assert it globally. 
+
+B. The unified physical-command quadratic program 
+
+Let wdes be the wrench requested by the SE(3) outer loop and w = A(α)ϕ(v) the wrench currently produced; the target wrench rate 
+
+˙wtar = Kw
+
+ wdes − w, Kw > 0, (21) {h ≥ 0}          
+
+> h= 0
+> x∇h
+> (a) certified set in (v, α )
+> U
+> a⊤
+> CBF u ≥ − χh  + δ
+> u⋆
+> unconstrained
+> ρCBF
+> (b) physical commands u= [ τ⊤;α⊤
+> c]⊤
+> box ∩barrier half-space
+
+Figure 4: (a) The certified set {h ≥ 0} in the actuator state x =(v, α ), with outward gradient ∇h near the boundary. (b) The same requirement in physical-command space: the barrier row (23) cuts a half-space from the actuator box U, and u⋆ projects the unconstrained minimizer of (22) onto it. The margin ρCBF of (26) is positive exactly when the row is enforceable. 
+
+is a proportional feedback evaluated at every control instant. 
+
+Definition 1 (UPC-QP) . With M, d from (6) –(7) , weights 
+
+W ≻ 0 and R ≻ 0, trim uref = [ b ⊙ ϕ(v)⊤, α ⊤]⊤ and barrier gain χ > 0,
+
+u⋆ = arg min  
+
+> u
+> 12
+
+M u + d − ˙wtar  
+
+> 2
+> W
+
++ 12 u − uref  
+
+> 2
+> R
+
+(22) 
+
+s.t. a⊤
+
+> CBF
+
+u ≥ − χ h + δh, (23) 
+
+|τ | ≤ ¯τ , (24) 
+
+αc ∈ [α − τs ¯u, α + τs ¯u] ∩ [α, ¯α]. (25) Two features: (23) is ˙h ≥ − χh rewritten through (19), a single barrier inequality (Figure 4b); and (25) encodes the servo rate limit exactly rather than as a penalty, so the returned command is always executable. 
+
+Proposition 8 (Well-posedness and redundancy resolution) .
+
+The objective (22) is strictly convex, the box is nonempty compact, and whenever (23) is compatible with that box the minimizer u⋆ is unique. Proof. The Hessian of (22) is H = M⊤W M + R. Since M ∈
+
+Rm×2n with 2n > m , the tracking term M⊤W M is singular: it is positive semidefinite with a kernel of dimension at least 
+
+2n−m. Adding R ≻ 0 gives z⊤Hz ≥ z⊤Rz > 0 for all z̸ = 0 ,so H ≻ 0 and the objective is strictly convex. The box is nonempty because the current α satisfies (25) by construction and τ = 0 satisfies (24), and it is compact as a finite product of closed bounded intervals. Intersecting with the half-space (23) preserves convexity and compactness, and a strictly convex function attains a unique minimum on a nonempty compact convex set. This also resolves the redundancy without an explicit null-space parameterization: on the (2 n − m)-dimensional kernel of M⊤W M the tracking term is blind, and the R-weighted term selects the command closest to trim uref . When wdes 
+
+is not instantaneously reachable, the solver degrades tracking optimally in the metric W while (23)–(25) continue to hold exactly—the certificate is never traded against the task. 
+
+C. Feasibility margin and conditional invariance 
+
+The guarantee below is conditional on (23) being satisfiable within the box, a condition that is checkable in closed form. 
+
+Definition 2 (Feasibility margin) . With U the box (24) –(25) ,
+
+ρCBF (x) = max  
+
+> u∈U
+
+a⊤
+
+> CBF
+
+u + χh − δh. (26) Because a⊤
+
+> CBF
+
+u is linear and U is a Cartesian product of scalar intervals, the maximizer is the vertex aligned with 
+
+sign( aCBF ) and (26) evaluates in O(n) operations, available 
+
+only because the admissible command set is a box; coupled actuator constraints would need a linear program instead. Geometrically, ρCBF is the signed distance by which the best available command clears the barrier row (Figure 4b), evaluated at every instant; a positive value certifies the row is enforceable at that state. On ρCBF ≤ 0 the controller terminates and reports—(23) is never relaxed into a soft penalty, since a silently dropped constraint would void the certificate precisely when it binds. 
+
+Theorem 9 (Conditional forward invariance) . Let h be con-tinuously differentiable on an open set containing the closed-loop trajectory, let Assumption 2 hold along it, and suppose 
+
+ρCBF (x(t)) ≥ 0 on [0 , T ] with a locally Lipschitz solution map x 7 → u⋆(x). If h(x(0)) ≥ 0 then h(x(t)) ≥ 0 for all 
+
+t ∈ [0 , T ].Proof. Feasibility means the applied u⋆ satisfies (23), which by (19) reads ˙h ≥ − χh pointwise along the closed-loop vector field. Local Lipschitz continuity of u⋆ gives existence and uniqueness of the closed-loop solution on [0 , T ]. Comparing 
+
+h with y(t) = h(x(0)) e−χt (solving ˙y = −χy ) via the comparison lemma yields h(x(t)) ≥ h(x(0)) e−χt ≥ 0 iff 
+
+h(x(0)) ≥ 0.Theorem 9 states the trajectory never leaves the certified set (Figure 4a). Its hypotheses are monitored, not established once. Feasibility is certified online through ρCBF and As-sumption 2 is checked each step; we do not establish the Lipschitz property of the solution map, and strict convexity gives uniqueness of u⋆ but not continuity in x. A stronger, unconditional statement would require proving feasibility over the whole operating envelope, which we have not done. VI. S IMULATION STUDY 
+
+Validation uses a reconstructed actively articulated octorotor (n = 8, m = 6). Structural parameters, rotor placement, and the wrench map matrix derive from the Omnidirec-tional Octorotor architecture [21], augmented here with servo-actuated tilt; the physical parameters (Table I) combine lit-erature measurements with synthesized capacity bounds. The torque limit ¯τ is set so vsat = p¯τ /b coincides with the manufacturer’s maximum rotor speed, coupling the capacity model to empirical actuator envelopes. The operating point 
+
+v⋆ = vsat /√3 = 577 .4 rad s −1 follows from (9), and the readiness floor is ℓmin = L(v⋆, α 0) − 2 = 26 .098 nats. The lumped drag coefficient b is identified with the static propeller torque coefficient cτ ; the resulting non-dimensional coefficients ( CT = 0 .101 , CQ = 0 .0071 , CP = 0 .044 at 
+
+ρ = 1.225 kg m −3, D = 0.229 m ) fall within the UIUC Propeller Database’s [24] thin-electric spectrum. Table I: Platform parameters.                                                        
+
+> Symbol Value Unit Symbol Value Unit
+> n,m8,6—Jm5×10 −5kg m 2
+> arm length 0.246 mτs0.05 s
+> mass 2.0kg b=cτ—inertia diag(0 .0217 ,0.0217 ,0.04) kg m 2¯τ0.137 N m
+> cf8.59 ×10 −6N s 2vsat 1000 rad s −1
+> cτ1.37 ×10 −7N m s 2v⋆577 .4rad s −1
+> ¯u180 –462 ◦s−1ℓmin 26 .098 nats
+> α, ¯α±30 ◦
+
+Table II: Closed-loop metrics ( ¯u = 276 ◦ s−1). hmin < 0 denotes strict violation of the authority floor.                                                                           
+
+> Task Allocator RMS p[m] hmin sat. [%] tilt [ ◦]RMS w
+> Hover All 0.0000 +1 .940 0.00 0.00 0.000 Aggressive Static P-Inv 1.0263 +1 .681 0.00 0.00 0.011 Fixed-Tilt DAAM 1.0250 +1 .567 0.00 0.00 0.075 Uncertified DAAM 1.0250 +1 .625 0.00 0.08 0.075 Robust CBF Filter 1.0250 +1 .625 0.00 0.08 0.075 Mild gust Static P-Inv 1.0738 −0.440 0.00 0.00 0.016 Fixed-Tilt DAAM 1.0737 −0.749 0.00 0.00 0.101 Uncertified DAAM 1.0737 −0.156 0.00 0.23 0.101 Robust CBF Filter 1.0737 +0.251 0.00 1.06 0.101 Strong gust Static P-Inv diverged at t= 6 .005 s
+> Fixed-Tilt DAAM 1.5461 −63 .25 20.99 0.00 1.320 Uncertified DAAM 1.4444 −15 .30 0.18 11.80 0.214 Robust CBF Filter 1.4444 +0.012 0.21 14.98 0.212
+
+To isolate the contributions of structural articulation and the proposed CBF, four allocation schemes are evaluated under an identical SE(3) tracking loop: 1) Static Pseudo-Inverse: standard minimum-norm base-line [4] ϕdes = A+wdes , fixed tilt α0,i = ±15 ◦, ex-post actuator clipping. 2) Fixed-Tilt DAAM: Definition 1 with static tilt and the barrier constraint (23) omitted. 3) Uncertified Articulated DAAM: Definition 1 with ac-tive tilt, but without the barrier constraint (23). 4) Robust CBF Filter: Definition 1, incorporating both active articulation and the barrier constraint (23). System dynamics are integrated explicitly at 5 ms over a 10 s horizon across five environments: a benign hover, a 
+
+0.5 m position step, an aggressive lateral maneuver, and that maneuver under mild ( 3 N ) and strong ( 8 N ) raised-cosine lateral gusts. The complete pipeline—plant models, allocator parameters, seeds, and data-generation scripts—is at https: //anonymous.4open.science/r/tilt-certified-readiness-418A; the allocator is implemented in Python, with (22) solved as a bounded least-squares program. The gusts enter as external additive forces on the airframe; rotor coefficients cf , c τ and the allocation map A(α) remain at static-hover values throughout, isolating the allocation problem from the fluid dynamics of high-advance-ratio crosswinds. Modeling the inflow-dependent degradation a true 8 N gust would induce is left to future work. 
+
+Authority preservation and closed-loop tracking. When au-thority is abundant (hover, aggressive), Table II shows all allocators tracking nearly identically and the barrier strictly inactive ( 0 of 2000 instants, h ≥ 1.567 ): the CBF costs nothing outside the critical boundary. The Static Pseudo-Inverse is most accurate in wrench tracking ( 0.011 vs. 0.075 Root Mean Square (RMS)) since it inverts the static map directly rather than through the rate-based DAAM formulation.      
+
+> 0246810
+> −60
+> −40
+> −20 0
+> Gust onset Time [ s]Readiness barrier  h [nats]
+
+Figure 5: Readiness trajectories under the strong gust: Static Pseudo-Inverse (green), Fixed-Tilt DAAM (red), Uncertified Articulated DAAM (orange), Robust CBF Filter (blue). Readiness floor h = 0 
+
+(dashed) and gust onset at t = 2 s (dash-dotted), both gray.       
+
+> 00.20.40.60.81
+> vi/v sat
+> 0246810
+> −20 020 ¯αα
+> Time [ s]
+> αi [◦]
+
+Figure 6: Physical actuator commands under the strong gust, Robust CBF Filter (disturbance onset t = 2 s , dashed gray). Top: rotor speeds, avoiding saturation and zero-crossings. Bottom: tilt angles, using the mechanical range to absorb the commanded wrench. 
+
+Under the mild gust, tracking stays uniform across allocators (isolating readiness as the only quantity that moves) while every uncertified allocator breaches the floor; only the Robust CBF Filter holds it, at 1.06 ◦ of tilt. Under the strong gust the Static Pseudo-Inverse diverges at t = 6 .005 s , having reached 
+
+49 .2% saturation and hmin = −54 .53 . Active articulation alone (Uncertified DAAM) recovers most of the actuator-usage benefit relative to fixed geometry—saturation and wrench error both fall by roughly an order of magnitude—yet still violates the floor by 15 .30 nats: articulation is necessary but not sufficient. Re-solving with and without (23) at every instant shows the barrier row active on only 5.8% of steps (median command displacement 11 .4% ): it converts the Uncertified DAAM’s recovered capacity into a certified floor, bounding the state at the envelope’s edge ( hmin = +0 .012 ) without added saturation (Figure 5). The commands issued are physically executable (Figure 6): rotor speeds stay within [0 .20 , 0.89] vsat , reaching neither saturation nor a zero-crossing—the two loci at which the certificate collapses—and tilt stays inside ±30 ◦, touching the limit only transiently. The vehicle rejects the disturbance through articulation, as Section IV predicts, rather than forcing motors past capacity. 
+
+Robustness to parametric uncertainty. We first perturb the plant parameters while leaving the model class intact. On the strong-gust trajectory, mass ( ±10% ), torque limit ( ±15% ), and thrust coefficient ( ±10% ) are randomized and the servo-rate limit is drawn from {180 , 276 , 318 , 462 } ◦ s−1, over eight trials with shared initial states and seeds across allocators. The Robust CBF Filter holds hmin > 0 in all eight (median 
+
++0 .018 , worst +0 .004 ) against 0/8 for the Fixed-Tilt DAAM (median −58 .24 ), at lower median RMS position error ( 1.565 
+
+vs. 1.689 m ). Since ρCBF stays positive throughout (minimum 
+
+81 .85 ), Theorem 9’s hypotheses hold, and the +0 .004 worst case shows the filter tracking the true capacity boundary rather than resting on slack. 
+
+Robustness to unmodeled aerodynamics. We next introduce a structural mismatch. The allocator is unchanged—barrier, gradients, and allocation follow the static thrust map A(α)ϕ(v)
+
+of (4)—but the integrator applies a higher-fidelity wrench it never sees, computed from the air-relative velocity vair =
+
+vbody − R⊤vwind : advance-ratio thrust loss, an in-plane rotor 
+
+H-force with induced torque, and quadratic fuselage drag. The Robust CBF Filter still holds the floor ( hmin = +0 .012 ), articulating to absorb the discrepancy as bounded wrench-tracking error via the W -weighted cost of (22) while the barrier stays hard. The uncertified allocators fail more severely than before: Fixed-Tilt DAAM collapses to hmin = −63 .25 
+
+at 21 .0% saturation, the Static Pseudo-Inverse diverges at 
+
+t = 6 .01 s . Surviving a plant it does not model, the certificate enforces structural , not model-matched, safety. VII. C RITICAL DISCUSSION AND FUTURE WORK 
+
+The readiness level is a log-volume, which can be large while the reachable set is thin in one direction, so h ≥ 0
+
+does not imply authority is available in whatever direction a disturbance demands. To test this we defined, for analysis only, the worst-direction authority 
+
+η(v, α ) = min  
+
+> ∥y∥=1
+
+max y⊤ ˙w : ˙w ∈ Jv (v, α ) B¯a , (27) with B¯a = {ξ : |ξ| ≤ ¯a} the motor-rate box: the smallest, over unit wrench-rate directions, of the largest response that box can deliver in that direction, one linear program per sampled direction. Over 40 states sampled along the gust trajectories with 60 directions each, states with h < 0 have median 
+
+η = 2 .74 against 31 .25 for h ≥ 0—an order of magnitude, pre-cisely the collapse the floor exists to prevent. Above the floor, however, correlation between h and η is +0 .04 , and between 
+
+h and the median-direction response −0.34 . Consequently, 
+
+ln det D is used strictly as a threshold, avoiding a directional linear program in the control loop. Restricting the certificate to motor authority also introduces measurable conservatism: at the operating point v⋆, the discarded marging Lart −L is 4.20 ,
+
+6.38 , 7.19 , and 9.49 nats at the four commercial servo rates of Table I ( 180 –462 ◦ s−1)—excluding servo capacity to preserve the saturation divergence (Proposition 6) leaves this margin uncredited, particularly for high-speed actuators—a trade-off that preserves single-inequality enforceability, leaving a unified motor-servo readiness barrier an open problem. 
+
+Theoretical boundaries and algorithmic scope. Theorem 9’s guarantee rests on three conditions: continuous online feasibil-ity of the allocation quadratic program, monitored via ρCBF ;a locally Lipschitz solution map, though strict convexity gives only a unique u⋆, not continuity in the state, since the Lipschitz property can fail at active-set transitions; and the degeneracy of Proposition 3, proven for symmetric and near-symmetric configurations only, leaving its persistence under manufactur-ing asymmetry untested. Empirically, the filter bounds the state precisely at the envelope’s edge ( hmin = +0 .012 ), confirming the barrier formulation—not mere availability of articulation— preserves the vehicle under severe disturbance. 
+
+Methodological trade-offs and future directions. Integrating a rate-based CBF into the allocation framework trades amarginal loss of wrench-tracking precision in benign flight (Section VI) for strict authority preservation under distur-bances that make classical, uncertified allocators diverge; articulation supplies the physical authority, the barrier enforces its correct expenditure. These conclusions are bounded by the reconstructed plant’s modeling assumptions: static drag approximations, an estimated motor inertia Jm, and unmod-eled aeroelastic and servo-loading effects introduce parametric uncertainty in absolute readiness values, though the underlying geometric and thresholding properties remain invariant. Future work: hardware validation, broader robustness testing, and a less conservative barrier. REFERENCES [1] M. Hamandi et al. , “Design of Multi-Rotor Aerial Vehicles: A Taxonomy Based on Input Allocation,” Int. J. Robot. Res. , vol. 40, no. 9, pp. 1015– 1044, 2021. [2] R. Rashad et al. , “Fully Actuated Multirotor UAVs: A Literature Review,” IEEE Robot. Autom. Mag. , vol. 27, no. 3, pp. 97–107, 2020. [3] A. Ollero et al. , “Past, Present, and Future of Aerial Robotic Manipu-lators,” IEEE Trans. Robot. , vol. 38, no. 1, pp. 626–645, 2022. [4] T. A. Johansen et al. , “Control allocation—A survey,” Automatica ,vol. 49, no. 5, pp. 1087–1103, 2013. [5] D. Bicego et al. , “Nonlinear Model Predictive Control with Enhanced Actuator Model for Multi-Rotor Aerial Vehicles with Generic Designs,”                                                       
+
+> J. Intell. Robot. Syst. , vol. 100, no. 3–4, pp. 1213–1247, 2020. [6] A. Franchi, “Aero-Promptness: Drag-Aware Aerodynamic Manipulabil-ity for Propeller-driven Vehicles,” arXiv:2603.07998 , 2026. [7] ——, “Variable Aerodynamic Damping Actuation via Co-Contraction: A Structural Analogy with Variable Stiffness Actuation,” IEEE Robot. Autom. Lett. , vol. 11, no. 10, pp. 11 362–11 369, 2026. [8] V. Kurtz et al. , “Control Barrier Functions for Singularity Avoidance in Passivity-Based Manipulator Control,” in IEEE Conf. Decis. Control ,2021, pp. 6125–6130. [9] Z. Zhang et al. , “Constrained Passive Interaction Control: Leveraging Passivity and Safety for Robot Manipulators,” in IEEE Int. Conf. Robot. Autom. , 2024, pp. 13 418–13 424. [10] G. Silano, “Readiness Barrier Functions: Forward-Invariant Control Authority for Overactuated Multirotor Allocation,” arXiv:2608.16335 ,2026. [11] M. Allenspach et al. , “Design and Optimal Control of a Tiltrotor Micro-Aerial Vehicle for Efficient Omnidirectional Flight,” Int. J. Robot. Res. ,vol. 39, no. 10–11, pp. 1305–1325, 2020. [12] O. H¨ arkeg˚ ard, “Dynamic Control Allocation Using Constrained Quadratic Programming,” J. Guid. Control Dyn. , vol. 27, no. 6, pp. 1028–1034, 2004. [13] B. Convens et al. , “Control of Fully Actuated Unmanned Aerial Vehicles with Actuator Saturation,” IFAC-PapersOnLine , vol. 50, no. 1, pp. 12 715–12 720, 2017. [14] M. Hamandi et al. , “Full-Pose Trajectory Tracking of Overactuated Multi-Rotor Aerial Vehicles With Limited Actuation Abilities,” IEEE Robot. Autom. Lett. , vol. 8, no. 8, pp. 4951–4958, 2023. [15] A. Franchi et al. ,“Full-Pose Tracking Control for Aerial Robotic Systems With Laterally Bounded Input Force,” IEEE Trans. Robot. ,vol. 34, no. 2, pp. 534–541, 2018. [16] Y. Su et al. , “Nullspace-Based Control Allocation of Overactuated UAV Platforms,” IEEE Robot. Autom. Lett. , vol. 6, no. 4, pp. 8094–8101, 2021. [17] R. Pretto et al. ,“Receding-Horizon Nullspace Optimization for Actuation-Aware Control Allocation in Omnidirectional UAVs,” in Int. Conf. Unmanned Aircr. Syst. , 2026, pp. 80–87. [18] T. Yoshikawa, “Manipulability of Robotic Mechanisms,” Int. J. Robot. Res. , vol. 4, no. 2, pp. 3–9, 1985.
+
+[19] A. D. Ames et al. , “Control Barrier Functions: Theory and Applications,” in Eur. Control Conf. , 2019, pp. 3420–3431. [20] K. Forghani et al. , “Task-Space Singularity Avoidance for Control Affine Systems Using Control Barrier Functions,” arXiv:2603.23753 , 2026. [21] M. Hamandi et al. , “An Omnidirectional Non-Tethered Aerial Prototype with Fixed Uni-Directional Thrusters,” in IEEE Int. Conf. Robot. Autom. ,2025, pp. 8649–8655. [22] M. W. Mueller et al. , “Stability and control of a quadrocopter despite the complete loss of one, two, or three propellers,” IEEE Int. Conf. Robot. Autom. , pp. 45–52, 2014. [23] J. Breeden et al. , “High Relative Degree Control Barrier Functions Under Input Constraints,” in IEEE Conf. Decis. Control , 2021, pp. 6119– 6124. [24] J. B. Brandt et al. , “UIUC propeller database, volumes 1–4,” University of Illinois at Urbana-Champaign, https://m-selig.ae.illinois.edu/props/ propDB.html, 2022.

@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-26T22:15:07.777720+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2609.28716v1",
+      "source": "arxiv",
+      "title": "Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation",
+      "abstract": "This paper investigates temporal neural networks for \\mbox{end-effector} position \\mbox{estimation} of an aerial continuum manipulator (ACM) operating under aerodynamic effects induced by the unmanned aerial vehicle (UAV). An experimental dataset is collected under stationary (\\mbox{rotor-off}) and \\mbox{free-hovering} conditions across continuum robot (CR) configurations and UAV altitudes, providing \\mbox{end-effector} position measurements with and without aerodynamic residuals. To establish a nominal framework, \\mbox{strain-parameterized} kinematic models with progressively richer strain bases are evaluated to balance model complexity and prediction accuracy. The selected nominal model then serves as the baseline for 3D position residual estimation using a \\mbox{closed-form} \\mbox{continuous-time} (CfC) neural network, with a multilayer perceptron (MLP) and a gated recurrent unit (GRU) used for comparison. On unseen test experiments, the CfC achieves an RMSE of \\(22.00\\pm1.70~\\mathrm{mm}\\) over five random seeds, compared with \\(36.38\\pm3.58~\\mathrm{mm}\\) for the MLP and \\(27.72\\pm2.92~\\mathrm{mm}\\) for the GRU, corresponding to reductions of \\(39.52\\%\\) and \\(20.62\\%\\), respectively. These results demonstrate the effectiveness of \\mbox{continuous-time} learning for \\mbox{end-effector} position estimation under aerodynamic disturbances relative to static and \\mbox{discrete-time} learning methods.",
+      "authors": [
+        "Niloufar Amiri",
+        "Houman Masnavi",
+        "Farrokh Janabi-Sharifi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-23T18:57:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.28716v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "aerial continuum manipulator end-effector estimation under UAV aerodynamics",
+      "llm_evidence_cn": "无人机气动干扰下空中连续体机械臂末端估计",
+      "llm_evidence": "无人机气动干扰下空中连续体机械臂末端估计",
+      "canonical_evidence": "无人机气动干扰下空中连续体机械臂末端估计",
+      "llm_tldr_en": "This paper studies temporal neural networks for end-effector position estimation of an aerial continuum manipulator under UAV-induced aerodynamic disturbances, aiding aerial manipulation control.",
+      "llm_tldr_cn": "本文针对无人机气动效应干扰下空中连续体机械臂末端位置难以准确估计的问题，采集了旋翼关闭与自由悬停两种条件下的实验数据集，并评估不同应变基的应变参数化运动学模型以平衡复杂度与精度，再以选定标称模型为基础引入时序神经网络进行估计。结果表明时序学习能有效补偿气动残余影响。其贡献在于提升了空中机械臂末端估计精度，支撑空中操作控制。",
+      "llm_tldr": "本文针对无人机气动效应干扰下空中连续体机械臂末端位置难以准确估计的问题，采集了旋翼关闭与自由悬停两种条件下的实验数据集，并评估不同应变基的应变参数化运动学模型以平衡复杂度与精度，再以选定标称模型为基础引入时序神经网络进行估计。结果表明时序学习能有效补偿气动残余影响。其贡献在于提升了空中机械臂末端估计精度，支撑空中操作控制。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "aerial manipulator dynamics and control",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.21580v1",
+      "source": "arxiv",
+      "title": "Tilt as a Certified Resource: Preserving Motor Wrench-Rate Authority on Articulated Multirotors",
+      "abstract": "Fully-actuated multirotor aerial vehicles must not only track nominal wrenches but retain the \"readiness\" to modulate them rapidly under disturbances. Classical effort-minimizing allocators ignore this dynamic limit, whereas maximizing readiness leads to topologically disconnected optimal sheets demanding physically impossible actuator rates. Enforcing a readiness safety floor on fixed-geometry symmetric platforms further encounters a zero-sum degeneracy: motor-speed redistribution cannot improve authority without conceding wrench tracking. This paper uses active morphology to break the degeneracy, treating servo tilt as a geometric resource supplying authority-recovery directions unavailable to static rotors. We construct a configuration-dependent, motor-only readiness certificate - the log-volume of the reachable wrench-rate set - that explicitly excludes servo capacity, preventing a \"ghost capacity fallacy\" in which the certificate would falsely credit slow mechanical kinematic limits instead of collapsing accurately at motor saturation. The certificate is enforced as a Control Barrier Function (CBF) within a Unified Physical-Command Quadratic Program acting on motor torques and servo setpoints. Closed-loop simulations of an articulated octorotor under severe gust disturbances show classical allocators diverging and uncertified articulated allocators violating the safety floor, while the proposed CBF filter bounds the system state and preserves vehicle authority.",
+      "authors": [
+        "Giuseppe Silano",
+        "Martin Saska"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY",
+        "math.OC"
+      ],
+      "published": "2026-09-18T10:10:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.21580v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "wrench authority and control allocation for over-actuated articulated multirotors",
+      "llm_evidence_cn": "过驱动关节式多旋翼的力矩权限与控制分配",
+      "llm_evidence": "过驱动关节式多旋翼的力矩权限与控制分配",
+      "canonical_evidence": "过驱动关节式多旋翼的力矩权限与控制分配",
+      "llm_tldr_en": "Fully-actuated multirotors must retain wrench-rate authority under disturbances. This paper treats servo tilt as a geometric resource, breaking the zero-sum degeneracy and providing authority-recovery directions unavailable to static rotors.",
+      "llm_tldr_cn": "全驱动多旋翼不仅要跟踪标称力矩，还必须在扰动下保留快速调节力矩的权限，但经典的最小努力分配器忽视了这一动态限制，而一味最大化权限又会导致物理上不可实现的执行器速率。本文利用主动形态学，将伺服倾转视为可提供权限恢复方向的几何资源，从而打破固定几何平台的零和退化。研究表明该方案能在兼顾力矩跟踪的同时维持权限，为关节式多旋翼的过驱动控制提供了新框架。",
+      "llm_tldr": "全驱动多旋翼不仅要跟踪标称力矩，还必须在扰动下保留快速调节力矩的权限，但经典的最小努力分配器忽视了这一动态限制，而一味最大化权限又会导致物理上不可实现的执行器速率。本文利用主动形态学，将伺服倾转视为可提供权限恢复方向的几何资源，从而打破固定几何平台的零和退化。研究表明该方案能在兼顾力矩跟踪的同时维持权限，为关节式多旋翼的过驱动控制提供了新框架。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "over-actuated drone control with manipulator",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
