@@ -6,26 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-26
-- 运行时间：2026-09-26 22:17:33 UTC
+- 最新运行日期：2026-09-27
+- 运行时间：2026-09-27 22:11:29 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：1
+- 本次总论文数：1
+- 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日精读1篇、速读1篇，聚焦空中连续体机械臂与多旋翼控制。最值得看的是空中连续体操作在气动扰动下的末端位置时序学习估计（8.0分），以及铰接多旋翼通过倾角保持电机力矩变化率权限（7.0分）。普通读者可先读精读那篇，了解扰动下如何稳住末端估计，再顺带看速读篇理解倾角控制思路。
-- 详情：[/202609/26/README](/202609/26/README)
+2026-09-27 日报：全天只速读 1 篇、精读 0 篇，聚焦“人类演示→灵巧机器人操作”这一条线。
+
+最值得看的是它用“接触锚定重定向”把人的手部动作对齐到机械手、再用残差策略学习补齐仿真到现实差距的思路，不过 6.0 分属于可参考、非必读。
+
+普通读者建议先看摘要里的重定向与残差两阶段流程，判断是否贴合自己的任务，再决定要不要精读全文。
+- 详情：[/202609/27/README](/202609/27/README)
 
 ### 精读区论文标签
-1. [Temporal Learning for End-Effector Position Estimation under Aerodynamic Disturbances in Aerial Continuum Manipulation](/202609/26/2609.28716v1-temporal-learning-for-end-effector-position-estimation-under-aerodynamic-disturbances-in-aerial-continuum-manipulation)  
-   标签：评分：8.0/10、query:drone-arm
-   evidence：无人机气动干扰下空中连续体机械臂末端估计
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Tilt as a Certified Resource: Preserving Motor Wrench-Rate Authority on Articulated Multirotors](/202609/26/2609.21580v1-tilt-as-a-certified-resource-preserving-motor-wrench-rate-authority-on-articulated-multirotors)  
-   标签：评分：7.0/10、query:drone-arm
-   evidence：过驱动关节式多旋翼的力矩权限与控制分配
+1. [Dexterous Robot Manipulation from Human Demonstrations via Contact-Anchored Retargeting and Residual Policy Learning](/202609/27/2609.24093v1-dexterous-robot-manipulation-from-human-demonstrations-via-contact-anchored-retargeting-and-residual-policy-learning)  
+   标签：评分：6.0/10、query:drone-arm
+   evidence：残差强化学习用于灵巧机器人操作
 
 
 <div class="dpr-home-promo-card">
