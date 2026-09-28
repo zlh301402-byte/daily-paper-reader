@@ -6,28 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-27
-- 运行时间：2026-09-27 22:11:29 UTC
+- 最新运行日期：2026-09-28
+- 运行时间：2026-09-28 23:37:00 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：0
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-2026-09-27 日报：全天只速读 1 篇、精读 0 篇，聚焦“人类演示→灵巧机器人操作”这一条线。
-
-最值得看的是它用“接触锚定重定向”把人的手部动作对齐到机械手、再用残差策略学习补齐仿真到现实差距的思路，不过 6.0 分属于可参考、非必读。
-
-普通读者建议先看摘要里的重定向与残差两阶段流程，判断是否贴合自己的任务，再决定要不要精读全文。
-- 详情：[/202609/27/README](/202609/27/README)
+今日机器人日报精选2篇论文，精读9.0分野外空中操作，速读6.0分稀疏成功信号策略学习。  
+最值得看的是《Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control》（9.0/10），聚焦机载感知、策略学习与全身控制；速读篇则关注用STL引导Stein变分策略梯度从稀疏成功信号中学习机器人策略。  
+普通读者建议先读9.0分精读，抓住“感知—策略—控制”如何协同，再按兴趣浏览6.0分速读了解稀疏反馈方法。
+- 详情：[/202609/28/README](/202609/28/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control](/202609/28/2609.30521v1-aerial-manipulation-in-the-wild-with-onboard-perception-policy-learning-and-whole-body-control)  
+   标签：评分：9.0/10、query:aerial-arm
+   evidence：结合策略学习与全身MPC的野外空中操作
 
 ### 速读区论文标签
-1. [Dexterous Robot Manipulation from Human Demonstrations via Contact-Anchored Retargeting and Residual Policy Learning](/202609/27/2609.24093v1-dexterous-robot-manipulation-from-human-demonstrations-via-contact-anchored-retargeting-and-residual-policy-learning)  
+1. [Learning Robot Policies from Sparse Success Signals via STL-Guided Stein Variational Policy Gradient](/202609/28/2609.31606v1-learning-robot-policies-from-sparse-success-signals-via-stl-guided-stein-variational-policy-gradient)  
    标签：评分：6.0/10、query:drone-arm
-   evidence：残差强化学习用于灵巧机器人操作
+   evidence：从稀疏成功信号中学习机器人操作策略的强化学习策略梯度方法
 
 
 <div class="dpr-home-promo-card">

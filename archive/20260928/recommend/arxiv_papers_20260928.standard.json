@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-28T23:32:25.460290+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2609.30521v1",
+      "source": "arxiv",
+      "title": "Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control",
+      "abstract": "Aerial manipulation in outdoor environments remains challenging due to the simultaneous requirements of reliable state estimation, stable aerial motion, and precise manipulation under external disturbances. In this work, we present a real-world outdoor aerial manipulation framework that integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body model predictive control. A Diffusion Policy is trained from manipulation demonstrations to generate desired end-effector motions from onboard observations. These learned commands are executed by a whole-body MPC that jointly coordinates the aerial platform and manipulator to realize the desired end-effector trajectory. To eliminate reliance on external motion-capture infrastructure, the platform employs onboard LiDAR-inertial odometry for state estimation during outdoor operation. We validate the complete framework on a physical aerial manipulator and demonstrate successful execution of outdoor manipulation tasks. The experimental results show that demonstration-driven manipulation policies can be effectively integrated with onboard state estimation and model-based whole-body control to enable aerial manipulation beyond controlled indoor environments.",
+      "authors": [
+        "Yuanzhu Zhan",
+        "Yufei Jiang",
+        "Zemu Zhang",
+        "Junyi Geng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T20:16:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.30521v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "outdoor aerial manipulation with policy learning and whole-body MPC",
+      "llm_evidence_cn": "结合策略学习与全身MPC的野外空中操作",
+      "llm_evidence": "结合策略学习与全身MPC的野外空中操作",
+      "canonical_evidence": "结合策略学习与全身MPC的野外空中操作",
+      "llm_tldr_en": "A real-world outdoor aerial manipulation framework integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body MPC to coordinate an aerial platform and manipulator for precise end-effector motion.",
+      "llm_tldr_cn": "野外空中操作需同时满足可靠状态估计、稳定飞行与扰动下的精确操作，现有方法常依赖外部动捕或分体控制。本文提出真实户外空中操作框架，用扩散策略从示教生成期望末端运动，配合机载激光-惯性状态估计与全身模型预测控制联合协调飞行平台与机械臂。实验在户外验证了端到端操作能力并减少对外部定位的依赖。其贡献在于将感知、策略学习与全身控制集成于真实空中机械臂系统。",
+      "llm_tldr": "野外空中操作需同时满足可靠状态估计、稳定飞行与扰动下的精确操作，现有方法常依赖外部动捕或分体控制。本文提出真实户外空中操作框架，用扩散策略从示教生成期望末端运动，配合机载激光-惯性状态估计与全身模型预测控制联合协调飞行平台与机械臂。实验在户外验证了端到端操作能力并减少对外部定位的依赖。其贡献在于将感知、策略学习与全身控制集成于真实空中机械臂系统。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.31606v1",
+      "source": "arxiv",
+      "title": "Learning Robot Policies from Sparse Success Signals via STL-Guided Stein Variational Policy Gradient",
+      "abstract": "Learning robot policies for tasks with sparse success signals is challenging when completion depends on coordinated actions, precise contact outcomes, or satisfying several conditions together. Intricate physical interactions with the world further complicate these requirements. Prior work using conventional reward shaping mechanisms provides dense feedback but local progress might not translate into eventual task completion. We present Signal Temporal Logic-guided Stein Variational Policy Gradient (STL-SVPG), a population-based method that uses smooth STL robustness as a trajectory-level training objective. Differentiating this objective through the dynamics assigns credit to policy actions according to their effect on the complete task specification, rather than local progress alone. We evaluate the approach on six quadcopter and manipulator tasks that involves event-triggered responses, strictly ordered behavior, responses within specified deadlines, and physical interaction with the world. STL-SVPG achieves the highest mean success rate among the compared methods on five of six benchmarks. Simulation-trained policies trained in simulation transfer temporal and contact task behavior to the real world.",
+      "authors": [
+        "Hongrui Zheng",
+        "Cristian Ioan Vasile",
+        "Antonio Loquercio",
+        "Rahul Mangharam"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-25T17:55:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.31606v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL policy gradient method for learning robot manipulation policies from sparse success signals",
+      "llm_evidence_cn": "从稀疏成功信号中学习机器人操作策略的强化学习策略梯度方法",
+      "llm_evidence": "从稀疏成功信号中学习机器人操作策略的强化学习策略梯度方法",
+      "canonical_evidence": "从稀疏成功信号中学习机器人操作策略的强化学习策略梯度方法",
+      "llm_tldr_en": "This paper addresses learning robot policies under sparse success signals, proposing STL-SVPG, a population-based method using smooth STL robustness as a trajectory-level objective, improving contact-rich manipulation policy learning.",
+      "llm_tldr_cn": "机器人策略学习在仅有稀疏成功信号时十分困难，因为任务完成往往依赖协调动作、精确接触结果或多个条件的共同满足。本文提出STL-SVPG，一种基于种群的方法，以平滑的信号时序逻辑鲁棒性作为轨迹级训练目标，并通过动力学求导将信用分配给对任务完成有贡献的动作。实验表明该方法在接触密集的机器人操作任务中优于传统奖励塑形。该工作为机器人机械臂操作提供了可迁移的强化学习优化框架。",
+      "llm_tldr": "机器人策略学习在仅有稀疏成功信号时十分困难，因为任务完成往往依赖协调动作、精确接触结果或多个条件的共同满足。本文提出STL-SVPG，一种基于种群的方法，以平滑的信号时序逻辑鲁棒性作为轨迹级训练目标，并通过动力学求导将信用分配给对任务完成有贡献的动作。实验表明该方法在接触密集的机器人操作任务中优于传统奖励塑形。该工作为机器人机械臂操作提供了可迁移的强化学习优化框架。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

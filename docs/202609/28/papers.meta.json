@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-28",
+  "date": "2026-09-28",
+  "generated_at": "2026-09-28T23:37:04",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/28/2609.30521v1-aerial-manipulation-in-the-wild-with-onboard-perception-policy-learning-and-whole-body-control",
+      "section": "deep",
+      "title_en": "Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control",
+      "authors": "Yuanzhu Zhan, Yufei Jiang, Zemu Zhang, Junyi Geng",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.30521v1",
+      "score": "9.0",
+      "evidence": "结合策略学习与全身MPC的野外空中操作",
+      "tldr": "室外空中操作需同时满足可靠状态估计、稳定飞行与抗扰精确操作，难度大。本文提出一套真实户外空中操作框架，融合扩散策略模仿学习、机载激光雷达惯性状态估计与全身模型预测控制。扩散策略从示教中学习，由机载观测生成末端期望运动，再由全身MPC协调飞行平台与机械臂执行。在实体空中操作平台上的户外实验验证了完整框架，表明示教驱动策略可与机载估计和基于模型的控制结合，突破受控室内环境限制。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Aerial manipulation in outdoor environments remains challenging due to the simultaneous requirements of reliable state estimation, stable aerial motion, and precise manipulation under external disturbances. In this work, we present a real-world outdoor aerial manipulation framework that integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body model predictive control. A Diffusion Policy is trained from manipulation demonstrations to generate desired end-effector motions from onboard observations. These learned commands are executed by a whole-body MPC that jointly coordinates the aerial platform and manipulator to realize the desired end-effector trajectory. To eliminate reliance on external motion-capture infrastructure, the platform employs onboard LiDAR-inertial odometry for state estimation during outdoor operation. We validate the complete framework on a physical aerial manipulator and demonstrate successful execution of outdoor manipulation tasks. The experimental results show that demonstration-driven manipulation policies can be effectively integrated with onboard state estimation and model-based whole-body control to enable aerial manipulation beyond controlled indoor environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/28/2609.31606v1-learning-robot-policies-from-sparse-success-signals-via-stl-guided-stein-variational-policy-gradient",
+      "section": "quick",
+      "title_en": "Learning Robot Policies from Sparse Success Signals via STL-Guided Stein Variational Policy Gradient",
+      "authors": "Hongrui Zheng, Cristian Ioan Vasile, Antonio Loquercio, Rahul Mangharam",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.31606v1",
+      "score": "6.0",
+      "evidence": "从稀疏成功信号中学习机器人操作策略的强化学习策略梯度方法",
+      "tldr": "稀疏成功信号下，机器人任务常需协调动作、精确接触或多条件同时满足，传统奖励塑形虽密集但局部进展未必导致任务完成。本文提出 STL-SVPG，一种基于群体的策略梯度方法，以平滑 STL 鲁棒性作为轨迹级目标，并通过对动力学求导按动作对完整任务规范的影响分配信用。在六个四旋翼与机械臂任务中，五个基准取得最高平均成功率。仿真训练策略还能将时序与接触行为迁移到真实世界。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Learning robot policies for tasks with sparse success signals is challenging when completion depends on coordinated actions, precise contact outcomes, or satisfying several conditions together. Intricate physical interactions with the world further complicate these requirements. Prior work using conventional reward shaping mechanisms provides dense feedback but local progress might not translate into eventual task completion. We present Signal Temporal Logic-guided Stein Variational Policy Gradient (STL-SVPG), a population-based method that uses smooth STL robustness as a trajectory-level training objective. Differentiating this objective through the dynamics assigns credit to policy actions according to their effect on the complete task specification, rather than local progress alone. We evaluate the approach on six quadcopter and manipulator tasks that involves event-triggered responses, strictly ordered behavior, responses within specified deadlines, and physical interaction with the world. STL-SVPG achieves the highest mean success rate among the compared methods on five of six benchmarks. Simulation-trained policies trained in simulation transfer temporal and contact task behavior to the real world.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
