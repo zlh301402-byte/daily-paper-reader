@@ -1,0 +1,525 @@
+Title: QuadHand: A Compact Quadrotor Aerial Manipulator with MRC-SDF-Based Whole-Body Motion Planning
+
+URL Source: https://arxiv.org/pdf/2609.35094v1
+
+Published Time: Tue, 29 Sep 2026 09:23:04 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# QuadHand: A Compact Quadrotor Aerial Manipulator with MRC-SDF-Based Whole-Body Motion Planning 
+
+Rui Jin ∗, Ruiyang Liu ∗, Xinhang Xu, Haotian Jin, Yi Wang, Yizhuo Yang, and Lihua Xie †
+
+Abstract — Uncrewed aerial manipulators (UAMs) integrate robotic arms with aerial platforms for three-dimensional phys-ical interaction. However, enlarging the workspace increases arm-induced disturbances, while existing geometric represen-tations face a trade-off between geometric fidelity and com-putational efficiency in close-proximity interaction. This paper presents QuadHand, a compact quadrotor aerial manipulator with a 3-DoF arm, gripper, and battery-assisted passive CoG compensation module to reduce dominant arm-induced dis-turbances. We further propose MRC-SDF, a Multi-articulated Robot-Centric Signed Distance Field that preserves fine geo-metric detail with tractable computation, and a spatiotemporal whole-body trajectory optimization framework that jointly op-timizes the quadrotor and manipulator for safe and executable trajectory generation. Simulations and real-world experiments demonstrate safe and executable aerial manipulation in complex environments. 
+
+I. I NTRODUCTION 
+
+Uncrewed Aerial Manipulators (UAMs) integrate robotic arms with aerial platforms, transforming drones from observation-centric platforms [1]–[4] into systems capa-ble of physical interaction in three-dimensional mid-air workspaces. They have been applied to grasping [5], main-tenance [6], transportation [7]–[9], and assembly [10]. How-ever, close-range interaction remains difficult to teleoperate due to the high DoFs of the coupled base–arm system, requiring coordinated base–arm motion for safe and precise interaction. We identify three key challenges. The first challenge is how to achieve a larger end-effector workspace. UAMs require the manipulator to provide as large a reachable workspace as possible to accomplish a wider range of tasks. However, as the workspace increases, both the interaction forces at the end-effector and the manipulator’s own motions can induce larger disturbances on the aerial base. Achieving a favorable balance between workspace and base disturbance is therefore crucial for improving end-effector control accuracy in UAMs. The second challenge is minimizing information loss in geometric representation. Unlike navigation-only drones, UAMs operate in close proximity to objects for interaction,  
+
+> ∗Indicates equal contribution.
+> †Corresponding author:
+
+elhxie@ntu.edu.sg .Rui Jin, Ruiyang Liu, Xinhang Xu, Haotian Jin, Yi Wang, and Yizhuo Yang are with the School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore 639798. Lihua Xie is with the NTU– VinUni Joint Research Laboratory for Embodied AI and Robotics, School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore 639798, and VinUniversity, Hanoi, Vietnam. This work was supported by Ministry of Education, Singapore, under AcRF TIER 1 Grant RG64/23. 
+
+Fig. 1: The proposed QuadHand system hovering in mid-air. 
+
+which significantly constrains the feasible solution space. Therefore, designing appropriate geometric representations of both the robot and the environment is essential to ensure safe and precise operation in complex environments. The third challenge is how to plan in high-dimensional configuration spaces. In UAM systems, the mounting of a robotic arm onto an aerial platform results in a system with high DoFs. In such a configuration, the aerial base and the manipulator are kinematically and dynamically coupled. Consequently, simply decomposing this high-dimensional configuration space and treating the base and arm as inde-pendent systems restricts the available solution space, often resulting in suboptimal or infeasible trajectories. Based on the aforementioned observations and analyses, we propose a comprehensive aerial manipulation system that integrates a quadrotor platform with a 3-DoF robotic arm and a gripper, together with a whole-body trajectory optimization framework and a high-fidelity geometric rep-resentation method, as shown in Fig. 1. Specifically, to maintain an essential operational workspace while allevi-ating base disturbances, QuadHand integrates a quadrotor equipped with a 3-DoF manipulator and gripper, and adopts a battery-assisted Passive Center-of-Gravity Compensation (PCGC) module, inspired by prior CoG-compensation mech-anisms [11]–[13], to help mitigate the dominant CoG shift induced by arm motion. This design allows the end-effector to extend outward effectively while mitigating the increase in the moment arm. To balance geometric fidelity and computa-tional efficiency for whole-body trajectory optimization with close-proximity interaction in cluttered environments, we introduce a Multi-articulated Robot-Centric Signed Distance Field (MRC-SDF) representation. By using pre-generated arXiv:2609.35094v1 [cs.RO] 28 Sep 2026 Fig. 2: An overview of our proposed aerial manipulation system. 
+
+self signed distance fields (SDFs) for the base and each manipulator link and preserving the original environmental point cloud, the system retains rich geometric detail without the overhead of real-time flight-corridor or ESDF generation, thereby facilitating safe and executable whole-body trajec-tories in extreme proximity to target objects or environ-mental features. Furthermore, to enhance motion planning in high-dimensional configuration spaces, we propose an efficient spatiotemporal whole-body trajectory optimization framework that performs coupled base-arm optimization to generate safe and executable trajectories for diverse manipu-lation tasks. To validate the proposed system, we conducted extensive simulations and real-world experiments, and the results demonstrate its effectiveness. The main contributions of this paper are summarized as follows: 1) A compact QuadHand aerial manipulation platform that integrates a quadrotor, a 3-DoF arm, a gripper, and a battery-assisted passive CoG compensation module for validating whole-body aerial manipulation. 2) The MRC-SDF geometry representation method min-imizes geometric information loss, enabling close-proximity interaction trajectory generation. 3) An efficient spatiotemporal whole-body trajectory op-timization framework for coupled base–arm planning. 4) Extensive simulations and real-world flight tests demonstrating the system’s efficiency. II. R ELATED WORKS 
+
+A. Quadrotor Aerial Manipulation Platform 
+
+Aerial manipulation platforms combine flying bases, such as quadrotors [10, 14]–[18], hexarotors [19]–[21], or ducted fans [22], with manipulators. Quadrotors are widely used due to mature hardware, compactness, and ease of integration, and commonly carry serial [16]–[18] or parallel [14, 15] ma-nipulators. Serial arms provide larger workspace and dexter-ity but introduce longer moment arms, higher joint torques, and larger CoG shifts, whereas parallel manipulators offer higher positioning accuracy [23] but limited workspace. Re-lated quadrotor studies have further addressed configuration-dependent robust control and actuator-constrained geometric control [24, 25]. These trade-offs motivate compact quadro-tor manipulators that retain workspace while reducing arm-induced CoG disturbances. Following CoG-compensation studies [11]–[13], QuadHand integrates a battery-assisted passive CoG compensation module. 
+
+B. Geometric Representations for Whole-Body Planning 
+
+Aerial manipulation planning relies on appropriate geo-metric representations of both the aerial manipulator and the surrounding environment to enable close-range interactions with target objects. Many works represent the environment using corridors to enable whole-body planning. For example, Deng et al. [26] approximated the aerial platform as an ellipsoid and modeled the environment with flight corridors, while Zhang et al. [18] represented the robot as a dynamic convex hull and modeled the environment with convex regions. While effective for navigation, these abstractions inevitably introduce geometric loss on either the robot body or the target object, making it difficult to explicitly reason about close-range interactions between the end-effector and the object, where contact clearance and local geometry become critical. ESDFs are also used to model the environment while the robot is approximated by sampled points, enabling whole-body trajectory optimization [27, 28]. With enough res-olution, ESDF preserves geometric details. However, fine manipulation typically requires a higher-resolution ESDF, increasing memory cost and slowing construction. III. S YSTEM ARCHITECTURE 
+
+Fig. 2 illustrates the overall architecture of the proposed QuadHand, which consists of a quadrotor base and a 3-DoF robotic arm (Sec. IV). The quadrotor state is estimated by an Extended Kalman Filter (EKF) that fuses pose measurements from a motion capture system with onboard IMU data. The robotic arm executes joint-level control commands and provides real-time state feedback. The UAM is modeled as MRC-SDF (Sec. V) and incorporated into trajectory opti-mization to generate whole-body trajectories with collision avoidance and kinematic feasibility (Sec. VI). IV. H ARDWARE DESIGN 
+
+To mitigate the dominant CoG shift introduced by arm motion, we integrate a battery-assisted passive compen-sation module, inspired by prior CoM/CoG compensation designs [11]–[13], into a compact quadrotor-based aerial manipulator with a 3-DoF arm and gripper, as shown in Fig. 3.A-C. The proposed QuadHand weighs approximately 1.7 kg and consists of two main subsystems. The upper subsystem is a quadrotor with a 330 mm wheelbase, carrying the onboard computer, flight controller, ESC, and related electronics, and providing the lift and control torques required for aerial motion. The lower subsystem comprises a 3-DoF robotic arm with two pitch joints and one roll joint, and a gripper mounted at the arm’s end for grasping and interaction tasks. During motion of the first joint, the battery passively follows the manipulator movement, adjusting the platform’s CoG to stay near the wheelbase center, thereby reducing disturbances to the aerial base. Fig. 3: Overview of the UAM platform and the key components in the proposed planning framework. (A) Coordinate definitions. (B) PCGC illustration: as the arm moves, the battery passively rotates, synchronously adjusting the gravity moment arm. (C) End-effector workspace. (D) MRC-SDF illustration, where each link is represented by a precomputed SDF. (E) Penalty term for end-effector insertion: the sampled end-effector poses along the trajectory are encouraged to match a predefined pose. 
+
+V. M ULTI -A RTICULATED ROBOT -CENTRIC SDF As analyzed in Sec. I, when UAMs navigate cluttered environments and interact with target objects, they face an inherent trade-off between geometric accuracy and compu-tational efficiency. Inspired by [29], we introduce the MRC-SDF representation, which enables direct distance queries between the UAM’s whole-body configuration and surround-ing obstacles via preconstructed SDFs while preserving the environment’s original point-cloud geometry. In the proposed MRC-SDF, each collision-checking link of the UAM is associated with a precomputed SDF, denoted as SDF i(·) for i = 0 , . . . , N l − 1, where Nl denotes the number of link-wise SDFs used for collision checking, as illustrated in Fig. 3.D. For the j-th obstacle point xj ∈ R3
+
+expressed in the world frame, we first express it in the i-th link frame as ixj :
+
+ixj
+
+1
+
+
+
+= ( wTi)−1
+
+xj
+
+1
+
+
+
+, (1) where wTi =
+
+wRi wti
+
+0⊤ 1
+
+
+
+∈ SE (3) is the pose of link i
+
+in the world frame. The signed distance from xj to link i is then obtained by 
+
+> i
+
+dj = SDF i
+
+ ixj
+
+ . (2) VI. T RAJECTORY OPTIMIZATION 
+
+As introduced in Sec. I, the UAM requires efficient tra-jectory planning in a high-dimensional state space. This sec-tion aims to formulate and solve the whole-body trajectory generation problem while considering dynamic feasibility, ensuring safety from free flight to task completion. 
+
+A. Dynamic Model and Differential Flatness 
+
+In this paper, we adopt a simplified UAM model, whose base state consists of the translation pb = ( px, p y , p z )⊤ ∈ R3
+
+and the rotation Rb ∈ SO (3) , while the manipulator state includes the joint angles θ ∈ RNθ and the corresponding joint angular velocities ˙θ ∈ RNθ , where Nθ denotes the number of actuated joints excluding the gripper and equals 
+
+3 in the robotic arm configuration. In the simplified model, the translational motion is de-termined by the total thrust ˜fb generated by the aerial base, the gravitational acceleration ¯g, and the disturbance force fd induced by the robotic arm. The rotational motion is determined by the control torque τb generated by the base, the gyroscopic effect, and the disturbance moment 
+
+τd induced by the robotic arm. The dynamic model of the simplified aerial manipulator can be expressed as: 
+
+
+
+¨pb = ˜fb Rbe3/m − ¯ge3 + fd/m, 
+
+˙Rb = Rb ˆω,
+
+J ˙ω = τb − ω × (Jω) + τd,
+
+(3) where J is the UAM inertia matrix and ω is the body angular velocity. e3 = [0 , 0, 1] ⊤ is the third column of the 3 × 3
+
+identity matrix, and ˆ(·) denotes the skew-symmetric operator for the cross product. Given the base pose wTb and joint configuration θ, the pose of the i-th link is obtained by chaining the relative transforms along the kinematic chain: 
+
+> w
+
+Ti(θ) = wTbiY
+
+> k=1
+> k−1
+
+Tk(θk), (4) where the product is ordered from k = 1 to k = i, and the base frame b is used interchangeably with the frame 0, i.e., 
+
+> w
+
+Tb ≡ wT0.Inspired by quadrotor differential flatness, we use aflatness-based parameterization for the aerial base and op-timize the manipulator joints jointly as additional trajectory variables. Accordingly, the flat output is defined as: 
+
+z = ( px, p y , p z , ψ, θ)⊤ ∈ R3 × SO (2) × RNθ , (5) which enables all system variables to be reconstructed from the derivatives of z.
+
+B. Collision Avoidance 
+
+This subsection focuses on constructing safety constraints to ensure that the generated trajectory remains collision-free. Since the UAM is required to directly interact with the environment, voxel-based or convex-hull representations would lead to a loss of geometric precision, which may easily result in collisions at the end-effector. Therefore, we directly use the raw point cloud representing the environment and target objects as input for collision evaluation. Based on the proposed MRC-SDF representation, safety constraints penalize configurations where any part of the UAM approaches surrounding obstacles. For each obstacle point xj in the perceived point cloud, distances to all links are efficiently obtained by querying the link-wise SDFs (Sec. V). We define the safety cost at time t as: 
+
+Jc(t) = 
+
+> Np−1
+
+X
+
+> j=0
+> Nl−1
+
+X
+
+> i=0
+
+ℓ dthr − idj
+
+ , (6) where Np denotes the number of obstacle points, Nl denotes the number of link-wise SDFs used for collision checking, and dthr is a predefined safety threshold. The penalty func-tion ℓ(·) is implemented as a smoothed ℓ1 loss: 
+
+ℓ(x) = 
+
+
+
+0, x < 0,x − μ
+
+2 , x > μ, 
+
+
+
+μ − x
+
+2
+
+  xμ
+
+3
+
+, 0 ≤ x ≤ μ, 
+
+(7) where μ > 0 is a smoothing parameter. The gradient of the safety cost with respect to the state variables is computed via the chain rule as 
+
+∂J c
+
+∂∗ =
+
+> Np−1
+
+X
+
+> j=0
+> Nl−1
+
+X
+
+> i=0
+
+∂ℓ ∂idj
+
+∂idj
+
+∂ixj
+
+∂ixj
+
+∂∗ , (8) where ∗ denotes the state variables {pb, Rb, θ}. Here, 
+
+∂idj /∂ ixj is directly given by the spatial gradient of the cor-responding link SDF, and ∂ixj /∂ ∗ captures the dependence of the obstacle point coordinates on the UAM configuration through the forward kinematics. This formulation enables efficient, fully differentiable collision-cost evaluation for whole-body trajectory optimiza-tion while preserving the geometric fidelity of the raw point cloud. In the implementation, the gradients of the safety cost w.r.t. the state variables are given by 
+
+
+
+∂J c
+
+∂pb
+
+=
+
+> Np−1
+
+X
+
+> j=0
+> Nl−1
+
+X
+
+> i=0
+> i
+
+αj Ri igj ,∂J c
+
+∂q = −
+
+> Np−1
+
+X
+
+> j=0
+> Nl−1
+
+X
+
+> i=0
+> i
+
+αj bg⊤
+
+> j
+
+∂R⊤
+
+> b
+
+∂q (xj − pb),∂J c
+
+∂θ k
+
+= −
+
+> Np−1
+
+X
+
+> j=0
+> Nl−1
+
+X
+
+> i=k+1
+> i
+
+αj iz⊤
+
+> k
+
+igj × (ixj − ipk)
+
+
+
+,
+
+(9) where igj = ∂idj /∂ ixj denotes the SDF gradient returned by the MRC-SDF query, iαj = ∂ℓ (dthr − idj )/∂ (dthr − idj )
+
+is the derivative of the smooth hinge loss, ixj = R⊤ 
+
+> i
+
+(xj −pi)
+
+is the obstacle point expressed in the link frame, ipk and 
+
+> i
+
+zk denote the position and rotation axis of the k-th joint in the link frame obtained from forward kinematics, and q =[qw, q x, q y , q z ]⊤ denotes the unit quaternion parameterizing the base attitude. 
+
+C. End-effector Insertion 
+
+To facilitate stable straight-line insertion of the two-finger end-effector along the terminal segment until reaching the target pose, we design an end-effector insertion penalty. For a whole-body state with body pose (pb, q) and joint angles θ,the corresponding end-effector pose (pe, qe) is computed via the forward-kinematics chain in Eq. 4. Given the desired end-effector goal pose (pe,g , qe,g ), where pe,g and qe,g denote the target position and orientation, respectively. We define the pose penalty as the sum of a position term and an orientation term, both using smoothed hinge penalties: 
+
+Je = ρP ℓ(∥pe − pe,g ∥ − de,th )+ ρR ℓ(dR(Re, Re,g ) − re,th ) , (10) where ρP > 0 and ρR > 0 are weighting coefficients, 
+
+de,th and re,th are the position and rotation tolerances, respectively, and ℓ(·) denotes the smoothed function defined in Eq. 7. Re and Re,g are the rotation matrices corresponding to qe and qe,g , respectively. The end-effector insertion penalty Je is differentiable w.r.t. the whole-body state through the forward-kinematics chain in Eq. 4. Denoting dp = pe − pe,g and dR = 3−tr( ReR⊤  
+
+> e,g )2
+
+,the gradients used in the implementation are 
+
+
+
+∂J e
+
+∂pb
+
+= ρP αP gp.∂J e
+
+∂q = ρP αP Jp
+
+> q⊤
+
+gp + ρR αR gq,∂J e
+
+∂θ k
+
+= ρP αP Jpθk
+
+> ⊤
+
+gp + ρR αR gθk ,
+
+(11) where gp = dp/∥dp∥, and α∗ is the derivative of the smoothed hinge loss. Jp
+
+> q
+
+, and Jpθk are the Jacobians of pe
+
+w.r.t. q, and θk. For the rotation term, letting GR = − 12 Re,g ,we use 
+
+gq =
+
+h
+
+tr 
+
+
+
+G⊤
+
+> R
+
+∂Re
+
+∂q w
+
+
+
+, tr 
+
+
+
+G⊤
+
+> R
+
+∂Re
+
+∂q x
+
+
+
+,
+
+tr 
+
+
+
+G⊤
+
+> R
+
+∂Re
+
+∂q y
+
+
+
+, tr 
+
+
+
+G⊤
+
+> R
+
+∂Re
+
+∂q z
+
+ i⊤
+
+,gθk = tr  G⊤ 
+
+> R
+
+[zwk ]×Re
+
+ ,
+
+(12) with ∂Re 
+
+> ∂q j
+
+= ∂Rb 
+
+> ∂q j
+
+Rbe and ∂Re 
+
+> ∂θ k
+
+= [ zwk ]×Re.
+
+D. Dynamic Feasibility 
+
+To ensure that the generated trajectory can be physically executed by the aerial manipulator, it must satisfy the under-lying dynamic constraints of the system. These constraints are enforced by penalizing violations in translational, ro-tational, and joint motion, as represented by the following unified cost term: 
+
+J∗(t) = g ∥ ∗ (t)∥2 − ∗ max 2, (13) where ∗ ∈ { v, a, ˙ψ, ˙θk} represents the translational velocity, acceleration, yaw rate, and the angular velocity of the k-th actuated joint, respectively, with k = 1 , . . . , N θ .In addition, we further penalize the body rates around the 
+
+x- and y-axes, denoted by ωxy = [ ωx, ω y ]T , to ensure that the rotational motion remains within the feasible actuation range. The corresponding penalty function is defined as 
+
+Jωxy = Lμ
+
+ ∥ωxy ∥2 − ω2
+
+> xy, max
+
+, (14) where ωxy, max denotes the maximum allowable body angular velocity along the xy -plane. Following [30], we adopt the Hopf fibration formulation to simplify computation and avoid singularities, allowing the body rates about the x- and y-axes to be computed directly from the time derivative of the body z-axis: 
+
+∥ωxy ∥2 = ω2 
+
+> x
+
++ ω2 
+
+> y
+
+= ∥ ˙zb∥. (15) The term ˙zb can be computed from the drone’s acceleration and jerk. 
+
+E. Trajectory Representation and Optimization Problem For-mulation 
+
+We represent and optimize the motion plan using the MINCO trajectory class Ts 
+
+> MINCO
+
+[31]. An s-order MINCO trajectory is expressed as a polynomial of degree (2 s − 1) .It has been shown to yield the unique optimum of the minimum-control problem for an s-integrator chain, while remaining continuously differentiable up to order s − 1. This representation admits a compact parametrization through intermediate waypoints and segment durations, denoted by 
+
+{q, T}. Accordingly, trajectory generation is posed as the following optimization: 
+
+min  
+
+> q,T
+
+Js + ρT +
+
+Z T
+
+> 0
+
+JG dt, (16) where Js is the smoothness objective derived directly from the polynomial trajectory, ρ is a time-regularization weight, 
+
+T denotes the total time horizon, and JG captures the costs arising from the UAV dynamic-feasibility, safety, and insertion constraints. The detailed formulations of each term are as follows: 
+
+JG = λ⊤G
+
+Jc, J e, J v , J a, J ˙ψ , J ˙θ , J ωxy 
+
+⊤, (17) where λG is a predefined weight vector. Jc denotes the collision-avoidance cost, and Je is the end-effector insertion cost. The terms Jv , Ja, J ˙ψ , J ˙θ , and Jωxy penalize violations of the bounds on v, a, ˙ψ, ˙θk, and the body angular velocity in the x–y plane, respectively, where ωxy = [ ωx, ω y ]⊤.We adopt T4 
+
+> MINCO
+
+to parameterize the position trajectory 
+
+pb(t) = ( px(t), p y (t), p z (t)) ⊤, and T2 
+
+> MINCO
+
+to parameterize the yaw trajectory ψ(t) and the joint-angle trajectories θ(t).The initial guesses for ψ(t) and θ(t) are obtained by linear interpolation over time between their values at the initial and target configurations. VII. E XPERIMENTS 
+
+A. Implementation Details 
+
+In the real-world experiments, the proposed algorithm is deployed on the custom experimental platform QuadHand integrating an NVIDIA Jetson Orin NX as the onboard com-puter and an NxtPX4v2 flight controller. The root pitch link of the arm is actuated by a motor, while the remaining links, including the gripper, are driven by servos. State estimation is performed using an EKF that fuses measurements from a Vicon motion capture system and an onboard IMU. In the simulation experiments, the algorithm is executed on a desktop equipped with an Intel® Core™ Ultra 9 185H CPU. 
+
+B. Figure-Eight Trajectory Tracking 
+
+To assess the platform’s maneuverability, tracking per-formance, and the effectiveness of PCGC, the quadrotor is commanded to follow a figure-eight trajectory of 3.6 × 2 mwhile the arm joints execute sinusoidal motions within their respective limits, as shown in Fig. 4. As illustrated in Fig. 4A, four experimental configurations are considered, corresponding to combinations with or without PCGC and with or without an external payload. The payload consists of two iron blocks with a total mass of 150 g attached to the gripper. For each configuration, the platform conducts three flights along a 3.6 m × 2 m figure-eight trajectory. The trajectory overlay and a representative lap under the with-PCGC-with-payload setting are shown in Fig. 4B. Fig. 4C presents representative tracking results for the payload case, comparing with and without PCGC. Fig. 4D shows the distribution of the three-dimensional absolute tracking errors under different configurations, indicating that the errors are generally on the order of 3–4 cm and that PCGC effectively improves tracking accuracy. 
+
+C. Simulation and Benchmark Comparisons 
+
+To validate the efficiency and accuracy of MRC-SDF in trajectory optimization, comparative simulation experiments were conducted on grasping tasks with obstacles, using SFC [26] and ESDF [28] as baselines. As shown in Fig. 4E, two window-shaped obstacle frames were vertically placed at different heights in the environment. The proposed system was required to start from the right side of the scene, pass through the windows, and fly toward the target position on the left to grasp the cup on the cube. The initial position of the UAM was randomly initialized within a 1×2×1 m 3 box, while the joint configuration was randomly sampled within its executable range. So that the corresponding average required flight distance was approximately 4.5 m . To ensure safe flight and grasping, the safe distance, defined as the minimum distance between the UAM surface and obstacles, was set to 0.03 m .As shown in Fig. 4F-i, in the SFC method, all environ-mental point clouds were considered to construct convex corridors for safety, which excluded the region around the target object from the feasible space. As a result, large penalties were imposed near the end of the trajectory, making Fig. 4: Trajectory tracking experiments. (A) Experimental configurations. (B) Long-exposure image of the figure-eight trajectory and the corresponding position tracking curves. (C) Tracking curves with payload under configurations with and without PCGC. (D) Distribution of three-dimensional absolute tracking errors over three trials of the figure-eight trajectory, with three loops per trial. (E) Benchmark comparison setup. (F) Comparison of different geometric representations: SFC, ESDF, and MRC-SDF. (G) Comparison of success rate and average optimization time for successful trials. 
+
+it difficult to generate feasible grasping trajectories for close-range interaction. For ESDF, the resolution was set to 0.02 m to balance ge-ometric representation accuracy and onboard computational load. As shown in Fig. 4F-ii, the gradient inside the cup was not resolved sufficiently, which prevented the optimizer from finding feasible trajectories that satisfied the safety constraint, resulting in the optimization failure. In contrast, as shown in Fig. 4F-iii, MRC-SDF provided a finer geometric representation when approaching obstacles while preserving the complete environmental point cloud. This avoided the loss of geometric details caused by vox-elization and ensured the success of trajectory optimization. Fig. 4G shows the trajectory optimization statistics over 100 trials among the three methods. The success rate of the SFC corridor was 19%, with an average optimization time of 128.24 ms, and the average SFC generation time was 29.27 ms. The success rate of ESDF was 0%, and no feasible trajectory satisfying the safety constraints was found within the maximum optimization iterations. In addition, the average ESDF update time was 433.126 ms. The success rate of MRC-SDF reached 99% with an average optimization time of 172.22 ms under successful trials. These results indicate that MRC-SDF achieved the highest success rate while maintaining an acceptable optimization time. 
+
+D. Real-world Implementation 
+
+To validate the proposed system in real-world scenarios, we conduct five missions on the experimental platform. Drone Rescue, Cable Unplugging, and Plier Placement are presented in Fig. 5, while gap-crossing grasp and narrow-gap crossing are presented in Fig. 6. In all missions, the terminal Fig. 5: General mobile manipulation tasks: Drone Rescue, Cable Unplugging, and Plier Placement. Each row shows the motion trail, FPV images, external views, and EE position trajectories. Green, red, and blue arrows denote approach, retreat, and object motion, respectively. 
+
+state is pre-specified, the initial state is estimated online, and the trajectory is computed onboard in real time. 
+
+1) General Mobile Manipulation Tasks: We conduct three mobile missions without considering the environment point cloud, as shown in Fig. 5.  
+
+> •
+
+Drone Rescue: QuadHand approaches the grounded DJI Tello, grasps it, and drags it out from under the blue storage boxes; the Tello then takes off.  
+
+> •
+
+Cable Unplugging: QuadHand navigates to the socket, grips the USB cable, and unplugs it, causing the cable-powered lamp to turn off.  
+
+> •
+
+Plier Placement: QuadHand places a pre-grasped plier onto a hook on a perforated pegboard. 
+
+2) Gap-crossing Related Experiments: We conduct two gap-related experiments by considering the environment point cloud, as shown in Fig. 6. The narrow gap is sized at 0.6 × 0.35 m . 
+
+> •
+
+Narrow-gap crossing and cup grasping: A cup (in-ner/outer diameter: 70/80 mm) is placed on a cube. QuadHand crosses the narrow gap, reaches above the cup, grasps it, and lifts it.  
+
+> •
+
+Narrow-gap crossing: QuadHand is required to pass through the narrow gap from different initial states to the other side. We consecutively perform 7 trials, all of which successfully cross the gap. VIII. C ONCLUSION AND FUTURE WORK 
+
+QuadHand integrates a compact quadrotor, 3-DoF arm, gripper, and battery-assisted passive CoG compensation module. We also presented an MRC-SDF-based whole-body trajectory optimizer that preserves raw point-cloud detail for close-proximity planning. Experiments demonstrate safe aerial manipulation in complex environments. Current limita-tions include reliance on external motion capture and manu-ally predefined terminal states and retreat directions. Future work will study onboard state estimation and autonomous whole-body state generation and decision-making. REFERENCES [1] Y. Zhang, C. Yan, J. Xiao, and M. Feroskhan, “Npe-drl: Enhanc-ing perception constrained obstacle avoidance with nonexpert policy guided reinforcement learning,” IEEE Transactions on Artificial Intel-ligence , vol. 6, no. 1, pp. 184–198, 2024. [2] Y. Zhang, H. Yu, J. Xiao, and M. Feroskhan, “Grounded vision-language navigation for uavs with open-vocabulary goal understand-ing,” arXiv preprint arXiv:2506.10756 , 2025. [3] Y. Yao, B. Zhang, W. Zhang, L. Gao, D. Peng, B. Li, Y. Wang, and B. Wang, “Arsgaussian: 3d gaussian splatting with lidar for aerial re-mote sensing novel view synthesis,” ISPRS Journal of Photogrammetry and Remote Sensing , vol. 231, pp. 288–306, 2026. [4] R. Jin, Y. Gao, Y. Wang, Y. Wu, H. Lu, C. Xu, and F. Gao, “Gs-planner: A gaussian-splatting-based planning framework for active high-fidelity reconstruction,” in 2024 IEEE/RSJ International Conference on Intel-ligent Robots and Systems (IROS) . IEEE, 2024, pp. 11 202–11 209. [5] Y. Wu, F. Yang, R. Jin, Y. Zhong, J. Wang, X. Wu, and F. Gao, “Hand-like autonomous flying robot for airborne grasping and interaction,”    
+
+> Nature Communications , 2026. [6] J. Li, J. Li, K. Kaneko, H. Liu, L. Shu, and M. Zhao, “Six-dof hand-based teleoperation for omnidirectional aerial robots,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2025, pp. 15 482–15 488. [7] R. Jin, X. Xu, Y. Yang, J. Li, M. Cao, and L. Xie, “Tethered uav autonomous knotting on environmental structures for transport,”
+> Cyborg and Bionic Systems , vol. 6, p. 0450, 2025.
+
+Fig. 6: Gap-crossing experiments. (A–D) Gap-crossing grasping: setup, crossing-and-grasping snapshot, FPV image, and position tracking. (E) Long-exposure gap-crossing visualization. 
+
+[8] S. Sun, X. Wang, D. Sanalitro, A. Franchi, M. Tognon, and J. Alonso-Mora, “Agile and cooperative aerial manipulation of a cable-suspended load,” Science Robotics , vol. 10, no. 107, p. eadu8015, 2025. [9] Z. Li, H. Chen, Y. Lin, B. Ye, Z. Pan, and X. Lyu, “Aerothrow: An autonomous aerial throwing system for precise payload delivery,” 
+
+IEEE Robotics and Automation Letters , 2026. [10] M. Cao, J. Zhao, X. Xu, and L. Xie, “Aircrab: A hybrid aerial-ground manipulator with an active wheel,” in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2024, pp. 10 356–10 361. [11] M. ´A. Trujillo, J. R. Mart´ ınez-de Dios, C. Mart´ ın, A. Viguria, and A. Ollero, “Novel aerial manipulator for accurate and robust industrial ndt contact inspection: A new tool for the oil and gas inspection industry,” Sensors , vol. 19, no. 6, p. 1305, 2019. [12] A. Suarez, M. Perez, G. Heredia, and A. Ollero, “Cartesian aerial manipulator with compliant arm,” Applied Sciences , vol. 11, no. 3, p. 1001, 2021. [13] A. Ollero, M. Tognon, A. Suarez, D. Lee, and A. Franchi, “Past, present, and future of aerial robotic manipulators,” IEEE Transactions on Robotics , vol. 38, no. 1, pp. 626–645, 2021. [14] H. Chen, B. Ye, X. Liang, W. Deng, and X. Lyu, “Ndob-based control of a uav with delta-arm considering manipulator dynamics,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) ,2025, pp. 7505–7511. [15] H. Cao, J. Shen, Y. Zhang, Z. Fu, C. Liu, S. Sun, and S. Zhao, “Proximal cooperative aerial manipulation with vertically stacked drones,” Nature , vol. 646, no. 8085, pp. 576–583, 2025. [16] M. Wang, Z. Chen, K. Guo, X. Yu, Y. Zhang, L. Guo, and W. Wang, “Millimeter-level pick and peg-in-hole task achieved by aerial ma-nipulator,” IEEE Transactions on Robotics , vol. 40, pp. 1242–1260, 2024. [17] S. Deshmukh, J. Alonso-Mora, and S. Sun, “Global end-effector pose control of an underactuated aerial manipulator via reinforcement learning,” 2025. [Online]. Available: https://arxiv.org/abs/2512.21085 [18] Z. Zhang, H. Yu, Y. Chai, Z. Yang, X. Liang, Y. Fang, and J. Han, “An end-effector-oriented coupled motion planning method for aerial manipulators in constrained environments,” IEEE/ASME Transactions on Mechatronics , vol. 30, no. 6, pp. 6027–6037, 2025. [19] G. He, X. Guo, L. Tang, Y. Zhang, M. Mousaei, J. Xu, J. Geng, S. Scherer, and G. Shi, “Flying hand: End-effector-centric framework for versatile aerial manipulation teleoperation and policy learning,” 
+
+arXiv preprint arXiv:2504.10334 , 2025. [20] H. Gupta, X. Guo, H. Ha, C. Pan, M. Cao, D. Lee, S. Scherer, S. Song, and G. Shi, “Umi-on-air: Embodiment-aware guid-ance for embodiment-agnostic visuomotor policies,” arXiv preprint arXiv:2510.02614 , 2025. [21] D. Lee, B. Kim, and H. J. Kim, “Autonomous aerial manipula-tion at arbitrary pose in se (3) with robust control and whole-body planning,” The International Journal of Robotics Research , p. 02783649251378195, 2025. [22] J. Lin, S. Ji, Y. Wu, T. Wu, Z. Han, and F. Gao, “Float drone: A fully-actuated coaxial aerial robot for close-proximity operations,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2025, pp. 7216–7223. [23] L.-W. Tsai, Robot analysis: the mechanics of serial and parallel manipulators . John Wiley & Sons, 1999. [24] S. H. Derrouaoui, Y. Bouzid, A. Belmouhoub, and M. Guiatni, “Improved robust control of a new morphing quadrotor uav subject to aerial configuration change,” Unmanned Systems , vol. 13, no. 01, pp. 171–191, 2025. [25] S. Huang and R. S. H. Teo, “Geometric control of a quadrotor uav on so (3) with actuator constraints,” Unmanned Systems , vol. 13, no. 04, pp. 1101–1114, 2025. [26] W. Deng, H. Chen, B. Ye, H. Chen, Z. Li, and X. Lyu, “Whole-body integrated motion planning for aerial manipulators,” IEEE Transac-tions on Robotics , vol. 41, pp. 6661–6679, 2025. [27] M. Zhang, C. Xu, F. Gao, and Y. Cao, “Trajectory optimization for 3d shape-changing robots with differential mobile base,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , 2023, pp. 10 104–10 110. [28] C. Wu, R. Wang, M. Song, F. Gao, J. Mei, and B. Zhou, “Real-time whole-body motion planning for mobile manipulators using environment-adaptive search and spatial-temporal optimization,” in 
+
+2024 IEEE International Conference on Robotics and Automation (ICRA) , 2024, pp. 1369–1375. [29] S. Geng, Q. Wang, L. Xie, C. Xu, Y. Cao, and F. Gao, “Robo-centric esdf: A fast and accurate whole-body collision evaluation tool for any-shape robotic planning,” in 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2023, pp. 290–297. [30] Y. Gao, J. Ji, Q. Wang, R. Jin, Y. Lin, Z. Shang, Y. Cao, S. Shen, C. Xu, and F. Gao, “Adaptive tracking and perching for quadrotor in dynamic scenarios,” IEEE Transactions on Robotics , vol. 40, pp. 499–519, 2024. [31] Z. Wang, X. Zhou, C. Xu, and F. Gao, “Geometrically constrained tra-jectory optimization for multicopters,” IEEE Transactions on Robotics ,vol. 38, no. 5, pp. 3259–3278, 2022.

@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-29",
+  "date": "2026-09-29",
+  "generated_at": "2026-09-29T23:32:21",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/29/2609.30521v1-aerial-manipulation-in-the-wild-with-onboard-perception-policy-learning-and-whole-body-control",
+      "section": "deep",
+      "title_en": "Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control",
+      "authors": "Yuanzhu Zhan, Yufei Jiang, Zemu Zhang, Junyi Geng",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.30521v1",
+      "score": "9.0",
+      "evidence": "真实世界空中操作框架，融合策略学习与无人机机械臂全身控制",
+      "tldr": "户外空中操作需同时满足可靠状态估计、稳定飞行与抗扰精确操作，现有方法常依赖动捕等外部设施。本文提出集成模仿学习、机载LiDAR-惯性状态估计与全身模型预测控制的真实户外框架。扩散策略由演示学习，从机载观测生成期望末端运动，全身MPC协调飞行平台与机械臂执行。实机验证表明可完成户外操作任务，摆脱受控室内环境限制。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Aerial manipulation in outdoor environments remains challenging due to the simultaneous requirements of reliable state estimation, stable aerial motion, and precise manipulation under external disturbances. In this work, we present a real-world outdoor aerial manipulation framework that integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body model predictive control. A Diffusion Policy is trained from manipulation demonstrations to generate desired end-effector motions from onboard observations. These learned commands are executed by a whole-body MPC that jointly coordinates the aerial platform and manipulator to realize the desired end-effector trajectory. To eliminate reliance on external motion-capture infrastructure, the platform employs onboard LiDAR-inertial odometry for state estimation during outdoor operation. We validate the complete framework on a physical aerial manipulator and demonstrate successful execution of outdoor manipulation tasks. The experimental results show that demonstration-driven manipulation policies can be effectively integrated with onboard state estimation and model-based whole-body control to enable aerial manipulation beyond controlled indoor environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/29/2609.35094v1-quadhand-a-compact-quadrotor-aerial-manipulator-with-mrc-sdf-based-whole-body-motion-planning",
+      "section": "deep",
+      "title_en": "QuadHand: A Compact Quadrotor Aerial Manipulator with MRC-SDF-Based Whole-Body Motion Planning",
+      "authors": "Rui Jin, Ruiyang Liu, Xinhang Xu, Haotian Jin, Yi Wang, Yizhuo Yang, Lihua Xi",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.35094v1",
+      "score": "9.0",
+      "evidence": "四旋翼空中机械臂与全身运动规划",
+      "tldr": "无人机空中操纵需机械臂与飞行平台协同，但扩大工作空间会加剧臂致扰动，现有几何表示又难以兼顾精度与效率。本文提出紧凑型四旋翼空中操纵器QuadHand，集成3自由度机械臂、夹爪及电池辅助被动重心补偿模块以抑制扰动。进而提出MRC-SDF多关节机器人中心符号距离场，并构建时空全身轨迹优化，联合规划四旋翼与机械臂。仿真和实机实验表明，该系统能在复杂环境中实现安全、可执行的空中操纵。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Uncrewed aerial manipulators (UAMs) integrate robotic arms with aerial platforms for three-dimensional physical interaction. However, enlarging the workspace increases arm-induced disturbances, while existing geometric representations face a trade-off between geometric fidelity and computational efficiency in close-proximity interaction. This paper presents QuadHand, a compact quadrotor aerial manipulator with a 3-DoF arm, gripper, and battery-assisted passive CoG compensation module to reduce dominant arm-induced disturbances. We further propose MRC-SDF, a Multi-articulated Robot-Centric Signed Distance Field that preserves fine geometric detail with tractable computation, and a spatiotemporal whole-body trajectory optimization framework that jointly optimizes the quadrotor and manipulator for safe and executable trajectory generation. Simulations and real-world experiments demonstrate safe and executable aerial manipulation in complex environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/29/2609.34594v1-aerial-gripper-a-gradient-based-real-time-inverse-game-predictor-and-planner",
+      "section": "quick",
+      "title_en": "Aerial GRIPPER: A Gradient-based Real-time Inverse-game Predictor and Planner",
+      "authors": "Zeshuai Chen, Meng Wang, Jindou Jia, Xiang Yu, Lei Guo",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.34594v1",
+      "score": "7.0",
+      "evidence": "空中抓取器系统，非合作目标捕获与空中操作控制",
+      "tldr": "针对非合作目标空中抓取难题，提出Aerial GRIPPER框架，将交互建模为不完全信息下的一般和追逃博弈。方法在线推断目标代价参数，并在滚动时域内迭代求解开环纳什均衡。借助隐式微分与快速Hessian-向量积，求解器无需显式Hessian逆，更新频率超50Hz，配合抗扰动控制器实现精确跟踪与抓取。仿真和实机验证了其计算效率、鲁棒性与实时性，完成非合作目标捕获与投送。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Accurate capture of non-cooperative targets is critical. In an attempt to tackle this intractable challenge, an aerial gripper system integrated with a Gradient-based Real-time Inverse-game Predictor and PlannER (GRIPPER) framework is proposed. The interaction is formulated as a general-sum pursuit-evasion game under incomplete information. Specifically, underlying cost parameters of the target are inferred online, and the open-loop Nash equilibrium (OLNE) strategy is iteratively refined within a receding-horizon loop. To ensure high-frequency execution, a computationally friendly gradient-based inverse-game solver is developed. Without explicit computation of the Hessian inverse, the optimized solution is updated (> 50 Hz) based on implicit differentiation and fast Hessian-vector products. Meanwhile, an anti-disturbance controller is developed to overcome disturbances of uncertain payload and gripper actuation, enabling precise tracking of the planned trajectory and accurate grasping of the target. Simulations and real-world experiments illustrate the superior computational efficiency and task performance of GRIPPER. The task of capturing and delivering a non-cooperative target is accomplished, highlighting the robustness, adaptability, and real-time performance of the framework in highly adversarial scenarios.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
