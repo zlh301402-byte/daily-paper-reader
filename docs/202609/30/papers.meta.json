@@ -1,0 +1,69 @@
+{
+  "label": "2026-09-30",
+  "date": "2026-09-30",
+  "generated_at": "2026-09-30T23:25:22",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/30/2609.30521v1-aerial-manipulation-in-the-wild-with-onboard-perception-policy-learning-and-whole-body-control",
+      "section": "deep",
+      "title_en": "Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control",
+      "authors": "Yuanzhu Zhan, Yufei Jiang, Zemu Zhang, Junyi Geng",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.30521v1",
+      "score": "9.0",
+      "evidence": "空中操作结合策略学习与全身控制",
+      "tldr": "户外空中操作需同时解决可靠状态估计、稳定飞行与扰动下精确操作等难题。本文提出融合模仿学习、机载LiDAR惯性估计与全身模型预测控制的真实户外空中操作框架。Diffusion Policy从演示中生成末端期望运动，再由全身MPC协调飞行平台与机械臂执行。在实体平台上的户外任务验证表明，该方案可摆脱外部动捕，将演示驱动机器人操作拓展至非受控室内环境。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Aerial manipulation in outdoor environments remains challenging due to the simultaneous requirements of reliable state estimation, stable aerial motion, and precise manipulation under external disturbances. In this work, we present a real-world outdoor aerial manipulation framework that integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body model predictive control. A Diffusion Policy is trained from manipulation demonstrations to generate desired end-effector motions from onboard observations. These learned commands are executed by a whole-body MPC that jointly coordinates the aerial platform and manipulator to realize the desired end-effector trajectory. To eliminate reliance on external motion-capture infrastructure, the platform employs onboard LiDAR-inertial odometry for state estimation during outdoor operation. We validate the complete framework on a physical aerial manipulator and demonstrate successful execution of outdoor manipulation tasks. The experimental results show that demonstration-driven manipulation policies can be effectively integrated with onboard state estimation and model-based whole-body control to enable aerial manipulation beyond controlled indoor environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/30/2609.35094v1-quadhand-a-compact-quadrotor-aerial-manipulator-with-mrc-sdf-based-whole-body-motion-planning",
+      "section": "deep",
+      "title_en": "QuadHand: A Compact Quadrotor Aerial Manipulator with MRC-SDF-Based Whole-Body Motion Planning",
+      "authors": "Rui Jin, Ruiyang Liu, Xinhang Xu, Haotian Jin, Yi Wang, Yizhuo Yang, Lihua Xie",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.35094v1",
+      "score": "9.0",
+      "evidence": "四旋翼空中机械臂与全身运动规划",
+      "tldr": "问题背景：无人机机械臂（UAM）扩大工作空间会加剧臂致扰动，且现有几何表示在近距交互中难以兼顾精度与效率。核心方法：提出 QuadHand 紧凑四旋翼空中机械臂，含3-DoF臂、夹爪与电池辅助被动重心补偿模块；并提出 MRC-SDF 多关节机器人中心有符号距离场与时空全身轨迹优化框架。关键结果：仿真与实机验证复杂环境下安全可执行的空中操作。贡献意义：为紧凑型空中操作提供低扰动硬件与高精度高效规划方案。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Uncrewed aerial manipulators (UAMs) integrate robotic arms with aerial platforms for three-dimensional physical interaction. However, enlarging the workspace increases arm-induced disturbances, while existing geometric representations face a trade-off between geometric fidelity and computational efficiency in close-proximity interaction. This paper presents QuadHand, a compact quadrotor aerial manipulator with a 3-DoF arm, gripper, and battery-assisted passive CoG compensation module to reduce dominant arm-induced disturbances. We further propose MRC-SDF, a Multi-articulated Robot-Centric Signed Distance Field that preserves fine geometric detail with tractable computation, and a spatiotemporal whole-body trajectory optimization framework that jointly optimizes the quadrotor and manipulator for safe and executable trajectory generation. Simulations and real-world experiments demonstrate safe and executable aerial manipulation in complex environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/30/2609.27450v1-bee-intervention-adaptive-real-world-reinforcement-learning-with-vision-language-action-models",
+      "section": "quick",
+      "title_en": "BEE: Intervention-Adaptive Real-World Reinforcement Learning with Vision-Language-Action Models",
+      "authors": "Weihui Zhao, Xiaohan Yan, Zunian Wan, Xuan Du, Zhaozhan Chi, Jianbo Mao, Ruipu Wu, Rushuai Yang, Houlin Li, Shukai Yang, Jing Wu, Yuxiang Yan, Yongcheng Liu, Chuankang Li, Guanghui Ren, Wei Shan, Maoqing Yao",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27450v1",
+      "score": "6.0",
+      "evidence": "面向机器人操作策略的真实世界强化学习",
+      "tldr": "VLA模型在长程操作中常因毫米级精度阶段失败，而真实机器人在线RL探索代价高昂，必须依赖人类纠正。现有方法或无法利用纠正，或将其当作无差别监督。BEE将人类纠正建模为约束证据，用纠正模型预测各动作维度的一致性与修正方式，并据此调整约束松紧，在冻结VLA上实现干预自适应RL。在三个真实操作任务和LIBERO-Pro上，BEE平均成功率91.2%，显著高于RLT的57.5%和DSRL的42.1%，且真实任务人工干预率最低。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Vision-language-action (VLA) models handle long-horizon manipulation, yet success hinges on a few precision-critical phases where millimeter-scale errors undo all prior progress. Online reinforcement learning (RL) can optimize exactly these actions, but free exploration is far too costly on real robots, which makes human corrections indispensable. However, existing online RL methods for VLAs either cannot incorporate such corrections or fold them into undifferentiated supervision. Yet human corrections are not uniformly noisy but reliable along some action dimensions and variable along others. Building on this, we introduce BEE, an intervention-adaptive framework for real-world RL on a frozen VLA that lets the policy go BEyond Expert imitation. We formulate human corrections not as actions to reproduce but as evidence about a constraint: a Correction Model predicts how a human would correct a given VLA proposal and how consistent the correction is along each action dimension. This predicted consistency sets the per-dimension tightness of a constraint on policy optimization. Where corrections are consistent the policy stays close to the human, and where they vary, the constraint relaxes. We evaluate BEE on three real-world manipulation tasks and one LIBERO-Pro simulation task at a matched online-data budget. BEE attains the highest success rate on every task, 91.2% on average against 57.5% for RLT and 42.1% for DSRL, and the lowest human intervention rate on all real-world tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/30/2609.33882v1-dextag-tactile-as-guidance-in-reinforcement-learning-for-dexterous-manipulation",
+      "section": "quick",
+      "title_en": "DexTaG: Tactile-as-Guidance in Reinforcement Learning for Dexterous Manipulation",
+      "authors": "Han Yang, Yian Wang, Yunlong Song, Zhenjia Xu, Chuang Gan",
+      "date": "2026-09-27",
+      "pdf": "https://arxiv.org/pdf/2609.33882v1",
+      "score": "6.0",
+      "evidence": "面向机械手灵巧操作的强化学习",
+      "tldr": "手套动捕可规模化采集灵巧手演示，但人手与机器人手存在运动学差异，接触丰富的工具使用与手中重定向难以直接迁移。DexTaG 用触觉信号引导强化学习策略搜索，使策略逼近人类接触模式，并联合训练可泛化的重定向器，再蒸馏为无触觉学生控制器。在记号笔和锤子任务上，它学到自然且接触丰富的操作行为，优于基于距离的接触启发式基线，并能泛化到同物体同任务的留出轨迹。该工作表明触觉可作为引导信号，提升灵巧操作重定向的效率与真实性。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Glove-based motion capture is emerging as a scalable approach to collecting dexterous-hand demonstration data. However, due to the kinematic gap between the human and robot hand, the recorded human motions cannot be executed directly on the robot, especially for contact-rich tool-use tasks involving in-hand reorientation. Prior work bridges this gap in simulation through reinforcement learning (RL) or trajectory optimization, but the human contact pattern is hard to preserve under such formulations, often producing unnatural manipulation and unstable functional grasps. These methods also train a separate policy or solve a separate optimization for each reference trajectory, which is inefficient. To solve these problems, we propose DexTaG, a tactile-guided RL framework for dexterous manipulation. During training, tactile signals captured by the glove guide policy search toward the measured human contact pattern, reducing reliance on precise reference geometry for contact supervision. To improve efficiency, we train a single generalizable retargeter jointly on all training trajectories of the same object. The retargeter is further distilled into a tactile-free student controller conditioned on the target object trajectory for real-world deployment. On marker-pen and hammer manipulation tasks, DexTaG learns natural, contact-rich behaviors that baselines with distance-based contact heuristics fail to learn, generalizes to held-out trajectories of the same object and task, and outperforms single-trajectory baselines on OakInk2.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
