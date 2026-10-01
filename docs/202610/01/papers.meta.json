@@ -1,0 +1,39 @@
+{
+  "label": "2026-10-01",
+  "date": "2026-10-01",
+  "generated_at": "2026-10-01T23:03:13",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202610/01/2609.30521v1-aerial-manipulation-in-the-wild-with-onboard-perception-policy-learning-and-whole-body-control",
+      "section": "deep",
+      "title_en": "Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control",
+      "authors": "Yuanzhu Zhan, Yufei Jiang, Zemu Zhang, Junyi Geng",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.30521v1",
+      "score": "9.0",
+      "evidence": "真实场景空中操作与全身控制",
+      "tldr": "户外空中操作需同时保证状态估计、稳定飞行与抗扰精确操作，传统方法依赖动捕且难以适应野外。该工作提出融合模仿学习、机载LiDAR惯性估计与全身MPC的实机框架，用Diffusion Policy从演示生成末端期望运动，再由全身MPC协调无人机与机械臂执行。在物理平台上成功完成户外操作任务，证明演示学习策略可与机载感知和基于模型的全身控制有效结合。这推动空中操作走出受控室内环境。",
+      "tags": "query:aerial-arm",
+      "abstract_en": "Aerial manipulation in outdoor environments remains challenging due to the simultaneous requirements of reliable state estimation, stable aerial motion, and precise manipulation under external disturbances. In this work, we present a real-world outdoor aerial manipulation framework that integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body model predictive control. A Diffusion Policy is trained from manipulation demonstrations to generate desired end-effector motions from onboard observations. These learned commands are executed by a whole-body MPC that jointly coordinates the aerial platform and manipulator to realize the desired end-effector trajectory. To eliminate reliance on external motion-capture infrastructure, the platform employs onboard LiDAR-inertial odometry for state estimation during outdoor operation. We validate the complete framework on a physical aerial manipulator and demonstrate successful execution of outdoor manipulation tasks. The experimental results show that demonstration-driven manipulation policies can be effectively integrated with onboard state estimation and model-based whole-body control to enable aerial manipulation beyond controlled indoor environments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/01/2609.30868v1-vlarl-augmenting-vision-language-action-models-with-simulation-trained-latent-conditioned-residual-rl",
+      "section": "quick",
+      "title_en": "VLaRL: Augmenting Vision-Language-Action Models with Simulation-Trained Latent-Conditioned Residual RL",
+      "authors": "Namiko Saito, Kinam Kim, Heecheol Kim, Katsushi Ikeuchi, Yasuyuki Matsushita",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.30868v1",
+      "score": "6.0",
+      "evidence": "用残差强化学习纠正机器人操作策略的接触执行误差",
+      "tldr": "VLA模型能按指令完成操作，但在接触丰富任务中执行精度不足，残差强化学习可冻结VLA纠偏，然而真机训练昂贵且不安全。VLaRL提出在仿真中训练潜条件残差策略并直接部署真机，无需真机RL或在线自适应；它利用VLA内部视觉-语言潜表示作为条件与仿真到真实迁移接口，并学习轻量映射器将仿真潜表示对齐到真实分布。在四个接触丰富任务和两个VLA骨干上，VLaRL全部提升真机成功率，消融验证潜条件与潜对齐的关键作用。",
+      "tags": "query:drone-arm",
+      "abstract_en": "Vision-language-action (VLA) models provide broad, instruction-conditioned manipulation behaviors, but their physical execution can remain imprecise during contact-rich interaction. Residual reinforcement learning (RL) can correct such errors while keeping the VLA frozen, but real-robot RL is costly and safety-critical. We propose VLA Latent-Conditioned RL (VLaRL), which enables residual RL for frozen VLAs to be trained in simulation and deployed on real robots without real-world RL or online adaptation. The key challenge is transferring the learned residual policy despite the visual gap between simulation and reality. Rather than requiring pixel-level visual correspondence, VLaRL uses the VLA's internal vision-language latent representation to condition residual control and as the sim-to-real transfer interface, and learns a lightweight mapper that transforms simulation-derived latents toward the real latent distribution. Across four contact-rich manipulation tasks and two VLA backbones, VLaRL improves real-world success in all task-backbone combinations, while controlled ablations demonstrate the importance of both latent conditioning and latent alignment for transferring simulation-trained residual control.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

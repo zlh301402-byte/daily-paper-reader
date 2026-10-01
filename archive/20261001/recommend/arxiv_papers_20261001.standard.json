@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-01T22:58:43.867765+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2609.30521v1",
+      "source": "arxiv",
+      "title": "Aerial Manipulation in the Wild with Onboard Perception, Policy Learning, and Whole-Body Control",
+      "abstract": "Aerial manipulation in outdoor environments remains challenging due to the simultaneous requirements of reliable state estimation, stable aerial motion, and precise manipulation under external disturbances. In this work, we present a real-world outdoor aerial manipulation framework that integrates imitation learning, onboard LiDAR-inertial state estimation, and whole-body model predictive control. A Diffusion Policy is trained from manipulation demonstrations to generate desired end-effector motions from onboard observations. These learned commands are executed by a whole-body MPC that jointly coordinates the aerial platform and manipulator to realize the desired end-effector trajectory. To eliminate reliance on external motion-capture infrastructure, the platform employs onboard LiDAR-inertial odometry for state estimation during outdoor operation. We validate the complete framework on a physical aerial manipulator and demonstrate successful execution of outdoor manipulation tasks. The experimental results show that demonstration-driven manipulation policies can be effectively integrated with onboard state estimation and model-based whole-body control to enable aerial manipulation beyond controlled indoor environments.",
+      "authors": [
+        "Yuanzhu Zhan",
+        "Yufei Jiang",
+        "Zemu Zhang",
+        "Junyi Geng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T20:16:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.30521v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "real-world aerial manipulation with onboard perception and whole-body control",
+      "llm_evidence_cn": "真实场景空中操作与全身控制",
+      "llm_evidence": "真实场景空中操作与全身控制",
+      "canonical_evidence": "真实场景空中操作与全身控制",
+      "llm_tldr_en": "An outdoor aerial manipulation framework combines imitation-learned diffusion policies, onboard LiDAR-inertial estimation, and whole-body MPC to coordinate drone and manipulator.",
+      "llm_tldr_cn": "户外空中操作需同时满足可靠状态估计、稳定飞行与抗扰精确操作，极具挑战。本文提出一套真实户外空中操作框架，融合模仿学习、机载激光雷达惯性状态估计与全身模型预测控制。其中扩散策略由操作演示训练生成期望末端运动，再由全身 MPC 联合协调飞行平台与机械臂执行。该工作实现了不依赖外部动捕的空中操作，推动了空中机械臂的实用化。",
+      "llm_tldr": "户外空中操作需同时满足可靠状态估计、稳定飞行与抗扰精确操作，极具挑战。本文提出一套真实户外空中操作框架，融合模仿学习、机载激光雷达惯性状态估计与全身模型预测控制。其中扩散策略由操作演示训练生成期望末端运动，再由全身 MPC 联合协调飞行平台与机械臂执行。该工作实现了不依赖外部动捕的空中操作，推动了空中机械臂的实用化。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.30868v1",
+      "source": "arxiv",
+      "title": "VLaRL: Augmenting Vision-Language-Action Models with Simulation-Trained Latent-Conditioned Residual RL",
+      "abstract": "Vision-language-action (VLA) models provide broad, instruction-conditioned manipulation behaviors, but their physical execution can remain imprecise during contact-rich interaction. Residual reinforcement learning (RL) can correct such errors while keeping the VLA frozen, but real-robot RL is costly and safety-critical. We propose VLA Latent-Conditioned RL (VLaRL), which enables residual RL for frozen VLAs to be trained in simulation and deployed on real robots without real-world RL or online adaptation. The key challenge is transferring the learned residual policy despite the visual gap between simulation and reality. Rather than requiring pixel-level visual correspondence, VLaRL uses the VLA's internal vision-language latent representation to condition residual control and as the sim-to-real transfer interface, and learns a lightweight mapper that transforms simulation-derived latents toward the real latent distribution. Across four contact-rich manipulation tasks and two VLA backbones, VLaRL improves real-world success in all task-backbone combinations, while controlled ablations demonstrate the importance of both latent conditioning and latent alignment for transferring simulation-trained residual control.",
+      "authors": [
+        "Namiko Saito",
+        "Kinam Kim",
+        "Heecheol Kim",
+        "Katsushi Ikeuchi",
+        "Yasuyuki Matsushita"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-25T06:18:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.30868v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Residual RL for robot manipulation policies, correcting contact-rich execution errors",
+      "llm_evidence_cn": "用残差强化学习纠正机器人操作策略的接触执行误差",
+      "llm_evidence": "用残差强化学习纠正机器人操作策略的接触执行误差",
+      "canonical_evidence": "用残差强化学习纠正机器人操作策略的接触执行误差",
+      "llm_tldr_en": "VLaRL trains latent-conditioned residual RL for frozen VLA models in simulation and deploys them on real robots, correcting contact-rich manipulation errors without real-world RL.",
+      "llm_tldr_cn": "视觉-语言-动作（VLA）模型能提供广泛的指令条件操作行为，但在接触密集交互中执行精度不足。本文提出VLaRL，以VLA内部视觉语言表征为条件，在仿真中训练残差强化学习策略，再直接部署到真实机器人，无需真实世界RL或在线自适应。实验表明该方法能有效弥补仿真到现实的视觉差距，提升接触操作精度。其贡献在于为冻结VLA提供了一种安全、低成本的残差纠错范式。",
+      "llm_tldr": "视觉-语言-动作（VLA）模型能提供广泛的指令条件操作行为，但在接触密集交互中执行精度不足。本文提出VLaRL，以VLA内部视觉语言表征为条件，在仿真中训练残差强化学习策略，再直接部署到真实机器人，无需真实世界RL或在线自适应。实验表明该方法能有效弥补仿真到现实的视觉差距，提升接触操作精度。其贡献在于为冻结VLA提供了一种安全、低成本的残差纠错范式。",
+      "llm_tags": [
+        "query:drone-arm"
+      ],
+      "matched_query_tag": "query:drone-arm",
+      "matched_query_text": "reinforcement learning for robot arm control",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
