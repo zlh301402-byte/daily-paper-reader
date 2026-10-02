@@ -1,0 +1,367 @@
+Title: Whole-Body Aerial Grasping and Lifting via Partial Visual Observations
+
+URL Source: https://arxiv.org/pdf/2610.00404v1
+
+Published Time: Fri, 02 Oct 2026 00:15:13 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Whole-Body Aerial Grasping and Lifting via Partial Visual Observations 
+
+Jiaye Jin ∗, Rui Jin ∗, Xinhang Xu, Haotian Jin, Ruiyang Liu, Yi Wang, Jiayan Zhao, Kun Cao, and Lihua Xie †
+
+Abstract — Aerial grasp-and-lift tasks require whole-body coordination across approach, acquisition, and lifting under partial target observations. Early approach failures can limit exposure to later task stages during training, while changing visibility complicates alignment and closure timing during execution. We present a recurrent teacher–student framework that learns a single policy in simulation to jointly command flight, arm motion, and gripper closure without an explicit task-phase input. A privileged teacher learns through rein-forcement learning with a critical-state curriculum that exposes acquisition and lifting states before connecting them to normal approach trajectories. Its behavior is distilled into a recurrent visual student that replaces privileged target states with dual-view point clouds and proprioception, integrating observation history for closed-loop control. A dedicated closure objective supervises closure timing from sustained model-defined readi-ness sequences. Training and primary evaluation use a sim-ulated acquisition-and-payload model with condition-triggered latching, virtual attachment, and wrench-based payload loading for short-distance lifting. Across 8,996 completed simulation episodes under this model, the frozen student achieves full-task success rates of 99.97%, 97.14%, and 95.84% under nominal, physics/control-randomized, and additional camera-randomized conditions, respectively. The nominal latch-count-weighted mean of per-seed 90th-percentile alignment errors at acquisition is 8.12 mm. 
+
+I. I NTRODUCTION 
+
+Uncrewed aerial manipulators (UAMs) extend UAV capa-bilities from observation [1]–[3] to physical interactions [4]– [7]. Physical demonstrations show that onboard perception can support object retrieval [8]. Beyond reaching a suitable end-effector pose, the controller must coordinate relative mo-tion, closure timing, and loaded flight. We study whole-body coordination and policy learning across approach, acquisi-tion, and lifting using an environment-defined attachment and payload-wrench model. The first challenge is coordinating the aerial base, arm, and gripper during acquisition and lifting. End-effector pose depends on vehicle motion and arm configuration; acquisi-tion also constrains relative velocity, posture, and closure  
+
+> ∗Equal contribution.
+> †Corresponding author:
+
+elhxie@ntu.edu.sg .Jiaye Jin, Rui Jin, Xinhang Xu, Haotian Jin, and Ruiyang Liu are with the School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore 639798. Yi Wang, Jiayan Zhao, and Kun Cao are with the College of Electronics and Information Engineering, Shanghai Institute of Intelligent Science and Technology, Tongji University, Shanghai 201804, China. Lihua Xie is with the NTU–VinUni Joint Research Laboratory for Embodied AI and Robotics, School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore 639798, and VinUniversity, Hanoi, Vietnam. 
+
+Fig. 1: Aerial acquisition-and-lift scenario. Left: simulated ap-proach, modeled acquisition, and lifting. Right: photographs of the physical platform and task scenario, shown for illustration only. 
+
+timing. Whole-body planning can enforce geometric and dynamic constraints [9], but the feedback policy must coor-dinate motion and closure as observations change. Improving alignment can alter relative motion or disturb the base. After acquisition, the controller must stabilize the vehicle while lifting the added load. The second challenge is discovering and connecting be-haviors across the task. Early approach failures can prevent reinforcement learning from reaching successful closure or loaded flight, even with dense approach rewards. Goal rela-beling and demonstration-guided exploration improve sparse-reward manipulation learning [10, 11]; this aerial task also requires reaching and connecting critical interaction states. Near-acquisition and post-acquisition starts expose later be-haviors, but normal approach trajectories may not reach them. Learning must therefore address both skill discovery and skill connection, turning experience at critical states into successful trajectories from normal task starts. The third challenge is maintaining closed-loop control under partial target observations. Visual feedback enables repeated grasp corrections [12], but vehicle and arm motion change body- and wrist-camera viewpoints and occlusions. A single point cloud may omit information needed to assess alignment or time closure. A recurrent policy can integrate visible geometry, proprioception, and observation history to retain context for motion and closure decisions as visibility arXiv:2610.00404v1 [cs.RO] 30 Sep 2026 changes during acquisition and lifting. We develop a recurrent teacher–student framework for whole-body acquisition and lifting without an explicit task-phase input. A privileged teacher learns through rein-forcement learning with near-acquisition, bridge, and post-acquisition resets, then connects these behaviors to normal approach starts. Its policy jointly commands the aerial base, three-DOF arm, and gripper. We distill this behavior into a visual student using dual-view point clouds and propriocep-tion. A shared geometric encoder and recurrent state integrate target geometry and observation history. Short-horizon labels from sustained, model-defined acquisition readiness super-vise closure, while the student retains the teacher’s whole-body action interface. Across 8,996 completed episodes under the acquisition-and-payload model, the frozen student achieves 99.97%, 97.14%, and 95.84% full-task success under nomi-nal, physics/control-randomized, and additional camera-randomized conditions. The nominal weighted mean of per-seed 90th-percentile alignment errors at acquisition is 8.12 mm. Nominal full-task success is close to the privileged teacher’s under this model. Separate MuJoCo sim-to-sim tri-als assess three additional objects with virtual attachment or native contact. Physical-platform validation remains outside this study. Our main contributions are:  
+
+> •
+
+A unified whole-body acquisition-and-lifting policy that jointly commands the aerial base, arm, and gripper without an explicit task-phase input.  
+
+> •
+
+A critical-state curriculum for skill discovery through near-acquisition, bridge, and post-acquisition resets, fol-lowed by skill connection from normal task starts.  
+
+> •
+
+Recurrent privileged-to-visual transfer with dual-view observations, memory, and closure supervision that re-tains the teacher’s whole-body action interface. II. R ELATED WORKS 
+
+A. Whole-Body Coordination for Aerial Manipulation 
+
+Aerial manipulation uses aircraft-mounted grippers and articulated manipulators, whose mechanical coupling and interaction modes shape control requirements [13]. Compliant grippers accommodate positioning uncertainty: Fishman et al. combine soft-gripper modeling with flight control, while Ubellacker et al. extend this approach to onboard perception [8, 14]. With articulated arms, Deng 
+
+et al. coordinate base–arm trajectories through optimization subject to feasibility and collision constraints [9]. Swooper incorporates gripper actuation into a learned flight policy for aerial grasping [15]. Flying Hand exe-cutes teleoperated or learned end-effector commands through whole-body model predictive control [16]. Our actor directly commands flight, arm joints, and the gripper from partial geometry under the simulated interaction model. Differences in interaction models and evaluation platforms preclude claims of superior physical grasping performance. 
+
+> Fig. 2: Aerial manipulation platform. Left: physical prototype and camera placement. Right: simulation model used for training and evaluation.
+
+B. Learning Manipulation with Geometric Feedback 
+
+Hindsight Experience Replay reuses unsuccessful goal-conditioned trajectories by relabeling their goals [10], while Rajeswaran et al. combine reinforcement learning and demonstrations for sample-efficient dexterous manipulation [11]. Reverse curriculum generation expands training starts outward from a known goal to make sparse-success tasks accessible [17]. SkiLD learns reusable skills and guides their composition with demonstrations [18]. Our curriculum exposes critical acquisition and lifting states, then connects these behaviors to normal approach starts. Visual feedback introduces a training-to-deployment gap. Levine et al. learn closed-loop hand–eye grasp coordina-tion directly from camera images [12]. Asymmetric Actor Critic exploits simulation state through a full-state critic and an image-based actor [19]. UniDexGrasp distills privileged grasping policies into point-cloud-conditioned policies [20]. Our student retains the teacher’s action interface while re-placing privileged target geometry with dual-view observa-tions and recurrent state. Temporal context can recover information absent from instantaneous observations. RMA infers an adaptation rep-resentation from recent proprioceptive and action histories for legged control [21]. It adapts to environmental dynamics; our recurrent state supports motion and closure decisions as visibility changes. Visual Whole-Body Control selects base-velocity and end-effector references from visual feedback for a lower-level controller [22]. For aerial navigation [23], Loquercio et al. learn depth-based trajectory prediction from a privileged expert [24]. Our student also coordinates arm alignment, gripper timing, and post-acquisition stabiliza-tion using dual-view geometry and proprioceptive history throughout the task. III. P ROBLEM STATEMENT 
+
+We build upon the QuadHand aerial manipulation plat-form [25] and adapt it for simulated whole-body aerial acquisition and lifting. The system consists of an underactu-ated quadrotor, a three-DOF arm, and a two-finger gripper. Figure 2 shows the modified physical prototype, sensor placement, and simulation model. Here, acquisition denotes a simulated latch triggered by geometric, motion, posture, closure-command, and dwell conditions. We use this model because thin-finger contact simulation can be unstable and costly in large-scale paral-lel reinforcement learning. It retains the coupling between alignment, relative motion, closure timing, and payload loading. We formulate the task as a partially observable Markov decision process (POMDP), with observations ot
+
+and actions at. A single recurrent policy coordinates the aerial base, arm, and gripper through approach, acquisition, and lifting (Fig. 1), under environment-defined acquisition rules. Episodes start from ρ0 and end at the time limit or a configured failure. Success requires both the object and aerial base to rise by at least 0.15 m from their respective acquisition heights and satisfy the lift-and-hold conditions in Section V. IV. M ETHOD 
+
+We first train a privileged recurrent teacher with simulated target geometry, then transfer it to a student using dual-view camera observations (Fig. 3). Both policies use the same flight–arm–gripper action interface throughout the task. 
+
+A. Reinforcement Learning from Target Geometry 1) Observation and action spaces: At control step t, the teacher receives 64 points sampled from the target object and expressed in the UAM body frame B, denoted by PBt ∈
+
+R64 ×3. Its state vector zT 
+
+> t
+
+∈ R33 contains body-frame linear and angular velocities, projected gravity, altitude, arm-joint and finger positions, end-effector position, and the previous action. The privileged components are the integrated base-position error, the blended position error eB 
+
+> mix
+
+defined below, and the remaining object-height error. Superscripts T and S
+
+denote teacher and student quantities. Together, these inputs form a 225-dimensional observation. The eight-dimensional action is 
+
+at = [ aT , a ωx , a ωy , a ωz , a q1, a q2, a q3, a g ]T 
+
+> t
+
+. (1) Collective thrust aT and body-rate commands aωx , a ωy , a ωz 
+
+are executed by the low-level controller; arm commands 
+
+aq1, a q2, a q3 are integrated into joint-position targets, and ag
+
+commands the gripper. 
+
+2) Reward design: We train the teacher with proximal policy optimization (PPO) using approach, acquisition, and lifting rewards, together with visibility, motion regulariza-tion, and progress shaping. 
+
+Approach and braking: With world frame W, forward– left–up body frame B, and arm joint-angle vector qa ∈ R3,end-effector kinematics and alignment error are 
+
+pWE = pWB + RW B fE (qa),
+
+eBE = RT 
+
+> W B
+
+(pWG − pWE ), (2) where RW B maps body-frame to world-frame coordinates. Forward kinematics fE (qa) ∈ R3 gives the end-effector position relative to the base origin in B. Spatial superscripts identify frames; subscripts B, E, and G denote the base, end effector, and grasp target. The body-frame error eBB
+
+measures displacement to the desired base location set by the grasp target and nominal grasp-arm configuration. For 
+
+dE = ∥eBE ∥2, the error eB 
+
+> mix
+
+blends base positioning and end-effector alignment: 
+
+ξ = clip 
+
+ dE − dn
+
+df − dn
+
+, 0, 1
+
+
+
+,w = 1 − 3ξ2 + 2 ξ3,
+
+eB 
+
+> mix
+
+= (1 − w)eBB + weBE .
+
+(3) The near and far distances dn < d f bound the transition; ξ ∈
+
+[0 , 1] is the normalized transition distance, and w ∈ [0 , 1] is a smooth cubic interpolation weight increasing toward one near the target. For d = ∥eB
+
+> mix
+
+∥2, a distance-dependent reference velocity provides braking guidance: 
+
+vmax (d) = vn + ( vf − vn)(1 − e−(d/d s)2
+
+),
+
+v⋆ = eB
+
+> mix
+
+max( ∥eB
+
+> mix
+
+∥, ϵ ) min {kp∥eB
+
+> mix
+
+∥, v max (∥eB
+
+> mix
+
+∥)},
+
+(4) where vn, v f are speed limits, ds is the transition scale, kp
+
+is a position gain, and ϵ > 0 is a small distance in meters preventing division by zero. The measured guidance velocity is vg = (1 − w)vBB + wvBE , where vBB and vBE are base and end-effector linear velocities relative to W, expressed in 
+
+B. End-effector velocity includes base translation, rotation, and arm motion. For simulated latch state Lt ∈ { 0, 1}, the approach cost is 
+
+rapp = − I[¬Lt]∆ t
+
+
+
+cp tanh ∥eB
+
+> mix
+
+/sp∥2 + cv
+
+zv
+
+1 + zv
+
+
+
+,zv = ∥(vg − v⋆)/s v ∥22.
+
+(5) Here I[·] is the indicator, ∆t is the control period, sp, s v
+
+normalize errors, and cp, c v ≥ 0 are weights; vector division is componentwise. Additional costs penalize excessive radial approach speed, near-target motion, and overshoot. The configuration uses dn = 0 .075 m, df = 0 .45 m, 
+
+vn = 0 .08 m/s, vf = 0 .5 m/s, ds = 0 .2 m, and kp = 1 s−1.Position scales are (0 .2, 0.1, 0.1) m, the velocity scale is 0.2
+
+m/s, and the weights are cp = 12 and cv = 40 .
+
+Acquisition and lifting: Readiness and closure-dwell re-wards accompany a penalty for premature closure. Ac-quisition requires admissible geometry, precision, posture, clearance, altitude, and recent visibility, together with a sufficiently strong policy close command for three steps. Relative end-effector speed, body angular speed, and object motion must satisfy their limits within an eight-step window including the current step. After acquisition, lift-progress, height, uprightness, and holding terms reward the lift-and-hold endpoint defined in Section V. 
+
+Visibility, regularization, and progress: Visibility shaping rewards target observability; motion and action-change costs regularize execution. Selected terms reward reductions in bounded error potentials or improvements over the episode’s best progress. For designated terms, terminal failure cancels accumulated shaping credit, including the current step. 
+
+3) Policy representation and termination: A PointNet encoder maps the points in PBt to a 128-dimensional order-invariant feature. Concatenating this feature with zT 
+
+> t
+
+feeds a Fig. 3: Overview of the recurrent teacher–student framework. The privileged teacher is distilled into a recurrent visual student conditioned on dual-view point clouds and proprioception. 
+
+256 –128 MLP, a 128-unit GRU, and PPO action and value heads. The recurrent state resets each episode. The actor receives no task-phase label or acquisition flag. Episodes end at the time limit or configured failures, in-cluding crashes, numerical failures, and drops when enabled. Time limits are value-estimation truncations. Controlled-approach success can terminate early curriculum episodes; acquisition does not terminate full-task rollouts. 
+
+4) Critical-state curriculum: We use four reset distribu-tions: approach starts ρ0, near-acquisition starts ρn, bridge starts ρb linking approach to closure, and acquired-object starts ρl for lifting. Their effective reset distribution at curriculum stage k is 
+
+ρk = α0,k ρ0 + αn,k ρn + αb,k ρb + αl,k ρl,
+
+X
+
+> j∈{ 0,n,b,l }
+
+αj,k = 1 . (6) The nonnegative αj,k are effective sampling probabilities. Each reset has consistent base, arm, gripper, and object states; ρl starts below the required lift height. Training progresses from controlled approach to closure and lifting with assisted resets, then extends bridge starts toward normal approach conditions. The final stage removes assisted resets and trains exclusively from ρ0.
+
+B. Policy Transfer through Supervised Learning 1) Dual-view geometry and recurrent policy: The stu-dent uses simulated Intel RealSense depth sensors: a body-mounted D450 module and a wrist-mounted D405 camera. The simulator supplies target instance masks; segmentation is outside the learned policy. We back-project masked depth pixels and transform the points into the body frame: 
+
+epB = TBC i (qa)
+
+Π−1(u, v, D i; Ki)1
+
+
+
+, (7) where i ∈ { body , wrist } indexes the camera, (u, v ) is a target pixel, Di is depth, Ki contains intrinsics, and Π−1
+
+denotes back-projection. The homogeneous transform TBC i
+
+depends on arm configuration for the wrist camera. Each view supplies 64 point slots and validity masks. A shared PointNet MLP encodes both views, followed by componentwise max pooling over all valid points: 
+
+ft = max    
+
+> i,j :mt,i,j =1
+
+ϕ(pBt,i,j ). (8) Here ft ∈ R128 is the pooled feature, j indexes point slots, 
+
+mt,i,j indicates validity, and ϕ is the shared encoder. The pooled feature is zero if both views are invalid. The student state vector zS 
+
+> t
+
+∈ R36 combines the 26 shared proprioceptive and previous-action components with two velocity-estimate quality indicators and four quality indicators per camera. The teacher’s seven privileged components are omitted. An MLP ψ fuses the inputs for a GRU with recurrent hidden state 
+
+ht ∈ R128 :
+
+ht = GRU  ψ([ ft, zS 
+
+> t
+
+]) , ht−1
+
+ . (9) The point encoder has widths 3–64 –128 –128 , the fusion MLP has widths 256 –128 , and the GRU has 128 hidden units. Two heads produce seven tanh flight–arm outputs and a gripper logit ℓt, with ℓt > 0 requesting closure. An auxiliary head predicts target error during training; evaluation does not use it as a closure gate. 
+
+2) Teacher initialization and closure supervision: We initialize the student’s point encoder, fusion MLP, GRU, and flight–arm head from compatible teacher parameters, dropping privileged input columns and zero-initializing new columns. Normalization retains the teacher statistics for shared inputs. The gripper head is initialized from the teacher’s gripper output with reversed sign and a threshold shift, then trained with binary readiness labels. Let bt ∈ { 0, 1} indicate that the instantaneous geometry, precision, relative-speed, body-rate, object-motion, posture, clearance, and altitude checks all pass. This model-defined readiness excludes the analytic visibility proxy and is distinct from the acquisition gate’s recent-dynamics window and closure dwell. The closure supervision label yt ∈ { 0, 1} is 
+
+yt = Lt ∨
+
+> H
+
+^
+
+> j=1
+
+bt+j , H = 3 . (10) Thus closure is labeled positive for an acquired object or readiness throughout the next three steps, with the first five steps overridden to open. Future states are used for training labels; execution uses current and past observations. For flight–arm action af a t ∈ R7 excluding the gripper, the objectives are 
+
+La =
+
+D
+
+∥af a t − af a, ref  
+
+> t
+
+∥2
+
+> W
+
+E
+
+,
+
+L∆a =
+
+D
+
+∥∆af a t − ∆af a, ref  
+
+> t
+
+∥22
+
+E
+
+,
+
+(11) where superscript ref denotes the teacher reference, W is a positive diagonal weight matrix, ∥x∥2 
+
+> W
+
+= xTW x, and 
+
+∆af a t = af a t − af a t−1. The teacher reference uses the same temporal difference. Brackets average over valid, sample-weighted time steps and sum channel contributions. Tem-poral differences require two adjacent valid samples. The total loss is 
+
+L = λaLa + λ∆L∆a + λg Lg + λeLe. (12) The nonnegative λ coefficients weight action matching, action-change matching, gripper classification, and target-error regression. Lg is positive-class-weighted binary cross-entropy on ℓt, y t; Le is scaled squared target-error regression over valid pre-acquisition samples, with a distance cutoff in later stages. Sample weights emphasize near- and post-acquisition states, and sequence masks exclude padding. For final consolidation, W = diag(4 , 1, 1, 1, 2, 2, 2) and 
+
+(λa, λ ∆, λ g , λ e) = (1 , 0.2, 0.5, 1) . The gripper positive-class weight is three. Target-error residuals in meters are              
+
+> TABLE I: Domain randomization settings.
+> Parameter Setting Thrust-to-weight ratio [2 .0,3.2]
+> Thrust delay coefficient α[0 .22 ,0.50]
+> Body-rate delay coefficient α[0 .33 ,0.63]
+> Action delay 1–3 control steps Thrust noise std. 5% IMU noise Linear/angular velocity, gravity IMU bias Per-episode constant
+
+multiplied by 20 before squaring, with supervision restricted to distances below 0.3 m. 
+
+3) Behavioral cloning, DAgger, and consolidation: We first use offline behavioral cloning on teacher rollouts, then collect learner-visited trajectories with DAgger-style aggre-gation. The teacher labels flight–arm actions at visited states; closure uses the look-ahead labels above. We alternate collec-tion and supervised updates, then consolidate on accumulated data, including camera-randomized trajectories. The archived student starts with 30 behavioral-cloning epochs at a learning rate of 10 −4. Aggregation rounds use 12 supervised epochs at 5 × 10 −5; final consolidation uses 40 epochs at the same rate. Collection selects teacher actions with probability 0.25, 0.15, and 0.10 in the first three rounds and 0.05 thereafter. Evaluation uses only the frozen student, without teacher intervention. V. E XPERIMENTS 
+
+We evaluate the proposed framework through four aspects: (1) curriculum learning for privileged policy acquisition, (2) privileged-to-visual policy transfer, (3) whole-body coordina-tion during acquisition and lifting, and (4) robustness under sensing, dynamics, payload, and object variations. All ex-periments use the acquisition-and-payload model described below unless otherwise specified. We separately analyze pre-acquisition and post-acquisition lift-and-hold failures to distinguish acquisition from completion of loaded flight. 
+
+A. Experimental Setup 
+
+Training and primary evaluation use Isaac Lab; separate MuJoCo trials assess sim-to-sim transfer to additional ob-ject configurations. Main evaluations use a 10-ms physics timestep, 50-Hz policy control, and a nominal cylinder ( r =20 mm, h = 95 mm, m = 100 g). The physics/control domain randomization (DR) perturbs thrust dynamics, actuator delays, action latency, thrust noise, and inertial sensing noise and bias (Table I). The main experiments use a configured acquisition-and-payload model. Acquisition requires admissible relative ge-ometry, motion and posture, a policy-issued close command, and a three-step dwell. The nominal axial, lateral, and verti-cal acquisition tolerances are 25, 12, and 25 mm. After ac-quisition, the cup follows the gripper-link attachment frame, and a payload-reaction wrench models the gravitational and inertial load on the carrier. Finger–cup collision responses are filtered, so post-acquisition retention is imposed by the attachment model. These experiments do not validate TABLE II: Full-task success under the acquisition-and-payload model for alternative training schedules. Direct and simple two-stage results are averaged across three independently trained poli-cies; each policy is evaluated with three rollout seeds. The full-curriculum result is from the selected reference policy, evaluated with the same three rollout seeds.         
+
+> Training schedule Nominal (%) DR (%) Direct full task 33.33 32.59 Simple two stage 0.00 0.00 Full curriculum 100.00 99.90
+
+frictional holding, force closure, or resistance to slip. Closure is irreversible, with a close-logit threshold of zero and the predicted-distance closure gate disabled. Full-task success under this model requires acquisition followed by the configured lift-and-hold endpoint without a crash or drop. The endpoint includes at least 0.15 m of elevation of both the object and carrier relative to acquisition, the configured carrier and object height conditions, a body tilt of at most 8 ◦, a horizontal error of at most 0.10 m, and horizontal and absolute vertical speeds of at most 0.15 m/s. The completion conditions must persist for ten control steps (0.20 s). Acquisition, evaluator-classified crashes, alignment error, and relative speed provide complementary measure-ments of the task stages. We evaluate under nominal conditions, physics/control DR, and physics/control DR with additional camera pertur-bations. Each main test uses 64 parallel environments for 2,000 control steps per rollout seed (1893, 2893, and 3893). Rates pool completed episodes after startup, including fail-ures, and exclude episodes unfinished at rollout termination. Main and sensitivity tests evaluate the same frozen student checkpoint. Independent training seeds are used separately in the curriculum comparison. 
+
+B. Comparison of Curriculum Learning Strategies 
+
+We compare direct full-task training, a simple two-stage schedule, and the selected full-curriculum policy. Direct training starts from scratch on the full task; the two-stage baseline pretrains approach behavior before full-task training. In Table II, each baseline uses three independent training seeds, with each final checkpoint evaluated using three roll-out seeds under nominal and physics/control DR conditions. All three two-stage runs complete their 1,125-epoch budget. Approach pretraining yields no full-task success in the tested two-stage runs; the selected full-curriculum reference exceeds the baseline averages (Table II). This suggests that approach pretraining alone is insufficient under this schedule. Critical-state resets expose acquisition and lifting; bridge and normal-start training connect them to approach. Fig. 4 reports equal-weight means across three training seeds, with evaluation budgets varying by checkpoint. 
+
+C. Visual Policy Learning and Teacher–Student Distillation 
+
+We assess observation transfer by comparing the privileged Teacher, the BC-only visual Student after offline imitation, and the final Student after data-aggregation training.                     
+
+> Fig. 4: Full-task success versus cumulative environment timesteps for three training schedules under (a) nominal and (b) physics/control domain-randomized conditions. Curves connect un-smoothed, equal-weight means across three training seeds; check-points missing any seed are omitted, breaking the lines. TABLE III: Full-task success under the configured acquisition-and-payload model. Each cell pools three evaluation seeds for one checkpoint; dashes denote unevaluated conditions.
+> Policy Nominal (%) DR (%) + Camera (%) Privileged teacher 100.00 99.90 —BC-only student 0.00 0.00 —Final student 99.97 97.14 95.84
+
+Teacher denominators are 3,064 and 3,031 episodes; BC-only denominators are 7,105 and 8,271; final Student denom-inators are 3,057, 3,003, and 2,936, in table-column order. The final Student trails the Teacher by 0.03 percentage points under nominal conditions and 2.76 points under physics/control DR (Table III). Transfer retains near-teacher nominal performance without privileged target inputs, but the robustness gap widens under randomization. The BC-only checkpoint yields no full-task successes after 30 offline imitation epochs. Learner-visited training supplies corrective supervision at states reached by the student. The final Student succeeds after this training, further optimiza-tion, and consolidation; the gain cannot be attributed to data aggregation alone. Removing either camera sharply reduces success. Re-moving D405 leaves only the body-mounted D450 stream and yields no successes under nominal or combined physics/control-plus-camera-DR conditions. Using only the wrist-mounted D405 yields 12.40% and 9.86% success, re-spectively, well below the dual-view policy (Fig. 6(a)). Each condition uses three evaluation seeds. This tests the frozen policy’s dependence on joint inputs; single-view variants are not retrained baselines. 
+
+D. Alignment at Acquisition and Coordinated Execution 
+
+At recorded latch events, we report latch-count-weighted means of per-seed end-effector alignment-error and relative-speed p90 values, where p90 denotes the 90th percentile. We also report the largest per-seed alignment-error p90. These weighted means are not percentiles of pooled samples. The weighted alignment-error p90 is 8.12 mm under nom-inal conditions, 8.53 mm under physics/control DR, and 8.36 mm with additional camera DR. The corresponding worst-seed error p90 values are 8.16, 8.56, and 8.40 mm. Relative-speed p90 is 0.130, 0.138, and 0.138 m/s, respectively. These statistics are calculated from 3,056, 2,931, and 2,833 Fig. 5: Simulated acquisition and lifting sequence. (a) End-effector alignment error. (b) Finger positions and gripper command (right axis). (c) Height gain; dashed line: 150-mm lift threshold. (d) Relative end-effector speed. Shading indicates execution phases: approach (t0), acquisition (t1), and lift (t2), and is used for visualization only. 
+
+recorded latch samples in the same updated runs as Table III. Accepted-latch alignment changes little across profiles despite lower acquisition rates under randomization. Fewer episodes satisfy the acquisition conditions, but accepted events retain similar alignment. The gate excludes inadmis-sible states, so these statistics do not describe all approaches. Under nominal conditions, per-seed median times from episode start are 1.62–1.64 s for the close command, 1.66– 1.68 s for aperture change, 1.70 s for acquisition, and 2.32 s for completion. These medians are not paired actuator-latency measurements. Figure 5 shows alignment error and relative speed decreasing before closure, followed by in-creasing finger positions and height gain. This matches the approach-and-braking objective and transition from closure to loaded lifting under one policy. Shaded phases describe execution and are not policy inputs. A nominal diagnostic uses the same frozen Student in 16 environments for 1,000 control steps, yielding 121 completed episodes. Sampled points from both finger collision-mesh surfaces lie inside the cylindrical cup at the first latch frame in 121 episodes; bilateral overlap precedes latch in 63. This establishes geometric overlap, but filtered finger–cup collisions prevent conclusions about contact-force support, force closure, or stable physical retention. 
+
+E. Robustness and Payload-Load Sensitivity 
+
+For the nominal payload, the final Student maintains pooled success above 95% under both randomized profiles (Table III). Per-seed success ranges are 97.09–97.21% under physics/control DR and 94.52–97.17% with additional cam-era perturbations, indicating greater rollout variability in the latter condition. Acquisition rates are 97.60% under physics/control DR and 96.49% with additional camera DR. Pre-acquisition crash rates are 2.40% and 3.51%, versus post-acquisition rates of 0.43% and 0.51%. These rates and the small                 
+
+> Fig. 6: Visual-input and payload sensitivity under the acquisition-and-payload model. (a) Camera removal from the frozen stu-dent without retraining; results pool three rollout seeds. Wrist-only uses D405; body-only uses D450. Combined DR includes physics/control and camera randomization. (b) Open circles: single-seed mass sweeps; filled squares: three-seed confirmations. Error bars: 95% Wilson episode-level intervals. Dashed and dotted lines mark pooled and per-seed acceptance thresholds, respectively.
+> Fig. 7: MuJoCo evaluation setup. Left: candidate regions for randomized initialization of aircraft (purple) and object (orange) positions; sampled configurations are screened for initial target visibility. Right: the three test objects.
+
+acquisition-to-completion gap place most failures before acquisition under the nominal payload. After acquisition, the policy usually completes lift-and-hold. We vary payload mass with fixed object geometry and policy weights to assess loaded task control (Fig. 6(b)). A coarse single-seed sweep tests 25, 50, 100, 150, 200, 300, 400, and 500 g. Tested masses from 25 to 200 g achieve 99.80–100% success; rates fall to 91.03%, 52.88%, and 17.09% at 300, 400, and 500 g, respectively. We confirm performance at 300 and 400 g using all three evaluation seeds. Each confirmation includes the sweep seed, so these results must not be pooled again. Three-seed confirmation gives 90.50% success at 300 g (2,754/3,043 episodes) and 51.75% at 400 g (1,563/3,020 episodes). The respective per-seed ranges are 89.82–91.03% and 49.30–53.07%. The study-defined payload criterion re-quires at least 90% pooled success and at least 85% success for every evaluation seed. The 300-g condition meets both criteria, whereas 400 g Fig. 8: Qualitative simulated acquisition-and-lift sequences for (a) a sugar box, (b) a Coke can, and (c) a screwdriver. Translucent overlays depict intermediate robot poses. TABLE IV: Acquisition-and-lift and full-task success in MuJoCo (30 trials per object). 
+
+Object Acquisition–lift Full task Failures Sugar box 29/30 25/30 1 contact; 4 hold Coke can 28/30 28/30 2 contact Screwdriver 30/30 30/30 None 
+
+Note: Objects share 30 presampled target positions. Acquisition–lift requires height gain ≥ 10 cm for ≥ 0.5 s, without unsafe states or robot–table contact. Full task requires height gain (15 ± 1.5) cm, object speed < 0.05 
+
+m/s, and aircraft tilt ≤ 15 ◦ for ≥ 2 s; no unsafe states or robot–table contact are allowed throughout the trial. Contact denotes robot–table contact; hold denotes stable-hold failures. Sugar box and Coke can use virtual attachment; screwdriver uses native contact. 
+
+fails; 300 g is the largest tested passing three-seed confir-mation point. This does not establish a continuous payload limit or success at untested masses. Both confirmed payloads achieve 100% acquisition with-out recorded crashes or drops. Lower full-task success at the heavier load thus reflects unmet post-acquisition lift-and-hold conditions, separating acquisition from loaded stabilization under the attachment-and-wrench model. 
+
+F. Evaluation on Additional Objects 
+
+Figure 7 shows the MuJoCo setup. Initial aircraft and object positions are randomized within 20 × 20 × 20 cm and 60 × 40 cm regions, respectively. Object yaw offsets are selected from {− 60 ◦, −30 ◦, 0◦, 30 ◦, 60 ◦} relative to the nominal orientation. Table IV summarizes 90 sim-to-sim trials across three objects; Fig. 8 illustrates their execution. The table note defines the success criteria. Four sugar-box trials pass acquisition-and-lift but fail stable holding, so an initial-lift metric misses these failures. Both Coke-can failures involve robot–table contact; all trials passing acquisition-and-lift complete the full task. These outcomes distinguish holding failures from unsafe surface interaction. The screwdriver succeeds in all 30 native-contact trials. Different attachment mechanisms prevent attributing these differences to geometry alone. VI. C ONCLUSION AND FUTURE WORKS 
+
+We presented a recurrent teacher–student policy that co-ordinates aerial acquisition and lifting without explicit task-phase inputs. The visual student maintains over 95% pooled full-task success under tested simulation perturbations, with additional objects evaluated in MuJoCo. These results remain bounded by the stated interaction models; physical grasp retention is unvalidated. Future work will address camera calibration, online perception, sim-to-real transfer, and sus-tained transport under varied loads and dynamics. REFERENCES [1] T. Wu, G. Xu, Z. Wang, J. Lin, T. Chen, Y. Wu, Z. Han, Z. Liu, and F. Gao, “Precise aggressive aerial maneuvers with sensorimotor policies,” Science Robotics , vol. 11, no. 115, 2026, art. no. eaeb0180. [2] Y. Yao, B. Zhang, W. Zhang, L. Gao, D. Peng, B. Li, Y. Wang, and B. Wang, “Arsgaussian: 3d gaussian splatting with lidar for aerial re-mote sensing novel view synthesis,” ISPRS Journal of Photogrammetry and Remote Sensing , vol. 231, pp. 288–306, 2026. [3] R. Jin, Y. Gao, Y. Wang, Y. Wu, H. Lu, C. Xu, and F. Gao, “GS-Planner: A gaussian-splatting-based planning framework for active high-fidelity reconstruction,” in Proc. IEEE/RSJ International Con-ference on Intelligent Robots and Systems (IROS) , 2024, pp. 11 202– 11 209. [4] J. Lin, S. Ji, Y. Wu, T. Wu, Z. Han, and F. Gao, “FLOAT Drone: A fully-actuated coaxial aerial robot for close-proximity operations,” in 
+
+Proc. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2025, pp. 7216–7223. [5] R. Jin, X. Xu, Y. Yang, J. Li, M. Cao, and L. Xie, “Tethered uav autonomous knotting on environmental structures for transport,” 
+
+Cyborg and Bionic Systems , vol. 6, p. 0450, 2025. [6] Y. Wu, F. Yang, R. Jin, Y. Zhong, J. Wang, X. Wu, and F. Gao, “Hand-like autonomous flying robot for airborne grasping and interaction,” 
+
+Nature Communications , vol. 17, 2026, art. no. 2200. [7] Y. Wang, R. Jin, X. Xu, H. Jin, R. Liu, Y. Yang, and L. Xie, “DuctAM: A duct-assisted quadrotor-based aerial manipulator enabling high-force push-and-pull interactions,” arXiv preprint arXiv:2609.15861 , 2026. [8] S. Ubellacker, A. Ray, J. M. Bern, J. Strader, and L. Carlone, “High-speed aerial grasping using a soft drone with onboard perception,” npj Robotics , vol. 2, no. 1, 2024, art. no. 5. [9] W. Deng, H. Chen, B. Ye, H. Chen, Z. Li, and X. Lyu, “Whole-body integrated motion planning for aerial manipulators,” IEEE Transac-tions on Robotics , vol. 41, pp. 6661–6679, 2025. [10] M. Andrychowicz et al. , “Hindsight experience replay,” in Advances in Neural Information Processing Systems , vol. 30, 2017. [11] A. Rajeswaran et al. , “Learning complex dexterous manipulation with deep reinforcement learning and demonstrations,” in Proc. Robotics: Science and Systems , 2018. [12] S. Levine, P. Pastor, A. Krizhevsky, J. Ibarz, and D. Quillen, “Learning hand-eye coordination for robotic grasping with deep learning and large-scale data collection,” The International Journal of Robotics Research , vol. 37, no. 4–5, pp. 421–436, 2018. [13] F. Ruggiero, V. Lippiello, and A. Ollero, “Aerial manipulation: A literature review,” IEEE Robotics and Automation Letters , vol. 3, no. 3, pp. 1957–1964, 2018. [14] J. Fishman, S. Ubellacker, N. Hughes, and L. Carlone, “Dynamic grasping with a “soft” drone: From theory to practice,” in Proc. IEEE/RSJ IROS , 2021, pp. 4214–4221. [15] Z. Huang, X. Niu, B. Chai, R. Jin, and D. Zou, “Swooper: Learning high-speed aerial grasping with a simple gripper,” IEEE Robotics and Automation Letters , vol. 11, no. 2, pp. 2298–2305, 2026. [16] G. He, X. Guo, L. Tang, Y. Zhang, M. Mousaei, J. Xu, J. Geng, S. Scherer, and G. Shi, “Flying hand: End-effector-centric framework for versatile aerial manipulation teleoperation and policy learning,” in 
+
+Proc. Robotics: Science and Systems , 2025. [17] C. Florensa, D. Held, M. Wulfmeier, M. Zhang, and P. Abbeel, “Reverse curriculum generation for reinforcement learning,” in Proc. Conference on Robot Learning , vol. 78, 2017, pp. 482–495. [18] K. Pertsch, Y. Lee, Y. Wu, and J. J. Lim, “Demonstration-guided reinforcement learning with learned skills,” in Proc. Conference on Robot Learning , vol. 164, 2022, pp. 729–739. [19] L. Pinto, M. Andrychowicz, P. Welinder, W. Zaremba, and P. Abbeel, “Asymmetric actor critic for image-based robot learning,” in Proc. Robotics: Science and Systems , 2018. [20] Y. Xu et al. , “UniDexGrasp: Universal robotic dexterous grasping via learning diverse proposal generation and goal-conditioned policy,” in 
+
+Proc. IEEE/CVF CVPR , 2023, pp. 4737–4746. [21] A. Kumar, Z. Fu, D. Pathak, and J. Malik, “RMA: Rapid motor adaptation for legged robots,” in Proc. Robotics: Science and Systems ,2021. [22] M. Liu, Z. Chen, X. Cheng, Y. Ji, R.-Z. Qiu, R. Yang, and X. Wang, “Visual whole-body control for legged loco-manipulation,” in Proc. Conference on Robot Learning , vol. 270, 2025, pp. 234–257. [23] X. Xu, R. Liu, H. Jin, Y. Wang, H. Shen, J. Li, and L. Xie, “From sketch prior to trajectories: A mission-oriented coordinated navigation framework for indoor UAV swarm,” arXiv preprint arXiv:2607.11386 ,2026. [24] A. Loquercio, E. Kaufmann, R. Ranftl, M. Müller, V. Koltun, and D. Scaramuzza, “Learning high-speed flight in the wild,” Science Robotics , vol. 6, no. 59, 2021, art. no. eabg5810. [25] R. Jin, R. Liu, X. Xu, H. Jin, Y. Wang, Y. Yang, and L. Xie, “Quadhand: A compact quadrotor aerial manipulator with mrc-sdf-based whole-body motion planning,” arXiv preprint arXiv:2609.35094 ,2026.
