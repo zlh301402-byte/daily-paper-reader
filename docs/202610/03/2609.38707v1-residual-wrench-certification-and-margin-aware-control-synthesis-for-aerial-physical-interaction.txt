@@ -1,0 +1,889 @@
+Title: Residual Wrench Certification and Margin-Aware Control Synthesis for Aerial Physical Interaction
+
+URL Source: https://arxiv.org/pdf/2609.38707v1
+
+Published Time: Thu, 01 Oct 2026 00:36:33 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Residual Wrench Certification and Margin-Aware Control Synthesis for Aerial Physical Interaction 
+
+Abhimanyu Khadga, Abhinav Sinha, Senior Member, IEEE , and Shashi Ranjan Kumar, Senior Member, IEEE 
+
+Abstract —We develop a task-relative framework for certifying residual wrench authority after hover and contact loading in multirotors with bounded actuators. Using convex geometry, we derive signed margins for prescribed convex reserves, including Euclidean balls and weighted ellipsoids. We obtain computable reserve certificates from actuator-interiority bounds to support slack-maximizing allocation. To preserve the required reserve, we propose command projection onto a tightened feasible set. We then connect the available reserve to structured gain synthesis and certify a local tracking region that respects actuator limits. Within this region, we establish nominal exponential convergence and robust ultimate boundedness. For the prescribed task and morphology family, we show that the optimized octarotor at-tains a larger margin than the optimized hexarotor at equal total thrust. We evaluate the proposed framework in closed-loop simulations of sustained rigid-wall contact using a fixed-geometry octarotor and a variable-tilt quadrotor with matched installed thrust. The quadrotor’s local certificate admits a higher normalized push limit for the prescribed task family. In tests beyond the realizability boundaries, we observe the predicted loss of authority through rotor-thrust limits for the octarotor and tilt-servo limits for the quadrotor. 
+
+Index Terms —Fully actuated UAVs, aerial physical interaction, safety, residual wrench authority, actuator constraints. 
+
+I. I NTRODUCTION 
+
+Multirotors are attractive aerial-robotic platforms because they combine hovering capability with a compact mechanical layout. In a conventional planar arrangement, however, nearly parallel propeller axes couple translational acceleration to body attitude. Force–attitude coupling is often acceptable in free flight [1], [2], yet becomes restrictive when an aerial robot must preserve its pose while pressing, bracing, inspecting, or manipulating an object. Fully actuated and overactuated designs mitigate this limitation through tilted or steerable rotors, noncoplanar arrangements, coaxial vectoring, and other mechanisms that span a six-dimensional body wrench [3]–[8]. Safe interaction additionally depends on retaining corrective authority under sustained loading. Research on aerial interaction has advanced both vehicle design and constrained allocation. Tilted and omnidirectional platforms reduce force–attitude coupling [9], [10] and support inspection and manipulation [11]–[18]. Allocation methods account for saturation and redundancy [9], [15], with recent 
+
+A. Khadga and A. Sinha are with the Guidance, Autonomy, Learn-ing, and Control for Intelligent Systems (GALACxIS) Lab, Department of Aerospace Engineering, University of Cincinnati, OH 45221, USA (e-mails: khadgaau@mail.uc.edu, abhinav.sinha@uc.edu). S. R. Kumar is with the Intelligent Systems and Control (ISaC) Lab, Department of Aerospace Engineering, Indian Institute of Technology Bombay, Powai, Mumbai 400076, India (email: srk@aero.iitb.ac.in). 
+
+formulations incorporating actuator and power dynamics [19]. Safety filters also preserve motor-thrust limits during uncertain physical interaction [20]. Prescribed task-wrench sets have been studied for cable-driven robots [21], and feasible wrench polytopes support legged-robot disturbance analysis [22], [23]. Signed capacity measures also appear in redundantly constrained cable systems [24]. For aerial interaction, force-polytope methods use zero-moment force margins for tilt-angle selection [25]. These state-of-the-art approaches do not connect a uniform reserve over coupled force–moment task families to the joint synthesis of feedback gains and a certified local tracking region. Closing this gap is crucial for future aerial vehicles expected to sustain autonomous physical interaction. A feasible contact wrench can leave negligible authority for pose correction near a surface. Certification must cover an entire task family while accommodating directional reserve requirements. These certificates must also distinguish exhaustion of a prescribed re-serve from actual infeasibility. Moreover, redundancy compli-cates computation in the sense that actuator clearance depends on the allocation, while exact wrench geometry can require extensive facet enumeration. The resulting control problem couples gain selection to the size of a tracking region that remains actuator-feasible under bounded disturbances. To address these limitations, we develop a task-relative certification-and-synthesis framework that converts the avail-able wrench reserve into an actuator-feasible tracking guaran-tee: (i) We derive convex-geometric certificates that quantify signed margins for prescribed reserves and uniform Euclidean margins over entire task families. (ii) We obtain actuator-interiority bounds that avoid facet enumeration and strengthen these lower certificates through slack-maximizing redundant allocation. (iii) We propose margin-preserving command pro-jection and use the available reserve to synthesize structured gains with a local invariant tracking ellipsoid. Within this ellipsoid, we establish nominal exponential convergence and robust ultimate boundedness under the stated assumptions. (iv) 
+
+We assess morphology and allocation effects at equal installed thrust. Closed-loop contact simulations distinguish the pre-scribed reserve threshold from actual loss of realizability and test the predicted limiting constraints through preregistered beyond-boundary experiments. 
+
+Contact-persistent denotes persistence of actuator-side wrench feasibility during sustained loading. The certificates support safety-aware allocation and local tracking under the stated assumptions. Physical persistence additionally requires unilateral, frictional, and contact-moment conditions. Those arXiv:2609.38707v1 [cs.RO] 30 Sep 2026 constraints may be included by intersecting the actuator-generated wrench set with a contact-admissible set. 
+
+Notation: Unsubscripted vector norms are Euclidean, and matrix norms are induced unless stated otherwise. The symbols 
+
+e𝑖 , 0𝑛 , 1𝑛 , and I𝑛 denote the 𝑖 th standard basis vector, the zero vector or matrix, the all-ones vector, and the identity matrix of the indicated dimension. For a set S ⊂ R𝑛 , int (S) 
+
+and 𝜕 S denote its interior and boundary, respectively, while 
+
+B𝜖 (x) = {y : ∥y−x∥ ≤ 𝜖 } is the closed Euclidean ball. We use 
+
+dist (x, S) = inf y∈ S ∥x−y∥ and dist (S 1, S2) = inf x∈ S 1 ,y∈ S 2 ∥x−
+
+y∥. For symmetric matrices, X ⪯ Y means that Y−X is positive semidefinite. II. M ODELING AND PROBLEM FORMULATION 
+
+The vehicle state is described on R3 × SO (3). Position and inertial velocity are denoted by p, v ∈ R3, while R ∈ SO (3)
+
+maps body coordinates to the inertial frame and 𝝎 ∈ R3 is the body angular rate. The rigid-body equations are given as 
+
+¤p =v, 𝑚 ¤v = − 𝑚𝑔 e3 + Rf + d 𝑓 , (1a) 
+
+¤R =R𝑆 (𝝎 ) , J ¤𝝎 = − 𝝎 × J𝝎 + 𝝉 + d𝜏 , (1b) where 𝑚 > 0, J = J⊤ > 0, and 𝑔 > 0 are the mass, inertia, and gravitational constant. The vectors d 𝑓 and d𝜏 collect unmodeled force and moment effects, and 𝑆 (x) y = x × y.The body-frame actuation wrench is w = f⊤ 𝝉 ⊤⊤ ∈ R6.Suppose that 𝑁 thrust modules are mounted at body-frame locations r𝑖 . Module 𝑖 produces the nonnegative magnitude 
+
+𝜆 𝑖 along the unit vector b𝑖 (𝜶 𝑖 ), where 𝜶 𝑖 represents fixed or commanded orientation variables. The force and moment contributions are 
+
+f𝑖 =𝜆 𝑖 b𝑖 (𝜶 𝑖 ) , 𝝉 𝑖 = r𝑖 × 𝜆 𝑖 b𝑖 (𝜶 𝑖 ) + 𝜎 𝑖 𝑐 𝑖 𝜆 𝑖 b𝑖 (𝜶 𝑖 ) , (2) where 𝑐 𝑖 ≥ 0 models the reaction-moment coefficient and 
+
+𝜎 𝑖 ∈ {− 1, 1} specifies the spin sense. Summing the module contributions leads to 
+
+w =
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+ b𝑖 (𝜶 𝑖 )
+
+𝑆 (r𝑖 ) b𝑖 (𝜶 𝑖 ) + 𝜎 𝑖 𝑐 𝑖 b𝑖 (𝜶 𝑖 )
+
+
+
+𝜆 𝑖 . (3) With 𝝀 = 𝜆 1 · · · 𝜆 𝑁 
+
+⊤ and 𝜶 collecting the morphology variables, (3) becomes w = M (𝜶 ) 𝝀 . The admissible thrust box and morphology domain are Λ = {𝝀 : 𝝀 min ≤ 𝝀 ≤ 𝝀 max }
+
+and 𝜶 ∈ A , respectively, where A is compact. For a selected morphology, the attainable wrench set is W ( 𝜶 ) := {w : w =
+
+M(𝜶 )𝝀 , 𝝀 ∈ Λ}. Force and moment coordinates have different units, so every Euclidean wrench distance must be evaluated after a fixed scaling. We choose 𝐹 0, ℓ 0 > 0 and define 
+
+D𝑤 := blkdiag 
+
+
+
+𝐹 −10 I3, (ℓ0 𝐹 0)−1I3
+
+
+
+, z = D𝑤 w, (4) 
+
+A(𝜶 ) :=D𝑤 M(𝜶 ), Z( 𝜶 ) := D𝑤 W ( 𝜶 ) = {A(𝜶 )𝝀 : 𝝀 ∈ Λ}.
+
+(5) Note that all balls, distances, reserve margins, and induced allocation norms below are taken in this dimensionless wrench coordinate. Since D𝑤 is nonsingular, membership, interiority, and rank are preserved by the transformation. A margin of 𝜀 in these coordinates therefore guarantees actuator feasibility for any normalized wrench perturbation within the corresponding reserve ball; the force and moment scaling factors are 𝜀𝐹 0 and 
+
+𝜀ℓ 0 𝐹 0, respectively. 
+
+Definition 1. At an operating wrench w0, with z0 = D𝑤 w0,constrained full actuation holds when z0 ∈ int (Z( 𝜶 )) ; equiv-alently, w0 ∈ int (W ( 𝜶 )) .Definition 1 is operating-point dependent. Rank six de-scribes the span of the allocation map, whereas constrained full actuation also depends on the finite actuator box and on how close z0 is to the resulting normalized boundary. 
+
+Problem 1 (Task reserve and feasible tracking) . Given Λ, A,and a nonempty compact family T𝑧 ⊂ R6 of normalized hover and interaction wrenches, determine which morphologies ad-mit every task. For each feasible morphology and a prescribed compact convex reserve set K ⊂ R6 with 06 ∈ int (K) ,characterize the largest 𝜖 ≥ 0 satisfying z + 𝜖 K ⊆ Z( 𝜶 ),
+
+∀z ∈ T 𝑧 . For a Euclidean reserve, derive computable lower certificates and use the available authority to select actuator-feasible commands and structured feedback gains. Certify a local tracking region with nominal exponential convergence and robust ultimate boundedness under quantified disturbance bounds. III. M AIN RESULTS 
+
+For a task wrench zt ∈ T 𝑧 , translating the feasible set by the assigned demand produces the remaining authority 
+
+Zr (𝜶 , zt) := {Δz : zt + Δz ∈ Z ( 𝜶 )} . (6) Every element of Zr is a normalized additional wrench that may be generated without violating the actuator limits after the task load has been committed. 
+
+Definition 2. For 𝜖 > 0, the morphology is contact-persistently fully actuated at zt with Euclidean margin 𝜖 when B𝜖 (06) ⊆ Zr (𝜶 , zt).
+
+Remark 1. Only the actuator limits are covered by (5). Let 
+
+Wact ct be the convex set of total body actuation wrenches compatible with admissible contact reactions after transfor-mation to the same body point and inclusion of the required equilibrium terms. With Zact ct := D𝑤 Wact ct , define Zadm (𝜶 ) :=
+
+Z( 𝜶 ) ∩ Z act ct . The geometric results below are stated for the actuator-generated set Z( 𝜶 ). If unilateral, frictional, and contact-moment constraints can be represented in the same normalized body-wrench coordinates by a convex set Zact ct ,then Z may be replaced by Zadm in the containment, support-function, signed-margin, and uniform-reserve results, provided the intersection is full dimensional at the operating point. In the sequel, the actuator-interiority certificate and the slack-maximizing allocation use only clearance from the thrust bounds; they account for contact restrictions only when the corresponding contact inequalities are included directly in the allocation problem. 
+
+Assumption 1. The selected morphology satisfies 
+
+rank (A(𝜶 )) = 6, and every actuator interval has nonzero width. Lemma 1. Under Assumption 1, Z ( 𝜶 ) is a compact, convex, six-dimensional polytope. Proof. The thrust box Λ in (5) is a compact convex polytope, so its linear image under A(𝜶 ) has the same properties. By Assumption 1, the box has nonempty interior and A(𝜶 ) maps onto R6. Hence, Z( 𝜶 ) has nonempty interior in R6. □
+
+Remark 2. Actuator bounds impose feasibility and reserve re-quirements beyond structural rank. Compactness in Lemma 1 ensures that some zout ∈ R6 lies outside Z( 𝜶 ). At any 
+
+zb ∈ 𝜕 Z( 𝜶 ), every neighborhood intersects the complement of Z( 𝜶 ). By (6), such a boundary wrench admits no positive-radius residual ball. 
+
+Lemma 2. For a feasible task wrench, the largest Euclidean residual radius is 𝜖 ★(𝜶 , zt) = dist (zt, 𝜕 Z( 𝜶 )) . The radius is positive if and only if zt ∈ int (Z( 𝜶 )) .Proof. The inclusion in Definition 2, translated using (6), is equivalent to B𝜖 (zt) ⊆ Z( 𝜶 ). Positive-radius containment characterizes interior task wrenches. By Lemma 1, Z( 𝜶 ) is closed, so the ball with radius 𝜖 ★(𝜶 , zt) is contained in Z( 𝜶 ),whereas every larger ball intersects the complement of the feasible set. □
+
+Lemma 2 uses an isotropic ball. A controller may instead need a direction-dependent reserve. Suppose 
+
+Z ( 𝜶 ) =
+
+n
+
+z : a⊤ 
+
+> 𝑗
+
+z ≤ 𝑏 𝑗 , 𝑗 = 1, . . . , 𝑞 
+
+o
+
+, (7) where every half-space normal satisfies a 𝑗 ≠ 06. Let K ⊂ R6
+
+be compact and convex with 06 ∈ int (K) , and define the support function ℎK (a) = sup k∈ K a⊤k.
+
+Theorem 1. Define 
+
+𝜑 Z,K (𝜶 , z0) := min 
+
+> 𝑗
+
+𝑏 𝑗 − a⊤ 
+
+> 𝑗
+
+z0
+
+ℎK
+
+ a 𝑗 
+
+ . (8) 
+
+Since 06 ∈ int (K) , every nonzero half-space normal satisfies 
+
+ℎK (a 𝑗 ) > 0. Hence, 𝜑 Z,K is positive at interior points, zero on the boundary, and negative outside Z. For every feasible 
+
+z0, the largest nonnegative scale satisfying z0 + 𝜖 K ⊆ Z( 𝜶 )
+
+is 𝜖 ★ 
+
+> K
+
+= 𝜑 Z,K (𝜶 , z0).Proof. For 𝜖 ≥ 0, the support-function definition and (7) make 
+
+z0 + 𝜖 K ⊆ Z( 𝜶 ) equivalent to a⊤ 
+
+> 𝑗
+
+z0 + 𝜖 ℎ K (a 𝑗 ) ≤ 𝑏 𝑗 for all 𝑗 .The denominators ℎK (a 𝑗 ) are positive because 06 ∈ int (K) .Dividing each facet slack by the corresponding positive sup-port value and taking the minimum gives (8). The facet slacks in (7) also establish the stated sign characterization. □
+
+Corollary 1. For K = B1 (06), the support function is ℎK (a) =
+
+∥a∥. Thus, Theorem 1 specializes to 
+
+𝜑 Z (𝜶 , z) = min 
+
+> 𝑗
+
+𝑏 𝑗 − a⊤ 
+
+> 𝑗
+
+z
+
+a 𝑗 
+
+, (9) 
+
+where strictly positive, zero, and negative values identify an interior wrench, a boundary wrench, and an infeasible wrench, respectively. At an infeasible wrench, the negative magnitude is a normalized half-space violation and need not equal the Euclidean distance to Z; comparisons of negative values, thus, use the same exact facet representation. 
+
+Corollary 2. For a feasible z0, let Q𝑤 = Q⊤ 
+
+> 𝑤
+
+> 0 and 
+
+KQ𝑤 = {k : k⊤Q𝑤 k ≤ 1}. The support function is 
+
+ℎKQ𝑤 (a) =√︁ a⊤Q−1 
+
+> 𝑤
+
+a, so Theorem 1 yields the reserve 
+
+𝜖 ★ 
+
+> Q𝑤
+
+= min 𝑗 𝑏 𝑗 −a⊤    
+
+> 𝑗 z0√︃
+> a⊤
+> 𝑗 Q−1
+> 𝑤 a𝑗
+
+. The matrix Q𝑤 specifies unequal reserve requirements across force and moment directions. 
+
+Explicit facet construction can become burdensome as the number of actuators grows. A lower bound can instead be obtained from an interior actuator allocation, as shown next. 
+
+Theorem 2. Let R𝐴 ∈ R𝑁 ×6 satisfy A(𝜶 )R𝐴 = I6, and define ∥R𝐴 ∥2→∞ := sup v≠06 ∥R𝐴 v∥∞/∥ v∥2. Suppose 𝝀 0 ∈
+
+int (Λ) realizes zt. Define the actuator clearance 𝛿 ∞ (𝝀 0) :=
+
+min 𝑖 {𝜆 0,𝑖 − 𝜆 𝑖, min , 𝜆 𝑖, max − 𝜆 0,𝑖 }. Then, the certified Euclidean reserve is 
+
+𝜖 = 𝛿 ∞ (𝝀 0)∥R𝐴 ∥2→∞ 
+
+. (10) 
+
+Proof. For ∥Δz∥ ≤ 𝜖 , choose Δ𝝀 = R𝐴 Δz. By (10), ∥Δ𝝀 ∥∞ ≤∥R𝐴 ∥2→∞ ∥Δz∥ ≤ 𝛿 ∞ (𝝀 0). The clearance in Theorem 2 ensures 
+
+𝝀 0 + Δ𝝀 ∈ Λ. The right-inverse identity implies A(𝜶 )( 𝝀 0 +
+
+Δ𝝀 ) = zt + Δz, so (5) places the entire perturbation ball inside 
+
+Z( 𝜶 ), as required by Definition 2. □
+
+Corollary 3. For a fixed task and morphology, consider 
+
+(𝝀 ★, 𝛿 ★) ∈ arg max  
+
+> 𝝀 , 𝛿 ≥0
+
+𝛿 s.t. A(𝜶 )𝝀 = zt, (11) 
+
+𝝀 min + 𝛿 1𝑁 ≤ 𝝀 ≤ 𝝀 max − 𝛿 1𝑁 .
+
+For a feasible linear program, interiority of the optimized allocation is equivalent to 𝛿 ★ > 0. For a selected right inverse, the certified reserve is 𝜖 ★ = 𝛿 ★/∥ R𝐴 ∥2→∞ .Proof. The constraints in (11) imply 𝛿 ∞ (𝝀 ★) ≥ 𝛿 ★, with clearance defined in Theorem 2. Equality holds at an optimum, since a larger clearance would permit a larger feasible 𝛿 .Hence, 𝝀 ★ ∈ int (Λ) if and only if 𝛿 ★ > 0. For 𝛿 ★ > 0, the stated reserve follows from Theorem 2 and (10). When 𝛿 ★ = 0,feasibility in (11) certifies the zero-radius case. □
+
+For the task family T𝑧 , define the signed uniform margin 
+
+𝜑 ★ 
+
+> T𝑧
+
+(𝜶 ) := inf 
+
+> z∈ T 𝑧
+
+𝜑 Z (𝜶 , z) . (12) 
+
+Theorem 3. A common positive-radius Euclidean reserve exists for every z ∈ T 𝑧 if and only if 𝜑 ★ 
+
+> T𝑧
+
+(𝜶 ) > 0, equivalently, 
+
+T𝑧 ⊂ int (Z ( 𝜶 )) . If 𝜑 ★ 
+
+> T𝑧
+
+≥ 0, then T𝑧 ⊆ Z( 𝜶 ) and the largest uniform radius 𝜖 ≥ 0 satisfying z + B𝜖 (06) ⊆ Z( 𝜶 ) for every 
+
+z ∈ T 𝑧 is 𝜖 ★ 
+
+> T𝑧
+
+(𝜶 ) := 𝜑 ★ 
+
+> T𝑧
+
+(𝜶 ) = dist (T 𝑧 , 𝜕 Z( 𝜶 )) . If 𝜑 ★ 
+
+> T𝑧
+
+< 0,some task is infeasible and no nonnegative reserve satisfies containment; max {0, 𝜑 ★ 
+
+> T𝑧
+
+} is then only a numerical diagnostic. Proof. The pointwise margin in (9) is a finite minimum of continuous affine functions of z. Compactness of T𝑧 in Problem 1 makes the infimum in (12) attainable. The sign characterization in Corollary 1 then establishes the equivalence between a positive infimum and T𝑧 ⊂ int (Z( 𝜶 )) . For feasible task wrenches, Lemma 2 identifies the pointwise reserve with the distance to 𝜕 Z( 𝜶 ). Taking the infimum over T𝑧 yields 
+
+dist (T 𝑧 , 𝜕 Z( 𝜶 )) , including the zero-margin case. A negative infimum is attained at an infeasible wrench by Corollary 1, so no nonnegative reserve satisfies containment. □
+
+Let x𝑒 = q⊤ 𝝂 ⊤⊤ ∈ R12 collect local pose and velocity errors, where q, 𝝂 ∈ R6. Position, attitude, linear velocity, and angular velocity carry different units, so we fix a constant positive diagonal matrix S𝑥 ∈ R12 ×12 before synthesis and define the dimensionless state ¯x𝑒 = S𝑥 x𝑒 . The controller uses the normalized wrench coordinates defined in (4). Assume that the reference trajectory is twice continuously differentiable [26], [27], the morphology is fixed over the local synthesis interval, and the nominal rigid-body terms used in the cancel-lation are available within the selected coordinate chart. With 
+
+D = blkdiag (𝑚 I3, J) > 0, cancellation of known reference, gravity, and rigid-body coupling terms leads to the local normalized error model 
+
+¤¯x𝑒 = ¯A0 ¯x𝑒 + ¯B0 (zs + d𝑒 ) , (13) 
+
+¯A0 :=S𝑥 
+
+06×6 I6
+
+06×6 06×6
+
+
+
+S−1 
+
+> 𝑥
+
+, ¯B0 := S𝑥 
+
+06×6
+
+D−1
+
+
+
+D−1 
+
+> 𝑤
+
+.
+
+Here d𝑒 ∈ R6 is a normalized, locally essentially bounded matched disturbance that remains after feedforward compen-sation. Separately, za ∈ R6 is a bounded feedforward command whose modeled effect is included in the nominal cancellation; any uncompensated remainder belongs to d𝑒 . Thus, d𝑒 affects the error dynamics, whereas za consumes actuator reserve. We assume 
+
+∥d𝑒 (𝑡 )∥ ≤ ¯𝑑 𝑒 , ∥za (𝑡 )∥ ≤ ¯𝑧 a, (14) and use the uniform Euclidean margin 𝜖 ★ 
+
+> T𝑧
+
+from Theorem 3. The available feedback budget is 𝜖 𝑐 := 𝜖 ★ 
+
+> T𝑧
+
+− ¯𝑧 a > 0. Consider a continuously parameterized gain family K(𝜽 ) over a compact parameter set Θ, and the normalized feedback law 
+
+zs = − K(𝜽 ) ¯x𝑒 , ¯A𝜽 := ¯A0 − ¯B0K(𝜽 ). (15) For a prescribed 𝛽 > 0, define the nonempty candidate set 
+
+Θ𝛽 := {𝜽 ∈ Θ : max ℜ𝜆 ( ¯A𝜽 ) ≤ − 𝛽 } and assume K(𝜽 ) ≠ 06×12 
+
+on Θ𝛽 . Choose Q𝐿 = Q⊤ 
+
+> 𝐿
+
+> 0. For every 𝜽 ∈ Θ𝛽 , let P𝜽 > 0
+
+be the unique solution of 
+
+¯A⊤ 
+
+> 𝜽
+
+P𝜽 + P𝜽 ¯A𝜽 = − Q𝐿 . (16) Define 
+
+𝜅 𝜽 := K(𝜽 )P−1/2  
+
+> 𝜽 2
+
+, 𝑐 𝜽 :=
+
+ 𝜖 𝑐 
+
+𝜅 𝜽 
+
+2
+
+. (17) The corresponding tracking ellipsoid is E𝜽 := { ¯x𝑒 : ¯ x⊤ 
+
+> 𝑒
+
+P𝜽 ¯x𝑒 ≤
+
+𝑐 𝜽 }. The local-coordinate domain is represented by the pre-scribed dimensionless ellipsoid Eloc = { ¯x𝑒 : ¯ x⊤ 
+
+> 𝑒
+
+X−1loc ¯x𝑒 ≤ 1},where Xloc = X⊤ 
+
+> loc
+
+> 0.To address the controller-design objective in Problem 1, we maximize the certified Lyapunov level 𝑐 𝜽 from (17) over gains satisfying the prescribed pole-abscissa and local-coordinate constraints: 
+
+𝜽 ★ ∈ arg max  
+
+> 𝜽 ∈Θ𝛽
+
+𝑐 𝜽 s.t. 𝑐 𝜽 P−1 
+
+> 𝜽
+
+⪯ Xloc . (18) The feasible set in (18) is a closed subset of the compact set Θ𝛽 . The Lyapunov solution in (16) varies continuously with 𝜽 , so the objective in (17) is continuous. An optimizer exists whenever the feasible set is nonempty. The generally nonconvex optimization is low dimensional for structured gain families and can be solved by a reproducible grid-refinement or derivative-free search, e.g., [28]. Every candidate must be tested against both the pole-abscissa and local-chart constraints; the local-chart constraint may be omitted only when verified to be inactive. 
+
+Theorem 4. Let 𝜽 ★ solve (18) , and abbreviate K★ = K(𝜽 ★),
+
+P★ = P𝜽 ★ , 𝑐 ★ = 𝑐 𝜽 ★ . Suppose zt (𝑡 ) ∈ T 𝑧 , the disturbance bound in (14) holds, and the local model remains valid in 
+
+E𝜽 ★ . Define 𝑉 := ¯x⊤ 
+
+> 𝑒
+
+P★ ¯x𝑒 , 𝑎 ★ := 𝜆 min (Q𝐿 )   
+
+> 𝜆 max (P★)
+
+, 𝑔 ★ := (P★)1/2 ¯B0 2,and 𝜒 ★ := 2𝑔 ★ ¯𝑑 𝑒 /( 𝑎 ★√𝑐 ★). Then, for every initial condition 
+
+¯x𝑒 (0) ∈ E 𝜽 ★ :
+
+1) if d𝑒 ≡ 06, the ellipsoid E𝜽 ★ is positively invariant and 
+
+∥ ¯x𝑒 (𝑡 )∥ ≤ √︄ 𝜆 max (P★)
+
+𝜆 min (P★) exp 
+
+
+
+− 𝑎 ★
+
+2 𝑡 
+
+
+
+∥ ¯x𝑒 (0)∥ ; (19) 2) if 𝜒 ★ < 1, the same ellipsoid is robustly positively invariant for every admissible d𝑒 , and √︁ 
+
+𝑉 (𝑡 ) ≤ 𝑒 −𝑎 ★𝑡 /2√︁ 𝑉 (0) + 𝜒 ★√𝑐 ★
+
+
+
+1 − 𝑒 −𝑎 ★𝑡 /2
+
+; (20) 
+
+consequently, lim sup 𝑡 →∞ 𝑉 (𝑡 ) ≤ ( 𝜒 ★)2𝑐 ★;
+
+3) throughout the certified ellipsoid, zt + zs + za remains in 
+
+Z( 𝜶 ).Proof. By (18), the tracking ellipsoid E𝜽 ★ lies inside Eloc .From (15) and (17), the maximal feedback norm on the ellipsoid is sup 𝑉 ≤𝑐 ★ ∥zs ∥ = √𝑐 ★∥K★(P★)−1/2 ∥2 = 𝜖 𝑐 . By (14), the combined demand satisfies ∥zs + za ∥ ≤ 𝜖 𝑐 + ¯𝑧 a = 𝜖 ★ 
+
+> T𝑧
+
+. Since 
+
+zt ∈ T 𝑧 , Theorem 3 guarantees actuator feasibility throughout the ellipsoid. Along the dynamics (13) with feedback (15), the Lyapunov identity (16) yields ¤𝑉 = −¯x⊤ 
+
+> 𝑒
+
+Q𝐿 ¯x𝑒 + 2¯ x⊤ 
+
+> 𝑒
+
+P★ ¯B0d𝑒 . For d𝑒 ≡ 06,
+
+¤𝑉 ≤ − 𝑎 ★𝑉 proves positive invariance. The quadratic bounds 
+
+𝜆 min (P★)∥ ¯x𝑒 ∥2 ≤ 𝑉 ≤ 𝜆 max (P★)∥ ¯x𝑒 ∥2 then establish (19). Applying the Cauchy–Schwarz inequality with (14) bounds the Lyapunov derivative: 
+
+¤𝑉 ≤ − 𝑎 ★𝑉 + 2𝑔 ★ ¯𝑑 𝑒 
+
+√𝑉 . (21) Scalar comparison for 𝑠 = √𝑉 in (21), using 𝜒 ★ from Theorem 4, establishes (20). At 𝑉 = 𝑐 ★, (21) reduces to 
+
+¤𝑉 ≤ − 𝑎 ★𝑐 ★(1 − 𝜒 ★) < 0 when 𝜒 ★ < 1, proving robust positive invariance. The stated ultimate bound follows by taking 𝑡 → ∞ 
+
+in (20). □
+
+Remark 3. The margin enters the synthesis through the certi-fied level 𝑐 𝜽 and the local-chart constraint. A morphology with larger residual authority permits a larger tracking ellipsoid for the same gain family and state scaling. Nominal exponential convergence is recovered when the residual dynamic distur-bance vanishes; a persistent disturbance produces the explicit ultimate bound in (20), rather than convergence to the origin. The distinction between za and d𝑒 prevents an additional commanded-wrench demand from being conflated with the residual matched disturbance acting on the tracking dynamics. Theorem 4 certifies existence of an admissible actuator vector; online realization may use the slack-maximizing allocator in (11) or any map returning 𝝀 ∈ Λ with A𝝀 = zt + zs + za.The corollary below concerns commanded wrench demand; an exogenous disturbance entering the state dynamics is treated separately in Theorem 4. 
+
+Corollary 4. Assume (7) . Let ¯𝑧 s bound the feedback wrench and let ¯𝑧 a bound any additional normalized commanded 
+
+wrench used for compensation, regularization, or task shaping. If 𝜑 ★ 
+
+> T𝑧
+
+(𝜶 ) ≥ ¯𝑧 s + ¯𝑧 a, then zt +zs +za is actuator feasible for every admissible combination. Provided the tightened constraint set is nonempty, a desired command can be projected through 
+
+z★ 
+
+> c
+
+∈ arg min         
+
+> z∈ C
+> a⊤
+> 𝑗 z≤𝑏 𝑗 −𝜖 r∥a𝑗 ∥,𝑗 =1,...,𝑞
+
+∥z − zc ∥2, (22) 
+
+where 𝜖 r = ¯𝑧 s + ¯𝑧 a and C is a nonempty closed convex set containing any additional task constraints. The stated nonemptiness assumption applies to the intersection of C with the tightened half spaces. Proof. Applying the triangle inequality to the bounds in Corollary 4, with (12), one obtains ∥zs + za ∥ ≤ ¯𝑧 s + ¯𝑧 a ≤
+
+inf z∈ T 𝑧 𝜑 Z (𝜶 , z). By Theorem 3, every admissible combined command lies in Z( 𝜶 ). For the representation (7), the con-straints in (22) are equivalent, through (9), to 𝜑 Z (𝜶 , z) ≥ 𝜖 r.Thus, the projection preserves the required reserve. □
+
+The normalized allocation map and feasible set were defined in (5); the pointwise signed margin of the feasible set 𝜑 Z (𝜶 , z)
+
+is given by (9). For morphology optimization, configurations that violate Assumption 1 are assigned 𝜑 Z = −∞ ; equiv-alently, the optimization can be restricted to the rank-six subset of A. For the numerical architecture, the modules lie on a ring of radius ℓ at azimuths 𝜓 𝑖 = 2𝜋 (𝑖 − 1) / 𝑁 .Define radial and tangential directions e𝑟 ,𝑖 and e𝑡 ,𝑖 in the rotor plane. A mixed tilted axis is parameterized by b𝑖 (𝛾 𝑖 , 𝜂 𝑖 ) =
+
+cos 𝛾 𝑖 e3 + sin 𝛾 𝑖 (cos 𝜂 𝑖 e𝑟 ,𝑖 + sin 𝜂 𝑖 e𝑡 ,𝑖 ). Setting 𝛾 𝑖 = 0 recovers a coplanar vehicle. Constant angles define a fixed-tilt design, whereas admissible time-varying angles represent a reconfig-urable morphology. 
+
+Lemma 3. When parallel thrust directions are held fixed, 
+
+rank (M) ≤ 4, so the attainable wrench set admits no six-dimensional residual neighborhood. Proof. In (3), parallel axes restrict the force component to a one-dimensional subspace. The moment component has di-mension at most three, so the allocation range has dimension at most four. The nonsingular normalization in (5) preserves the allocation rank. Translation in (6) preserves affine dimension, so Zr has empty interior in R6. □
+
+For a horizontal unit direction n, define the normalized pushing family 
+
+Tpush =
+
+(
+
+D𝑤 
+
+𝑚𝑔 e3 + 𝐹 n
+
+𝝉 𝑐 
+
+
+
+: 𝐹 ∈ [ 0, 𝐹 max ],
+
+∥𝝉 𝑐 ∥ ≤ 𝜏 max 
+
+)
+
+. (23) Specializing (12) to (23) defines the worst signed push margin 
+
+𝜑 ★ 
+
+> push
+
+(𝜶 ) := inf z∈ T push 𝜑 Z (𝜶 , z). For 𝜑 ★ 
+
+> push
+
+≥ 0, the reserve equals 𝜖 ★ 
+
+> push
+
+= 𝜑 ★
+
+> push
+
+; a negative value certifies infeasibil-ity, and clipping the margin to zero provides only a di-agnostic. We write 𝜑 ★ 
+
+> push
+
+(𝜶 ; 𝐹 max , 𝜏 max ) when displaying the task bounds. A fixed morphology may be selected through 
+
+𝜶 ★ ∈ arg max 𝜶 ∈ A 𝜑 ★ 
+
+> push
+
+(𝜶 ). The largest push compatible with a required reserve 𝜖 0 > 0 is 
+
+𝐹 ★ 
+
+> push
+
+= sup 
+
+n
+
+𝐹 max : 𝜑 ★ 
+
+> push
+
+(𝜶 ; 𝐹 max , 𝜏 max ) ≥ 𝜖 0
+
+o
+
+. (24) Unlike a maximum-force metric, (24) withholds authority in all normalized wrench directions. If facets are unavailable, let z0 ∈ int (Z( 𝜶 )) and ∥d∥ = 1. Define the directional reachability 𝑠 ★(z0, d) := max 𝑠, 𝝀 𝑠 subject to A𝝀 = z0 + 𝑠 d,
+
+𝝀 ∈ Λ, and 𝑠 ≥ 0. The exact Euclidean radius is the infimum over the unit sphere. A finite direction set provides a diagnostic unless a covering-error bound is included; the computations below instead use exact half-space models for both architectures. Finally, define the best fixed and pointwise adaptive quasi-static margins over T𝑧 as 
+
+𝜑 ★ 
+
+> fix
+
+= sup 
+
+> 𝜶 ∈ A
+
+inf 
+
+> z∈ T 𝑧
+
+𝜑 Z (𝜶 , z) , 𝜑 ★ 
+
+> ad
+
+= inf 
+
+> z∈ T 𝑧
+
+sup 
+
+> 𝜶 ∈ A
+
+𝜑 Z (𝜶 , z) . (25) 
+
+Lemma 4. For compact T𝑧 and A, 𝜑 ★ 
+
+> ad
+
+≥ 𝜑 ★
+
+> fix
+
+.Proof. For every fixed 𝜶 ∈ A , 𝜑 Z (𝜶 , z) ≤ sup e𝜶 ∈ A 𝜑 Z (e𝜶 , z)
+
+holds for all z ∈ T 𝑧 . Taking the infimum over z and then the supremum over 𝜶 establishes the claimed order from the definitions in (25). □
+
+Lemma 4 compares quasi-static wrench authority. Servo-rate limits, transient singularities, and closed-loop stability must be addressed in a full dynamic synthesis. IV. N UMERICAL EVALUATION 
+
+Offline reserve and controller synthesis are followed by closed-loop wall-contact tests of the predicted actuator limits. Throughout, T𝑧 = Tpush , denoted by T in the figures. The offline study uses 𝑚 = 3.3 kg , ℓ = 0.35 m , 𝑐 𝑖 = 𝑐 𝜏 = 0.025 m ,
+
+𝐹 0 = 𝑚𝑔 , and ℓ0 = ℓ. Tasks satisfy 𝐹 ∈ [ 0, 0.15 𝑚𝑔 ] along 
+
+n = e1 with ∥𝝉 𝑐 ∥ ≤ 0.04 ℓ𝑚𝑔 ; hence, 𝜌 max = 𝐹 max /( 𝑚𝑔 ) =
+
+0.15 and 𝜇 max = 𝜏 max /( ℓ0𝑚𝑔 ) = 0.04 . A normalized reserve 
+
+𝜖 corresponds to physical reserve limits of 𝜖 𝐹 0 in force and 
+
+𝜖ℓ 0 𝐹 0 in moment. With 𝐹 0 = 32 .4 N , ℓ0 𝐹 0 = 11 .3 N .m,and 𝜖 0 = 0.025 , the required reserve is 0.81 N in force and 
+
+0.28 N .m in moment. Equally spaced rotors satisfy r𝑖 = ℓe𝑟 ,𝑖 ,
+
+𝜂 𝑖 = (− 1)𝑖 +1𝜋 /4, and 𝜎 𝑖 = (− 1)𝑖 +1. The hexarotor H6 and octarotor O8 allow 13 N per rotor, totaling 78 N and 104 N ,Tilt angle . (deg)          
+
+> 010 20 30 40 50 60 Signed task margin  '?
+> T
+> -0.15 -0.1 -0.05 00.05 0.1 0.15
+> N= 6, 13 N/rotor
+> N= 8, 13 N/rotor
+> N= 8, 9 :75 N/rotor feasibility boundary
+> 00
+
+(a) Signed task margin. Tilt angle . (deg)           
+
+> 10 20 30 40 50 60 Certi -ed  F ?
+> push =mg
+> 00.05 0.1 0.15 0.2 0.25 0.3 N= 6, 13 N/rotor
+> N= 8, 13 N/rotor
+> N= 8, 9 :75 N/rotor
+
+(b) Largest push preserving 𝜖 0.
+
+Fig. 1: Task margin and certified push versus tilt for H6, O8,and the capacity-matched O8,eq .respectively. The capacity-matched O8,eq retains the octarotor geometry and two-dimensional allocation null space with 
+
+𝜆 eq max ,8 = 68 (13 ) = 9.75 N per rotor. Thus, (H6, O8) compares complete architectures at equal per-rotor limits; (H6, O8,eq )
+
+assesses geometry and redundancy at equal installed capacity. For each exact half-space model Hz ≤ b, write row 𝑗 as a⊤
+
+𝑗 ,with a 𝑗 = [a⊤
+
+𝑗, 𝑓 a⊤
+
+𝑗, 𝜏 ]⊤. With zℎ = D𝑤 
+
+𝑚𝑔 e⊤
+
+3 0⊤
+
+3
+
+⊤, the task support is a⊤
+
+𝑗 zℎ + max {0, 𝜌 max a⊤
+
+𝑗, 𝑓 n} + 𝜇 max ∥a 𝑗, 𝜏 ∥. Applying Theorem 3 covers the continuous force interval and torque ball analytically. For 𝑁 = 6, half-spaces follow from A−1 and the thrust box; for 𝑁 = 8, facets are enumerated from independent five-generator subsets. TABLE I: Architecture and equal-total-thrust comparison. Val-ues at 𝛾 = 36 ◦ use the common task set; parenthetical angles identify the optimizer of each fine-grid sweep. 
+
+Case Í𝑖 𝜆 𝑖, max 𝜑 ★ 
+
+> push
+
+(36 ◦ ) 𝐹 ★ 
+
+> push
+
+(36 ◦ )/ 𝑚𝑔 max 𝛾 𝜑 ★ 
+
+> push
+
+max 𝛾 𝐹 ★
+
+> push
+
+/𝑚𝑔 
+
+H6 78 0.050 0.188 0.050 (36 .2◦ ) 0.188 (37 .1◦ )
+
+O8 104 0.112 0.260 0.130 (46 .4◦ ) 0.322 (55 .1◦ )
+
+O8,eq 78 0.048 0.179 0.065 (48 .2◦ ) 0.213 (49 .1◦ )
+
+Both coplanar architectures have rank four, and increasing tilt can restore rank six before task feasibility. At 𝛾 = 36 ◦,
+
+O8,eq retains 96 .9% and 95 .4% of the hexarotor’s task margin and certified push, respectively (Table I and Fig. 1). For the prescribed task, optimizing tilt reverses the comparison: within the stated morphology family and actuator limits, the capacity-matched octarotor attains a 30 .3% larger maximum task margin and a 13 .3% larger maximum certified push than the optimized hexarotor. These margins assess the task and reserve relative to hover within the finite thrust box, beyond structural span and conditioning. Scaling thrust bounds changes Z while preserving A, so 
+
+O8 and O8,eq share the singular-value curve in Fig. 2. Signed margins and interiority bounds quantify the authority lost through capacity normalization. At 𝛾 = 36 ◦ and z0 = [0.15 0 1 0 0 0 ]⊤, the exact point margins for H6, O8, and O8,eq are 0.076 , 0.137 , and 0.073 ,respectively. Slack maximization raises the unscaled octarotor certificate from 0.072 (pseudoinverse allocation) to 0.105 , a 
+
+45 .3% increase; the capacity-matched bounds are 0.063 and 
+
+0.068 . Thus, null-space redistribution improves the allocation-interiority certificate without enlarging the polytope, whose exact margin measures authority independently of allocation. Tilt angle . (deg)           
+
+> 010 20 30 40 50 60 Signed task margin  '?
+> T
+> -0.15 -0.1 -0.05 00.05 0.1 0.15
+> <min (A)00.005 0.01 0.015 0.02 0.025
+> '?
+> T;6
+> '?
+> T;8
+> '?
+> T;8;eq
+> <min (A6)
+> <min (A8) = <min (A8;eq )feasibility boundary
+
+(a) Conditioning and task margin. Normalized residual margin    
+
+> 00.02 0.04 0.06 0.08 0.1 0.12 0.14 Exact point margin Primary-allocation certi -cate Slack-optimized certi -cate
+> N6 13 N N8 equal total N8 13 N
+
+(b) Point margins and certificates at 
+
+𝛾 = 36 ◦.
+
+Fig. 2: Residual authority under different thrust bounds and allocations. In (a), both octarotors share the singular-value curve. N = 6, 13 N/rotor           
+
+> Fmax =mg
+> 00.05 0.1 0.15 0.2 0.25 0.3 0.35
+> =max =(`mg )00.02 0.04 0.06 0.08 0.1 0.12
+> -0.15 -0.1 -0.05 00.05 0.1 0.15 0.2 0.25
+> Signed task margin
+> '?
+> T= 0
+> '?
+> T=00
+
+(a) H6: 13 N per rotor. N = 8, 13 N/rotor            
+
+> Fmax =mg
+> 00.05 0.1 0.15 0.2 0.25 0.3 0.35
+> =max =(`mg )00.02 0.04 0.06 0.08 0.1 0.12
+> -0.15 -0.1 -0.05 00.05 0.1 0.15 0.2 0.25
+> Signed task margin
+> '?
+> T= 0
+> '?
+> T=00
+
+(b) O8: 13 N per rotor. 
+
+Fig. 3: Task-margin maps at 𝛾 = 36 ◦ under equal per-rotor thrust limits. The force–torque maps in Fig. 3 compare geometry and capacity under equal per-rotor limits. A deterministic 141 ×121 
+
+sweep covers 𝜌 max ∈ [ 0, 0.38 ] and 𝜇 max ∈ [ 0, 0.12 ], totaling 
+
+17 ,061 exact signed-margin evaluations per architecture and 
+
+34 ,122 overall, with analytic torque-ball support at each point. Common contours and color limits support comparison: solid lines mark feasibility, 𝜑 ★
+
+push = 0, and dash-dot lines mark the required reserve, 𝜑 ★
+
+push = 𝜖 0 = 0.025 . The positive margin preserves corrective authority for auxiliary commands and bounded model mismatch. The same facet calculations apply when morphology, actuator sizing, or reserve requirements change. The controller study uses the canonical normalized double integrator ¯A0 =
+
+0 I6
+
+0 0
+
+
+
+and ¯B0 =
+
+ 0I6
+
+
+
+, with Q𝐿 = I12 ,
+
+Xloc = I12 , and ¯𝑧 a = ¯𝑑 𝑒 = 0. For K(𝑘 𝑝 , 𝑘 𝑑 ) = 𝑘 𝑝 I6 𝑘 𝑑 I6
+
+
+
+and 𝛽 = 0.2, the structured search returns 𝑘 𝑝 = 0.076 
+
+and 𝑘 𝑑 = 0.4 for all cases. At 𝛾 = 36 ◦, the certified levels 𝑐 ★
+
+6 = 0.200 , 𝑐 ★
+
+8 = 1.012 , and 𝑐 ★
+
+8,eq = 0.188 reflect an approximately fivefold unscaled octarotor increase from geometry and installed thrust; the capacity-matched level is 
+
+93 .8% of the hexarotor value. Morphology optimization can reverse the common-tilt comparison (Fig. 1) when the local-chart constraint is inactive. The synthesis in (18) connects reserve-based gains to the local tracking guarantees of Theorem 4. A useful actuator-feasible error set requires joint assessment of morphology and allocation with controller synthesis. Synchronized ROS 2 and Gazebo wall-contact simulations take the octarotor and variable-tilt quadrotor from a common operating point beyond their predicted feasible boundaries. We use normalized push 𝜌 = 𝐹 /( 𝑚𝑔 ) and certified limit 𝜌 ★ :=
+
+𝐹 ★
+
+push /( 𝑚𝑔 ). The quantity 𝐹 𝑥, max denotes the maximum zero-TABLE II: Equal-thrust comparison ( 100 N installed) with 
+
+𝜇 max = 0.04 and 𝜖 0 = 0.025 .                              
+
+> Metric O8fixed VTQ 4tilting Actuation rank 66
+> Actuator-scaled 𝜎 min 0.263 0.129
+> 𝐹 𝑥, max /( 𝑚𝑔 )0.309 0.727
+> 𝜑 ★
+> push at 𝜌 =0.15 0.103 0.044
+> 𝜌 ★(certified) 0.247 0.696
+> Limiting mechanism rotor thrust 𝛼 =+36 ◦
+> Beyond-boundary test 𝜌 =0.280 𝜌 =0.730
+
+moment push along e1 compatible with hover. The simulated O8 retains the offline geometry ( 𝑚 = 3.3 kg, 
+
+𝛾 = 36 ◦) with a 12 .5 N per-rotor limit. The variable-tilt quadrotor VTQ 4 has 𝑚 = 3.5 kg, 𝐿 𝑥 = 0.17 m, 𝐿 𝑦 = 0.15 m, hub height ℎ = 0.05 m, reaction-torque coefficient 𝑐 𝑖 =
+
+𝑐 𝜏 = 0.020 m, and |𝛼 |, |𝛽 | ≤ 36 ◦. Both have installed thrust Í𝑖 𝜆 𝑖, max = 100 N ( 8×12 .5 N and 4×25 N). The normalization uses ℓ0,O8 = 0.35 m and ℓ0,VTQ 4 =√︃ 𝐿 2 
+
+> 𝑥
+
++ 𝐿 2 
+
+> 𝑦
+
+≈ 0.227 m(𝐹 0 = 34 .3 N and ℓ0 𝐹 0 = 7.78 N .m), with common uncertainty 
+
+𝜇 max = 0.04 and reserve 𝜖 0 = 0.025 .With the servos held, the quadrotor’s parallel thrust axes yield rank (A) = 4 (Lemma 3); six-dimensional local authority therefore requires both servo coordinates. The O8 reserve follows from Theorem 3 on the full normalized zonotope. For 
+
+VTQ 4, define u = [𝝀 ⊤ 𝛼 𝛽 ]⊤ and J𝑢 := 𝜕 z/𝜕 u; the resulting reserve certificate is local to the operating morphology. Since singular values depend on actuator-coordinate scaling, the con-ditioning comparison in Table II is performed in dimensionless actuator coordinates. For O8, the thrust coordinates are scaled by 𝜆 max , so Table II reports 𝜎 min (A𝜆 max ). For VTQ 4, define 
+
+D𝑢 := blkdiag  𝜆 max I4, 𝑠 𝛼 , 𝑠 𝛽 
+
+ with 𝑠 𝛼 = 𝑠 𝛽 = 36 ◦ expressed in radians; Table II then reports 𝜎 min (J𝑢 D𝑢 ), evaluated at the nominal hover operating morphology. At baseline, the offline and closed-loop slack-maximized clearances both round to 2.866 N. For O8, the facet-predicted roll–pitch diagonal minimizing 𝜑 ★ 
+
+> push
+
+is worst among five tested torque directions, and the simulated margin agrees with the offline value within 10 −6. Fixed quadrotor servos permit only a one-dimensional force span; releasing the tilts realizes the lateral demand at the predicted morphology. The octarotor realizes the same task with a margin of approximately 0.128 .The push sweep brackets the certified limits (Fig. 4 and Table II). For O8, 𝜌 ★ ≈ 0.247 , with margins 𝜑 ★ 
+
+> push
+
+= 0.0252 at 
+
+𝜌 = 0.247 and 0.023 at 0.250 . A rotor-thrust facet limits the envelope; allocation clearance falls from 2.855 N to 1.250 N. For VTQ 4, 𝜌 ★ ≈ 0.696 , with bracketing margins 0.026 and 
+
+0.021 . The binding tilt cone |𝛼 | ≤ 𝛼 max yields 
+
+sin 𝛼 max − 𝜌 ★ cos 𝛼 max = 𝜖 0, (26) which reproduces 𝜌 ★. At 𝜌 = 0.710 , servo and rotor clearances are 0.624 ◦ and more than 8.3 N, respectively, identifying tilt authority as the limiting constraint. With the certificate used only as a monitor, operation beyond 𝜌 ★ remains feasible         
+
+> (a) Reserve versus push for O8.(b) O8rotor clearance.
+> (c) Reserve versus push for VTQ 4.(d) VTQ 4servo and rotor clearance.
+
+Fig. 4: Certified push envelopes at equal installed thrust. Ver-tical lines mark offline thresholds; markers denote simulation samples, highlighted region denotes the post-certified region. until the realizability boundary: 𝜌 ★ marks exhaustion of the prescribed reserve. Both architectures have six-dimensional certificate-relevant authority. The reported normalized smallest singular value favors O8, while maximum directional force favors VTQ 4;neither ranking identifies task-family reserve or the active con-straint. At 𝜇 max = 0.04 , the certified push ratio is 𝜌 ★ 
+
+> VTQ 4
+
+/𝜌 ★ 
+
+> O8
+
+=
+
+2.81 . The force-only surface (26) is independent of 𝜇 max ; the octarotor boundary decreases by approximately 22% as 𝜇 max 
+
+grows from 0 to 0.08 , so the ratio varies from 2.51 to 3.20 .Beyond-boundary tests bypass margin-preserving projec-tion, passing the complete task to the allocator under preregis-tered contradiction criteria. For O8 at 𝜌 = 0.280 , the combined push-plus-binding-torque task has normalized torque 𝝁 ★ :=
+
+𝝉 ★𝑐 /( ℓ0𝑚𝑔 ) = 𝜇 max [− 1 1 0 ]⊤/√2 and full-amplitude margin 
+
+𝜑 ★ 
+
+> push
+
+= −1.140 × 10 −3 on the predicted facet. A contradiction requires unmodified task realization with normalized wrench residual below 10 −6 and all eight rotors inside [0, 12 .5] N. In Fig. 5, clearance falls through 0.0144 N at 𝑡 = 54 .211 s and 
+
+2.14 × 10 −4 N at the last feasible sample. Lower and upper rotor bounds become active at the predicted facet; allocation first becomes infeasible at 𝑡 = 54 .261 s, before the controller aborts at 𝑡 = 54 .751 s. At 𝜌 = 0.730 > tan 𝛼 max ≈ 0.727 , the quadrotor’s nominal force requires 𝛼 req ≈ 36 .129 ◦, exceeding the servo limit by 
+
+0.129 ◦. Constraining thrust to b(36 ◦, 0) predicts a minimum force-vector residual of 0.096 N. A contradiction requires unmodified force realization within 10 −3 N at nominal attitude, with |𝛼 | ≤ 36 ◦, all four rotors inside [0, 25 ] N, and no abort. In Fig. 5, commanded and actual 𝛼 settle at 36 ◦; the measured residual of 0.096 N agrees with the prediction within 1.03 𝜇 N. Rotor thrusts remain between 8.36 and 12 .90 N, without abort. The simulations distinguish reserve exhaustion at 𝜑 ★ 
+
+> push
+
+= 𝜖 0
+
+from actuator-limited loss of realizability. The task-specific (a) O8. (b) VTQ 4.
+
+Fig. 5: Beyond-boundary tests: (a) O8 at 𝜌 = 0.280 loses feasibility at the predicted thrust facet; (b) VTQ 4 at 𝜌 = 0.730 
+
+reaches the tilt limit with the predicted force residual. results and local quadrotor certificate support no architecture-wide superiority or global guarantee. Software-in-the-loop experiments for our study can be viewed at https://youtu.be/M-SZiH8Xie4. V. C ONCLUSIONS 
+
+We proposed a task-relative framework that converts resid-ual wrench authority into actuator-feasible local tracking guarantees for sustained aerial physical interaction. We used certified reserves to synthesize structured gains with nominal exponential convergence and robust ultimate boundedness under the stated assumptions. Task-dependent margins quan-tify corrective authority that rank and conditioning cannot certify. Equal-thrust comparisons linked morphology to at-tainable reserves, while redundant allocation improved lower certificates. Contact simulations distinguished exhaustion of a prescribed reserve from actual infeasibility and reproduced the predicted thrust and tilt limits. The results support task-specific morphology and control design. Architectural comparisons are confined to the tested task families, and the variable-tilt certificate remains local. REFERENCES [1] R. Rashad, J. Goerres, R. Aarts, J. B. C. Engelen, and S. Stramigioli, “Fully actuated multirotor UAVs: A literature review,” IEEE Robotics & Automation Magazine , vol. 27, no. 3, pp. 97–107, 2020. [2] M. Hamandi, F. Usai, Q. Sabl´ e, N. Staub, M. Tognon, and A. Franchi, “Design of multirotor aerial vehicles: A taxonomy based on input allocation,” The International Journal of Robotics Research , vol. 40, no. 8–9, pp. 1015–1044, 2021. [3] S. Rajappa, M. Ryll, H. H. B¨ ulthoff, and A. Franchi, “Modeling, control and design optimization for a fully-actuated hexarotor aerial vehicle with tilted propellers,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) , 2015, pp. 4006–4013. [4] M. Ryll, H. H. B¨ ulthoff, and P. R. Giordano, “A novel overactuated quadrotor unmanned aerial vehicle: Modeling, control, and experimental validation,” IEEE Transactions on Control Systems Technology , vol. 23, no. 2, pp. 540–556, 2015. [5] D. Brescianini and R. D’Andrea, “Design, modeling and control of an omni-directional aerial vehicle,” in 2016 IEEE International Conference on Robotics and Automation (ICRA) , 2016, pp. 3261–3266. [6] ——, “An omni-directional multirotor vehicle,” Mechatronics , vol. 55, pp. 76–93, 2018. [7] R. Rashad, P. Kuipers, J. Engelen, and S. Stramigioli, “Design, mod-eling, and geometric control on SE(3) of a fully-actuated hexarotor for aerial interaction,” 2017. [8] D. Kotarski, P. Piljek, J. Kasa´ c, and D. Majeti´ c, “Performance analysis of fully actuated multirotor unmanned aerial vehicle configurations with passively tilted rotors,” Applied Sciences , vol. 11, no. 18, p. 8786, 2021. [9] M. Allenspach, K. Bodie, M. Brunner, L. Rinsoz, Z. Taylor, M. Kamel, R. Siegwart, and J. Nieto, “Design and optimal control of a tiltrotor micro-aerial vehicle for efficient omnidirectional flight,” The Interna-tional Journal of Robotics Research , vol. 39, no. 10–11, pp. 1305–1325, 2020. [10] M. Ryll, D. Bicego, M. Giurato, M. Lovera, and A. Franchi, “FAST-Hex: A morphing hexarotor: Design, mechanical implementation, control and experimental validation,” IEEE/ASME Transactions on Mechatronics ,vol. 27, no. 3, pp. 1244–1255, 2022. [11] S. Park, J. Lee, J. Ahn, M. Kim, J. Her, G.-H. Yang, and D. Lee, “ODAR: Aerial manipulation platform enabling omnidirectional wrench generation,” IEEE/ASME Transactions on Mechatronics , vol. 23, no. 4, pp. 1907–1918, 2018. [12] M. Ryll, G. Muscio, F. Pierri, E. Cataldi, G. Antonelli, F. Caccavale, D. Bicego, and A. Franchi, “6D interaction control with aerial robots: The flying end-effector paradigm,” The International Journal of Robotics Research , vol. 38, no. 9, pp. 1045–1062, 2019. [13] K. Bodie, M. Brunner, M. Pantic, S. Walser, P. Pf¨ andler, U. Angst, R. Siegwart, and J. Nieto, “An omnidirectional aerial manipulation platform for contact-based inspection,” in Robotics: Science and Systems XV , 2019. [14] K. Bodie, M. Brunner, M. Pantic, S. Walser, P. Pf¨ andler, U. M. Angst, R. Y. Siegwart, and J. I. Nieto, “Active interaction force control for contact-based inspection with a fully actuated aerial vehicle,” IEEE Transactions on Robotics , vol. 37, no. 3, pp. 709–722, 2021. [15] S. Hwang, D. Lee, C. Kim, and H. J. Kim, “Autonomous heavy object pushing using a coaxial tiltrotor,” IEEE Transactions on Automation Science and Engineering , vol. 22, pp. 4243–4256, 2025. [16] T. Hui, E. Cuniato, M. Pantic, M. Tognon, M. Fumagalli, and R. Sieg-wart, “Passive aligning physical interaction of fully-actuated aerial vehicles for pushing tasks,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) , 2024, pp. 6152–6158. [17] R. Veenstra, A. Ali, C. Gabellieri, and A. Franchi, “6D physical interaction with an omnidirectional aerial robot,” Drones , vol. 10, no. 2, p. 129, 2026. [18] J. Lin, S. Ji, Y. Wu, T. Wu, Z. Han, and F. Gao, “FLOAT drone: A fully-actuated coaxial aerial robot for close-proximity operations,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2025, pp. 7216–7223. [19] E. Cuniato, M. Allenspach, T. Stastny, H. Oleynikova, R. Siegwart, and M. Pantic, “Allocation for omnidirectional aerial robots: Incorporating power dynamics,” IEEE Transactions on Robotics , vol. 42, pp. 2166– 2177, 2026. [20] J. Byun, Y. Kim, D. Lee, and H. J. Kim, “Safety-critical control for aerial physical interaction in uncertain environment,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) , 2025, pp. 7526–7532. [21] S. Bouchard, C. Gosselin, and B. Moore, “On the ability of a cable-driven robot to generate a prescribed set of wrenches,” Journal of Mechanisms and Robotics , vol. 2, no. 1, p. 011010, 2010. [22] R. Orsolino, M. Focchi, C. Mastalli, H. Dai, D. G. Caldwell, and C. Semini, “Application of wrench-based feasibility analysis to the online trajectory optimization of legged robots,” IEEE Robotics and Automation Letters , vol. 3, no. 4, pp. 4305–4312, 2018. [23] A. V. Prieto, A. Q. L. Keemink, E. H. F. van Asseldonk, and H. van der Kooij, “Feasible wrench set computation for legged robots,” IEEE Robotics and Automation Letters , vol. 7, no. 3, pp. 7676–7683, 2022. [24] S. Harms, C. Giese Bizcocho, H. Wakizono, K. Murasaki, H. Kawagoe, and K. Nagaoka, “Tetherbot: Experimental demonstration and path planning of cable-driven climbing in microgravity,” Robotics , vol. 13, no. 9, p. 130, 2024. [25] A. Piccina, M. Bertoni, A. Cenedese, and G. Michieletto, “Force polytope-based cant-angle selection for tilting hexarotor UAVs,” 2026. [26] A. Sinha and Y. Cao, “3-D nonlinear guidance law for target circum-navigation,” IEEE Control Systems Letters , vol. 7, pp. 655–660, 2023. [27] ——, “Three-dimensional autonomous guidance for enclosing a station-ary target within arbitrary smooth geometrical shapes,” IEEE Transac-tions on Aerospace and Electronic Systems , vol. 59, no. 6, pp. 9247– 9256, 2023. [28] A. R. Conn, K. Scheinberg, and L. N. Vicente, Introduction to Derivative-Free Optimization , ser. MOS–SIAM Series on Optimization. Philadelphia, PA, USA: Society for Industrial and Applied Mathematics, 2009.
