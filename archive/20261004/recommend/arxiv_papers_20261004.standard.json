@@ -1,0 +1,139 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-04T21:58:41.283297+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2609.39670v1",
+      "source": "arxiv",
+      "title": "From Local Whole-Body VLA Behaviors to Scene-Scale Aerial Manipulation",
+      "abstract": "Vision-language-action (VLA) models enable task-conditioned interaction, but extending them to scene-scale aerial manipulation remains challenging due to costly whole-body demonstrations, latency-induced action-state misalignment, and cross-site behavior composition. We present a unified framework for synthetic policy training and scene-scale execution on articulated uncrewed aerial manipulators (UAMs). A scene-reconfigurable pipeline synthesizes task-conditioned, kinodynamically feasible trajectories and synchronized multiview observations for VLA training without physical-platform demonstrations. Measured-progress-aligned realization (MPAR) aligns asynchronously returned action chunks with measured execution progress and realizes them as continuous, dynamically feasible trajectories. A relational Scene Graph grounds language goals to object instances and feasible interaction regions, while topology-guided transfer connects local behaviors across sites. Local VLA skills achieve 39/60 successes (65.0%) in simulation under oracle target and feasible-handoff conditions. Under 500-ms added latency, with and without a transient command-update stall, MPAR reduces median takeover phase error by 0.212 s over nominal-time alignment. The complete system completes 21/50 simulated multi-site missions (42.0%) and is further validated on a physical articulated UAM.",
+      "authors": [
+        "Weixiang Guo",
+        "Rui Jin",
+        "Haotian Jin",
+        "Xinhang Xu",
+        "Ruiyang Liu",
+        "Haoran Zhao",
+        "Yi Wang",
+        "Weiqi Gai",
+        "Kun Cao",
+        "Lihua Xie"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-30T13:05:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.39670v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "scene-scale aerial manipulation with articulated UAV manipulators",
+      "llm_evidence_cn": "关节式无人机机械臂的场景级空中操作",
+      "llm_evidence": "关节式无人机机械臂的场景级空中操作",
+      "canonical_evidence": "关节式无人机机械臂的场景级空中操作",
+      "llm_tldr_en": "Presents a unified framework for synthetic VLA policy training and scene-scale execution on articulated UAV manipulators, with a scene-reconfigurable data pipeline and progress-aligned action realization.",
+      "llm_tldr_cn": "针对将视觉-语言-动作模型扩展到场景级空中操作时全身演示代价高、时延导致动作状态错位与跨站点行为组合困难等问题，本文提出面向关节式无人机机械臂的统一训练与执行框架。方法用场景可重构流水线合成满足运动动力学的轨迹与同步多视角观测以训练VLA，并用按测量进度对齐的机制将异步返回的动作块实现为连续控制。该工作推动了无人机机械臂从局部行为到场景级操作的落地。",
+      "llm_tldr": "针对将视觉-语言-动作模型扩展到场景级空中操作时全身演示代价高、时延导致动作状态错位与跨站点行为组合困难等问题，本文提出面向关节式无人机机械臂的统一训练与执行框架。方法用场景可重构流水线合成满足运动动力学的轨迹与同步多视角观测以训练VLA，并用按测量进度对齐的机制将异步返回的动作块实现为连续控制。该工作推动了无人机机械臂从局部行为到场景级操作的落地。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.40102v1",
+      "source": "arxiv",
+      "title": "Passive Stiffness Shaping in Cable-Suspended Aerial Manipulation via Movable Compliant Anchors",
+      "abstract": "Cable-suspended aerial manipulation offers a lightweight architecture for cooperative transportation and physical interaction, yet the passive mechanical response perceived at the load remains insufficiently understood and systematically exploited. This work interprets aerial vehicles as movable compliant anchors and develops a gravity-aware quasi-static theory for predicting and shaping the passive Cartesian stiffness of a suspended load. The formulation applies to an arbitrary number of aerial vehicles connected to a point load by taut, straight, inextensible cables. At a selected gravity-loaded equilibrium, aerial-anchor compliance and transverse cable geometric compliance combine in series within each leg, while the leg stiffnesses act in parallel on the load. For isotropic aerial-anchor behavior, each leg is exactly equivalent to a virtual unilateral elastic cable, revealing an axial--transverse stiffness decomposition governed by the equilibrium tension. These results define a nonlinear map from commanded-anchor configuration to passive load stiffness, whose differential enables local constraint-preserving shaping through anchor repositioning. A dynamic rigid-body validation framework with nonlinear vehicle control, elastic-damped tendons, and environmental contact is defined to assess when and to what extent the derived stiffness remains predictive beyond the assumptions of the analytical model.",
+      "authors": [
+        "Antonio Franchi",
+        "Amr Afifi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.MA",
+        "eess.SY"
+      ],
+      "published": "2026-09-30T16:36:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.40102v1",
+      "tags": [
+        "keyword:drone-arm"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cable-suspended aerial manipulation stiffness shaping",
+      "llm_evidence_cn": "缆索悬挂空中操作的被动刚度塑造",
+      "llm_evidence": "缆索悬挂空中操作的被动刚度塑造",
+      "canonical_evidence": "缆索悬挂空中操作的被动刚度塑造",
+      "llm_tldr_en": "Cable-suspended aerial manipulation is lightweight but its passive mechanical response at the load is poorly understood. This work models UAVs as movable compliant anchors and builds a gravity-aware quasi-static theory to predict and shape load Cartesian stiffness.",
+      "llm_tldr_cn": "缆索悬挂空中操作提供轻量的协同搬运与物理交互架构，但负载处被动机械响应理解不足且未被系统利用。本文把无人机视为可移动柔性锚点，建立重力感知准静态理论，预测并塑造悬挂负载的被动笛卡尔刚度，适用于任意数量无人机经张紧缆索连接点负载的情形。分析表明锚点柔性与缆索几何柔性串联，为设计空中操作柔顺性提供理论工具。",
+      "llm_tldr": "缆索悬挂空中操作提供轻量的协同搬运与物理交互架构，但负载处被动机械响应理解不足且未被系统利用。本文把无人机视为可移动柔性锚点，建立重力感知准静态理论，预测并塑造悬挂负载的被动笛卡尔刚度，适用于任意数量无人机经张紧缆索连接点负载的情形。分析表明锚点柔性与缆索几何柔性串联，为设计空中操作柔顺性提供理论工具。",
+      "llm_tags": [
+        "query:aerial-arm:composite"
+      ],
+      "matched_query_tag": "query:aerial-arm:composite",
+      "matched_query_text": "Papers central to 无人机与机械臂结合控制（空中机器人）论文检索, especially work that connects or combines: aerial manipulation control strategies; drone with robotic arm control system; control of aerial vehicle with robotic manipulator; rotorcraft manipulator modeling and trajectory tracking; physical interaction control of aerial robots; motion planning and impedance control for unmanned aerial manipulator; grasping and manipulation with aerial robot manipulators; modeling and control of multirotor with onboard manipulator.",
+      "matched_requirement_id": "req-composite-aerial-arm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.38655v1",
+      "source": "arxiv",
+      "title": "Forward-Invariant Policy Classes for Safe Reinforcement Learning in Multicopter Control",
+      "abstract": "This paper proposes a reinforcement learning (RL) framework for safe gain scheduling based on forwardinvariance-induced action-space design. Under stated nominalmodel and inversion-domain assumptions, rather than enforcing safety through runtime shielding or penalty-based constraints, safety is embedded directly into the policy class. Specifically, we construct a finite library of feedback controllers sharing a common Lyapunov certificate that establishes forward invariance of a prescribed admissible set under arbitrary switching. Consequently, any policy whose actions are restricted to this library, including policies encountered during RL exploration, inherits the same certificate. Policy optimization can therefore focus on closed-loop performance without runtime safety filtering or action projection. The framework is instantiated for quadcopter hover regulation, where a DQN schedules among certified feedback controllers. Nonlinear MuJoCo simulations demonstrate state-dependent gain scheduling and empirically evaluate robustness to wind, model mismatch, sensor noise, and sensing delay. The results illustrate how safety certification can be separated from policy optimization by learning over a forward-invariant policy class.",
+      "authors": [
+        "Chieh Tsai",
+        "Muhammad Junayed Hasan Zahed",
+        "Jinzhi Shen",
+        "Yi Xie",
+        "Ruoshan Lan",
+        "Majed Obaid",
+        "Salim Hariri",
+        "Hossein Rastgoftar"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-29T23:22:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.38655v1",
+      "tags": [
+        "keyword:drone-arm",
+        "query:drone-arm"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RL framework for safe multicopter control with forward-invariant policy classes",
+      "llm_evidence_cn": "基于前向不变策略类的多旋翼安全强化学习控制",
+      "llm_evidence": "基于前向不变策略类的多旋翼安全强化学习控制",
+      "canonical_evidence": "基于前向不变策略类的多旋翼安全强化学习控制",
+      "llm_tldr_en": "Proposes an RL framework for safe multicopter gain scheduling that embeds safety into the policy class via a library of feedback controllers sharing a Lyapunov certificate ensuring forward invariance under switching.",
+      "llm_tldr_cn": "传统强化学习通过运行时屏蔽或惩罚约束来保证安全，难以覆盖探索过程。论文提出面向多旋翼安全增益调度的强化学习框架，通过前向不变性诱导动作空间设计，构建共享同一李雅普诺夫证书的有限反馈控制器库，使任意策略（含探索中策略）均继承前向不变性。该设计让策略优化专注于闭环性能，为无人机安全控制提供新思路，但未涉及机械臂。",
+      "llm_tldr": "传统强化学习通过运行时屏蔽或惩罚约束来保证安全，难以覆盖探索过程。论文提出面向多旋翼安全增益调度的强化学习框架，通过前向不变性诱导动作空间设计，构建共享同一李雅普诺夫证书的有限反馈控制器库，使任意策略（含探索中策略）均继承前向不变性。该设计让策略优化专注于闭环性能，为无人机安全控制提供新思路，但未涉及机械臂。",
+      "llm_tags": [
+        "query:drone-arm:composite"
+      ],
+      "matched_query_tag": "query:drone-arm:composite",
+      "matched_query_text": "Papers central to 强化学习与无人机机械臂、过驱动无人机与机械臂相关论文, especially work that connects or combines: reinforcement learning for robot arm control; unmanned aerial vehicle with robotic arm; aerial manipulation using reinforcement learning; deep reinforcement learning for aerial manipulation; aerial manipulator dynamics and control; over-actuated drone control with manipulator; reinforcement learning for overactuated UAV manipulator; reinforcement learning for drone manipulator control; over actuated drones with robotic arms research; aerial manipulation using deep reinforcement learning methods.",
+      "matched_requirement_id": "req-composite-drone-arm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,1774 @@
+Title: Passive Stiffness Shaping in Cable-Suspended Aerial Manipulation via Movable Compliant Anchors
+
+URL Source: https://arxiv.org/pdf/2609.40102v1
+
+Published Time: Thu, 01 Oct 2026 02:10:01 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+> 1
+
+# Passive Stiffness Shaping in Cable-Suspended Aerial Manipulation via Movable Compliant Anchors 
+
+Antonio Franchi 1,2 and Amr Afifi 3
+
+Abstract —Cable-suspended aerial manipulation offers alightweight architecture for cooperative transportation and physical interaction, yet the passive mechanical response perceived at the load remains insufficiently understood and systematically exploited. This work interprets aerial vehicles as movable compliant anchors and develops a gravity-aware quasi-static theory for predicting and shaping the passive Cartesian stiffness of a suspended load. The formulation applies to an arbitrary number of aerial vehicles connected to a point load by taut, straight, inextensible cables. At a selected gravity-loaded equilibrium, aerial-anchor compliance and transverse cable geometric compliance combine in series within each leg, while the leg stiffnesses act in parallel on the load. For isotropic aerial-anchor behavior, each leg is exactly equivalent to a virtual unilateral elastic cable, revealing an axial–transverse stiffness decomposition governed by the equilibrium tension. These results define a nonlinear map from commanded-anchor configuration to passive load stiffness, whose differential enables local constraint-preserving shaping through anchor repositioning. A dynamic rigid-body validation framework with nonlinear vehicle control, elastic-damped tendons, and environmental contact is defined to assess when and to what extent the derived stiffness remains predictive beyond the assumptions of the analytical model. 
+
+Index Terms —Aerial manipulation, cable-suspended load, pas-sive compliance, stiffness shaping, movable compliant anchors, variable stiffness, cooperative aerial robots. 
+
+I. I NTRODUCTION 
+
+Cable-suspended aerial manipulation (CSAM) provides a lightweight and mechanically simple means for teams of aerial robots to transport and manipulate loads beyond the capabilities of a single vehicle. These systems are challenging because the load is indirectly actuated, cable forces are unilateral, and the coupled behavior depends on geometry, tension, gravity, and vehicle dynamics. In recent years the field has matured from foundational multi-quadrotor modeling and control to a broad range of transportation and manipulation methods [1], [2]. Against this background, this work introduces a different viewpoint: the aerial vehicles are regarded as movable com-pliant anchors whose commanded positions determine the passive Cartesian stiffness perceived at the suspended load. Figure 1 offers an early preview of this viewpoint and its central mechanism: aerial-anchor repositioning changes the gravity-loaded cable directions and tensions that determine, and thereby reshape, the passive stiffness ellipsoid.  
+
+> 1
+
+Robotics and Mechatronics Lab, Faculty of Electrical Engineering, Mathematics & Computer Science, University of Twente, Enschede, The Netherlands. schol@r-franchi.eu.  
+
+> 2
+
+Department of Computer, Control and Management Engineering, Sapienza University of Rome, 00185 Rome, Italy.  
+
+> 3
+
+Department of Information and Computing Sciences, Utrecht University, Utrecht, The Netherlands. a.n.m.g.afifi@uu.nl 
+
+(a) Movable compliant aerial-anchor system 
+
+Pa, 1
+
+Pa, 2
+
+Pa, 3
+
+Pd, 1
+
+Pd, 2
+
+Pd, 3
+
+local controller closed-loop stiffness Kp,i 
+
+Eq. (9) load Pui, l0,i , Ti
+
+Eq. (3) i = 1 , . . . , n 
+
+passive stiffness 
+
+EK , K
+
+Eq. (32) 
+
+fg
+
+Eq. (11) 
+
+xw
+
+zw
+
+yw Fw commanded anchor actual anchor 
+
+(b) Passive load-stiffness shaping by anchor repositioning 
+
+initial setpoints Q
+
+aerial-anchor repositioning changes directions and gravity-loaded tensions repositioned setpoints Q′
+
+same regulated equilibrium position 
+
+Q 7 −→ {ui, T i}ni=1 7 −→ K
+
+Eqs. (11) and (20) 
+
+Fig. 1: System architecture and passive-stiffness-shaping prin-ciple. Each taut cable connects the load point P to an actual aerial-anchor point Pa,i , while the finite closed-loop stiffness of aerial vehicle i relates this point to its commanded anchor 
+
+Pd,i . Gravity determines the equilibrium cable directions and tensions. Repositioning the commanded anchors changes these operating-point quantities and thereby reshapes the passive Cartesian stiffness ellipsoid at the load. The three-vehicle drawing represents the general n-vehicle system. 
+
+1) A Quick Tour of Cable-Suspended Aerial Manipulation: 
+
+Foundational studies established geometric control and dif-ferential flatness for a quadrotor carrying a cable-suspended load, together with trajectory optimization for agile suspended-payload maneuvers [3], [4]. For cooperative transportation, control and vision-based coordination were developed for two-vehicle systems, while robust position tracking addressed unknown wind forces [5]–[7]. Subsequent research extended the focus from load translation arXiv:2609.40102v1 [cs.RO] 30 Sep 2026 2
+
+to cooperative manipulation and physical interaction. Internal cable forces were characterized in relation to equilibrium, stability, and passivity, and robust full-pose control was developed for uncertain multi-UAV suspended-load systems [8], [9]. Inertial estimation, energy-aware control, and precise pick-and-place supported increasingly accurate manipulation [10], [11]. Indirect force control, equilibrium-sensitivity analysis, and force-based pose regulation further addressed interaction forces and modeling uncertainty [12]–[14]. Recent work has increased the agility, scalability, and autonomy of cooperative suspended-load systems. Distributed trajectory optimization, nonlinear model predictive control, and whole-body kinodynamic planning have enabled scalable coordination and agile coupled motion [15]–[18]. Integrated planning and distributed tracking have further addressed safe transportation in complex environments [19]. Learning-based alternatives include decentralized multi-agent policies and direct motor-control policies, while physical human–robot collaboration has also been investigated with multiple aerial robots [20]–[22]. 
+
+2) An Important Question Remains Open: The literature reviewed above has established powerful methods for motion feasibility, trajectory tracking, agility, coordination, and robust-ness in cable-suspended aerial systems. These achievements remain fundamental to reliable transportation and manipulation. As aerial robots increasingly engage in physical interaction, however, the mechanical response of the system to contact and disturbances becomes an equally important consideration. Compliance can accommodate geometric uncertainty, limit interaction forces, and reduce task sensitivity to tracking errors. Existing aerial-robotic approaches have generated compliant behavior mainly through active feedback. Passivity-based compliance control has been developed for aerial vehicles carrying articulated manipulators, while hierarchical control has been used to impose compliant interaction on a cable-suspended aerial manipulator [23], [24]. Indirect force control and precise pick-and-place further demonstrate the importance of feedback-controlled interaction behavior [11], [12]. 
+
+Active compliance necessarily acts through sensing, compu-tation, actuation, and finite closed-loop bandwidth. Shaping the passive compliance of the physical system offers acomplementary opportunity: it modifies the local mechanical response at the load before an outer feedback loop reacts. Passive stiffness shaping may therefore be combined with active control to improve interaction performance, disturbance accommodation, and safety. This viewpoint is central to soft robotics and variable-stiffness actuation, where adjustable physical compliance supports the performance–safety trade-off [25]. In CSAM, it motivates the following questions: 
+
+How can the passive compliance generated by the physical aerial-vehicle–cable network be predicted ,and how can it be systematically shaped in a CSAM multi-aerial-robot system? 
+
+The remainder of this introduction identifies the relevant foundations, the distinguishing difficulty of CSAM, and the route followed in this work to answer these questions. 
+
+3) What Can Be Learned from Neighboring Fields?: 
+
+Cable-driven parallel robots (CDPRs) provide the closest established framework for addressing these questions. General parallel-robot and cable-robot theory develops the underlying concepts of kinetostatics, unilateral actuation, workspace, force distribution, and stiffness [26], [27]. Reference volumes and recent reviews consolidate the modeling, design, control, and technological development of these systems [28]–[30]. Within this field, interval methods have addressed wrench-feasible workspaces and direct geometrico-static computation [31], [32]. Force control and cable dynamics have been studied using elastic, flexible, and time-varying-length cable models [33], [34]. Variable-stiffness formulations and internal-force-based impedance control explicitly treat stiffness as a design and control objective [35], [36], while recent contributions have investigated stiffness-oriented formation design and ex-perimentally validated planar cable-robot stiffness models [37], [38]. Related aerial architectures include quadrotor-driven cable parallel robots, cable-towed systems, and suspended macro– mini manipulators. Their wrench capability, configuration planning, architectural variability, and dynamic control have been investigated in [39]–[43]. These results reinforce the relevance of cable-robot concepts to aerial systems while also exposing the architectural differences considered next. 
+
+4) The Key Difference between CSAM and CDPR: Movable Anchors: CDPRs generally keep the cable-anchor positions fixed and vary the cable lengths or tensions. CSAM systems instead use cables of prescribed length whose aerial endpoints move in three dimensions: fixed anchor and variable cable length become variable anchor position and fixed cable length. This difference changes the nature of cable-force generation. A winch-driven actuator acts directly along a one-dimensional cable coordinate. An aerial vehicle moves the cable endpoint through its controlled spatial motion, arising from the coupled translational, rotational, actuation, and feedback dynamics of the vehicle. The endpoint therefore cannot be treated immediately as either an ideal fixed anchor or a direct scalar cable actuator. How much of this closed-loop aerial-vehicle behavior must be retained to predict the mechanical response perceived at the suspended load, and which mathematically tractable local representation preserves the relevant physics ?A second difficulty follows from the mobility of the anchors. Moving an aerial endpoint changes the cable direction and the force required to support the load under gravity. Conversely, a load displacement changes the cable forces acting on the aerial endpoints. Anchor motion, cable geometry, gravity-loaded equilibrium, and the passive response at the load are therefore coupled rather than independently assignable. CDPR theory provides essential concepts and analytical tools for formulating these relationships, but it does not directly resolve them for CSAM .
+
+5) Contributions: What This Work Establishes, and Where It Stops: The complexity identified above makes some reduction unavoidable if a general analytical answer is sought. The central modeling hypothesis is that, near a selected operating point and under quasi-static evolution, the aerial-vehicle behavior relevant to the passive load response is its local closed-loop translational force–displacement relation at the cable endpoint. We represent this relation by a symmetric positive-definite Cartesian stiffness map, while abstracting the rotational, actuation, and transient 3
+
+dynamics that produce it. This modeling choice retains three-dimensional, direction-dependent endpoint compliance and provides a tractable description of an arbitrary number of movable compliant aerial anchors (Section II). Within this reduced model, passive stiffness can first be 
+
+predicted . Gravity selects the equilibrium cable directions and tensions at which the local response is evaluated. Aerial-anchor compliance and transverse cable geometric compliance then combine in series within each leg, while the leg stiffnesses act in parallel on the load. This structure yields the passive Cartesian stiffness perceived at the suspended load and identifies the physical mechanisms contributing to it (Section III). The isotropic case further exposes the structure hidden in the general expression. Each leg becomes exactly equivalent to a virtual unilateral elastic cable connected directly to the commanded anchor. The resulting axial–transverse decompo-sition shows how cable direction and gravity-loaded tension determine the magnitude and anisotropy of the passive stiffness (Sections IV and V). Prediction then makes systematic shaping meaningful. Along a selected equilibrium branch, the commanded-anchor configu-ration induces a nonlinear gravity-aware stiffness map. Its differ-ential characterizes the stiffness variations locally generated by commanded-anchor motion and supports constraint-preserving local regulation. Thus, the theory answers the two central questions in sequence: it derives the passive stiffness generated by the physical network and then identifies how aerial-anchor repositioning can modify it (Sections VI and VII). This analytical clarity carries a corresponding risk. The theory is quasi-static and translational and considers a point load, taut, straight, inextensible cables, and locally constant aerial-anchor stiffness maps. It excludes rigid-load rotation, vehicle and load transients, cable elasticity and damping, slack– taut transitions, and environmental contact. The derived stiffness could therefore be exact for the reduced model yet fail to capture the dominant response of the richer dynamic system (Section VIII-E). A dynamic rigid-body validation campaign is defined as a 
+
+stress test , rather than as a removal of the theoretical limitations. They reintroduce rigid-payload motion, nonlinear closed-loop aerial-vehicle dynamics, elastic-damped tendons, and envi-ronmental contact. By comparing analytical and empirically identified stiffnesses, testing aerial-anchor repositioning, and exploiting task-aligned compliance, the campaign is intended to assess when and to what extent the reduced theory captures a mechanically significant structure that persists beyond its defining assumptions (Section IX). II. S YSTEM MODEL 
+
+A. Affine and Coordinate Conventions 
+
+Let E be an oriented three-dimensional Euclidean affine space, and let V be its translation vector space, endowed with the inner product ⟨· , ·⟩ and induced norm ∥·∥ . Physical positions are points of E, whereas displacements, velocities, virtual displacements, and cable directions are vectors in V. The Euclidean inner product induces the musical isomorphisms ♭ :
+
+V → V∗ and ♯ : V∗ → V, which identify vectors and covectors through v♭(w) = ⟨v, w ⟩ and (α♯)♭ = α. For P1, P 2 ∈ E, the displacement from P1 to P2 is denoted by −−−→
+
+P1P2 ∈ V. The affine action of v ∈ V on P ∈ E is denoted by P + v ∈ E.Since E is affine, TP E is canonically identified with V for every P ∈ E. Hence, if s 7 → P (s) is a smooth curve with 
+
+P (0) = P , its tangent vector δp := d P (s)/ds|s=0 is regarded as an element of V.Let Fw = {Ow, x w, y w, z w} be a right-handed orthonormal inertial frame. The coordinate array of v ∈ V and the position-coordinate array of P ∈ E are defined by 
+
+vw := ⟨xw, v ⟩ ⟨yw, v ⟩ ⟨zw, v ⟩T ,
+
+pw 
+
+> P
+
+:= −−→
+
+OwP w, −−−→
+
+P1P2w = pw 
+
+> P2
+
+− pw 
+
+> P1
+
+. (1) Intrinsic points, vectors, covectors, and maps are unbolded. Coordinate arrays and matrices are bold and carry their expressing-frame superscript. For a smooth map ϕ : M → N ,its differential at x ∈ M is denoted by dϕ x : TxM → Tϕ(x)N .
+
+Remark 1 (Intrinsic and coordinate descriptions) . The intrinsic and coordinate descriptions serve distinct and complementary purposes. The intrinsic formulation preserves the physical types of points, displacements, forces, and stiffness maps, making frame changes, dual operations, and pullbacks unambiguous. Coordinate representations provide the arrays and matrices required for computation and control. Maintaining both levels prevents formally plausible but physically inconsistent opera-tions, such as re-expressing a displacement in another frame while leaving its stiffness matrix unchanged, and facilitates extensions to generalized coordinates and rigid-body models. B. Geometry and Cable Forces 
+
+Consider a point load of mass m > 0 at P ∈ E, connected to 
+
+n ≥ 1 aerial vehicles through taut, straight, inextensible cables. Cable i has fixed length l0,i > 0, actual aerial-anchor point 
+
+Pa,i ∈ E, and commanded aerial-anchor point Pd,i ∈ E. Their world-frame position arrays are denoted by pw 
+
+> P
+
+, pw 
+
+> Pa,i
+
+, and 
+
+pw 
+
+> Pd,i
+
+, respectively. Figure 1 summarizes the system notation and the passive-stiffness-shaping mechanism investigated in this work. The taut inextensible-cable constraint manifold is 
+
+Mi := 
+
+n
+
+(P, A ) ∈ E × E : −→
+
+P A = l0,i 
+
+o
+
+. (2) Let ui ∈ S2 ⊂ V be the unit direction from the load to vehicle 
+
+i. Intrinsically and in world-frame coordinates, 
+
+−−−→
+
+P P a,i = l0,i ui,
+
+pw 
+
+> Pa,i
+
+= pw 
+
+> P
+
++ l0,i uw 
+
+> i
+
+, ∥uw 
+
+> i
+
+∥ = 1 . (3) The parametrization (P, u ) 7 → (P, P + l0,i u) identifies Mi
+
+with E × S2.The tangent space at ui is Tui S2 = {v ∈ V : ⟨ui, v ⟩ = 0 }.Let P⊥ 
+
+> ui
+
+denote the orthogonal projector onto this space: 
+
+P⊥ 
+
+> ui
+
+v := v − ⟨ ui, v ⟩ ui, P ⊥,w 
+
+> ui
+
+= I3 − uw
+
+> i
+
+ uw
+
+> i
+
+T.4
+
+For an endpoint variation, differentiation of the normalized endpoint-difference map gives 
+
+δu i = 1
+
+l0,i 
+
+P⊥ 
+
+> ui
+
+(δp a,i − δp ),δuw 
+
+> i
+
+= 1
+
+l0,i 
+
+P ⊥,w
+
+> ui
+
+
+
+δpw 
+
+> Pa,i
+
+− δpw
+
+> P
+
+
+
+.
+
+(4) For a variation tangent to Mi, the relative endpoint variation is already transverse, and therefore δp a,i − δp = l0,i δu i.Let Ti > 0 be the cable tension. The force applied by cable 
+
+i on the load is intrinsically the covector φi ∈ V∗. Using the Euclidean identification between V and V∗, define its dual vector fi ∈ V. These quantities satisfy 
+
+φi = Ti
+
+ ui
+
+♭, fi = Tiui, f w 
+
+> i
+
+= Tiuw 
+
+> i
+
+. (5) Hereafter, force relations are written using Euclidean-dual force vectors or their coordinate arrays unless the covector character is relevant. 
+
+Remark 2 (Virtual-work interpretation of cable tension) . Let 
+
+ℓi(P1, P 2) := −−−→
+
+P1P2 . At a configuration (P, P a,i ) ∈ M i, its differential acts on arbitrary ambient endpoint variations as 
+
+dℓ i(δp, δp a,i ) = ⟨ui, δp a,i − δp ⟩ = ⟨ui, δp a,i ⟩ − ⟨ ui, δp ⟩ . (6) 
+
+Thus, dℓ i = ( −(ui)♭, (ui)♭) under the product-space identifi-cation T ∗(E × E) ≃ V∗ × V∗. The ideal internal cable-force covector is therefore 
+
+−Tidℓ i =
+
+
+
+Ti(ui)♭, −Ti(ui)♭
+
+,
+
+whose components are the equal-and-opposite forces applied to the load and vehicle endpoints. For every tangent variation of Mi, one has dℓ i(δp, δp a,i ) = 0 ; hence the ideal cable force performs zero net virtual work on admissible variations of the two-endpoint system. 
+
+The transverse geometric-stiffness coefficient of cable i is 
+
+κgeo ,i := l−10,i Ti, (7) with units of N/m. It quantifies the restoring effect of the equi-librium tension against transverse cable-direction variations. 
+
+C. Compliant Aerial-Anchor Model 
+
+The closed-loop translational behavior of aerial vehicle i
+
+is modeled quasi-statically by a linear stiffness map Kp,i :
+
+V → V∗, whose associated bilinear form (v, w ) 7 → (Kp,i v)( w)
+
+is symmetric and positive definite. Its inverse Cp,i := K−1 
+
+> p,i
+
+:
+
+V∗ → V is the corresponding linear compliance map. Their world-frame matrices satisfy 
+
+Kw 
+
+> p,i
+
+∈ S++ (3) , Cw 
+
+> p,i
+
+=  Kw
+
+> p,i
+
+−1. (8) Symmetry and positive definiteness are understood with respect to the dual pairing, i.e., (Kp,i v1)( v2) = ( Kp,i v2)( v1) and 
+
+(Kp,i v)( v) > 0 for every nonzero v ∈ V.At equilibrium, the vehicle-controller restoring force balances the cable force. The intrinsic and coordinate relations are 
+
+Kp,i 
+
+−−−−−→
+
+Pa,i Pd,i 
+
+
+
+= φi,
+
+Kw
+
+> p,i
+
+
+
+pw 
+
+> Pd,i
+
+− pw
+
+> Pa,i
+
+
+
+= f w 
+
+> i
+
+.
+
+(9) Equivalently, 
+
+−−−−−→
+
+Pa,i Pd,i = Cp,i 
+
+ φi
+
+,
+
+pw 
+
+> Pa,i
+
+= pw 
+
+> Pd,i
+
+− Cw
+
+> p,i
+
+f w 
+
+> i
+
+. (10) 
+
+D. Gravity-Loaded Equilibrium 
+
+Let fg , f ext ∈ V be the Euclidean-dual vectors of gravity and an additional constant external-force covector. The positive direction zw is chosen opposite to gravity, so that 
+
+fg = −mgz w, f w 
+
+> g
+
+= −mg 0 0 1T .
+
+The intrinsic and coordinate load-equilibrium equations are 
+
+> n
+
+X
+
+> i=1
+
+fi + fg + fext = 0 V,
+
+> n
+
+X
+
+> i=1
+
+f w 
+
+> i
+
++ f w 
+
+> g
+
++ f w 
+
+> ext
+
+= 03.
+
+(11) Let Q := ( Pd, 1, . . . , P d,n ) ∈ En collect the commanded aerial-anchor points, with stacked world-frame coordinate array 
+
+qw := col 
+
+
+
+pw 
+
+> Pd, 1
+
+, . . . , pw
+
+> Pd,n
+
+
+
+∈ R3n. (12) For a prescribed Q, let Eeq (Q) denote the set of tuples 
+
+(P, {Pa,i , T i}ni=1 )
+
+satisfying, for every i = 1 , . . . , n ,
+
+−−−→
+
+P P a,i = l0,i ui, ui ∈ S2,
+
+−−−−−→
+
+Pa,i Pd,i = Cp,i 
+
+
+
+Ti(ui)♭
+
+, Ti > 0,
+
+> n
+
+X
+
+> j=1
+
+Tj uj + fg + fext = 0 V.
+
+(13) All coordinate equations defining the set Eeq (Q) are given by (3), (10), and (11). Depending on Q, the set Eeq (Q) may be empty, contain one or several isolated equilibria, or contain an equilibrium continuum. The stiffness analysis below is local and is evaluated at a selected element of this set or along a selected smooth equilibrium branch. 
+
+Remark 3 (Equilibrium before stiffness) . Passive stiffness is a local force–displacement relation at a selected gravity-loaded equilibrium. Gravity is not an additive stiffness term, but it determines the operating-point cable directions and tensions entering the stiffness expression. 
+
+III. P ASSIVE CARTESIAN STIFFNESS AT A 
+
+GRAVITY -L OADED EQUILIBRIUM 
+
+Select a taut gravity-loaded equilibrium 
+
+(Pe, {Pa,i, e, T i, e}ni=1 ) ∈ E eq (Q).
+
+All quantities in this section are evaluated at this equilibrium, and the equilibrium subscript is omitted for readability. The vehicle setpoints are held fixed while the load and actual aerial anchors undergo infinitesimal quasi-static variations. 5
+
+A. Geometric Compliance of One Leg 
+
+Hereafter, leg i denotes the serial interconnection formed by cable i and its compliant aerial anchor. The Euclidean-dual cable-force vector of leg i satisfies fi = Tiui. Its variation is 
+
+δf i = δT iui + Tiδu i. (14) Since δu i ∈ Tui S2, projection onto the transverse space gives 
+
+P⊥ 
+
+> ui
+
+δf i = Tiδu i.
+
+Combining this relation with δp a,i − δp = l0,i δu i yields 
+
+δp a,i − δp = Cgeo ,i 
+
+ δφ i
+
+, Cgeo ,i := l0,i 
+
+Ti
+
+P⊥ 
+
+> ui
+
+◦ ♯. (15) Thus, Cgeo ,i : V∗ → V is the transverse geometric-compliance map of cable i. Its world-frame coordinate matrix is 
+
+Cw 
+
+> geo ,i
+
+= l0,i 
+
+Ti
+
+P ⊥,w 
+
+> ui
+
+= κ−1geo ,i P ⊥,w 
+
+> ui
+
+. (16) The map is positive semidefinite and vanishes in the cable direction, consistently with cable inextensibility. 
+
+B. Series Combination with Aerial-Anchor Compliance 
+
+At fixed commanded point, differentiation of (10) gives 
+
+δp a,i = −C p,i 
+
+ δφ i
+
+, δpw 
+
+> Pa,i
+
+= −Cw
+
+> p,i
+
+δf w 
+
+> i
+
+. (17) Substitution into (15) yields 
+
+−δp = ( Cp,i + Cgeo ,i )  δφ i
+
+.
+
+Theorem 1 (Single-leg passive stiffness) . At a taut gravity-loaded equilibrium, the passive Cartesian stiffness contribution of leg i is the symmetric positive-definite linear map 
+
+Ki := ( Cp,i + Cgeo ,i )−1 : V → V∗, (18) 
+
+defined by the restoring-force relation δφ i = −K i(δp ). Its world-frame coordinate matrix is 
+
+Kw 
+
+> i
+
+=
+
+
+
+Cw 
+
+> p,i
+
++ l0,i 
+
+Ti
+
+
+
+I3 − uw
+
+> i
+
+ uw
+
+> i
+
+T−1
+
+. (19) 
+
+Proof. The geometric and aerial-anchor compliances map the same cable-force variation to consecutive displacement contributions and therefore combine in series. The map Cp,i 
+
+is symmetric positive definite, whereas Cgeo ,i is symmetric positive semidefinite. Their sum is consequently symmetric positive definite and invertible, and its inverse Ki is also symmetric positive definite. The restoring-force relation then gives (18) and its coordinate representation (19). 
+
+C. Total Passive Stiffness 
+
+The total cable-force variation is the sum of the individual leg-force variations. Hence, 
+
+δφ c =
+
+> n
+
+X
+
+> i=1
+
+δφ i = −
+
+> n
+
+X
+
+> i=1
+
+Ki(δp ).
+
+Corollary 1 (Total passive Cartesian stiffness) . The passive Cartesian stiffness of the suspended load is 
+
+K =
+
+> n
+
+X
+
+> i=1
+
+Ki, Kw =
+
+> n
+
+X
+
+> i=1
+
+Kw 
+
+> i
+
+. (20) 
+
+Thus, the geometric and aerial-anchor compliances combine in series within each leg, whereas the leg stiffnesses act in parallel on the load. The associated total restoring-force relation is 
+
+δφ c = −K (δp ).
+
+Remark 4 (Role of gravity) . The gravitational and constant external forces have zero variation in the inertial frame and therefore do not contribute additive stiffness terms. Their effect is contained in the selected operating point: they determine the equilibrium cable directions and tensions entering (19) .
+
+IV. V IRTUAL ELASTIC -C ABLE EQUIVALENCE 
+
+The preceding stiffness result allows anisotropic aerial-anchor compliance. A more explicit representation is obtained when each aerial-anchor stiffness is isotropic. 
+
+A. Isotropic Aerial-Anchor Stiffness 
+
+Assume that, for some ki > 0,
+
+Kp,i = ki♭, Cp,i = k−1 
+
+> i
+
+♯, Kw 
+
+> p,i
+
+= kiI3. (21) Let 
+
+ri := −−−→
+
+P P d,i ∈ V, di := ∥ri∥ .
+
+By (9) and (3), 
+
+ri =  l0,i + k−1 
+
+> i
+
+Ti
+
+ ui. (22) Hence, the commanded aerial-anchor point lies along the physical cable direction, and 
+
+Ti = ki (di − l0,i ) , di > l 0,i . (23) The inequality is equivalent to positive cable tension. 
+
+B. Virtual Elastic-Cable Force Law 
+
+For di > l 0,i , ui = ri/d i. Hence, the force vector and its world-frame coordinates are 
+
+fi = ki
+
+ 1 − d−1 
+
+> i
+
+l0,i 
+
+ ri,
+
+f w 
+
+> i
+
+= ki
+
+1 − l0,i 
+
+pw 
+
+> Pd,i
+
+− pw
+
+> P
+
+ 
+
+pw 
+
+> Pd,i
+
+− pw
+
+> P
+
+
+
+. (24) 
+
+Proposition 1 (Virtual elastic-cable equivalence) . Under (21) ,leg i is quasi-statically equivalent, on its taut domain, to a virtual unilateral elastic cable connecting P directly to Pd,i ,with stiffness ki and rest length l0,i .Proof. The physical cable displacement and the compliant-anchor displacement are both parallel to ui, giving (22). Taking its norm yields (23); substitution into fi = Tiui gives (24). Figure 2 summarizes the physical series-compliance mech-anism and its exact virtual elastic-cable representation under isotropic aerial-anchor stiffness. 6                
+
+> (a) Physical cable–anchor leg
+> commanded point
+> Pd,i
+> actual anchor Pa,i
+> aerial-anchor compliance Cp,i
+> load P
+> taut inextensible cable
+> l0,i , T i, u i
+> δp δp a,i
+> cable-direction variation δu i
+> isotropic compliant anchor
+> +inextensible cable exact quasi-static equivalence
+> (b) Virtual elastic-cable representation
+> commanded point
+> Pd,i
+> load P
+> virtual unilateral elastic cable stiffness ki
+> rest length l0,i
+> fi
+> ri
+> Ci=Cp,i +Cgeo ,i ,Ki=C−1
+> iseries compliance within one leg
+
+Fig. 2: Physical and virtual representations of one cable–anchor leg. The physical leg combines aerial-anchor compliance and the transverse geometric compliance of the taut inextensible cable in series. Under isotropic aerial-anchor stiffness, the leg is quasi-statically equivalent to a virtual unilateral elastic cable connecting the load directly to the commanded anchor point. 
+
+C. Gravity-Loaded Equilibrium Residual 
+
+Define the taut virtual-cable domain 
+
+D := 
+
+n
+
+(P, Q ) ∈ E × En : −−−→
+
+P P d,i > l 0,i , i = 1 , . . . , n 
+
+o
+
+.
+
+The isotropic virtual-cable representation defines the intrinsic equilibrium residual 
+
+H : D → V, H(P, Q ) := 
+
+> n
+
+X
+
+> i=1
+
+fi + fg + fext . (25) Its world-frame coordinate representation is 
+
+hw(pw 
+
+> P
+
+, qw) := 
+
+> n
+
+X
+
+> i=1
+
+ki
+
+1 − l0,i 
+
+pw 
+
+> Pd,i
+
+− pw
+
+> P
+
+ 
+
+pw 
+
+> Pd,i
+
+− pw
+
+> P
+
+
+
++ f w 
+
+> g
+
++ f w
+
+> ext
+
+.
+
+(26) A taut gravity-loaded equilibrium satisfies 
+
+H(Pe, Q ) = 0 V, equivalently hw(pw 
+
+> Pe
+
+, qw) = 03. (27) When several solutions exist, all subsequent sensitivity and stiffness-shaping constructions are applied locally to a selected smooth equilibrium branch. V. S TIFFNESS DECOMPOSITION AT GRAVITY -L OADED 
+
+EQUILIBRIA 
+
+Throughout this section, the aerial-anchor stiffness is isotropic as in (21). Substitution into (19) gives 
+
+Kw 
+
+> i
+
+= k−1 
+
+> i
+
+I3 + T −1 
+
+> i
+
+l0,i P ⊥,w
+
+> ui
+
+−1 . (28) Let 
+
+P ∥,w 
+
+> ui
+
+:= uw
+
+> i
+
+ uw
+
+> i
+
+T, I3 = P ∥,w 
+
+> ui
+
++ P ⊥,w 
+
+> ui
+
+.
+
+Since the axial and transverse projectors are mutually orthogo-nal, the matrix inside the inverse in (28) becomes 
+
+k−1 
+
+> i
+
+P ∥,w 
+
+> ui
+
++  k−1 
+
+> i
+
++ T −1 
+
+> i
+
+l0,i 
+
+ P ⊥,w 
+
+> ui
+
+.
+
+Its inverse is therefore obtained by inverting the two scalar coefficients separately: 
+
+Kw 
+
+> i
+
+= kiP ∥,w 
+
+> ui
+
++ γiP ⊥,w 
+
+> ui
+
+, γi := kiTi
+
+Ti + kil0,i 
+
+. (29) Using (23), the transverse stiffness coefficient is also 
+
+γi = ki
+
+
+
+1 − l0,i 
+
+di
+
+
+
+. (30) Thus, the Euclidean-identified stiffness operator ♯◦K i : V → V
+
+has the simple eigenvalue ki along span {ui} and the eigenvalue 
+
+γi, with algebraic and geometric multiplicity two, on Tui S2.Figure 3 illustrates this axial–transverse eigenstructure and its evolution with the operating-point tension. 
+
+A. Isotropic Baseline and Directional Shaping 
+
+Since P ⊥,w 
+
+> ui
+
+= I3 − uw 
+
+> i
+
+(uw 
+
+> i
+
+)T, (29) is equivalently 
+
+Kw 
+
+> i
+
+= γiI3 + ( ki − γi) uw
+
+> i
+
+ uw
+
+> i
+
+T.
+
+Summing over all legs yields 
+
+Kw =
+
+> n
+
+X
+
+> i=1
+
+γi
+
+!
+
+I3 +
+
+> n
+
+X
+
+> i=1
+
+(ki − γi) uw
+
+> i
+
+ uw
+
+> i
+
+T. (31) The first term provides an isotropic stiffness baseline, whereas the second comprises directional rank-one contributions aligned with the cables. Both depend on the selected gravity-loaded equilibrium through the cable directions and tensions. 
+
+B. Stiffness and Compliance Ellipsoids 
+
+The intrinsic stiffness unit-level set is 
+
+EK := v ∈ V :  Kv(v) = 1 .7                           
+
+> (a) Single-leg eigenstructure
+> cable direction ui
+> axial eigenvalue ki
+> multiplicity one transverse plane
+> TuiS2
+> eigenvalue γi
+> multiplicity two
+> ♯◦ K i=kiP∥
+> ui+γiP⊥
+> ui
+> Eq. (29)
+> γi=kiTi
+> Ti+kil0,i
+> 0<γi<ki
+> Eq. (29) Axial stiffness comes from the aerial anchor; transverse stiffness combines anchor and geometric compliance in series.
+> (b) Evolution with operating-point tension
+> barely taut
+> Ti→0+
+> γi→0
+> nearly rank-one contribution increasing tension finite preload
+> 0< γ i< k i
+> axisymmetric contribution increasing tension high preload
+> Ti→∞
+> γi→ki
+> isotropic contribution Limits: Section V-C
+
+Fig. 3: Axial–transverse eigenstructure of an isotropic cable– anchor leg. The Euclidean-identified stiffness operator has the simple eigenvalue ki along the cable direction and the eigenvalue γi, with algebraic and geometric multiplicity two, on the transverse plane. Increasing the operating-point tension changes the leg contribution from nearly rank one toward isotropic. In world-frame coordinates, the stiffness and reciprocal com-pliance ellipsoids are represented by 
+
+Ew 
+
+> K
+
+:= vw ∈ R3 : ( vw)TKwvw = 1 ,
+
+Ew 
+
+> C
+
+:= f w ∈ R3 : ( f w)TCw
+
+> EE
+
+f w = 1 , Cw 
+
+> EE
+
+:= Kw−1.
+
+(32) The first is a displacement-space level set of the stiffness quadratic form; the second is the corresponding force-space level set of the compliance quadratic form. 
+
+C. Limit Cases 
+
+Since 0 < γ i < k i, the barely taut limit Ti → 0+ gives 
+
+Ti → 0+ =⇒ γi → 0, Kw 
+
+> i
+
+→ kiuw
+
+> i
+
+ uw
+
+> i
+
+T.
+
+The leg then supplies stiffness only along the cable direction. The high-preload limit Ti → ∞ gives 
+
+Ti → ∞ =⇒ γi → ki, Kw 
+
+> i
+
+→ kiI3.
+
+The leg therefore approaches the isotropic stiffness of the aerial anchor. In practice, cable strength, vehicle thrust, safety margins, and energy consumption bound the attainable preload. These limits describe the dependence of the leg stiffness on the operating-point tension, with cable direction and aerial-anchor stiffness held fixed. In the full equilibrium problem, cable tensions and directions are jointly determined by the setpoints, anchor stiffnesses, gravity, and external forces. VI. G RAVITY -A WARE STIFFNESS MAP 
+
+A. Equilibrium Branch and Stiffness Map 
+
+Consider an open set U ⊂ En of commanded aerial-anchor configurations and a selected smooth taut equilibrium branch 
+
+P (b)e : U → E, H P (b)e (Q), Q  = 0 V.
+
+The corresponding coordinate branch is denoted by 
+
+pw,(b)e : Uw ⊂ R3n → R3.
+
+The branch index is omitted below when no ambiguity arises. At each selected equilibrium, the intrinsic stiffness is an element of the space of symmetric positive-definite linear maps from V to V∗. The gravity-aware stiffness map is therefore 
+
+Φ(b) : U → Sym +(V, V∗), Φ(b)(Q) := K P (b)e (Q), Q .
+
+(33) Its six-dimensional world-frame representation is 
+
+Φw,(b)(qw) := k(qw) := vech 
+
+
+
+Kw pw,(b)e (qw), qw
+
+∈ R6.
+
+(34) This map is nonlinear because the setpoints affect stiffness directly through the virtual aerial anchors and indirectly through the gravity-loaded equilibrium branch. Figure 4 summarizes this dependency and the passage from the intrinsic physical formulation to the coordinate representation used for sensitivity analysis and control. 
+
+B. Equilibrium Sensitivity 
+
+Let δq ∈ TQEn ≃ Vn be a setpoint variation, and let 
+
+δp e ∈ V be the induced variation of the selected equilibrium. Differentiating the branch equilibrium condition gives 
+
+dP H δp e
+
+ + dQH δq  = 0 V, (35) where both partial differentials are evaluated at (P (b)e (Q), Q ).By the restoring-force definition δφ c = −K (δp ) established in Corollary 1, a load variation at fixed setpoints satisfies 
+
+dP H(δp ) = −(♯ ◦ K )( δp ).
+
+Therefore, dP H = −K ♯, where K♯ := ♯ ◦ K : V → V. Since 
+
+K is positive definite, this operator is invertible, and (35) gives 
+
+δp e =  K♯−1dQH δq . (36) In world-frame coordinates, the same relation is 
+
+δpw 
+
+> Pe
+
+= Kw−1 ∂hw
+
+∂qw δqw, ∂pw,(b)e
+
+∂qw = Kw−1 ∂hw
+
+∂qw . (37) Thus, the stiffness governing the local force response also determines the first-order sensitivity of the gravity-loaded equilibrium to aerial-anchor setpoint variations. 8                
+
+> Intrinsic physical layer
+> Setpoint tuple
+> Q∈En
+> Eq. (12)
+> Selected taut equilibrium P(b)e(Q)
+> Eqs. (27) and (33)
+> Equilibrium cable data
+> {ui(Q), T i(Q)}ni=1
+> Eqs. (3) and (13)
+> Leg stiffness maps
+> Ki= Cp,i +Cgeo ,i
+> −1
+> Eq. (18)
+> Total stiffness map
+> Φ(b)(Q) =
+> nX
+> i=1
+> Ki
+> Eqs. (20) and (33)
+> Gravity and external forces
+> fg, f ext Eq. (11) direct dependence through anchor setpoints and geometry Eq. (40) indirect dependence through the selected equilibrium Eqs. (37) and (40)
+> Setpoint coordinates
+> qw∈R3n
+> Eq. (12)
+> Equilibrium coordinates
+> pw,(b)e, qw
+> Eq. (37)
+> Stiffness matrix
+> Kw(qw)
+> Eqs. (20) and (31)
+> Independent entries
+> k(qw) = vech( Kw)
+> Eq. (34)
+> Stiffness Jacobian
+> Jw,(b)
+> K=∂k
+> ∂qw
+> Eq. (38)
+> Coordinate computational layer
+
+Fig. 4: Gravity-aware stiffness pipeline and parallel intrinsic and coordinate descriptions. The aerial-anchor setpoints determine a selected gravity-loaded equilibrium branch and thereby the equilibrium cable directions and tensions. These quantities determine the leg and total stiffness maps. Their coordinate representations yield the stiffness-coordinate vector and its Jacobian for sensitivity analysis and control. Gravity affects stiffness through the selected equilibrium rather than through an additive stiffness term. 
+
+C. Stiffness Jacobian 
+
+The stiffness Jacobian is the coordinate matrix of the differential of Φw,(b):
+
+Jw,(b) 
+
+> K
+
+(qw) := ∂Φw,(b)
+
+∂qw ∈ R6×3n. (38) Hence, for a setpoint variation, 
+
+δk = dΦw,(b) 
+
+> qw
+
+(δqw) = Jw,(b) 
+
+> K
+
+(qw)δqw. (39) The Jacobian includes both the direct dependence of stiffness on the setpoints and the indirect dependence induced by the equilibrium shift. In coordinates, 
+
+δKw =
+
+"
+
+∂Kw
+
+∂qw + ∂Kw
+
+∂pw
+
+> Pe
+
+∂pw,(b)e
+
+∂qw
+
+#
+
+δqw. (40) The formulation applies to any number n of aerial anchors. The locally achievable stiffness variations at a given taut equilibrium are characterized by 
+
+im Jw,(b) 
+
+> K
+
+(qw) ⊆ R6.
+
+The number of vehicles influences the dimension of the setpoint space, the rank of the stiffness Jacobian, the availability of null-space motions, and positive-tension feasibility. VII. C ONSTRAINT -P RESERVING LOCAL STIFFNESS 
+
+REGULATION 
+
+The stiffness Jacobian in (38) characterizes the first-order stiffness variations generated by commanded-anchor motion. The optimization-based local controller presented in this section uses that differential relation to attempt regulating the stiffness locally while preserving tautness, the selected equilibrium branch, and the imposed operational constraints. Thanks to such safety mechanisms, the desired stiffness may be assigned directly and need not be known to be globally realizable. 
+
+A. Stiffness Error and Admissible Velocities 
+
+Let Kw 
+
+> d
+
+(t) ∈ S++ (3) be the desired world-frame stiffness matrix. Define the stiffness error and its weighted energy by 
+
+eK (qw, t ) := k(qw) − vech( Kw 
+
+> d
+
+(t)) ,VK (qw, t ) := 12 eT 
+
+> K
+
+WK eK , WK ∈ S++ (6) . (41) For a fixed desired stiffness, (39) gives 
+
+˙VK = eT 
+
+> K
+
+WK Jw,(b) 
+
+> K
+
+˙qw, (42) where the configuration arguments are omitted when unam-biguous. Let Uw ⊂ R3n be the coordinate domain of the selected smooth taut equilibrium branch. Operational requirements are represented by continuously differentiable functions 
+
+cw 
+
+> r
+
+: Uw → R, r = 1 , . . . , N c,
+
+with cw 
+
+> r
+
+≥ 0 denoting admissibility, and corresponding domain 
+
+Uw,(b)adm := {qw ∈ U w : cw 
+
+> r
+
+(qw) ≥ 0, r = 1 , . . . , N c} . (43) These functions may encode tension bounds, flight regions, collision and cable-separation margins, thrust limits, and distance from equilibrium-branch singularities. For example, 
+
+cmin  
+
+> T,i
+
+:= Ti(qw) − Tmin , cmax  
+
+> T,i
+
+:= Tmax − Ti(qw). (44) The selected-branch tension Ti(qw) includes the equilibrium displacement induced by the commanded-anchor configuration. Let each αr be locally Lipschitz and strictly increasing, with 
+
+αr (0) = 0 . The locally admissible candidate velocities νw are asked to satisfy 
+
+∇qw cw
+
+> r
+> T
+
+νw ≥ − αr
+
+ cw
+
+> r
+
+,
+
+˙qw 
+
+> min
+
+≤ νw ≤ ˙qw
+
+> max
+
+, r = 1 , . . . , N c. (45) 9
+
+All functions in (45) are evaluated at qw, and the velocity bounds are understood componentwise. They are chosen to admit νw = 03n throughout Uw,(b)adm .
+
+B. Constraint-Preserving Regulator 
+
+The nominal stiffness velocity is chosen to be 
+
+˙knom = −λK eK , λK > 0.
+
+Since this velocity may lie outside im Jw,(b) 
+
+> K
+
+or require inadmissible commanded-anchor motion, the controller solves 
+
+ νw⋆ ∈ arg min  
+
+> νw∈R3n
+
+12 Jw,(b) 
+
+> K
+
+νw + λK eK
+
+> 2
+> WK
+
++ εv
+
+2 ∥νw∥2
+
+subject to (45) ,
+
+eT 
+
+> K
+
+WK Jw,(b) 
+
+> K
+
+νw ≤ 0,
+
+(46) where εv > 0, and all quantities are evaluated at (qw, t ). The commanded-anchor velocity is 
+
+˙qw =  νw⋆. (47) The objective selects the admissible commanded-anchor velocity that best approximates the nominal stiffness evolution while penalizing unnecessary motion. The final inequality guarantees ˙VK ≤ 0 for a fixed target. Since zero velocity satisfies all constraints, the optimization remains feasible at every admissible configuration. 
+
+Proposition 2 (Constraint-preserving local regulation) . Sup-pose that qw(0) ∈ U w,(b)adm , the selected equilibrium branch and the functions entering (46) are continuously differentiable, and the commanded evolution admits an absolutely continuous solution. Then qw(t) ∈ U w,(b)adm throughout its solution interval. For a fixed desired stiffness, ˙VK ≤ 0 almost everywhere. Proof. Along the commanded evolution, ddt cw 
+
+> r
+
+≥ − αr
+
+ cw
+
+> r
+
+
+
+almost everywhere. The comparison principle preserves the nonnegativity of every admissibility function. The last con-straint in (46), together with (42), gives ˙VK ≤ 0.
+
+C. Local Blockage Status and Feedforward Extension 
+
+Convergence is reported when ∥eK ∥ ≤ εK . Otherwise, local blockage is declared when 
+
+ νw⋆ ≤ εν , − ˙VK ≤ εd (48) for a prescribed dwell time. This condition indicates negligible local progress and may result from active constraints, insuffi-cient rank of the stiffness Jacobian, or a constrained stationary point. It does not establish global nonrealizability. If the desired stiffness-rate feedforward 
+
+˙kd(t) := ddt vech( Kw 
+
+> d
+
+(t)) 
+
+is available, the stiffness-velocity mismatch in (46) becomes 
+
+Jw,(b) 
+
+> K
+
+νw − ˙kd + λK eK ,
+
+and the descent constraint is formed using ˙eK = Jw,(b) 
+
+> K
+
+νw −
+
+˙kd. Simultaneous equilibrium-position and stiffness regulation     
+
+> Desired stiffness
+> Kw
+> d(t)
+> Constraint-preserving regulator
+> local stiffness-error descent Eq. (46) Admissibility constraints Converged or blocked Commanded-anchor velocity
+> ˙qw= νw⋆
+> Load–cable–vehicle system
+> selected gravity-loaded branch Stiffness and constraint margins
+
+Fig. 5: Constraint-preserving local stiffness-regulation loop. follows by replacing the stiffness error and Jacobian with the combined task error and Jw 
+
+> y
+
+; the admissibility constraints remain unchanged. A block diagram of the controller is provided in Figure 5. VIII. I NTERPRETATION , S COPE , AND PRACTICAL 
+
+IMPLICATIONS 
+
+A. Gravity and the Operating Point 
+
+Gravity determines equilibrium feasibility and the tensions supporting the load. Since κgeo ,i = Ti/l 0,i , its stiffness contribution is mediated by the gravity-loaded cable directions and tensions rather than appearing as an additive stiffness term. The same commanded-anchor geometry may therefore generate different passive stiffnesses under different load masses or external forces. Equilibrium and stiffness shaping must consequently be considered jointly. In the spatially homogeneous model, equilibrium and stiff-ness are invariant under a common translation of the load and all commanded anchors: such a translation preserves their relative displacements and therefore the cable directions, tensions, and passive stiffness. Accordingly, equilibrium-position regulation is implemented by adding to all commanded anchors the same translational velocity generated from the load-position error, whereas relative anchor motion performs stiffness shaping. This separation holds before world-fixed flight-region, obstacle, and other geometric constraints are imposed; the complete commanded-anchor velocity remains subject to the admissibility conditions of (45). 
+
+B. Local Regulation and Constraint Preservation 
+
+The regulator accepts an arbitrary instantaneous desired stiff-ness without requiring a precomputed stiffness workspace or feasible reference trajectory. From an admissible commanded-anchor configuration, it searches locally for a velocity that decreases the stiffness error while preserving the selected equilibrium branch and the imposed operational constraints. 10 
+
+The constraints are imposed directly through the admissible velocity set (45), rather than treated as secondary objectives. They may represent tension, geometry, actuation, and branch-regularity margins. Their gradients account for the direct setpoint dependence and the dependence induced through the gravity-loaded equilibrium. The condition (48) reports negligible progress of the im-plemented local regulator. Such blockage may result from active constraints, insufficient rank of the stiffness Jacobian, or a constrained stationary point. It does not establish global nonrealizability, since another configuration or equilibrium branch may realize the desired stiffness. The constraint-preservation result applies locally to the com-manded quasi-static evolution along the selected equilibrium branch and is expected to remain physically meaningful when the setpoints evolve slowly enough that 
+
+pw 
+
+> P
+
+(t) ≃ pw,(b)e
+
+ qw(t). (49) This condition does not require the actual aerial anchors to coincide with their commanded points, since their equilib-rium deflections generate the cable tensions. Finite-bandwidth dynamics, tracking and estimation errors, and disturbances may reduce the physical admissibility margins; practical implementation therefore requires sufficiently slow commanded-anchor motion together with positive tension, separation, and actuation margins. 
+
+C. Relation to Cable-Driven Parallel Manipulators 
+
+The proposed framework is an aerial counterpart of stiffness analysis in cable-driven parallel manipulators. Conventional systems generally use fixed frame anchors and actuated cable lengths or tensions. Here, the aerial vehicles provide movable endpoints whose finite closed-loop translational stiffness makes them compliant anchors. Under isotropic aerial-anchor stiffness, an inextensible cable and its compliant aerial anchor are quasi-statically equivalent to a unilateral elastic cable connected directly to the commanded anchor point. Flight therefore shapes passive load stiffness through the coupled variation of cable directions and gravity-loaded tensions, while introducing additional workspace, colli-sion, thrust, and equilibrium-branch constraints. 
+
+D. Passive Stiffness and Active Impedance Control 
+
+The stiffness studied here is a local equilibrium property of the cable–vehicle–load interconnection. Active impedance or admittance control instead imposes dynamic behavior through feedback. The two are complementary: passive stiffness shaping modifies the immediate mechanical response, while active control may add damping, regulate transients, and reject disturbances. A complete load-port impedance model would additionally include apparent inertia and damping: 
+
+Mapp δ ¨p + Dapp δ ˙p + Kapp δp = δfext . (50) These additional terms depend on the system dynamics, dissipation, cable properties, actuator bandwidth, and delays. Their derivation requires a dynamic model and lies outside the present scope. 
+
+E. Scope and Validation 
+
+The theory is quasi-static and translational and assumes a point load, taut straight inextensible cables, constant gravity, and finite Cartesian stiffness at the aerial anchors. It excludes cable sagging, slack–taut transitions, rigid-load attitude, aero-dynamic coupling, actuator saturation, estimation errors, and contact dynamics. The dynamic simulations (Sec. IX) test whether the pre-dicted stiffness and local regulation remain informative under coupled vehicle–load dynamics, elastic-damped tendons, and environmental interaction. Perturbation tests compare analytical and identified stiffnesses, while regulation tests evaluate error reduction and constraint preservation for both locally attainable and constraint-limited commands. These simulations stress-test the quasi-static predictions without extending the invariance guarantee to the full dynamic system. IX. D YNAMIC SIMULATION VALIDATION FRAMEWORK 
+
+A. Validation Questions 
+
+The dynamic validation campaign is organized around three successive questions: 1) Does the quasi-static theory predict the Cartesian stiffness empirically observed at the payload under full closed-loop system dynamics? 2) Can aerial-anchor repositioning drive the system toward gravity-loaded operating points with prescribed passive stiffness while preserving positive cable tensions? 3) Does task-aligned passive compliance improve the execu-tion of contact-rich cable-suspended manipulation tasks? These questions define a progressive validation chain: predict stiffness −→ shape stiffness −→ exploit stiffness .
+
+The first question tests the analytical model beyond its derivation assumptions. The second evaluates the local stiffness-shaping controller within the feasible taut domain. The third examines whether the resulting passive mechanical behavior provides a practical benefit during physical interaction. 
+
+B. Simulation System and Model Fidelity 
+
+The validation environment is implemented in MuJoCo using rigid-body dynamics, spatial tendons, and environmental contacts. It comprises four identical quadrotors connected by elastic-damped tendons to spatially separated attachment sites on a free rigid payload. Each vehicle is controlled by a nonlinear geometric controller on SE (3) , with its commanded position acting as the aerial-anchor setpoint. Table I summarizes the model and controller parameters. The simulation retains the principal physical phenomena needed for validation: vehicle and payload inertia, nonlinear closed-loop aerial-vehicle dynamics, finite cable elasticity and damping, offset payload attachments, payload rotation, translation–rotation coupling, and contact forces. It is therefore richer than the quasi-static point-load model used to derive the stiffness map. In particular, the simulation assesses whether the analytical translational stiffness remains informative in 11 
+
+TABLE I: MuJoCo model and controller parameters.                            
+
+> Parameter Value
+> System: number of quadrotors and cables 4
+> Quadrotor: mass 1.28 kg
+> Quadrotor: principal inertia diag(0 .015 ,0.015 ,0.007) kg m 2
+> Payload: mass 2.00 kg
+> Payload: principal inertia diag(0 .05 ,0.05 ,0.05) kg m 2
+> Translational control: position gain Kpdiag(12 ,12 ,14) N /m
+> Translational control: velocity gain Dpdiag(8 ,8,6) N s /m
+> Attitude control: roll–pitch/yaw gains 20 .0/4.0 N m /rad
+> Attitude control: roll–pitch/yaw rate gains 1.5/0.35 N m s /rad
+> Tendon: rest length 1.50 m
+> Tendon: axial stiffness 2500 N /m
+> Tendon: axial damping 150 N s /m
+> Simulation: integration timestep 2 ms
+> Geometry: vehicle and payload attachment sites Fixed by the simulation model
+
+the presence of rigid-payload motion, tendon elongation, dissipation, and finite settling dynamics. The simulator remains an approximation of the physical system. Its tendon model does not represent distributed cable mass, sagging, bending, aerodynamic drag, or transverse cable vibration. This distinguishes the gap between theory and simulation from the remaining gap between simulation and physical reality. The mildly anisotropic translational gains permit direct comparison with Theorem 1; dedicated isotropic-gain tests evaluate the virtual elastic-cable equivalence. Nonzero equilib-rium errors between actual and commanded vehicle positions are intentional, since they generate the cable forces through the finite aerial-anchor stiffness. The payload geometry and attachment-site coordinates are fixed in the simulation model. Their numerical specification, together with measured vehicle and coupled-system settling times, belongs to the reproducibility record of the final validation campaign. 
+
+1) Theory-to-Simulation and Simulation-to-Reality Gaps: 
+
+Table II distinguishes two modeling gaps with different roles in the validation. The theory-to-simulation gap is intentionally substantial: the simulation adds rigid-payload motion, closed-loop vehicle dynamics, tendon elasticity and damping, and environmental contact. Agreement with the empirical stiffness under these conditions would indicate that the quasi-static theory captures the dominant local compliance mechanism beyond the assumptions used in its derivation. Disagreement can instead reveal when rotational coupling, cable elongation, or transient dynamics cease to be secondary. The simulation-to-reality gap concerns effects still omit-ted from the numerical model, including distributed cable mass and sagging, actuator imperfections, sensing errors, and aerodynamic coupling. The simulations therefore provide a dynamic stress test of the theory rather than a substitute for physical experiments. Their purpose is to assess stiffness prediction, anchor reconfiguration, and contact behavior before these remaining effects are examined experimentally. 
+
+C. Empirical Cartesian Stiffness Identification 
+
+The analytical stiffness is compared with an empirical local stiffness identified directly from the dynamic simulation. For each tested gravity-loaded equilibrium, the aerial-anchor setpoints are held fixed and the payload is subjected to small perturbations around its settled operating point. Let {∆pj , ∆fj }Np 
+
+> j=1
+
+denote the measured payload-displacement and restoring-force variations. The empirical stiffness matrix is obtained from 
+
+Kw 
+
+> emp
+
+:= arg min 
+
+> X∈S3
+> Np
+
+X
+
+> j=1
+
+∆f w 
+
+> j
+
++ X∆pw 
+
+> j
+> 2
+
+. (51) The perturbations must span R3 and remain sufficiently small for the local linear approximation to apply. The identified matrix is projected onto S++ (3) only if needed to suppress numerical asymmetry or measurement noise. The identification protocol uses perturbations spanning the three translational directions and a settling test based on residual payload motion. Perturbation amplitudes must be verified through a local-linearity study. Because the simulated payload is a free rigid body, the reported quantity is an effective translational stiffness that includes any residual translation– rotation coupling unless attitude is explicitly constrained. 
+
+D. Analytical Stiffness Validation 
+
+This experiment evaluates whether the analytical stiffness 
+
+Kw 
+
+> pred
+
+predicts the empirical stiffness Kw 
+
+> emp
+
+across a broad set of taut gravity-loaded configurations. The analytical matrix is evaluated from the measured operating-point cable directions, tensions, and aerial-anchor stiffnesses, rather than from nominal formation data. 
+
+1) Configuration Campaign: A set of aerial-anchor config-urations is sampled over the admissible flight region. Each candidate is simulated until the coupled system settles, after which configurations violating positive-tension, workspace, col-lision, or equilibrium requirements are rejected. The remaining equilibria should cover variations in cable direction, tension, stiffness anisotropy, and tendon elongation. The campaign is designed to report both accepted and rejected configurations, including cases near low-tension and large-deformation boundaries. Sampling bounds, acceptance counts, and settling thresholds are treated as protocol parame-ters and must accompany the released numerical dataset. 
+
+2) Error Metrics and Statistical Analysis: For each accepted configuration, define the normalized matrix error 
+
+εK, rel := 
+
+Kw 
+
+> pred
+
+− Kw 
+
+> emp F
+
+Kw 
+
+> emp F
+
+. (52) The comparison also considers the principal stiffnesses and principal directions, because a small aggregate matrix error can conceal a relevant directional mismatch. To express the error in task-level units, a common set of test forces ∆fℓ is applied to both compliance matrices: 
+
+∆pw 
+
+> pred ,ℓ
+
+= Kw
+
+> pred
+> −1
+
+∆f w 
+
+> ℓ
+
+,
+
+∆pw 
+
+> emp ,ℓ
+
+= Kw
+
+> emp
+> −1
+
+∆f w 
+
+> ℓ
+
+. (53) 12 
+
+TABLE II: Relationship among the analytical model, the MuJoCo implementation, and the corresponding physical system.          
+
+> Phenomenon Analytical representation MuJoCo representation Remaining simulation-to-reality gap
+> Payload Point load with translational displacement Free rigid body with mass, inertia, attitude, and four spatially separated attachment sites Structural flexibility, uncertain inertial parameters, and unmodeled payload aerodynamics Aerial vehicles Movable anchors with prescribed linear Cartesian stiffness Rigid quadrotors with nonlinear SE (3)
+> tracking and finite translational gains Motor dynamics, thrust uncertainty, battery effects, and aerodynamic interaction Anchor compliance Symmetric positive-definite linear stiffness map Controller-induced displacement under cable loading Gain variation, saturation, delays, estimation errors, and off-equilibrium nonlinearities Cables Taut, straight, massless, and inextensible Elastic-damped spatial tendons with finite axial stiffness and rest length Distributed mass, sagging, bending, drag, transverse vibration, and cable contact Dynamics Quasi-static evolution along a selected equilibrium branch Coupled vehicle–payload transients with inertia and dissipation Unmodeled high-frequency dynamics and hardware-dependent settling behavior Contact Excluded from the stiffness derivation Optimization-based contact between the payload and environment Surface compliance, friction uncertainty, impact dynamics, and geometry imperfections Sensing Exact operating-point geometry and tension Simulator-exact payload, vehicle, cable-geometry, and tendon quantities Sensor noise, calibration errors, latency, packet loss, and imperfect tension estimation
+
+(a) Diagonal stiffness parity. (b) Positive-axis deformation parity. 
+
+Fig. 6: Parity-plot comparison across the selected stiffness and deformation quantities. The resulting displacement error complements the matrix-level metrics with a directly interpretable physical quantity. Parity plots and error distributions are used instead of selected examples alone. Individual configurations are retained so that aggregate statistics do not conceal directional or boundary-dependent errors. 
+
+3) Failure and Boundary Cases: Prediction errors are analyzed against the effects excluded from the analytical model, including tendon elongation, payload rotation, translation– rotation coupling, proximity to slackness, and incomplete settling. This analysis serves to identify the operating region in which the quasi-static inextensible-cable approximation remains informative. Error is examined against minimum cable tension, tendon strain, payload-attitude deviation, and residual motion. Unfa-vorable cases remain part of the analysis because they identify the boundary of the reduced model’s useful operating region. 
+
+E. Stiffness-Shaping Controller Validation 
+
+The second validation stage evaluates whether aerial-anchor repositioning can drive the dynamic system toward prescribed passive stiffnesses while preserving tautness and the imposed operational constraints. Desired stiffness matrices are supplied directly to the local regulator, without prior generation of a feasible stiffness trajectory. The high-level regulator updates 13 
+
+the commanded-anchor positions, while the low-level SE (3) 
+
+controllers generate the corresponding cable-loaded vehicle motion. The experiments include stiffness commands that are locally attainable from the initial configuration and commands whose continued pursuit is limited by tension, flight-region, or other admissibility constraints. The former evaluate convergence to-ward the desired stiffness, whereas the latter evaluate constraint preservation and the local blockage criterion in (48). Controller performance is evaluated through the stiffness error eK (t), load-position error, commanded-anchor velocities, and minimum tension and operational margins. The principal measures are the initial, final, and minimum attained stiffness errors, load-position accuracy, convergence time for attained targets, and active constraints for locally blocked commands. The validity of the quasi-static approximation is assessed by monitoring the distance between the actual payload position and the instantaneous selected equilibrium during aerial-anchor repositioning. The implemented gains, weights, active constraints, velocity bounds, solver, and update period are summarized in Table III. A complete numerical report must also state the initial configurations, target matrices, Jacobian evaluation method, solver tolerances, and convergence and blockage thresholds. For the simulations reported in this subsection, the high-level planner is implemented as a constrained quadratic program using the local differential quantities introduced in Sections VI and VII. Let qw ∈ R3n denote the stacked commanded-anchor coordinates, let pw, (b) 
+
+> e
+
+(qw) be the selected equilibrium branch, and let k(qw) = vech( Kw(qw)) ∈ R6 denote the stiffness-coordinate vector. The payload-position and stiffness errors are defined as 
+
+ep(qw, t ) := pw, (b) 
+
+> e
+
+(qw)−pwd (t), eK (qw, t ) := k(qw)−kd(t),
+
+(54) with corresponding Jacobians 
+
+Jwp (qw) := ∂p w, (b)
+
+> e
+
+∂q w , JwK (qw) := ∂k ∂q w . (55) The implemented controller uses the augmented task Jacobian 
+
+Jwy (qw) := 
+
+ √wp Jwp (qw)
+
+√wK JwK (qw)
+
+
+
+, (56) and the corresponding weighted target vector 
+
+yref (qw, t ) := 
+
+ √wp λpep(qw, t )
+
+√wK λK eK (qw, t )
+
+
+
+, (57) where wp > 0 and wK > 0 are the payload- and stiffness-objective weights, and λp > 0, λK > 0 are the corresponding regulation gains. At each planner update, the commanded-anchor velocity νw ∈ R3n is obtained as the solution of 
+
+(νw)⋆ ∈ arg min  
+
+> νw∈R3n
+
+12 Jwy (qw) νw + yref (qw, t ) 22+ εv
+
+2 ∥νw∥22
+
+(58) subject to the admissibility constraints 
+
+∇qw cmin  
+
+> T,i
+
+(qw)⊤νw ≥ − ηT cmin  
+
+> T,i
+
+(qw), cmin  
+
+> T,i
+
+(qw) := Ti(qw)−Tmin ,
+
+(59) 
+
+> (a) Stiffness regulation: greater stiffness along the longitudinal axis than along the lateral axis
+> (b) Stiffness regulation: greater stiffness along the lateral axis than along the longitudinal axis
+
+Fig. 7: Stiffness tracking plots for 2 of the 4 cases used in zigzag sliding for i = 1 , . . . , n , the componentwise anchor-velocity bounds 
+
+˙qw 
+
+> min
+
+≤ νw ≤ ˙qw
+
+> max
+
+, (60) and the additional stiffness-error descent inequality 
+
+eK (qw, t )⊤wK JwK (qw) νw ≤ 0. (61) Here ηT > 0 is the admissibility gain associated with the minimum-tension margin, Tmin > 0 is the minimum admissible cable tension, and εv > 0 is the velocity regularization coeffi-cient. In the present implementation, only the lower tension margin is enforced explicitly in the QP; other admissibility functions discussed in Section VII remain available at the modeling level but are not imposed in the solver for the 14 
+
+> (a) Stiffness regulation: reduced stiffness along both horizontal axes
+> (b) Stiffness regulation: increased stiffness along both horizontal axes
+
+Fig. 8: Stiffness tracking plots for 2 of the 4 cases used in zigzag sliding experiments reported here. After solving (58), the commanded-anchor reference is updated according to qw ← qw +∆ tc(νw)⋆,where ∆tc is the high-level controller period. Table III summarizes the default parameters used by the implemented QP controller. Model-based regulation alone does not establish that the desired stiffness is physically realized in the richer dynamic sim-ulation. The empirical identification procedure of Section IX-C is therefore repeated at selected operating points reached during regulation. The comparison distinguishes 
+
+Kw 
+
+> d
+
+, Kw
+
+> pred
+
+, Kw
+
+> emp
+
+.
+
+This separates regulation error from analytical-model error: the regulator may accurately attain the model-predicted stiffness   
+
+> (a) Longitudinally stiff (b) Laterally stiff
+> (c) Globally compliant (d) Globally stiff
+
+Fig. 9: Cable tensions during stiffness regulation.   
+
+> (a) Longitudinally stiff (b) Laterally stiff
+> (c) Globally compliant (d) Globally stiff
+
+Fig. 10: Commanded-anchor velocities during stiffness regula-tion. while the empirical stiffness differs because of tendon elasticity, rigid-payload coupling, or residual dynamic effects. Identification at the initial and final equilibria separates regulation error from model error. Intermediate identification points may be added when the reconfiguration is sufficiently slow to preserve the local quasi-static interpretation. 
+
+F. Contact-Rich Guided-Sliding Task 
+
+The final validation stage is designed to examine whether stiffness shaping improves physical interaction rather than only stiffness prediction or tracking. The task requires the suspended payload to progress through an alternating guided passage whose geometry forces repeated lateral contacts. 15 
+
+TABLE III: Default parameters of the implemented QP anchor-setpoint controller.                                    
+
+> Parameter Value Role Payload regulation gain λp1.0 Weight on payload-position error Stiffness regulation gain λK1.0 Weight on stiffness-tracking error Payload objective weight wp1.0 Relative weight of payload term in the QP cost Stiffness objective weight wK25.0 Relative weight of stiffness term in the QP cost Velocity regularization εv10 −4Quadratic penalty on anchor-velocity magnitude Admissibility gain ηT1.0 Gain in the minimum-tension inequality Minimum tension threshold Tmin 0.5NLower cable-tension margin enforced in the QP Componentwise velocity bound |νwj|≤0.3m/s Box bound on each anchor-velocity component QP solver qpoases Active-set quadratic-program solver Planner update period ∆tc0.2 s High-level controller sampling period
+
+Fig. 11: Schematic of the zigzag guided-sliding task, including the longitudinal direction of progression and the lateral contact direction. A common translational component, generated proportionally from the load-position error, is applied to all commanded anchors to regulate the payload position without altering the predicted stiffness in the translation-invariant analytical model. 
+
+1) Zigzag Environment: The payload follows a nominal forward path through two alternately positioned guide surfaces. A collision-free straight trajectory is incompatible with the passage geometry; progress therefore requires the payload to yield laterally under contact while maintaining sufficient stiffness along the forward direction. This environment exposes the directional role of passive compliance: high lateral stiffness is expected to increase contact forces and the risk of jamming, whereas excessive longitudinal compliance may reduce forward progress. The guide geometry, contact parameters, reference motion, initial condition, and completion criterion form part of the task definition. Figure 11 identifies the forward and lateral directions used to interpret the stiffness profiles. 
+
+2) Passive-Stiffness Profiles: Four stiffness profiles are defined for comparison: 1) longitudinally and laterally stiff; 2) longitudinally and laterally compliant; 3) longitudinally stiff and laterally compliant; 4) longitudinally compliant and laterally stiff. The first two distinguish global stiffness from global compli-ance. The last two test whether task performance depends on aligning the stiffness anisotropy with the forward-motion and contact directions. Each profile is realized by aerial-anchor reconfiguration before task execution. The resulting anchor setpoints are then held fixed, so the comparison concerns passive mechanical behavior rather than active stiffness adaptation during contact. A conclusive comparison requires the target, predicted, and empirically identified stiffness matrices for all four profiles, together with their formations, tensions, and equilibrium load poses. The profiles must satisfy common initialization and feasibility conditions. 
+
+3) Task-Performance Metrics: The profiles will be compared using task-completion rate and traversal time, together with maximum and accumulated contact force, forward progress, path error, payload-attitude excursion, tendon-tension margins, and vehicle control effort. Jamming is defined by insufficient forward progress over a prescribed time interval while persistent contact is present. The central comparison is between the task-aligned anisotropic profile and the globally stiff, globally compliant, and task-misaligned profiles. Improved performance of the aligned profile would show that the benefit arises from directional stiffness shaping rather than from uniformly reducing stiffness. Repeated trials or randomized initial conditions are required for task-level claims. Failed and jammed trials must be retained, with a stated rule for incomplete traversal times. X. C ONCLUSIONS 
+
+This work developed a gravity-aware theory for predicting and shaping passive Cartesian stiffness in cable-suspended aerial manipulation with movable compliant aerial anchors. For an arbitrary number of aerial vehicles and taut inextensible cables, the stiffness was derived at a selected gravity-loaded equilibrium. Within each leg, aerial-anchor compliance and transverse cable geometric compliance combine in series, whereas the leg stiffnesses act in parallel on the load. For isotropic aerial-anchor stiffness, each inextensible cable and compliant anchor was shown to be quasi-statically equiv-alent to a virtual unilateral elastic cable connected directly to the commanded anchor. This equivalence reveals an axial– transverse decomposition and clarifies how cable directions and gravity-loaded tensions determine the magnitude and anisotropy of the passive load stiffness. The resulting nonlinear stiffness map relates the commanded-anchor configuration to the passive stiffness along a selected equilibrium branch. Its differential characterizes the stiffness variations locally generated by aerial-anchor motion and supports constraint-preserving regulation toward an arbitrary desired stiffness. When further local descent is unavailable, the 16 
+
+(a) Longitudinally stiff, laterally compliant (b) Laterally stiff, longitudinally compliant 
+
+(c) Compliant in both horizontal directions (d) Stiff in both horizontal directions 
+
+Fig. 12: Longitudinal and lateral tracking errors during guided sliding. regulator preserves admissibility and reports local blockage without asserting global nonrealizability. The theory assumes a point load, quasi-static evolution, and taut, straight, inextensible cables. A dynamic rigid-body validation framework with nonlinear vehicle control, elastic-damped tendons, and environmental contact specifies how the predicted and shaped stiffness will be stress-tested beyond these assumptions. Future work will address dynamic load-port impedance, variable aerial-anchor stiffness and damping, elastic and sagging cables, slack–taut transitions, rigid-body loads, global reconfiguration, and experimental validation with aerial-robot teams. REFERENCES [1] K. Sreenath and V. Kumar, “Dynamics, control and planning for cooperative manipulation of payloads suspended by cables from multiple quadrotor robots,” in Robotics: Science and Systems , 2013. [2] J. Estevez, G. Garate, J. M. Lopez-Guede, and M. Larrea, “Review of aerial transportation of suspended-cable payloads with quadrotors,” 
+
+Drones , vol. 8, no. 2, p. 35, 2024. [3] K. Sreenath, T. Lee, and V. Kumar, “Geometric control and differential flatness of a quadrotor uav with a cable-suspended load,” in IEEE Conference on Decision and Control , 2013. [4] P. Foehn, D. Falanga, N. Kuppuswamy, R. Tedrake, and D. Scaramuzza, “Fast trajectory optimization for agile quadrotor maneuvers with a cable-suspended payload,” in Robotics: Science and Systems , 2017. [5] P. O. Pereira and D. V. Dimarogonas, “Control framework for slung load transportation with two aerial vehicles,” in IEEE Conference on Decision and Control , 2017. [6] M. Gassner, T. Cieslewski, and D. Scaramuzza, “Dynamic collaboration without communication: Vision-based cable-suspended load transport with two quadrotors,” in IEEE International Conference on Robotics and Automation , 2017. [7] P. O. Pereira, J. Cortes, and D. V. Dimarogonas, “Aerial slung-load position tracking under unknown wind forces,” IEEE Transactions on Automatic Control , vol. 66, no. 9, pp. 3952–3968, 2021. [8] M. Tognon, C. Gabellieri, L. Pallottino, and A. Franchi, “Aerial co-manipulation with cables: The role of internal force for equilibria, stability, and passivity,” IEEE Robotics and Automation Letters , vol. 3, no. 3, pp. 2577–2583, 2018. [9] D. Sanalitro, H. J. Savino, M. Tognon, J. Cortes, and A. Franchi, “Full-pose manipulation control of a cable-suspended load with multiple uavs under uncertainties,” IEEE Robotics and Automation Letters , vol. 5, no. 2, pp. 2185–2191, 2020. [10] A. Petitti, D. Sanalitro, M. Tognon, A. Milella, J. Cortes, and A. Franchi, “Inertial estimation and energy-efficient control of a cable-suspended load with a team of uavs,” in International Conference on Unmanned Aircraft Systems , 2020. [11] A. E. Jimenez-Cano, D. Sanalitro, M. Tognon, A. Franchi, and J. Cortes, “Precise cable-suspended pick-and-place with an aerial multi-robot system,” Journal of Intelligent and Robotic Systems , vol. 105, p. 68, 2022. [12] D. Sanalitro, M. Tognon, A. E. Jimenez-Cano, J. Cortes, and A. Franchi, “Indirect force control of a cable-suspended aerial multi-robot manipula-tor,” IEEE Robotics and Automation Letters , vol. 7, no. 3, pp. 6726–6733, 2022. [13] C. Gabellieri, M. Tognon, D. Sanalitro, and A. Franchi, “Equilibria, stability, and sensitivity for the aerial suspended beam robotic system subject to parameter uncertainty,” IEEE Transactions on Robotics , vol. 39, no. 5, pp. 3977–3993, 2023. [14] ——, “Force-based pose regulation of a cable-suspended load using uavs with force bias,” in IEEE/RSJ International Conference on Intelligent Robots and Systems , 2023. [15] B. E. Jackson, T. A. Howell, K. Shah, M. Schwager, and Z. Manchester, “Scalable cooperative transport of cable-suspended loads with uavs using distributed trajectory optimization,” IEEE Robotics and Automation Letters , vol. 5, no. 2, pp. 3368–3374, 2020. [16] G. Li and G. Loianno, “Nonlinear model predictive control for cooperative transportation and manipulation of cable suspended payloads with multiple quadrotors,” in IEEE/RSJ International Conference on Intelligent Robots and Systems , 2023. [17] N. De Carli, R. Belletti, E. Buzzurro, A. Testa, G. Notarstefano, and M. Tognon, “Distributed NMPC for cooperative aerial manipulation of cable-suspended loads,” IEEE Robotics and Automation Letters , vol. 10, no. 10, pp. 10 546–10 553, 2025. [18] S. Sun, X. Wang, D. Sanalitro, A. Franchi, M. Tognon, and J. Alonso-17 
+
+(a) Longitudinally stiff and laterally compliant formation. 
+
+(b) Laterally stiff and longitudinally compliant formation. 
+
+(c) Longitudinally and laterally compliant forma-tion. 
+
+(d) Longitudinally and laterally stiff formation. 
+
+Fig. 13: Commanded-anchor formations used to generate the four passive-stiffness profiles for the guided-sliding comparison. 
+
+Mora, “Agile and cooperative aerial manipulation of a cable-suspended load,” Science Robotics , vol. 10, no. 107, p. eadu8015, 2025. [19] Y. Wang, J. Wang, X. Zhou, T. Yang, C. Xu, and F. Gao, “Safe and agile transportation of cable-suspended payload via multiple aerial robots,” 
+
+IEEE Transactions on Robotics , 2026, early access. [20] J. Zeng, A. Matoses Gimenez, E. Vinitsky, J. Alonso-Mora, and S. Sun, “Decentralized aerial manipulation of a cable-suspended load using multi-agent reinforcement learning,” in Conference on Robot Learning , 2025. [21] V. Lorentz, K. Wahba, S. Auddy, M. Toussaint, and W. Hoenig, “Crazymarl: Decentralized direct motor control policies for cooperative aerial transport of cable-suspended payloads,” in IEEE International Conference on Robotics and Automation , 2026, to appear. [22] G. Li, X. Liu, and G. Loianno, “Human-aware physical human–robot collaborative transportation and manipulation with multiple aerial robots,” 
+
+IEEE Transactions on Robotics , vol. 41, pp. 762–781, 2025. [23] M. J. Kim, R. Balachandran, M. De Stefano, K. Kondak, and C. Ott, “Passive compliance control of aerial manipulators,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2018, pp. 4177–4184. [24] C. Gabellieri, Y. S. Sarkisov, A. Coelho, L. Pallottino, K. Kondak, and M. J. Kim, “Compliance control of a cable-suspended aerial manipulator using hierarchical control framework,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2020, pp. 7196–7202. [25] A. Bicchi and G. Tonietti, “Fast and “soft-arm” tactics: Dealing with the safety–performance trade-off in robot arms design and control,” IEEE Robotics & Automation Magazine , vol. 11, no. 2, pp. 22–33, 2004. [26] J.-P. Merlet, Parallel Robots , 2nd ed. Springer, 2006. [27] A. Pott, Cable-Driven Parallel Robots: Theory and Application . Springer, 2018. [28] T. Bruckmann and A. Pott, Eds., Cable-Driven Parallel Robots . Springer, 2013. [29] C. Gosselin, P. Cardou, T. Bruckmann, and A. Pott, Eds., Cable-Driven Parallel Robots . Springer, 2017. [30] R. Wang, J. Li, and Y. Li, “A review on design, modeling and control technology of cable-driven parallel robots,” Robotics , vol. 14, no. 9, p. 116, 2025. [31] M. Gouttefarde, D. Daney, and J.-P. Merlet, “Interval-analysis-based determination of the wrench-feasible workspace of parallel cable-driven robots,” IEEE Transactions on Robotics , vol. 27, no. 1, pp. 1–13, 2011. [32] A. Berti, J.-P. Merlet, and M. Carricato, “Solving the direct geometrico-static problem of underconstrained cable-driven parallel robots by interval analysis,” The International Journal of Robotics Research , vol. 35, no. 6, pp. 723–739, 2016. [33] W. Kraus, “Force control of cable-driven parallel robots,” Ph.D. disserta-tion, University of Stuttgart, 2016. [34] P. Tempel, “Dynamics of cable-driven parallel robots with elastic and flexible, time-varying length cables,” Ph.D. dissertation, University of Stuttgart, 2019. [35] M. A. Khosravi and H. D. Taghirad, “Dynamic analysis and control of fully-constrained cable robots with elastic cables: Variable stiffness formulation,” in Cable-Driven Parallel Robots . Springer, 2014. [36] C. Reichert, K. Mueller, and T. Bruckmann, “Robust internal force-based impedance control for cable-driven parallel robots,” in Cable-Driven Parallel Robots . Springer, 2014. [37] D. Dona, V. Di Paola, M. Zoppi, and A. Trevisani, “Stiffness-based analytic centre method for cable-driven parallel robots,” arXiv preprint arXiv:2505.07348 , 2025. [38] M. Arslan, S. Caro, C. Chevallereau, and P. Wenger, “Investigating the stiffness of a planar cable-driven parallel robot: Modeling and experimental validation,” in CableCon , 2025. 18 
+
+[39] J. Erskine, A. Chriette, and S. Caro, “Wrench analysis of cable-suspended parallel robots actuated by quadrotor unmanned aerial vehicles,” Journal of Mechanisms and Robotics , vol. 11, no. 2, 2019. [40] ——, “Control and configuration planning of an aerial cable towed system,” in IEEE International Conference on Robotics and Automation ,2019. [41] Z. Li, J. Erskine, S. Caro, and A. Chriette, “Design and control of a variable aerial cable towed system,” IEEE Robotics and Automation Letters , vol. 5, no. 2, pp. 636–643, 2020. [42] A. Yigit, M. Arpa Perozo, M. Ouafo, L. Cuvillon, S. Durand, and J. Gangloff, “Aerial manipulator suspended from a cable-driven parallel robot: Preliminary experimental results,” in IEEE/RSJ International Conference on Intelligent Robots and Systems , 2021. [43] A. Yigit, L. Cuvillon, M. Arpa Perozo, S. Durand, and J. Gangloff, “Dynamic control of a macro-mini aerial manipulator with elastic suspension,” IEEE Transactions on Robotics , vol. 39, no. 6, pp. 4820– 4836, 2023.
