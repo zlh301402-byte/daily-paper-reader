@@ -6,32 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-10-04
-- 运行时间：2026-10-04 22:00:25 UTC
+- 最新运行日期：2026-10-06
+- 运行时间：2026-10-06 00:45:25 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：2
-- 速读区：1
+- 本次总论文数：0
+- 精读区：0
+- 速读区：0
 
 ### 今日简报（AI）
-- 今日共生成 3 篇推荐（精读 2 篇，速读 1 篇）
-- 精读：《From Local Whole-Body VLA Behaviors to Scene-Scale Aerial Manipulation》（8.0/10）, 《Passive Stiffness Shaping in Cable-Suspended Aerial Manipulation via Movable Compliant Anchors》（8.0/10）
-- 速读：《Forward-Invariant Policy Classes for Safe Reinforcement Learning in Multicopter Control》（6.0/10）
-- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202610/04/README](/202610/04/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202610/06/README](/202610/06/README)
 
 ### 精读区论文标签
-1. [From Local Whole-Body VLA Behaviors to Scene-Scale Aerial Manipulation](/202610/04/2609.39670v1-from-local-whole-body-vla-behaviors-to-scene-scale-aerial-manipulation)  
-   标签：评分：8.0/10、query:aerial-arm
-   evidence：关节式无人机机械臂的场景级空中操作
-2. [Passive Stiffness Shaping in Cable-Suspended Aerial Manipulation via Movable Compliant Anchors](/202610/04/2609.40102v1-passive-stiffness-shaping-in-cable-suspended-aerial-manipulation-via-movable-compliant-anchors)  
-   标签：评分：8.0/10、query:aerial-arm
-   evidence：缆索悬挂空中操作的被动刚度塑造
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Forward-Invariant Policy Classes for Safe Reinforcement Learning in Multicopter Control](/202610/04/2609.38655v1-forward-invariant-policy-classes-for-safe-reinforcement-learning-in-multicopter-control)  
-   标签：评分：6.0/10、query:drone-arm
-   evidence：基于前向不变策略类的多旋翼安全强化学习控制
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
